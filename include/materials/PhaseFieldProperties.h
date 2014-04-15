@@ -27,10 +27,30 @@ private:
 
   Real _k;
 
+  Real _alpha;
+
+  Real _m;
+
+  Real _rho_vs;
+
+  Real _w;
+
+  const Real _a1;
+
   VariableValue & _temperature;
 
+  MaterialProperty<Real> & _density_ice;
+
+  MaterialProperty<Real> & _interface_velocity;
 
   MaterialProperty<Real> & _capillary_length;
+
+  MaterialProperty<Real> & _beta;
+
+  MaterialProperty<Real> & _lamda;
+
+  MaterialProperty>Real> & _tau;
+
 };
 
 #endif // PHASEFIELDPROPERTIES_H
