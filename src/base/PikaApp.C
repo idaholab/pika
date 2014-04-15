@@ -1,7 +1,13 @@
 #include "PikaApp.h"
 #include "Moose.h"
 #include "AppFactory.h"
-#include "ModulesApp.h"
+
+// Modules
+#include "PhaseFieldApp.h"
+#include "HeatConductionApp.h"
+
+// Materials
+#include "PhaseFieldProperties.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -14,13 +20,15 @@ PikaApp::PikaApp(const std::string & name, InputParameters parameters) :
     MooseApp(name, parameters)
 {
   srand(libMesh::processor_id());
-  
+
   Moose::registerObjects(_factory);
-  ModulesApp::registerObjects(_factory);
+  PhaseFieldApp::registerObjects(_factory);
+  HeatConductionApp::registerObjects(_factory);
   PikaApp::registerObjects(_factory);
 
   Moose::associateSyntax(_syntax, _action_factory);
-  ModulesApp::associateSyntax(_syntax, _action_factory);
+  PhaseFieldApp::associateSyntax(_syntax, _action_factory);
+  HeatConductionApp::associateSyntax(_syntax, _action_factory);
   PikaApp::associateSyntax(_syntax, _action_factory);
 }
 
@@ -37,6 +45,9 @@ PikaApp::registerApps()
 void
 PikaApp::registerObjects(Factory & factory)
 {
+
+  // Materials
+  registerMaterial(PhaseFieldProperties);
 }
 
 void
