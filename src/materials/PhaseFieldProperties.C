@@ -40,7 +40,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _interface_velocity(declareProperty<Real>("interface_velocity")),
     _capillary_length(declareProperty<Real>("capillary_length")),
     _beta(declareProperty<Real>("beta")),
-    _lamda(declareProperty<Real>("lamda")),
+    _lambda(declareProperty<Real>("lamda")),
     _tau(declareProperty<Real>("tau"))
 
 {

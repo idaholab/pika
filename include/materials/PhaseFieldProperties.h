@@ -47,9 +47,9 @@ private:
 
   MaterialProperty<Real> & _beta;
 
-  MaterialProperty<Real> & _lamda;
+  MaterialProperty<Real> & _lambda;
 
-  MaterialProperty>Real> & _tau;
+  MaterialProperty<Real> & _tau;
 
 };
 

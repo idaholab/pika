@@ -8,6 +8,7 @@
 
 // Materials
 #include "PhaseFieldProperties.h"
+#include "IceProperties.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -48,6 +49,8 @@ PikaApp::registerObjects(Factory & factory)
 
   // Materials
   registerMaterial(PhaseFieldProperties);
+  registerMaterial(IceProperties);
+
 }
 
 void
