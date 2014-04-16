@@ -57,7 +57,7 @@ private:
 
   MaterialProperty<Real> & _diffusion_coefficient;
 
-  MaterialProperty<Real> & _density;
+  MaterialProperty<Real> & _interface_thickness_squared;
 
 };
 

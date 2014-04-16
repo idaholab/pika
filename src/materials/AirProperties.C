@@ -57,8 +57,6 @@ AirProperties::computeQpProperties()
 
   // Eq. (3)
   _water_vapor_mass_density_saturation[_qp] = _atmospheric_pressure[_qp] * _humidity_ratio[_qp];
-
-
 }
 
 

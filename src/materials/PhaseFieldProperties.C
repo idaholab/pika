@@ -42,7 +42,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _conductivity(declareProperty<Real>("conductivity")),
     _heat_capacity(declareProperty<Real>("head_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
-    _density(declareProperty<Real>("density"))
+    _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared"))
 
 {
 }
@@ -79,4 +79,5 @@ PhaseFieldProperties::computeQpProperties()
 
   _diffusion_coefficient[_qp] = dv[_qp] * (1 - _phi[_qp]) / 2;
 
+  _interface_thickness_squared[_qp] = _w*_w;
 }
