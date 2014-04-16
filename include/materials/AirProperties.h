@@ -2,6 +2,7 @@
 #define AIRPROPERTIES_H
 
 #include "Material.h"
+#include "ChemicalPotentialInterface.h"
 
 class AirProperties;
 
@@ -11,20 +12,17 @@ InputParameters validParams<AirProperties>();
 /**
  * A material for defining properties associated with the phase-field equation
  */
-class AirProperties : public Material
+class AirProperties :
+  public Material,
+  public ChemicalPotentialInterface
 {
 public:
   AirProperties(const std::string & name, InputParameters parameters);
-
-  static Real saturationVaporPressureOfWaterVaporOverIce(Real & T, std::vector<Real> K);
 
 protected:
   virtual void computeQpProperties();
 
 private:
-
-  /// Fitting coefficients
-  std::vector<Real> _coefficients;
 
   VariableValue & _temperature;
 

@@ -26,9 +26,7 @@ private:
 
   MaterialProperty<Real> & _lambda;
 
-  MaterialProperty<Real> & _density_ice;
-
-  MaterialProperty<Real> & _reference_temperature;
+  MaterialProperty<Real> & _s_eq;
 
 };
 #endif // PHASETRANSITION_H

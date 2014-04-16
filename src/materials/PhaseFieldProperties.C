@@ -21,6 +21,8 @@ InputParameters validParams<PhaseFieldProperties>()
 
   params.addParam<Real>("mobility", 1, "Phase-field mobility value");
 
+  params.addRequiredParam<Real>("reference_temperature", 258.2 ,"The reference temperature [K]");
+
   return params;
 }
 
@@ -35,6 +37,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _alpha(getParam<Real>("alpha")),
     _m(getParam<Real>("m")),
     _w(getParam<Real>("w")),
+    _reference_temperature(getParam<Real>("reference_temperature")),
     _mob(getParam<Real>("mobility")),
     _a1(5/8*std::sqrt(2)),
     _interface_velocity(declareProperty<Real>("interface_velocity")),
@@ -46,8 +49,12 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _heat_capacity(declareProperty<Real>("head_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
     _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
-    _mobility(declareProperty<Real>("mobility"))
+    _mobility(declareProperty<Real>("mobility")),
+    _chemical_potential_eq(declareProperty<Real>("chemical_potential_eq"))
 {
+
+
+
 }
 
 void
@@ -64,6 +71,7 @@ PhaseFieldProperties::computeQpProperties()
   MaterialProperty<Real> & dv = getMaterialProperty<Real>("diffusion_coefficient_air");
 
   MaterialProperty<Real> & pi = getMaterialProperty<Real>("density_ice");
+
 
   /// @todo{This needs to be computed}
   _interface_velocity[_qp] = 1e-9; // [m/s]
@@ -85,5 +93,10 @@ PhaseFieldProperties::computeQpProperties()
   _interface_thickness_squared[_qp] = _w*_w;
 
   _mobility[_qp] = _mob;
+
+
+  Real rvs_T  = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_temperature[_qp], _coefficients);
+  Real rvs_T0 = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_reference_temperature, _coefficients);
+  _chemical_potential_eq[_qp] = (rvs_T - rvs_T0) / _density_ice[_qp];
 
 }

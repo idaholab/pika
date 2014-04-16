@@ -39,9 +39,13 @@ private:
 
   Real _w;
 
+  Real _reference_temperature;
+
   const Real _mob;
 
   const Real _a1;
+
+  std::vector<Real> _coefficients;
 
   MaterialProperty<Real> & _interface_velocity;
 
@@ -63,6 +67,7 @@ private:
 
   MaterialProperty<Real> & _mobility;
 
+  MaterialProperty<Real> & _chemical_potential_eq;
 
 };
 
