@@ -23,12 +23,12 @@ AirProperties::AirProperties(const std::string & name, InputParameters parameter
     _humidity_ratio(declareProperty<Real>("humidity_ratio")),
     _water_vapor_mass_density_saturation(declareProperty<Real>("water_vapor_mass_density_saturation"))
 {
-  _k.push_back(-0.5865e4);
-  _k.push_back(0.2224e2);
-  _k.push_back(0.1375e-1);
-  _k.push_back(-0.3403e-4);
-  _k.push_back(0.2697e-7);
-  _k.push_back(0.6918);
+  _coefficients.push_back(-0.5865e4);
+  _coefficients.push_back(0.2224e2);
+  _coefficients.push_back(0.1375e-1);
+  _coefficients.push_back(-0.3403e-4);
+  _coefficients.push_back(0.2697e-7);
+  _coefficients.push_back(0.6918);
 }
 
 void
@@ -49,12 +49,7 @@ AirProperties::computeQpProperties()
   _atmospheric_pressure[_qp] = 1.01325e-5; // [Pa]
 
   // Eq.(2)
-  _saturation_pressure_vapor[_qp] = std::exp(_k[0]*std::pow(_temperature[_qp], -1)
-                                             + _k[1]//*std::pow(_temperature[_qp], 0)
-                                             + _k[2]*std::pow(_temperature[_qp], 1)
-                                             + _k[3]*std::pow(_temperature[_qp], 2)
-                                             + _k[4]*std::pow(_temperature[_qp], 3)
-                                             + _k[5]*std::log(_temperature[_qp]));
+  _saturation_pressure_vapor[_qp] = saturationVaporPressureOfWaterVaporOverIce(_temperature[_qp], _coefficients);
 
   // Eq. (1)
   _humidity_ratio[_qp] = (_gas_constant_dry_air[_qp] / _gas_constant_water_vapor[_qp])
@@ -64,4 +59,11 @@ AirProperties::computeQpProperties()
   _water_vapor_mass_density_saturation[_qp] = _atmospheric_pressure[_qp] * _humidity_ratio[_qp];
 
 
+}
+
+
+Real
+AirProperties::saturationVaporPressureOfWaterVaporOverIce(Real & T, std::vector<Real> K)
+{
+  return std::exp(K[0]*std::pow(T, -1) + K[1] + K[2]*std::pow(T, 1) + K[3]*std::pow(T, 2) + K[4]*std::pow(T, 3) + K[5]*std::log(T));
 }

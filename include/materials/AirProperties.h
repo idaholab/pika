@@ -16,13 +16,15 @@ class AirProperties : public Material
 public:
   AirProperties(const std::string & name, InputParameters parameters);
 
+  static Real saturationVaporPressureOfWaterVaporOverIce(Real & T, std::vector<Real> K);
+
 protected:
   virtual void computeQpProperties();
 
 private:
 
   /// Fitting coefficients
-  std::vector<Real> _k;
+  std::vector<Real> _coefficients;
 
   VariableValue & _temperature;
 
