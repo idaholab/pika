@@ -39,6 +39,8 @@ private:
 
   Real _w;
 
+  const Real _mob;
+
   const Real _a1;
 
   MaterialProperty<Real> & _interface_velocity;
@@ -58,6 +60,9 @@ private:
   MaterialProperty<Real> & _diffusion_coefficient;
 
   MaterialProperty<Real> & _interface_thickness_squared;
+
+  MaterialProperty<Real> & _mobility;
+
 
 };
 

@@ -19,6 +19,8 @@ InputParameters validParams<PhaseFieldProperties>()
 
   params.addParam<Real>("w", 8e-6, "Interface thickness [m]");
 
+  params.addParam<Real>("mobility", 1, "Phase-field mobility value");
+
   return params;
 }
 
@@ -33,6 +35,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _alpha(getParam<Real>("alpha")),
     _m(getParam<Real>("m")),
     _w(getParam<Real>("w")),
+    _mob(getParam<Real>("mobility")),
     _a1(5/8*std::sqrt(2)),
     _interface_velocity(declareProperty<Real>("interface_velocity")),
     _capillary_length(declareProperty<Real>("capillary_length")),
@@ -42,8 +45,8 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _conductivity(declareProperty<Real>("conductivity")),
     _heat_capacity(declareProperty<Real>("head_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
-    _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared"))
-
+    _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
+    _mobility(declareProperty<Real>("mobility"))
 {
 }
 
@@ -80,4 +83,7 @@ PhaseFieldProperties::computeQpProperties()
   _diffusion_coefficient[_qp] = dv[_qp] * (1 - _phi[_qp]) / 2;
 
   _interface_thickness_squared[_qp] = _w*_w;
+
+  _mobility[_qp] = _mob;
+
 }

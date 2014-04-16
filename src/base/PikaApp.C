@@ -9,6 +9,13 @@
 // Materials
 #include "PhaseFieldProperties.h"
 #include "IceProperties.h"
+#include "AirProperties.h"
+
+// Kernels
+#include "MaterialTimeDerivative.h"
+#include "CoefficientTimeDerivative.h"
+#include "PhaseFieldPotential.h"
+
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -50,6 +57,12 @@ PikaApp::registerObjects(Factory & factory)
   // Materials
   registerMaterial(PhaseFieldProperties);
   registerMaterial(IceProperties);
+  registerMaterial(AirProperties);
+
+  // Kernels
+  registerKernel(MaterialTimeDerivative);
+  registerKernel(CoefficientTimeDerivative);
+  registerKernel(PhaseFieldPotential);
 
 }
 
