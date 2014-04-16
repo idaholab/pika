@@ -21,7 +21,8 @@ AirProperties::AirProperties(const std::string & name, InputParameters parameter
     _saturation_pressure_vapor(declareProperty<Real>("saturation_pressure_vapor")),
     _atmospheric_pressure(declareProperty<Real>("atmospheric_pressure")),
     _humidity_ratio(declareProperty<Real>("humidity_ratio")),
-    _water_vapor_mass_density_saturation(declareProperty<Real>("water_vapor_mass_density_saturation"))
+    _water_vapor_mass_density_saturation(declareProperty<Real>("water_vapor_mass_density_saturation")),
+    _reference_temperature(declareProperty<Real>("reference_temperature"))
 {
   _coefficients.push_back(-0.5865e4);
   _coefficients.push_back(0.2224e2);

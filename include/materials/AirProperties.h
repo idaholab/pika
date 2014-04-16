@@ -47,6 +47,8 @@ private:
   MaterialProperty<Real> & _humidity_ratio;
 
   MaterialProperty<Real> & _water_vapor_mass_density_saturation;
+
+  MaterialProperty<Real> & _reference_temperature;
 };
 
 #endif // AIRPROPERTIES_H

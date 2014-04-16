@@ -15,7 +15,7 @@
 #include "MaterialTimeDerivative.h"
 #include "CoefficientTimeDerivative.h"
 #include "PhaseFieldPotential.h"
-
+#include "PhaseTransition.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -63,6 +63,7 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(MaterialTimeDerivative);
   registerKernel(CoefficientTimeDerivative);
   registerKernel(PhaseFieldPotential);
+  registerKernel(PhaseTransition);
 
 }
 

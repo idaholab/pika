@@ -1,5 +1,5 @@
 #ifndef PHASEFIELDPOTENTIAL_H
-#DEFINE PHASEFIELDPOTENTIAL_H
+#define PHASEFIELDPOTENTIAL_H
 
 // modules/phase_field includes
 #include "ACBulk.h"
@@ -10,7 +10,7 @@ class PhaseFieldPotential;
 template<>
 InputParameters validParams<PhaseFieldPotential>();
 
-class PhaseFieldPotential : public KernelValue
+class PhaseFieldPotential : public ACBulk
 {
 public:
 
