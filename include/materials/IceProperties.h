@@ -24,6 +24,11 @@ private:
   VariableValue & _temperature;
 
   MaterialProperty<Real> & _density_ice;
+
+  MaterialProperty<Real> & _conductivity_ice;
+
+  MaterialProperty<Real> & _heat_capacity_ice;
+
 };
 
 #endif // ICEPROPERTIES_H

@@ -21,6 +21,10 @@ protected:
 
 private:
 
+  VariableValue & _temperature;
+
+  VariableValue & _phi;
+
   Real _gamma;
 
   Real _a;
@@ -37,10 +41,6 @@ private:
 
   const Real _a1;
 
-  VariableValue & _temperature;
-
-  MaterialProperty<Real> & _density_ice;
-
   MaterialProperty<Real> & _interface_velocity;
 
   MaterialProperty<Real> & _capillary_length;
@@ -50,6 +50,14 @@ private:
   MaterialProperty<Real> & _lambda;
 
   MaterialProperty<Real> & _tau;
+
+  MaterialProperty<Real> & _conductivity;
+
+  MaterialProperty<Real> & _heat_capacity;
+
+  MaterialProperty<Real> & _diffusion_coefficient;
+
+  MaterialProperty<Real> & _density;
 
 };
 
