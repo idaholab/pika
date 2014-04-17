@@ -13,6 +13,7 @@ InputParameters validParams<PhaseFieldProperties>()
 
 PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParameters parameters) :
     Material(name, parameters),
+    ChemicalPotentialInterface(),
     _temperature(coupledValue("temperature")),
     _phi(coupledValue("phi")),
     _a1(5/8*std::sqrt(2)),
@@ -41,6 +42,7 @@ PhaseFieldProperties::computeQpProperties()
   Real & alpha = getMaterialProperty<Real>("condensation_coefficient")[_qp];
   Real & m = getMaterialProperty<Real>("mass_water_molecule")[_qp];
   Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
+  Real & T0 = getMaterialProperty<Real>("reference_temperature")[_qp];
 
   MaterialProperty<Real> & rho_vs = getMaterialProperty<Real>("water_vapor_mass_density_saturation");
 
@@ -74,8 +76,8 @@ PhaseFieldProperties::computeQpProperties()
 
   _interface_thickness_squared[_qp] = w*w;
 
-  // Real rvs_T  = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_temperature[_qp], _coefficients);
-  //Real rvs_T0 = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_reference_temperature, _coefficients);
-  //_chemical_potential_eq[_qp] = (rvs_T - rvs_T0) / _density_ice[_qp];
+  Real rvs_T  = saturationVaporPressure(_temperature[_qp]);
+  Real rvs_T0 = saturationVaporPressure(T0);
+  _chemical_potential_eq[_qp] = (rvs_T - rvs_T0) / pi[_qp];
 
 }
