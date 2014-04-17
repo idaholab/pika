@@ -23,5 +23,9 @@ protected:
 
 private:
   const MaterialProperty<Real> _coefficient;
+
+  Real _factor;
+  Real _scale;
+
 };
 #endif //MATERIALTIMEDERIVATIVE

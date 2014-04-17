@@ -20,17 +20,13 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _interface_velocity(declareProperty<Real>("interface_velocity")),
     _capillary_length(declareProperty<Real>("capillary_length")),
     _beta(declareProperty<Real>("beta")),
-    _lambda(declareProperty<Real>("lamda")),
+    _lambda(declareProperty<Real>("lambda")),
     _tau(declareProperty<Real>("tau")),
     _conductivity(declareProperty<Real>("conductivity")),
-    _heat_capacity(declareProperty<Real>("head_capacity")),
+    _heat_capacity(declareProperty<Real>("heat_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
-    _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
-    _chemical_potential_eq(declareProperty<Real>("chemical_potential_eq"))
+    _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared"))
 {
-
-
-
 }
 
 void
@@ -56,28 +52,27 @@ PhaseFieldProperties::computeQpProperties()
 
   MaterialProperty<Real> & pi = getMaterialProperty<Real>("density_ice");
 
-
   /// @todo{This needs to be computed}
   _interface_velocity[_qp] = 1e-9; // [m/s]
 
-  _capillary_length[_qp] = (gamma * std::pow(a, 3) ) / (k * _temperature[_qp]);
+  _capillary_length[_qp] = 1;// (gamma * std::pow(a, 3) ) / (k * _temperature[_qp]);
 
-  _beta[_qp] = (1/alpha) * pi[_qp] / rho_vs[_qp] * std::sqrt((2*libMesh::pi*m) / (k * _temperature[_qp]));
+  // _beta[_qp] = (1/alpha) * pi[_qp] / rho_vs[_qp] * std::sqrt((2*libMesh::pi*m) / (k * _temperature[_qp]));
+  _beta[_qp] = 1;
 
-  _lambda[_qp] = (_a1 * w *pi[_qp]) / (_capillary_length[_qp] * rho_vs[_qp]);
+  _lambda[_qp] = 1;//(_a1 * w *pi[_qp]) / (_capillary_length[_qp] * rho_vs[_qp]);
 
-  _tau[_qp] = (_beta[_qp] * rho_vs[_qp] * w * _lambda[_qp]) / (pi[_qp] * _a1);
 
-  _conductivity[_qp] = ki[_qp] * (1 + _phi[_qp]) / 2 + ka[_qp] * (1 - _phi[_qp]) / 2;
+  //_tau[_qp] = (_beta[_qp] * rho_vs[_qp] * w * _lambda[_qp]) / (pi[_qp] * _a1);
+  _tau[_qp] = 1;
 
-  _heat_capacity[_qp] = ci[_qp] * (1 + _phi[_qp]) / 2 + ca[_qp] * (1 - _phi[_qp]) / 2;
+  _conductivity[_qp] = 1;//ki[_qp] * (1 + _phi[_qp]) / 2 + ka[_qp] * (1 - _phi[_qp]) / 2;
 
-  _diffusion_coefficient[_qp] = dv[_qp] * (1 - _phi[_qp]) / 2;
+  _heat_capacity[_qp] = 1;//ci[_qp] * (1 + _phi[_qp]) / 2 + ca[_qp] * (1 - _phi[_qp]) / 2;
 
-  _interface_thickness_squared[_qp] = w*w;
+  _diffusion_coefficient[_qp] = 1;//dv[_qp] * (1 - _phi[_qp]) / 2;
 
-  Real rvs_T  = saturationVaporPressure(_temperature[_qp]);
-  Real rvs_T0 = saturationVaporPressure(T0);
-  _chemical_potential_eq[_qp] = (rvs_T - rvs_T0) / pi[_qp];
+  _interface_thickness_squared[_qp] = 1;//w*w;
+
 
 }

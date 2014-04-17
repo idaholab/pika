@@ -20,6 +20,8 @@ class ChemicalPotentialIC :
 public:
   ChemicalPotentialIC(const std::string & name, InputParameters parameters);
 
+  virtual ~ChemicalPotentialIC(){};
+
 protected:
 
   /**

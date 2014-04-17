@@ -39,10 +39,10 @@ AirProperties::computeQpProperties()
   _diffusion_coefficient_air[_qp] = 2.178e-5; //[m^2/s]
 
   // Eq.(2)
-  Real P_vs = saturationVaporPressure(_temperature[_qp]);
+  Real P_vs = 1;//saturationVaporPressure(_temperature[_qp]);
 
   // Eq. (1)
-  Real x_s = (R_da[_qp] / R_v[_qp]) * (P_vs / (P_a[_qp] - P_vs));
+  Real x_s = 1;//(R_da[_qp] / R_v[_qp]) * (P_vs / (P_a[_qp] - P_vs));
 
   // Eq. (3)
   _water_vapor_mass_density_saturation[_qp] = P_a[_qp] * x_s;

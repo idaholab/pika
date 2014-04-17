@@ -4,13 +4,18 @@
 // modules/phase_field includes
 #include "ACBulk.h"
 
+// PIKA includes
+#include "ChemicalPotentialInterface.h"
+
 //Forward Declarations
 class PhaseTransition;
 
 template<>
 InputParameters validParams<PhaseTransition>();
 
-class PhaseTransition : public ACBulk
+class PhaseTransition :
+  public ACBulk,
+  public ChemicalPotentialInterface
 {
 public:
 
@@ -22,11 +27,8 @@ protected:
 private:
   VariableValue & _s;
 
-  MaterialProperty<Real> & _temperature;
+  VariableValue & _temperature;
 
   MaterialProperty<Real> & _lambda;
-
-  MaterialProperty<Real> & _s_eq;
-
 };
 #endif // PHASETRANSITION_H

@@ -13,6 +13,7 @@ ChemicalPotentialInterface::ChemicalPotentialInterface()
 libMesh::Real
 ChemicalPotentialInterface::saturationVaporPressure(libMesh::Real T)
 {
-  return std::exp(_K[0]*std::pow(T, -1) + _K[1] + _K[2]*std::pow(T, 1) + _K[3]*std::pow(T, 2) + _K[4]*std::pow(T, 3) + _K[5]*std::log(T));
+  return 1;
+//  return std::exp(_K[0]*std::pow(T, -1) + _K[1] + _K[2]*std::pow(T, 1) + _K[3]*std::pow(T, 2) + _K[4]*std::pow(T, 3) + _K[5]*std::log(T));
 
 }

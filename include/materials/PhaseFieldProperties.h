@@ -48,7 +48,6 @@ private:
 
   MaterialProperty<Real> & _interface_thickness_squared;
 
-  MaterialProperty<Real> & _chemical_potential_eq;
 
 };
 

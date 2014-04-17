@@ -18,6 +18,9 @@
 #include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
 
+// InitialConditions
+#include "ChemicalPotentialIC.h"
+
 template<>
 InputParameters validParams<PikaApp>()
 {
@@ -66,6 +69,9 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(CoefficientTimeDerivative);
   registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
+
+  // InitialConditions
+  registerInitialCondition(ChemicalPotentialIC);
 
 }
 
