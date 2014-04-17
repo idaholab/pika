@@ -34,19 +34,7 @@ private:
 
   MaterialProperty<Real> & _diffusion_coefficient_air;
 
-  MaterialProperty<Real> & _gas_constant_dry_air;
-
-  MaterialProperty<Real> & _gas_constant_water_vapor;
-
-  MaterialProperty<Real> & _saturation_pressure_vapor;
-
-  MaterialProperty<Real> & _atmospheric_pressure;
-
-  MaterialProperty<Real> & _humidity_ratio;
-
   MaterialProperty<Real> & _water_vapor_mass_density_saturation;
-
-  MaterialProperty<Real> & _reference_temperature;
 };
 
 #endif // AIRPROPERTIES_H

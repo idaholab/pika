@@ -25,27 +25,7 @@ private:
 
   VariableValue & _phi;
 
-  Real _gamma;
-
-  Real _a;
-
-  Real _k;
-
-  Real _alpha;
-
-  Real _m;
-
-  Real _rho_vs;
-
-  Real _w;
-
-  Real _reference_temperature;
-
-  const Real _mob;
-
   const Real _a1;
-
-  std::vector<Real> _coefficients;
 
   MaterialProperty<Real> & _interface_velocity;
 
@@ -64,8 +44,6 @@ private:
   MaterialProperty<Real> & _diffusion_coefficient;
 
   MaterialProperty<Real> & _interface_thickness_squared;
-
-  MaterialProperty<Real> & _mobility;
 
   MaterialProperty<Real> & _chemical_potential_eq;
 

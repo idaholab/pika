@@ -3,7 +3,9 @@
 
 // MOOSE includes
 #include "InitialCondition.h"
-#include <string>
+
+// PIKA includes
+#include "ChemicalPotentialInterface.h"
 
 //Forward Declarations
 class ChemicalPotentialIC;
@@ -30,6 +32,10 @@ protected:
 private:
 
   VariableValue & _temperature;
+
+  Real _density_ice;
+
+  Real _reference_temperature;
 
 };
 

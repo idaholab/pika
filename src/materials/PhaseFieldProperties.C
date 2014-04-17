@@ -7,22 +7,6 @@ InputParameters validParams<PhaseFieldProperties>()
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
   params.addRequiredCoupledVar("phi", "The phase-field variable to couple");
 
-  params.addParam<Real>("gamma", 1.09e-1, "Interface free energy [J/m^2]");
-
-  params.addParam<Real>("a", 3.19e-10, "Mean inter-molecular spacing in ice [m]");
-
-  params.addParam<Real>("k", 1.3806488e-23, "Boltzmann constant [J/k]");
-
-  params.addParam<Real>("alpha", 1e-2, "Condensation coefficient [unitless]");
-
-  params.addParam<Real>("m", 2.9900332e-26, "Mass of water molecule [kg]");
-
-  params.addParam<Real>("w", 8e-6, "Interface thickness [m]");
-
-  params.addParam<Real>("mobility", 1, "Phase-field mobility value");
-
-  params.addRequiredParam<Real>("reference_temperature", 258.2 ,"The reference temperature [K]");
-
   return params;
 }
 
@@ -31,14 +15,6 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     Material(name, parameters),
     _temperature(coupledValue("temperature")),
     _phi(coupledValue("phi")),
-    _gamma(getParam<Real>("gamma")),
-    _a(getParam<Real>("a")),
-    _k(getParam<Real>("k")),
-    _alpha(getParam<Real>("alpha")),
-    _m(getParam<Real>("m")),
-    _w(getParam<Real>("w")),
-    _reference_temperature(getParam<Real>("reference_temperature")),
-    _mob(getParam<Real>("mobility")),
     _a1(5/8*std::sqrt(2)),
     _interface_velocity(declareProperty<Real>("interface_velocity")),
     _capillary_length(declareProperty<Real>("capillary_length")),
@@ -49,7 +25,6 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _heat_capacity(declareProperty<Real>("head_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
     _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
-    _mobility(declareProperty<Real>("mobility")),
     _chemical_potential_eq(declareProperty<Real>("chemical_potential_eq"))
 {
 
@@ -60,6 +35,13 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
 void
 PhaseFieldProperties::computeQpProperties()
 {
+  Real & gamma = getMaterialProperty<Real>("interface_free_energy")[_qp];
+  Real & a = getMaterialProperty<Real>("mean_molecular_spacing")[_qp];
+  Real & k = getMaterialProperty<Real>("mean_molecular_spacing")[_qp];
+  Real & alpha = getMaterialProperty<Real>("condensation_coefficient")[_qp];
+  Real & m = getMaterialProperty<Real>("mass_water_molecule")[_qp];
+  Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
+
   MaterialProperty<Real> & rho_vs = getMaterialProperty<Real>("water_vapor_mass_density_saturation");
 
   MaterialProperty<Real> & ki = getMaterialProperty<Real>("conductivity_ice");
@@ -76,13 +58,13 @@ PhaseFieldProperties::computeQpProperties()
   /// @todo{This needs to be computed}
   _interface_velocity[_qp] = 1e-9; // [m/s]
 
-  _capillary_length[_qp] = (_gamma * std::pow(_a, 3) ) / (_k * _temperature[_qp]);
+  _capillary_length[_qp] = (gamma * std::pow(a, 3) ) / (k * _temperature[_qp]);
 
-  _beta[_qp] = (1/_alpha) * pi[_qp] / rho_vs[_qp] * std::sqrt((2*libMesh::pi*_m) / (_k * _temperature[_qp]));
+  _beta[_qp] = (1/alpha) * pi[_qp] / rho_vs[_qp] * std::sqrt((2*libMesh::pi*m) / (k * _temperature[_qp]));
 
-  _lambda[_qp] = (_a1 * _w *pi[_qp]) / (_capillary_length[_qp] * rho_vs[_qp]);
+  _lambda[_qp] = (_a1 * w *pi[_qp]) / (_capillary_length[_qp] * rho_vs[_qp]);
 
-  _tau[_qp] = (_beta[_qp] * rho_vs[_qp] * _w * _lambda[_qp]) / (pi[_qp] * _a1);
+  _tau[_qp] = (_beta[_qp] * rho_vs[_qp] * w * _lambda[_qp]) / (pi[_qp] * _a1);
 
   _conductivity[_qp] = ki[_qp] * (1 + _phi[_qp]) / 2 + ka[_qp] * (1 - _phi[_qp]) / 2;
 
@@ -90,13 +72,10 @@ PhaseFieldProperties::computeQpProperties()
 
   _diffusion_coefficient[_qp] = dv[_qp] * (1 - _phi[_qp]) / 2;
 
-  _interface_thickness_squared[_qp] = _w*_w;
+  _interface_thickness_squared[_qp] = w*w;
 
-  _mobility[_qp] = _mob;
-
-
-  Real rvs_T  = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_temperature[_qp], _coefficients);
-  Real rvs_T0 = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_reference_temperature, _coefficients);
-  _chemical_potential_eq[_qp] = (rvs_T - rvs_T0) / _density_ice[_qp];
+  // Real rvs_T  = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_temperature[_qp], _coefficients);
+  //Real rvs_T0 = AirProperties::saturationVaporPressureOfWaterVaporOverIce(_reference_temperature, _coefficients);
+  //_chemical_potential_eq[_qp] = (rvs_T - rvs_T0) / _density_ice[_qp];
 
 }

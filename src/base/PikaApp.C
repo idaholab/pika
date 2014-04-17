@@ -7,6 +7,7 @@
 #include "HeatConductionApp.h"
 
 // Materials
+#include "ConstantProperties.h"
 #include "PhaseFieldProperties.h"
 #include "IceProperties.h"
 #include "AirProperties.h"
@@ -55,6 +56,7 @@ PikaApp::registerObjects(Factory & factory)
 {
 
   // Materials
+  registerMaterial(ConstantProperties);
   registerMaterial(PhaseFieldProperties);
   registerMaterial(IceProperties);
   registerMaterial(AirProperties);

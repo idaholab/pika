@@ -21,10 +21,7 @@ IceProperties::IceProperties(const std::string & name, InputParameters parameter
 void
 IceProperties::computeQpProperties()
 {
-  /// @\todo{Make this a function of temperature}
-  _density_ice[_qp] = 918.9; // [kg/m^3]
-
-  _conductivity_ice[_qp] = 2.29; // [W/(m K)]
-
+  _density_ice[_qp] = 918.9;        // [kg/m^3]
+  _conductivity_ice[_qp] = 2.29;    // [W/(m K)]
   _heat_capacity_ice[_qp] = 1.8e-6; // [J/(m^3 K)]
 }
