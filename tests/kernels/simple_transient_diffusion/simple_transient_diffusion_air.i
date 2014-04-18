@@ -41,14 +41,14 @@
   [./air]
     type = AirProperties
     block = 0
+    conductivity_air = 0.1
     property_user_object = property_uo
     temperature = u
   [../]
   [./ice]
-    # Change the condutivity of ice to that of the moose simple_transient_diffusion test. Also, the phi variable in PhaseFieldProperties is set to a default value of 1.
+    # Change the condutivity of aior to that of the moose simple_transient_diffusion test. Also, the phi variable in PhaseFieldProperties is set to a default value of -1.
     type = IceProperties
     block = 0
-    conductivity_ice = 0.01
     property_user_object = property_uo
     temperature = u
   [../]
@@ -60,6 +60,7 @@
     # Use the default phi = 1 so that the material behaves as solid ice.
     type = PhaseFieldProperties
     block = 0
+    phi = -1
     property_user_object = property_uo
     temperature = u
   [../]
@@ -91,4 +92,3 @@
     linear_residuals = true
   [../]
 []
-
