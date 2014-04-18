@@ -34,11 +34,6 @@ protected:
 private:
 
   VariableValue & _temperature;
-
-  Real _density_ice;
-
-  Real _reference_temperature;
-
 };
 
 #endif // CHEMICALPOTENTIALIC_H

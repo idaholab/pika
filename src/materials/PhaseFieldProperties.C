@@ -7,9 +7,9 @@ template<>
 InputParameters validParams<PhaseFieldProperties>()
 {
   InputParameters params = validParams<Material>();
-  params += validParams<ChemicalPotentialInterface>();  params.addRequiredCoupledVar("u", "The dimensionless unknown from the vapor diffusion equation");
+  params += validParams<ChemicalPotentialInterface>();
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
-  params.addRequiredCoupledVar("phi", "The phase-field variable to couple");
+  params.addCoupledVar("phi", 1, "The phase-field variable to couple");
 
   return params;
 }
@@ -17,7 +17,8 @@ InputParameters validParams<PhaseFieldProperties>()
 
 PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParameters parameters) :
     Material(name, parameters),
-    ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),    _temperature(coupledValue("temperature")),
+    ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),
+    _temperature(coupledValue("temperature")),
     _phi(coupledValue("phi")),
     _a1(5/8*std::sqrt(2)),
     _interface_velocity(declareProperty<Real>("interface_velocity")),
@@ -42,7 +43,6 @@ PhaseFieldProperties::computeQpProperties()
   Real & alpha = getMaterialProperty<Real>("condensation_coefficient")[_qp];
   Real & m = getMaterialProperty<Real>("mass_water_molecule")[_qp];
   Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
-  Real & T0 = getMaterialProperty<Real>("reference_temperature")[_qp];
 
   Real rho_vs = equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
 

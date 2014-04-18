@@ -81,6 +81,6 @@ PikaApp::registerObjects(Factory & factory)
 }
 
 void
-PikaApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
+PikaApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
 {
 }
