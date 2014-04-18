@@ -131,6 +131,7 @@
   exodus = true
   [./console]
     type = Console
+    nonlinear_residuals = true
     linear_residuals = true
   [../]
 []
@@ -158,4 +159,3 @@
     temperature = T
   [../]
 []
-
