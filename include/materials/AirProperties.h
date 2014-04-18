@@ -1,9 +1,13 @@
 #ifndef AIRPROPERTIES_H
 #define AIRPROPERTIES_H
 
+// MOOSE includes
 #include "Material.h"
+
+// PIKA includes
 #include "ChemicalPotentialInterface.h"
 
+// Forward declarations
 class AirProperties;
 
 template<>

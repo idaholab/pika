@@ -38,42 +38,38 @@ ChemicalPotentialPropertyUserObject::ChemicalPotentialPropertyUserObject(const s
 {
 }
 
-ChemicalPotentialPropertyUserObject::~ChemicalPotentialPropertyUserObject()
-{
-}
-
-void
-ChemicalPotentialPropertyUserObject::execute()
-{
-}
-
 Real
-ChemicalPotentialPropertyUserObject::iceDensity(Real /* T */)
+ChemicalPotentialPropertyUserObject::iceDensity(Real /* T */) const
 {
   return _rho_i;
 }
 
 Real
-ChemicalPotentialPropertyUserObject::airDensity(Real /* T */)
+ChemicalPotentialPropertyUserObject::airDensity(Real /* T */) const
 {
   return _rho_i;
 }
 
+Real
+ChemicalPotentialPropertyUserObject::referenceTemperature() const
+{
+  return _T_0;
+}
 
 Real
-ChemicalPotentialPropertyUserObject::atmosphericPressure()
+ChemicalPotentialPropertyUserObject::atmosphericPressure() const
 {
   return _P_a;
 }
 
 Real
-ChemicalPotentialPropertyUserObject::gasConstantWatorVapor()
+ChemicalPotentialPropertyUserObject::gasConstantWaterVapor() const
 {
   return _R_v;
 }
 
 Real
-ChemicalPotentialPropertyUserObject::gasConstantDryAir()
+ChemicalPotentialPropertyUserObject::gasConstantDryAir() const
 {
   return _R_da;
 }

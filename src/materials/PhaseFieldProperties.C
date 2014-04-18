@@ -1,9 +1,13 @@
+
+// PIKA includes
 #include "PhaseFieldProperties.h"
+#include "ChemicalPotentialPropertyUserObject.h"
 
 template<>
 InputParameters validParams<PhaseFieldProperties>()
 {
   InputParameters params = validParams<Material>();
+  params += validParams<ChemicalPotentialInterface>();  params.addRequiredCoupledVar("u", "The dimensionless unknown from the vapor diffusion equation");
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
   params.addRequiredCoupledVar("phi", "The phase-field variable to couple");
 
@@ -13,8 +17,7 @@ InputParameters validParams<PhaseFieldProperties>()
 
 PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParameters parameters) :
     Material(name, parameters),
-    ChemicalPotentialInterface(),
-    _temperature(coupledValue("temperature")),
+    ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),    _temperature(coupledValue("temperature")),
     _phi(coupledValue("phi")),
     _a1(5/8*std::sqrt(2)),
     _interface_velocity(declareProperty<Real>("interface_velocity")),
@@ -25,7 +28,8 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _conductivity(declareProperty<Real>("conductivity")),
     _heat_capacity(declareProperty<Real>("heat_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
-    _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared"))
+    _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
+    _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration"))
 {
 }
 
@@ -74,5 +78,5 @@ PhaseFieldProperties::computeQpProperties()
 
   _interface_thickness_squared[_qp] = 1;//w*w;
 
-
+  _equilibrium_concentration[_qp] = equilibriumConcentration(_temperature[_qp]);
 }

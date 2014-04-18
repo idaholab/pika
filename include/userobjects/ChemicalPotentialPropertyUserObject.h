@@ -41,28 +41,34 @@ public:
   /**
    * Class destructor
    */
-  virtual ~ChemicalPotentialPropertyUserObject();
+  virtual ~ChemicalPotentialPropertyUserObject(){}
 
   /**
    *
    */
-  virtual void execute();
+  virtual void execute(){}
+
+  virtual void initialize(){}
+  virtual void finalize(){}
+
 
   /**
    * Return the density of ice as a function of temperature
    */
-  Real iceDensity(Real T);
+  Real iceDensity(Real T) const;
 
   /**
    *
    */
-  Real airDensity(Real T);
+  Real airDensity(Real T) const;
 
+  Real referenceTemperature() const;
 
-  Real gasConstantWaterVapor();
-  Real gasConstantDryAir();
+  Real gasConstantWaterVapor() const;
 
-  Real atmosphericTemperature();
+  Real gasConstantDryAir() const;
+
+  Real atmosphericPressure() const;
 
 private:
 

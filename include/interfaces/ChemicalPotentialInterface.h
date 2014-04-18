@@ -20,7 +20,7 @@ class ChemicalPotentialInterface
 {
 public:
 
-  ChemicalPotentialInterface(UserObject * property_user_object);
+  ChemicalPotentialInterface(const ChemicalPotentialPropertyUserObject & uo);
 
   virtual ~ChemicalPotentialInterface(){};
 
@@ -34,7 +34,7 @@ protected:
 
   Real equilibriumConcentration(Real T);
 
-  ChemicalPotentialPropertyUserObject * _property_ptr;
+  const ChemicalPotentialPropertyUserObject & _property_uo;
 
 private:
 

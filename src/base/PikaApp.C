@@ -6,6 +6,9 @@
 #include "PhaseFieldApp.h"
 #include "HeatConductionApp.h"
 
+// UserObjects
+#include "ChemicalPotentialPropertyUserObject.h"
+
 // Materials
 #include "ConstantProperties.h"
 #include "PhaseFieldProperties.h"
@@ -57,6 +60,8 @@ PikaApp::registerApps()
 void
 PikaApp::registerObjects(Factory & factory)
 {
+  // UserObjects
+  registerUserObject(ChemicalPotentialPropertyUserObject);
 
   // Materials
   registerMaterial(ConstantProperties);
