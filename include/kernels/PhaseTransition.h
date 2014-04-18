@@ -23,8 +23,6 @@ protected:
 private:
   VariableValue & _s;
 
-  VariableValue & _temperature;
-
   MaterialProperty<Real> & _lambda;
 
   MaterialProperty<Real> & _s_eq;

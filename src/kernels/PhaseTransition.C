@@ -5,7 +5,7 @@ template<>
 InputParameters validParams<PhaseTransition>()
 {
   InputParameters params = validParams<ACBulk>();
-  params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
+  params.addRequiredCoupledVar("chemical_potential", "The chemical potential variable to couple");
   params.addParam<std::string>("lambda", "lambda", "The name of the material property containing the definition of lambda");
   params.addParam<std::string>("equilibrium_concentration", "equilibrium_concentration", "The name of the material property containing the equilibrium concentration");
 
@@ -14,8 +14,7 @@ InputParameters validParams<PhaseTransition>()
 
 PhaseTransition::PhaseTransition(const std::string & name, InputParameters parameters) :
     ACBulk(name, parameters),
-    _s(coupledValue("u")),
-    _temperature(coupledValue("temperature")),
+    _s(coupledValue("chemical_potential")),
     _lambda(getMaterialProperty<Real>(getParam<std::string>("lambda"))),
     _s_eq(getMaterialProperty<Real>(getParam<std::string>("equilibrium_concentration")))
 {

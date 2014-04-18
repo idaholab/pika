@@ -5,6 +5,7 @@
   ny = 10
   xmax = 0.005
   ymax = 0.005
+  uniform_refine = 2
 []
 
 [Variables]
@@ -32,8 +33,7 @@
     type = PhaseTransition
     variable = phi
     mob_name = mobility
-    u = u
-    temperature = T
+    chemical_potential = u
   [../]
   [./phase_potential]
     type = PhaseFieldPotential
@@ -91,11 +91,13 @@
   [./air]
     type = AirProperties
     block = 0
+    property_user_object = potential_uo
     temperature = T
   [../]
   [./ice]
     type = IceProperties
     block = 0
+    property_user_object = potential_uo
     temperature = T
   [../]
   [./constants]
@@ -106,7 +108,16 @@
     type = PhaseFieldProperties
     block = 0
     phi = phi
+    property_user_object = potential_uo
+    u = u
     temperature = T
+  [../]
+[]
+
+[UserObjects]
+  [./potential_uo]
+    type = ChemicalPotentialPropertyUserObject
+    execute_on = initial
   [../]
 []
 
@@ -142,6 +153,7 @@
   [../]
   [./chemical_potential_ic]
     variable = u
+    property_user_object = potential_uo
     type = ChemicalPotentialIC
     temperature = T
   [../]
