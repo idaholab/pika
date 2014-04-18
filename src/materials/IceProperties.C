@@ -4,24 +4,28 @@ template<>
 InputParameters validParams<IceProperties>()
 {
   InputParameters params = validParams<Material>();
+  params += validParams<ChemicalPotentialInterface>();
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
+  params.addParam<Real>("conductivity_ice", 2.29, "Thermal conductivity or air, \kappa_i [ W/(m K)]");
+  params.addParam<Real>("heat_capacity_ice", 1.8e6, "Heat capacity of air, C_i [J/(m^3 K)]");
   return params;
 }
 
 
 IceProperties::IceProperties(const std::string & name, InputParameters parameters) :
     Material(name, parameters),
+    ChemicalPotentialInterface(getUserObject("property_user_object")),
     _temperature(coupledValue("temperature")),
-    _density_ice(declareProperty<Real>("density_ice")),
-    _conductivity_ice(declareProperty<Real>("conducivity_ice")),
-    _heat_capacity_ice(declareProperty<Real>("heat_capacity_ice"))
+    _rho_i(declareProperty<Real>("density_ice")),
+    _kappa_i(declareProperty<Real>("conductivity_ice")),
+    _C_i(declareProperty<Real>("heat_capacity_ice"))
 {
 }
 
 void
 IceProperties::computeQpProperties()
 {
-  _density_ice[_qp] = 918.9;        // [kg/m^3]
-  _conductivity_ice[_qp] = 2.29;    // [W/(m K)]
-  _heat_capacity_ice[_qp] = 1.8e-6; // [J/(m^3 K)]
+  _density_ice[_qp] = _proprty_ptr->iceDensity(_temperature[_qp]);
+  _conductivity_ice[_qp] = getParam<Real>("conductivity_ice");
+  _heat_capacity_ice[_qp] = getParam<Real>("heat_capacity_ice");
 }

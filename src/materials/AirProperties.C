@@ -22,14 +22,12 @@ AirProperties::AirProperties(const std::string & name, InputParameters parameter
     _C_a(declareProperty<Real>("heat_capacity_air")),
     _D_a(declareProperty<Real>("diffusion_coefficient_air"))
 {
-
-
 }
 
 void
 AirProperties::computeQpProperties()
 {
-  _rho_a[_qp] = _proprty_ptr->iceDensity(_temperature[_qp]);
+  _rho_a[_qp] = _proprty_ptr->airDensity(_temperature[_qp]);
 
   _kappa_a[_qp] = getParam<Real>("conductivity_air");
 

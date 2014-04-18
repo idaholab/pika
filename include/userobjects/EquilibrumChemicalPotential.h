@@ -12,22 +12,22 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef EQUILIBRUMCHEMICALPOTENTIAL_H
-#define EQUILIBRUMCHEMICALPOTENTIAL_H
+#ifndef CHEMICALPOTENTIALPROPERTYUSEROBJECT_H
+#define CHEMICALPOTENTIALPROPERTYUSEROBJECT_H
 
 // MOOSE includes
 #include "GeneralUserObject.h"
 
 // Forward declarations
-class EquilibrumChemicalPotential;
+class ChemicalPotentialPropertyUserObject;
 
 template<>
-InputParameters validParams<EquilibrumChemicalPotential>();
+InputParameters validParams<ChemicalPotentialPropertyUserObject>();
 
 /**
  *
  */
-class EquilibrumChemicalPotential : public GeneralUserObject
+class ChemicalPotentialPropertyUserObject : public GeneralUserObject
 {
 public:
 
@@ -36,12 +36,12 @@ public:
    * @param name
    * @param parameters
    */
-  EquilibrumChemicalPotential(const std::string & name, InputParameters parameters);
+  ChemicalPotentialPropertyUserObject(const std::string & name, InputParameters parameters);
 
   /**
    * Class destructor
    */
-  virtual ~EquilibrumChemicalPotential();
+  virtual ~ChemicalPotentialPropertyUserObject();
 
   /**
    *
@@ -75,4 +75,4 @@ private:
 
 };
 
-#endif //EQUILIBRUMCHEMICALPOTENTIAL_H
+#endif // CHEMICALPOTENTIALPROPERTYUSEROBJECT_H

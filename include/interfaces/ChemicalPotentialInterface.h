@@ -9,6 +9,8 @@
 
 // Forward declarations
 class ChemicalPotentialInterface;
+class ChemicalPotentialPropertyUserObject;
+
 
 template<>
 InputParameters validParams<ChemicalPotentialInterface>();
@@ -28,11 +30,11 @@ protected:
 
   Real saturationPressureOfWaterVaporOverIce(Real T);
 
-  Real equilibribumWaterVaporConcentrationAtSaturation(Real T);
+  Real equilibriumWaterVaporConcentrationAtSaturation(Real T);
 
   Real equilibriumConcentration(Real T);
 
-  UserObject * _property_ptr;
+  ChemicalPotentialPropertyUserObject * _property_ptr;
 
 private:
 
