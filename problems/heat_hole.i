@@ -3,11 +3,10 @@
   dim = 2
   nx = 10
   ny = 10
-  uniform_refine = 2
 []
 
 [Variables]
-  [./u]
+  [./T]
     initial_condition = 253.15 # -20
   [../]
 []
@@ -18,27 +17,27 @@
 []
 
 [Kernels]
-  [./diff]
+  [./heat_diffusion]
     type = MatDiffusion
-    variable = u
+    variable = T
     D_name = conductivity
   [../]
-  [./time]
+  [./heat_time]
     type = TimeDerivative
-    variable = u
+    variable = T
   [../]
 []
 
 [BCs]
-  [./top]
+  [./T_hot]
     type = DirichletBC
-    variable = u
+    variable = T
     boundary = top
     value = 268.15 # -5
   [../]
-  [./bottom]
+  [./T_cold]
     type = DirichletBC
-    variable = u
+    variable = T
     boundary = bottom
     value = 253.15 # -20
   [../]
@@ -49,14 +48,14 @@
     type = AirProperties
     block = 0
     property_user_object = property_uo
-    temperature = u
+    temperature = T
   [../]
   [./ice]
     # Change the condutivity of ice to that of the moose simple_transient_diffusion test. Also, the phi variable in PhaseFieldProperties is set to a default value of 1.
     type = IceProperties
     block = 0
     property_user_object = property_uo
-    temperature = u
+    temperature = T
   [../]
   [./constants]
     type = ConstantProperties
@@ -68,7 +67,7 @@
     block = 0
     phi = phi
     property_user_object = property_uo
-    temperature = u
+    temperature = T
   [../]
 []
 
@@ -86,6 +85,26 @@
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
+[]
+
+[Adaptivity]
+  max_h_level = 4
+  initial_steps = 6
+  initial_marker = error_fraction
+  [./Indicators]
+    [./phi_grad_indicator]
+      type = GradientJumpIndicator
+      variable = phi
+    [../]
+  [../]
+  [./Markers]
+    [./error_fraction]
+      type = ErrorFractionMarker
+      coarsen = 0.2
+      indicator = phi_grad_indicator
+      refine = 0.7
+    [../]
+  [../]
 []
 
 [Outputs]
