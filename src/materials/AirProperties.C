@@ -4,46 +4,36 @@ template<>
 InputParameters validParams<AirProperties>()
 {
   InputParameters params = validParams<Material>();
+  params += validParams<ChemicalPotentialInterface>();
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
+  params.addParam<Real>("conductivity_air", 0.02, "Thermal conductivity or air, \kappa_a [ W/(m K)]");
+  params.addParam<Real>("heat_capacity_air", 1.4e3, "Heat capacity of air, C_a [J/(m^3 K)]");
+  params.addParam<Real>("diffusion_coefficient", 2.178e-5, "Diffusion coefficient for air, D_a [m^2/s]");
   return params;
 }
 
 
 AirProperties::AirProperties(const std::string & name, InputParameters parameters) :
     Material(name, parameters),
-    ChemicalPotentialInterface(),
+    ChemicalPotentialInterface(getUserObject("property_user_object")),
     _temperature(coupledValue("temperature")),
-    _density_air(declareProperty<Real>("density_air")),
-    _conductivity_air(declareProperty<Real>("conductivity_air")),
-    _heat_capacity_air(declareProperty<Real>("heat_capacity_air")),
-    _diffusion_coefficient_air(declareProperty<Real>("diffusion_coefficient_air")),
-    _water_vapor_mass_density_saturation(declareProperty<Real>("water_vapor_mass_density_saturation"))
+    _rho_a(declareProperty<Real>("density_air")),
+    _kappa_a(declareProperty<Real>("conductivity_air")),
+    _C_a(declareProperty<Real>("heat_capacity_air")),
+    _D_a(declareProperty<Real>("diffusion_coefficient_air"))
 {
+
+
 }
 
 void
 AirProperties::computeQpProperties()
 {
+  _rho_a[_qp] = _proprty_ptr->iceDensity(_temperature[_qp]);
 
-  MaterialProperty<Real> & R_da = getMaterialProperty<Real>("gas_constant_dry_air");
-  MaterialProperty<Real> & R_v = getMaterialProperty<Real>("gas_constant_water_vapor");
-  MaterialProperty<Real> & P_a = getMaterialProperty<Real>("atmospheric_pressure");
+  _kappa_a[_qp] = getParam<Real>("conductivity_air");
 
-/// @\todo{Make this a function of temperature}
-  _density_air[_qp] = 918.9; // [kg/m^3]
+  _C_a[_qp] = getParam<Real>("heat_capacity_air");
 
-  _conductivity_air[_qp] = 0.02; // [W/(m K)]
-
-  _heat_capacity_air[_qp] = 1.4e3; // [J/(m^3 K)]
-
-  _diffusion_coefficient_air[_qp] = 2.178e-5; //[m^2/s]
-
-  // Eq.(2)
-  Real P_vs = 1;//saturationVaporPressure(_temperature[_qp]);
-
-  // Eq. (1)
-  Real x_s = 1;//(R_da[_qp] / R_v[_qp]) * (P_vs / (P_a[_qp] - P_vs));
-
-  // Eq. (3)
-  _water_vapor_mass_density_saturation[_qp] = P_a[_qp] * x_s;
+  _D_a[_qp] = getParam<Real>("diffusion_coefficient");
 }

@@ -1,7 +1,23 @@
-#include "ChemicalPotentialInterface.h"
 
-ChemicalPotentialInterface::ChemicalPotentialInterface()
+#include "ChemicalPotentialInterface.h"
+#include "ChemicalPotentialPropertyUserObject.h"
+
+
+template<>
+InputParameters validParams<ChemicalPotentialInterface>()
 {
+  InputParameters params = emptyInputParameters();
+  params.addRequiredParam<UserObjectName>("property_user_object");
+  return params;
+}
+
+ChemicalPotentialInterface::ChemicalPotentialInterface(UserObject * property_user_object);
+{
+
+  ChemicalPotentialPropertyUserObject * _property_ptr = dynamic_cast<ChemicalPotentialPropertyUserObject *>(property_user_object);
+  if (_property_ptr == NULL)
+    mooseError("The supplied user object must be of type ChemicalPotentialPropertyUserObject");
+
   _K.push_back(-0.5865e4);
   _K.push_back(0.2224e2);
   _K.push_back(0.1375e-1);
@@ -10,10 +26,42 @@ ChemicalPotentialInterface::ChemicalPotentialInterface()
   _K.push_back(0.6918);
 }
 
-libMesh::Real
-ChemicalPotentialInterface::saturationVaporPressure(libMesh::Real T)
+
+Real
+EquilibrumChemicalPotential::humidityRatio(Real T)
 {
-  return 1;
-//  return std::exp(_K[0]*std::pow(T, -1) + _K[1] + _K[2]*std::pow(T, 1) + _K[3]*std::pow(T, 2) + _K[4]*std::pow(T, 3) + _K[5]*std::log(T));
+
+  Real R_da = _property_ptr->gasConstantDryAir();
+  Real R_da = _property_ptr->gasConstantWaterVapor();
+  Real P_a  = _property_ptr->atmosphericPressure();
+  Real P_vs = saturationPressureOfWaterVaporOverIce(T);
+  return (R_da/R_v) * P_vs / (P_a - P_vs);
+}
+
+Real
+EquilibrumChemicalPotential::saturationPressureOfWaterVaporOverIce(Real T)
+{
+  Real s = 0;
+
+  for (unsigned int j = 0; j < 5; ++j)
+    s += _K[j]*std::pow(T, j-1);
+
+  return std::exp(s + _K[5]*std::log(T) );
+}
+
+Real
+EquilibrumChemicalPotential::equilibribumWaterVaporConcentrationAtSaturation(Real T)
+{
+  return  _property_ptr->airDensity(T) * _property_ptr->humidityRatio(T);
+
+}
+
+Real
+EquilibrumChemicalPotential::equilibriumConcentration(Real T)
+{
+  Real rho_vs_T = equilibribumWaterVaporConcentrationAtSaturation(T);
+  Real rho_vs_T_0 = equilibribumWaterVaporConcentrationAtSaturation(_T_0);
+
+  return (rho_vs_T - rho_vs_T_0) / _property_ptr->iceDensity(T);
 
 }

@@ -26,15 +26,13 @@ private:
 
   VariableValue & _temperature;
 
-  MaterialProperty<Real> & _density_air;
+  MaterialProperty<Real> & _rho_a;
 
-  MaterialProperty<Real> & _conductivity_air;
+  MaterialProperty<Real> & _kappa_a;
 
-  MaterialProperty<Real> & _heat_capacity_air;
+  MaterialProperty<Real> & _C_a;
 
-  MaterialProperty<Real> & _diffusion_coefficient_air;
-
-  MaterialProperty<Real> & _water_vapor_mass_density_saturation;
+  MaterialProperty<Real> & _D_a;
 };
 
 #endif // AIRPROPERTIES_H
