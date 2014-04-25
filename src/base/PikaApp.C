@@ -20,6 +20,7 @@
 #include "CoefficientTimeDerivative.h"
 #include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
+#include "StefanCondition.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -74,6 +75,7 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(CoefficientTimeDerivative);
   registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
+  registerKernel(StefanCondition);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);

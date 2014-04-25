@@ -26,7 +26,7 @@ private:
 
   VariableValue & _temperature;
 
-  VariableValue & _phi;
+  VariableValue & _phase;
 
   const Real _a1;
 
