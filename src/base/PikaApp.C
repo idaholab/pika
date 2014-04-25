@@ -34,7 +34,7 @@ InputParameters validParams<PikaApp>()
 PikaApp::PikaApp(const std::string & name, InputParameters parameters) :
     MooseApp(name, parameters)
 {
-  srand(libMesh::processor_id());
+  srand(processor_id());
 
   Moose::registerObjects(_factory);
   PhaseFieldApp::registerObjects(_factory);
