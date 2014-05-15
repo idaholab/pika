@@ -132,8 +132,6 @@ moose/include/base/Precompiled.h.gch
 .*.swp
 .*.swo
 
-framework/contrib/exodiff/exodiff
-
 # Mac garbage
 .DS_Store
 *.dSYM
@@ -172,4 +170,3 @@ moose/doc/doxygen/html/*
 *.cpr
 *.cpa-*
 *.cpr-*
-

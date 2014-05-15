@@ -20,6 +20,7 @@
 #include "CoefficientTimeDerivative.h"
 #include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
+#include "StefanCondition.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -34,7 +35,7 @@ InputParameters validParams<PikaApp>()
 PikaApp::PikaApp(const std::string & name, InputParameters parameters) :
     MooseApp(name, parameters)
 {
-  srand(libMesh::processor_id());
+  srand(processor_id());
 
   Moose::registerObjects(_factory);
   PhaseFieldApp::registerObjects(_factory);
@@ -74,6 +75,7 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(CoefficientTimeDerivative);
   registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
+  registerKernel(StefanCondition);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);

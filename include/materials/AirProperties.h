@@ -36,7 +36,7 @@ private:
 
   MaterialProperty<Real> & _C_a;
 
-  MaterialProperty<Real> & _D_a;
+  MaterialProperty<Real> & _D_v;
 };
 
 #endif // AIRPROPERTIES_H

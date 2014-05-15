@@ -10,7 +10,7 @@ InputParameters validParams<AirProperties>()
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
   params.addParam<Real>("conductivity_air", 0.02, "Thermal conductivity or air, kappa_a [ W/(m K)]");
   params.addParam<Real>("heat_capacity_air", 1.4e3, "Heat capacity of air, C_a [J/(m^3 K)]");
-  params.addParam<Real>("diffusion_coefficient", 2.178e-5, "Diffusion coefficient for air, D_a [m^2/s]");
+  params.addParam<Real>("diffusion_coefficient", 2.178e-5, "Diffusion coefficient water vapor in air, D_v [m^2/s]");
   return params;
 }
 
@@ -22,7 +22,7 @@ AirProperties::AirProperties(const std::string & name, InputParameters parameter
     _rho_a(declareProperty<Real>("density_air")),
     _kappa_a(declareProperty<Real>("conductivity_air")),
     _C_a(declareProperty<Real>("heat_capacity_air")),
-    _D_a(declareProperty<Real>("diffusion_coefficient_air"))
+    _D_v(declareProperty<Real>("diffusion_coefficient"))
 {
 }
 
@@ -35,5 +35,5 @@ AirProperties::computeQpProperties()
 
   _C_a[_qp] = getParam<Real>("heat_capacity_air");
 
-  _D_a[_qp] = getParam<Real>("diffusion_coefficient");
+  _D_v[_qp] = getParam<Real>("diffusion_coefficient");
 }
