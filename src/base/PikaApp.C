@@ -14,6 +14,7 @@
 #include "PhaseFieldProperties.h"
 #include "IceProperties.h"
 #include "AirProperties.h"
+#include "TensorMobilityMaterial.h"
 
 // Kernels
 #include "MaterialTimeDerivative.h"
@@ -21,6 +22,7 @@
 #include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
 #include "StefanCondition.h"
+#include "TensorDiffusion.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -69,6 +71,7 @@ PikaApp::registerObjects(Factory & factory)
   registerMaterial(PhaseFieldProperties);
   registerMaterial(IceProperties);
   registerMaterial(AirProperties);
+  registerMaterial(TensorMobilityMaterial);
 
   // Kernels
   registerKernel(MaterialTimeDerivative);
@@ -76,6 +79,7 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
   registerKernel(StefanCondition);
+  registerKernel(TensorDiffusion);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
