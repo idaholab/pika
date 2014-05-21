@@ -4,7 +4,7 @@
 #include "MooseApp.h"
 #include "AppFactory.h"
 
-// Create a performance log
+// Create a performance LOG
 PerfLog Moose::perf_log("Pika");
 
 // Begin the main program.
