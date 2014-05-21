@@ -66,6 +66,7 @@ traceout*.txt
 *.vtk
 *.vtu
 .depend
+.ipynb_checkpoints/
 
 # Allow .e files in gold directories (7 levels)
 !/gold/*.e
