@@ -16,18 +16,6 @@
   [./phi]
   [../]
 []
-[Functions]
-  active = 'pore_IC_func'
-  [./pore_IC_func]
-    type=Val2Var
-    phi_new=-1
-    phi_old=1
-    x1 = 0.00214 # 3*L/7
-    x2 = 0.00286 # 4*L/7
-    x3 = 0.00357 # 5*L/7
-    x4 = 0.00429 # 6*L/7
-  [../]
-
 
 [Kernels]
   [./heat_diffusion]
@@ -133,10 +121,14 @@
   
 [ICs]
   [./pores]
-    type = FunctionIC
-    function = pore_IC_func
+    type = KaempferAnalyticPhaseIC
     variable = phi
+    phi_new=-1
+    phi_old=1
+    x1 = 0.00214 # 3*L/7
+    x2 = 0.00286 # 4*L/7
+    x3 = 0.00357 # 5*L/7
+    x4 = 0.00429 # 6*L/7
   [../]
-
 []
 

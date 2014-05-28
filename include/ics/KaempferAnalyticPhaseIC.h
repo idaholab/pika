@@ -11,23 +11,22 @@
 /*                                                              */
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
+#ifndef KAEMPFERANALYTICPHASEIC_H
+#define KAEMPFERANALYTICPHASEIC_H
 
-#ifndef VAL2VAR_H
-#define VAL2VAR_H
+#include "InitialCondition.h"
 
-#include "Function.h"
-
-class Val2Var;
+class KaempferAnalyticPhaseIC;
 
 template<>
-InputParameters validParams<Val2Var>();
+InputParameters validParams<KaempferAnalyticPhaseIC>();
 
-class Val2Var : public Function
+class KaempferAnalyticPhaseIC : public InitialCondition
 {
 public:
-  Val2Var(const std::string & name, InputParameters parameters);
+  KaempferAnalyticPhaseIC(const std::string & name, InputParameters parameters);
 
-  virtual Real value(Real t, const Point & p);
+  virtual Real value(const Point & p);
 
 protected:
   Real _x1, _x2, _x3, _x4;
@@ -35,4 +34,4 @@ protected:
   Real _phi_old;
 };
 
-#endif //VAL2VAR_H
+#endif // KAEMPFERANALYTICPHASEIC_H

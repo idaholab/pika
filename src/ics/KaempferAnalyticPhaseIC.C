@@ -12,23 +12,23 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#include "Val2Var.h"
+#include "KaempferAnalyticPhaseIC.h"
 
 template<>
-InputParameters validParams<Val2Var>()
+InputParameters validParams<KaempferAnalyticPhaseIC>()
 {
-  InputParameters params = validParams<Function>();
+  InputParameters params = validParams<InitialCondition>();
   params.addRequiredParam<Real>("x1", "Input least X over which new phi will be applied");
   params.addRequiredParam<Real>("x2", "Input greatest X  over which new phi will be applied");
   params.addRequiredParam<Real>("x3", "Input least X over 2nd interval which new phi will be applied");
   params.addRequiredParam<Real>("x4", "Input greatest X  over 2nd interval which new phi will be applied");
   params.addParam<Real>("phi_new",0.0, "Set new value of phi to be applied");
-  params.addParam<Real>("phi_old",1.0, "Set new value of phi to be applied");
+  params.addParam<Real>("phi_old",0.0, "Set value of phi everywhere not in an interval");
   return params;
 }
 
-Val2Var::Val2Var(const std::string & name, InputParameters parameters) :
-    Function(name, parameters),
+KaempferAnalyticPhaseIC::KaempferAnalyticPhaseIC(const std::string & name, InputParameters parameters) :
+    InitialCondition(name, parameters),
     _x1(getParam<Real>("x1")),
     _x2(getParam<Real>("x2")),
     _x3(getParam<Real>("x3")),
@@ -38,7 +38,7 @@ Val2Var::Val2Var(const std::string & name, InputParameters parameters) :
 {}
 
 Real
-Val2Var::value(Real /*t*/, const Point & p)
+KaempferAnalyticPhaseIC::value( const Point & p)
 {
   if ( (p(0) >= _x1 && p(0) <= _x2) ||  (p(0) >= _x3 && p(0) <= _x4) ) 
     return _phi_new; 
