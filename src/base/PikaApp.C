@@ -26,6 +26,7 @@
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
+#include "KaempferAnalyticPhaseIC.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -83,6 +84,7 @@ PikaApp::registerObjects(Factory & factory)
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
+  registerInitialCondition(KaempferAnalyticPhaseIC);
 
 }
 
