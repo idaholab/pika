@@ -27,6 +27,9 @@
 // InitialConditions
 #include "ChemicalPotentialIC.h"
 
+//Functions
+#include "Val2Var.h"
+
 template<>
 InputParameters validParams<PikaApp>()
 {
@@ -83,6 +86,9 @@ PikaApp::registerObjects(Factory & factory)
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
+  
+  //Functions
+  registerFunction(Val2Var);
 
 }
 
