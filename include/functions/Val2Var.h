@@ -30,8 +30,7 @@ public:
   virtual Real value(Real t, const Point & p);
 
 protected:
-  Real _x1;
-  Real _x2;
+  Real _x1, _x2, _x3, _x4;
   Real _phi_new;
   Real _phi_old;
 };
