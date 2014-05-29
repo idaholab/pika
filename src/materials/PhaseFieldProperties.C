@@ -39,7 +39,7 @@ PhaseFieldProperties::computeQpProperties()
 {
   Real & gamma = getMaterialProperty<Real>("interface_free_energy")[_qp];
   Real & a = getMaterialProperty<Real>("mean_molecular_spacing")[_qp];
-  Real & k = getMaterialProperty<Real>("mean_molecular_spacing")[_qp];
+  Real & k = getMaterialProperty<Real>("boltzmann")[_qp];
   Real & alpha = getMaterialProperty<Real>("condensation_coefficient")[_qp];
   Real & m = getMaterialProperty<Real>("mass_water_molecule")[_qp];
   Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
