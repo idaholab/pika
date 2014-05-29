@@ -22,7 +22,7 @@ InputParameters validParams<ConstantProperties>()
 //  map["atmospheric_pressure"] = std::pair<Real, std::string>(1.01325e-5, "Atmospheric pressure [Pa]");
 //  map["gas_constant_dry_air"] = std::pair<Real, std::string>(286.9, "Gas constant for dry air [J/(Kg K)]");
 //  map["gas_constant_water_vapor"] = std::pair<Real, std::string>(461.5, "Gas constant for water vapor [J/(Kg K)]");
-  map["latent_heat"] = std::pair<Real, std::string>(2.6e-9, "Latent heat of sublimation [J/m^3]");
+  map["latent_heat"] = std::pair<Real, std::string>(2.6e9, "Latent heat of sublimation [J/m^3]");
 
   std::vector<std::string> names;
   std::vector<Real> values;
