@@ -30,8 +30,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _heat_capacity(declareProperty<Real>("heat_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
     _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
-    _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration")),
-    _sublimation_diffusion_coefficient(declareProperty<Real>("sublimation_diffusion_coefficient"))
+    _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration"))
 {
 }
 

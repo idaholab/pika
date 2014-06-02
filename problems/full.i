@@ -21,12 +21,21 @@
     D_name = conductivity
   [../]
   [./heat_time]
-    type = TimeDerivative
+    type = CoefficientTimeDerivative
     variable = T
+    property = heat_capacity
+    scale = -1
+  [../]
+  [./heat_phi_time]
+    type = CoefficientTimeDerivative
+    variable = phi
+    property = latent_heat
+    scale = 0.5
   [../]
   [./vapor_time]
-    type = TimeDerivative
+    type = CoefficientTimeDerivative
     variable = u
+    coefficient = -1
   [../]
   [./vapor_diffusion]
     type = MatDiffusion
@@ -36,18 +45,18 @@
   [./vapor_phi_time]
     type = CoefficientTimeDerivative
     variable = phi
-    coefficient = 0.5
+    coefficient = -0.5
   [../]
   [./phi_time]
-    type = MaterialTimeDerivative
+    type = CoefficientTimeDerivative
     variable = phi
-    property = latent_heat
+    coefficient = 0.001
   [../]
   [./phi_interface]
     type = ACInterface
     variable = phi
     mob_name = mobility
-    kappa_name = conductivity
+    kappa_name = interface_thickness_squared
   [../]
   [./phi_potential]
     type = PhaseFieldPotential
