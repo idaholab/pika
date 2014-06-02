@@ -30,7 +30,8 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _heat_capacity(declareProperty<Real>("heat_capacity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
     _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
-    _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration"))
+    _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration")),
+    _sublimation_diffusion_coefficient(declareProperty<Real>("sublimation_diffusion_coefficient"))
 {
 }
 
@@ -43,6 +44,7 @@ PhaseFieldProperties::computeQpProperties()
   Real & alpha = getMaterialProperty<Real>("condensation_coefficient")[_qp];
   Real & m = getMaterialProperty<Real>("mass_water_molecule")[_qp];
   Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
+  Real & L_sg = getMaterialProperty<Real>("latent_heat")[_qp];
 
 
   Real rho_vs = equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
@@ -78,4 +80,6 @@ PhaseFieldProperties::computeQpProperties()
   _interface_thickness_squared[_qp] = w*w;
 
   _equilibrium_concentration[_qp] = equilibriumConcentration(_temperature[_qp]);
+
+ //_rho_v[_qp] = _rho_vs * (1 + beta[_qp]*
 }
