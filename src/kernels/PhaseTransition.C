@@ -27,7 +27,6 @@ PhaseTransition::computeDFDOP(PFFunctionType type)
   {
   case Residual:
     return  _lambda[_qp] * (_s[_qp] - _s_eq[_qp]) * (1 - _u[_qp]*_u[_qp])*(1 - _u[_qp]*_u[_qp]);
-
   case Jacobian:
     return 4 * _lambda[_qp] * (_s[_qp] - _s_eq[_qp]) * (1 - _u[_qp]) * _u[_qp];
   }
