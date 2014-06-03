@@ -1,0 +1,9 @@
+[Tests]
+  [./specific_humidity_ratio]
+    # Gold for this test comes from moose/test/tests/kernels/simple_transient_diffusion, but this test utilizes the PIKA materials
+    type = 'Exodiff'
+    input = 'specific_humidity_ratio.i'
+    exodiff = 'specific_humidity_ratio_out.e'
+  [../]
+
+[]
