@@ -69,6 +69,7 @@ traceout*.txt
 .depend
 .ipynb_checkpoints/
 doc/doxygen/html/
+*.#*
 
 # Allow .e files in gold directories (7 levels)
 !/gold/*.e
