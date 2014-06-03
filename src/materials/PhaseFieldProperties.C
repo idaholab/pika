@@ -31,7 +31,8 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
     _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
     _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration")),
-    _sublimation_diffusion_coefficient(declareProperty<Real>("sublimation_diffusion_coefficient"))
+    _saturation_pressure_of_water_vapor_over_ice(declareProperty<Real>("saturation_pressure_of_water_vapor_over_ice")),
+    _specific_humidity_ratio(declareProperty<Real>("specific_humidity_ratio"))
 {
 }
 
@@ -81,5 +82,9 @@ PhaseFieldProperties::computeQpProperties()
 
   _equilibrium_concentration[_qp] = equilibriumConcentration(_temperature[_qp]);
 
- //_rho_v[_qp] = _rho_vs * (1 + beta[_qp]*
+  // x_s, Eq. (1)
+  _specific_humidity_ratio[_qp] = specificHumidityRatio(_temperature[_qp]);
+
+  // _rho_{vs}, Eq. (3)
+  _saturation_pressure_of_water_vapor_over_ice[_qp] = saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
 }

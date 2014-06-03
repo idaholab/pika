@@ -22,17 +22,17 @@ CoefficientTimeDerivative::CoefficientTimeDerivative(const std::string & name, I
 
 {
    if (_has_material)
-     _material_coefficient = &getMaterialProperty<Real>(getParam<std::string>("property"));
+   {
+      mooseWarning(" Material property is being used and ignoring any coefficient inputs.");
+      _material_coefficient = &getMaterialProperty<Real>(getParam<std::string>("property"));
+   }
 }
 
 Real
 CoefficientTimeDerivative::computeQpResidual()
 {
     if (_has_material)
-   {
-     mooseWarning(" Material property is being used and ignoring any coefficient inputs.");
      return (_scale * ((*_material_coefficient)[_qp]) + _offset) * TimeDerivative::computeQpResidual();
-   }
 
     else
       return (_scale *_coefficient+_offset) * TimeDerivative::computeQpResidual();

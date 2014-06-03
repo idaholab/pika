@@ -25,31 +25,26 @@ ChemicalPotentialInterface::ChemicalPotentialInterface(const ChemicalPotentialPr
 
 
 Real
-ChemicalPotentialInterface::humidityRatio(Real T)
+ChemicalPotentialInterface::specificHumidityRatio(Real T)
 {
-
-  Real R_da = _property_uo.gasConstantDryAir();
-  Real R_v  = _property_uo.gasConstantWaterVapor();
-  Real P_a  = _property_uo.atmosphericPressure();
-  Real P_vs = saturationPressureOfWaterVaporOverIce(T);
-  return (R_da/R_v) * P_vs / (P_a - P_vs);
+  Real R_da = _property_uo.gasConstantDryAir();         // Table 1
+  Real R_v  = _property_uo.gasConstantWaterVapor();     // Table 1
+  Real P_a  = _property_uo.atmosphericPressure();       // Table 1
+  Real P_vs = saturationPressureOfWaterVaporOverIce(T); // Eq. (2)
+  return (R_da/R_v) * P_vs / (P_a - P_vs);              // x_s, Eq. (1)
 }
 
 Real
 ChemicalPotentialInterface::saturationPressureOfWaterVaporOverIce(Real T)
 {
-  Real s = 0;
-
-  for (int j = 0; j < 5; ++j)
-    s += _K[j]*std::pow(T, j-1);
-
-  return std::exp(s + _K[5]*std::log(T) );
+  return std::exp(_K[0]*std::pow(T,-1) + _K[1]*std::pow(T,0) + _K[2]*std::pow(T,1) +
+                  _K[3]*std::pow(T,2) + _K[4]*std::pow(T,3)) + std::pow(T, _K[5]);
 }
 
 Real
 ChemicalPotentialInterface::equilibriumWaterVaporConcentrationAtSaturation(Real T)
 {
-  return  _property_uo.airDensity(T) * humidityRatio(T);
+  return  _property_uo.airDensity(T) * specificHumidityRatio(T);
 
 }
 
