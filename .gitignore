@@ -44,7 +44,6 @@ traceout*.txt
 *.msmp
 *.msmp-*
 *.muds
-# Latex garbage
 *.lot
 *.lof
 *.poly
@@ -66,6 +65,7 @@ traceout*.txt
 *.vtk
 *.vtu
 *.bak
+*.png
 .depend
 .ipynb_checkpoints/
 doc/doxygen/html/
