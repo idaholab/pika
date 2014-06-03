@@ -50,6 +50,9 @@ private:
 
   MaterialProperty<Real> & _equilibrium_concentration;
 
+  MaterialProperty<Real> & _saturation_pressure_of_water_vapor_over_ice;
+
+  MaterialProperty<Real> & _specific_humidity_ratio;
 };
 
 #endif // PHASEFIELDPROPERTIES_H

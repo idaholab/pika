@@ -26,7 +26,11 @@ public:
 
 protected:
 
-  Real humidityRatio(Real T);
+  /**
+   * Computes the specific humidity ratio (x_s; [kg/kg]; Eq. (1))
+   * @param T Temperature at which to compute the ratio
+   */
+  Real specificHumidityRatio(Real T);
 
   Real saturationPressureOfWaterVaporOverIce(Real T);
 
@@ -38,6 +42,7 @@ protected:
 
 private:
 
+  /// Fitting coefficients for saturation vapor pressure, Table 1
   std::vector<libMesh::Real> _K;
 
 
