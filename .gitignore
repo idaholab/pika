@@ -44,7 +44,6 @@ traceout*.txt
 *.msmp
 *.msmp-*
 *.muds
-# Latex garbage
 *.lot
 *.lof
 *.poly
@@ -65,6 +64,7 @@ traceout*.txt
 *.out
 *.vtk
 *.vtu
+*.png
 .depend
 .ipynb_checkpoints/
 *.#*
