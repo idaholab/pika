@@ -38,7 +38,7 @@
     variable = phi
     coefficient = 0.5
   [../]
-  [./heat_phi_time]
+  [./phi_time]
     type = MaterialTimeDerivative
     variable = phi
     property = latent_heat
@@ -58,12 +58,6 @@
     type = PhaseTransition
     variable = phi
     mob_name = mobility
-    chemical_potential = u
-  [../]
-  [./stefan]
-    type = StefanCondition
-    variable = T
-    phi = phi
     chemical_potential = u
   [../]
 []

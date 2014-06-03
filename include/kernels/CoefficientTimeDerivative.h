@@ -1,5 +1,5 @@
-#ifndef COEFFICIENTTIMEDERIVATIVE
-#define COEFFICIENTTIMEDERIVATIVE
+#ifndef COEFFICIENTTIMEDERIVATIVE_H
+#define COEFFICIENTTIMEDERIVATIVE_H
 
 #include "TimeDerivative.h"
 #include "Material.h"
@@ -22,6 +22,10 @@ protected:
   virtual Real computeQpJacobian();
 
 private:
+  const bool _has_material;
   const Real _coefficient;
+  MaterialProperty<Real> * _material_coefficient;
+  Real _scale;
+  Real _offset;
 };
-#endif //COEFFICIENTTIMEDERIVATIVE
+#endif //COEFFICIENTTIMEDERIVATIVE_H
