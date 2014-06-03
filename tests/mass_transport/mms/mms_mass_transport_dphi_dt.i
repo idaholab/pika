@@ -3,6 +3,7 @@
   dim = 2
   nx = 10
   ny = 10
+  uniform_refine = 1
   elem_type = QUAD8
 []
 
@@ -55,7 +56,6 @@
 []
 
 [AuxKernels]
-  active = 'error_aux phi_kernel'
   [./phi_kernel]
     type = FunctionAux
     variable = phi
@@ -127,7 +127,16 @@
 [Outputs]
   output_initial = true
   exodus = true
-  console = true
+  exodus = true
+  [./console]
+    type = Console
+    linear_residuals = true
+  [../]
+  [./oversample]
+    refinements = 2
+    oversample = true
+    type = Exodus
+  [../]
 []
 
 [ICs]

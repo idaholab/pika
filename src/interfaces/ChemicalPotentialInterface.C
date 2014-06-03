@@ -7,20 +7,26 @@
 template<>
 InputParameters validParams<ChemicalPotentialInterface>()
 {
+  // Define parameters
   InputParameters params = emptyInputParameters();
   params.addRequiredParam<UserObjectName>("property_user_object", "User object containing material property methods related to chemical potential calculations");
+
+  // Description
+  params.addClassDescription("An interface class for computing material properties that are need in an InitialCondition and Kernel. Any object in PIKA requiring these material should inherit from this interface.");
+
   return params;
 }
 
 ChemicalPotentialInterface::ChemicalPotentialInterface(const ChemicalPotentialPropertyUserObject & uo) :
     _property_uo(uo)
 {
-  _K.push_back(-0.5865e4);
-  _K.push_back(0.2224e2);
-  _K.push_back(0.1375e-1);
-  _K.push_back(-0.3403e-4);
-  _K.push_back(0.2697e-7);
-  _K.push_back(0.6918);
+  // Define K coefficients (Wexler, 1977, Table 2)
+  _K.push_back(-0.58653696e4);
+  _K.push_back(0.2224103300e2);
+  _K.push_back(0.13749042e-1);
+  _K.push_back(-0.34031775e-4);
+  _K.push_back(0.26967687e-7);
+  _K.push_back(0.6918651);
 }
 
 
@@ -37,15 +43,19 @@ ChemicalPotentialInterface::specificHumidityRatio(Real T)
 Real
 ChemicalPotentialInterface::saturationPressureOfWaterVaporOverIce(Real T)
 {
-  return std::exp(_K[0]*std::pow(T,-1.0) + _K[1]*std::pow(T,0.0) + _K[2]*std::pow(T,1.0) +
-                  _K[3]*std::pow(T,2.0) + _K[4]*std::pow(T,3.0)) + std::pow(T, _K[5]);
+  // Eq. (2)
+  return std::exp(_K[0]*std::pow(T,-1.)
+                  + _K[1]*std::pow(T,0.)
+                  + _K[2]*std::pow(T,1.)
+                  + _K[3]*std::pow(T,2.)
+                  + _K[4]*std::pow(T,3.)
+                  + _K[5]*log(T));
 }
 
 Real
 ChemicalPotentialInterface::equilibriumWaterVaporConcentrationAtSaturation(Real T)
 {
   return  _property_uo.airDensity(T) * specificHumidityRatio(T);
-
 }
 
 Real

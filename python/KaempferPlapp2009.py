@@ -1,59 +1,49 @@
-'''***************************************
-   * Calculator for Phase Field Modeling *
-   * of Dry Snow Metamorphosis           *
-   * (Kaempfer 2009)                     *
-   *                                     *
-   * Compile:                            *
-   * python KaempferPlapp2009.py         *
-   *                                     *
-   ***************************************'''
+#!/usr/bin/python
 '''
-*******************************************
-             NOMENCLATURE
+***************************************
+* Calculator for Phase Field Modeling *
+* of Dry Snow Metamorphosis           *
+* (Kaempfer 2009)                     *
+*                                     *
+* Execute:                            *
+* ./KaempferPlapp2009.py              *
+*                                     *
+***************************************
 
-R_da = gas constant for dry air
-R_v = gas constant for water vapor
+NOMENCLATURE:
 
-P_a = atmospheric pressure
-P_vs = saturated vapor pressure over ice
+R_da = gas constant for dry air [J/(kg K)]
+R_v = gas constant for water vapor [J/(kg K)]
+
+P_a = atmospheric pressure [Pa]
+P_vs = saturated vapor pressure over ice [Pa]
 
 K_fit = fitting coefficients
-T = Temperature
-X_s = humidity ratio
-*******************************************
+T = Temperature [K]
+X_s = humidity ratio [kg/kg]
+
 '''
 
-#!/usr/bin/python
-                                 
+# Load SymPy and enable latex printing
 from sympy import *
 init_printing()
 
+# Define symbolic variables
 T = symbols('T')
 
+# Define constants
 R_da = 286.9
 R_v = 461.5
 P_a = 1.01325e5
-K_fit = [-0.5865e4, 0.2224e2, 0.1375e-1, -0.3403e-4, 0.2697e-7, 0.6918]
-rho_a= 1.341 #[kg*m^-3]
-#EQN 2 
-P_vs = exp(K_fit[0]*T**(-1) + K_fit[1]*T**0 + K_fit[2]*T**1 + K_fit[3]*T**2 + K_fit[4]*T**3+ K_fit[5]*ln(T))
+K_fit = [-0.58653696e4, 0.2224103300e2, 0.13749042e-1, -0.34031775e-4, 0.26967687e-7, 0.6918651]
 
+# Eq. (2)
+P_vs = exp(K_fit[0]*T**(-1) + K_fit[1]*T**0 + K_fit[2]*T**1 + K_fit[3]*T**2 + K_fit[4]*T**3 + K_fit[5]*log(T))
+
+# THIS IS GIVING THE WRONG NUMBER!
 # Eq. (1)
-x_s = R_da / R_v * P_vs / (P_a - P_vs)
+x_s = (R_da / R_v) * P_vs / (P_a - P_vs)
 
-print "P_vs = ", P_vs.evalf(subs={T: 262.15})
-print "x_s = ", x_s.evalf(subs={T: 262.15})
-
-
-T_in = [263.21732158353, 263.3856925173, 263.63825334886]
-
-fid = open('test.csv', 'w')
-fid.write('time,P_vs,T,x_s\n')
-
-t = 0
-dt = 0.1
-for u  in T_in:
-  s = [str(t), str(P_vs.evalf(subs={T: u})), str(u), str(x_s.evalf(subs={T: u}))]
-  fid.write(','.join(s)+'\n')
-  t = t + dt
-fid.close()
+print "T = 263.15"
+print "P_vs = ", P_vs.evalf(subs={T: 263.15})
+print "x_s = ", x_s.evalf(subs={T: 263.15})
