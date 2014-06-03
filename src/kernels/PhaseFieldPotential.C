@@ -21,6 +21,6 @@ PhaseFieldPotential::computeDFDOP(PFFunctionType type)
     return -_u[_qp]*_u[_qp]*_u[_qp] + _u[_qp] ;
 
   case Jacobian:
-    return _phi[_j][_qp]*(-3*_u[_qp]*_u[_qp] +1. );
+    return _phi[_j][_qp]*(-3*_u[_qp]*_u[_qp] + 1. );
   }
 }
