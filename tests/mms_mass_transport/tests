@@ -1,0 +1,7 @@
+[Tests]
+  [./test]
+    type = 'Exodiff'
+    input = 'mms_mass_transport.i'
+    exodiff = 'mms_mass_transport_out.e'
+  [../]
+[]
