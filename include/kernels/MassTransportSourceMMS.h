@@ -43,6 +43,7 @@ protected:
 
 private:
   const MaterialProperty<Real> & _diffusion_coefficient;
+  const VariableValue & _phi;
 
 };
 
