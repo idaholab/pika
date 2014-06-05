@@ -13,12 +13,16 @@
 [AuxVariables]
   [./phi]
   [../]
+  [./error]
+  [../]
+  [./u_exact]
+  [../]
 []
 
 [Functions]
   [./phi_func]
     type = ParsedFunction
-    value = t*sin(pi*x)*sin(pi*y)
+    value = t*sin(pi*x)*cos(pi*y)
   [../]
   [./u_func]
     type = ParsedFunction
@@ -26,7 +30,7 @@
   [../]
   [./dphi_dt_func]
     type = ParsedFunction
-    value = sin(pi*x)*sin(pi*y)
+    value = 1/2*sin(pi*x)*cos(pi*y)
   [../]
 []
 
@@ -44,6 +48,12 @@
   [./mms]
     type = MassTransportSourceMMS
     variable = u
+    phi = phi
+  [../]
+  [./phi_time]
+    type = UserForcingFunction
+    variable = u
+    function = dphi_dt_func
   [../]
 []
 
@@ -53,14 +63,27 @@
     variable = phi
     function = phi_func
   [../]
-  [./dphi_dt]
+  [./error_aux]
+    type = ErrorFunctionAux
+    variable = error
+    function = u_func
+    error_type = percent
+    solution_variable = u
+  [../]
+  [./u_exact]
     type = FunctionAux
-    variable = phi
-    function = dphi_dt_func
+    variable = u_exact
+    function = u_func
+  [../]
+  [./D]
+    type = MaterialRealAux
+    variable = D
+    property = diffusion_coefficient
   [../]
 []
 
 [BCs]
+  active = 'all'
   [./left]
     type = FunctionDirichletBC
     variable = u
@@ -71,6 +94,12 @@
     type = FunctionDirichletBC
     variable = u
     boundary = right
+    function = u_func
+  [../]
+  [./all]
+    type = FunctionDirichletBC
+    variable = u
+    boundary = 'bottom left right top'
     function = u_func
   [../]
 []
@@ -98,6 +127,19 @@
   [../]
 []
 
+[Postprocessors]
+  [./u_mid]
+    type = PointValue
+    variable = u
+    point = '0.5 0.5 0'
+  [../]
+  [./L2_errror]
+    type = ElementL2Error
+    variable = u
+    function = u_func
+  [../]
+[]
+
 [UserObjects]
   [./potential_uo]
     type = ChemicalPotentialPropertyUserObject
@@ -110,6 +152,9 @@
   dt = 0.1
 []
 
+[Adaptivity]
+[]
+
 [Outputs]
   output_initial = true
   exodus = true
@@ -120,6 +165,11 @@
   [./u_ic]
     function = u_func
     variable = u
+    type = FunctionIC
+  [../]
+  [./phi_ic]
+    function = phi_func
+    variable = phi
     type = FunctionIC
   [../]
 []

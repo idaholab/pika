@@ -23,6 +23,9 @@
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
 
+// AuxKernels
+#include "ErrorFunctionAux.h"
+
 // InitialConditions
 #include "ChemicalPotentialIC.h"
 #include "KaempferAnalyticPhaseIC.h"
@@ -84,6 +87,8 @@ PikaApp::registerObjects(Factory & factory)
   registerInitialCondition(ChemicalPotentialIC);
   registerInitialCondition(KaempferAnalyticPhaseIC);
 
+  // AuxKernels
+  registerAux(ErrorFunctionAux);
 }
 
 void
