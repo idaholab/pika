@@ -4,14 +4,14 @@ template<>
 InputParameters validParams<MassTransportSourceMMS>()
 {
   InputParameters params = validParams<Kernel>();
-  params.addParam<std::string>("diffusion_coefficient_name", "diffusion_coefficient",  "The name of the material property that contains the water vapor diffusion coefficient (D_v)");
+  params.addParam<std::string>("water_vapor_diffusion_coefficient_name", "water_vapor_diffusion_coefficient",  "The name of the material property that contains the water vapor diffusion coefficient (D_v)");
   params.addRequiredCoupledVar("phi", "Phase-field variable, phi");
   return params;
 }
 
 MassTransportSourceMMS::MassTransportSourceMMS(const std::string & name, InputParameters parameters) :
     Kernel(name, parameters),
-    _diffusion_coefficient(getMaterialProperty<Real>(getParam<std::string>("diffusion_coefficient_name"))),
+    _D_v(getMaterialProperty<Real>(getParam<std::string>("water_vapor_diffusion_coefficient_name"))),
     _phi(coupledValue("phi"))
 {
 }
@@ -24,16 +24,12 @@ MassTransportSourceMMS::computeQpResidual()
   Real t = _t;
   Real x = _q_point[_qp](0);
   Real y = _q_point[_qp](1);
-  Real K = _diffusion_coefficient[_qp];
+  Real D_v = _D_v[_qp];
   Real Pi = libMesh::pi;
   Real phi = _phi[_qp];
 
-  // Real f = (1/2)*sin(pi*x) * (4*D*exp(phi)*pi*pi*sin(pi*y) + cos(pi*y));
-
-
-
-  Real f = 3*K*y*pow(sin(Pi*phi),2)*sin(Pi*x)*Pi*Pi*exp(y*sin(Pi*phi)*cos(Pi*x))*cos(Pi*x)-K*y*y*pow(sin(Pi*phi),3)*pow(sin(Pi*x),3)*Pi*Pi*exp(y*sin(Pi*phi)*cos(Pi*x))+K*exp(y*sin(Pi*phi)*cos(Pi*x))*sin(Pi*phi)*sin(Pi*x)*Pi*pi-K*pow(sin(Pi*phi),3)*pow(cos(Pi*x),2)*exp(y*sin(Pi*phi)*cos(Pi*x))*sin(Pi*x)+(1/2)*sin(Pi*x)*cos(Pi*y);
-
-
-    return -_test[_i][_qp] * f;
+  Real f = sin(2*Pi*x)*cos(2*Pi*y)
+    + D_v*t*t*cos(2*Pi*x)*Pi*cos(2*Pi*y)
+    + 8*D_v*(1/2-(1/2)*t*x)*t*sin(2*Pi*x)*Pi*Pi*cos(2*Pi*y);
+  return -_test[_i][_qp] * f;
 }

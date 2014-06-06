@@ -42,7 +42,7 @@ protected:
   virtual Real computeQpResidual();
 
 private:
-  const MaterialProperty<Real> & _diffusion_coefficient;
+  const MaterialProperty<Real> & _D_v;
   const VariableValue & _phi;
 
 };
