@@ -1,5 +1,6 @@
 [Tests]
   [./test]
+    # MMS test for du/dt - Div(D grad(u) = 0
     type = 'Exodiff'
     input = 'mms_mass_transport.i'
     exodiff = 'mms_mass_transport_out.e'

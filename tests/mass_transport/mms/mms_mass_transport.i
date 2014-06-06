@@ -1,32 +1,35 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 20
-  ny = 20
+  nx = 10
+  ny = 10
+  elem_type = QUAD8
 []
 
 [Variables]
   [./u]
+    order = SECOND
   [../]
 []
 
 [AuxVariables]
   [./phi]
   [../]
-  [./error]
-  [../]
   [./u_exact]
+  [../]
+  [./abs_error]
   [../]
 []
 
 [Functions]
+  active = 'u_func phi_func'
   [./phi_func]
     type = ParsedFunction
-    value = t*sin(pi*x)*cos(pi*y)
+    value = t*x*y
   [../]
   [./u_func]
     type = ParsedFunction
-    value = exp(t)*sin(pi*x)*sin(pi*y)
+    value = t*sin(2*pi*x)*cos(2*pi*y)
   [../]
   [./dphi_dt_func]
     type = ParsedFunction
@@ -35,6 +38,7 @@
 []
 
 [Kernels]
+  active = 'u_diff u_time mms'
   [./u_time]
     type = TimeDerivative
     variable = u
@@ -65,9 +69,8 @@
   [../]
   [./error_aux]
     type = ErrorFunctionAux
-    variable = error
+    variable = abs_error
     function = u_func
-    error_type = percent
     solution_variable = u
   [../]
   [./u_exact]
@@ -75,27 +78,9 @@
     variable = u_exact
     function = u_func
   [../]
-  [./D]
-    type = MaterialRealAux
-    variable = D
-    property = diffusion_coefficient
-  [../]
 []
 
 [BCs]
-  active = 'all'
-  [./left]
-    type = FunctionDirichletBC
-    variable = u
-    boundary = left
-    function = u_func
-  [../]
-  [./right]
-    type = FunctionDirichletBC
-    variable = u
-    boundary = right
-    function = u_func
-  [../]
   [./all]
     type = FunctionDirichletBC
     variable = u
@@ -128,15 +113,20 @@
 []
 
 [Postprocessors]
-  [./u_mid]
-    type = PointValue
-    variable = u
-    point = '0.5 0.5 0'
-  [../]
   [./L2_errror]
     type = ElementL2Error
     variable = u
     function = u_func
+  [../]
+  [./u_fem]
+    type = PointValue
+    variable = u
+    point = '0.25 0.5 0'
+  [../]
+  [./u_exact]
+    type = PointValue
+    variable = u_exact
+    point = '0.25 0.5 0'
   [../]
 []
 
@@ -156,9 +146,15 @@
 []
 
 [Outputs]
+  active = ''
   output_initial = true
   exodus = true
   console = true
+  [./oversample]
+    refinements = 2
+    oversample = true
+    type = Exodus
+  [../]
 []
 
 [ICs]
