@@ -15,14 +15,11 @@
 [AuxVariables]
   [./phi]
   [../]
-  [./u_exact]
-  [../]
   [./abs_error]
   [../]
 []
 
 [Functions]
-  active = 'u_func phi_func'
   [./phi_func]
     type = ParsedFunction
     value = t*x*y
@@ -30,10 +27,6 @@
   [./u_func]
     type = ParsedFunction
     value = t*sin(2*pi*x)*cos(2*pi*y)
-  [../]
-  [./dphi_dt_func]
-    type = ParsedFunction
-    value = 1/2*sin(pi*x)*cos(pi*y)
   [../]
 []
 
@@ -53,6 +46,7 @@
     type = MassTransportSourceMMS
     variable = u
     phi = phi
+    use_dphi_dt = false
   [../]
   [./phi_time]
     type = UserForcingFunction
@@ -62,6 +56,7 @@
 []
 
 [AuxKernels]
+  active = 'error_aux phi_kernel'
   [./phi_kernel]
     type = FunctionAux
     variable = phi
@@ -117,16 +112,6 @@
     type = ElementL2Error
     variable = u
     function = u_func
-  [../]
-  [./u_fem]
-    type = PointValue
-    variable = u
-    point = '0.25 0.5 0'
-  [../]
-  [./u_exact]
-    type = PointValue
-    variable = u_exact
-    point = '0.25 0.5 0'
   [../]
 []
 

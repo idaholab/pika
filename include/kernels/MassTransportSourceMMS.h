@@ -25,7 +25,8 @@ template<>
 InputParameters validParams<MassTransportSourceMMS>();
 
 /**
- *
+ * A kernel for adding forcing function for the MMS tests of the mass
+ * transport equation, Eq. (35)
  */
 class MassTransportSourceMMS : public Kernel
 {
@@ -44,6 +45,7 @@ protected:
 private:
   const MaterialProperty<Real> & _D_v;
   const VariableValue & _phi;
+  bool _use_dphi_dt;
 
 };
 
