@@ -8,7 +8,7 @@ InputParameters validParams<PhaseFieldProperties>()
 {
   InputParameters params = validParams<Material>();
   params += validParams<ChemicalPotentialInterface>();
-  params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
+  params.addCoupledVar("temperature", 273.15, "The temperature variable to couple (default: 273.15)");
   params.addCoupledVar("phi", 1, "The phase-field variable to couple");
 
   return params;
@@ -56,7 +56,7 @@ PhaseFieldProperties::computeQpProperties()
   MaterialProperty<Real> & ci = getMaterialProperty<Real>("heat_capacity_ice");
   MaterialProperty<Real> & ca = getMaterialProperty<Real>("heat_capacity_air");
 
-  MaterialProperty<Real> & dv = getMaterialProperty<Real>("diffusion_coefficient");
+  MaterialProperty<Real> & dv = getMaterialProperty<Real>("water_vapor_diffusion_coefficient");
 
   MaterialProperty<Real> & rho_i = getMaterialProperty<Real>("density_ice");
 

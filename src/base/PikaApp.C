@@ -21,6 +21,10 @@
 #include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
 #include "TensorDiffusion.h"
+#include "MassTransportSourceMMS.h"
+
+// AuxKernels
+#include "ErrorFunctionAux.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -77,11 +81,14 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
   registerKernel(TensorDiffusion);
+  registerKernel(MassTransportSourceMMS);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
   registerInitialCondition(KaempferAnalyticPhaseIC);
 
+  // AuxKernels
+  registerAux(ErrorFunctionAux);
 }
 
 void
