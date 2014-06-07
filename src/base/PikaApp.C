@@ -22,6 +22,8 @@
 #include "PhaseTransition.h"
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
+#include "HeatEquationSourceMMS.h"
+#include "MaterialUserForcingFunction.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -82,6 +84,8 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(PhaseTransition);
   registerKernel(TensorDiffusion);
   registerKernel(MassTransportSourceMMS);
+  registerKernel(HeatEquationSourceMMS);
+  registerKernel(MaterialUserForcingFunction);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
