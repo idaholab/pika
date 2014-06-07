@@ -36,7 +36,7 @@ MassTransportSourceMMS::computeQpResidual()
     - D_v*t*t*sin(2*Pi*x)*sin(2*Pi*y)*Pi;
 
   if (_use_dphi_dt)
-    f += 1/2*x*y;
+    f += 0.5*x*y;
 
   return -_test[_i][_qp] * f;
 }
