@@ -86,7 +86,16 @@ print '\n'
 print '  F = \n'
 pprint(hx)
 print '\n'
+hx.evalf( subs={x:1, y:1})
+rawEval=(hx.evalf( subs={x:0.75, y:0.75 , t:1 ,ki:2.29, ka:0.02, L_sg:2.60e9, ci:1.8e6, ca:1.4e3}))
+xy3=x*y*x*y*x*y
+inputEq=8.0*pi*pi*t*(0.5*ka*(t*(xy3) + 1.0) + 0.5*ki*(-t*(xy3) + 1.0))*sin(2.0*pi*x)*sin(2.0*pi*y)-2.0*pi*t*((1.5*ka*t*(xy3))/x - (1.5*ki*t*(xy3))/x)*sin(2.0*pi*y)*cos(2.0*pi*x)-2.0*pi*t*((1.5*ka*t*(xy3))/y - (1.5*ki*t*(xy3))/y)*sin(2.0*pi*x)*cos(2.0*pi*y)+(0.5*ca*(t*(xy3) + 1.0) + 0.5*ci*(-t*(xy3) + 1.0))*sin(2.0*pi*x)*sin(2.0*pi*y)
+evalInput=(inputEq.evalf( subs={x:0.75, y:0.75 , t:1 ,ki:2.29, ka:0.02, L_sg:2.60e9, ci:1.8e6, ca:1.4e3}))
 
+print(rawEval)
+print(evalInput)
+differ= rawEval-evalInput
+print(differ) 
 '''
 X=linspace(0,x_dim,nx)
 Y=linspace(0,y_dim,nx)
@@ -100,3 +109,4 @@ for u  in X:
     fid.write(','.join(s)+'\n')
 fid.close()
 '''
+

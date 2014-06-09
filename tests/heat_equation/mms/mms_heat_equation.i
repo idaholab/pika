@@ -26,15 +26,17 @@
   [../]
   [./T_func]
     type = ParsedFunction
-    value = t*sin(2*pi*x)*sin(2*pi*y)
+    value = t*sin(2.0*pi*x)*sin(2.0*pi*y)
   [../]
 []
 
 [Kernels]
-  active = 'T_diff T_time mms'
+  active = 'T_diff mms T_time'
   [./T_time]
-    type = TimeDerivative
+    type = CoefficientTimeDerivative
     variable = T
+    property = heat_capacity
+    block = 0
   [../]
   [./T_diff]
     type = MatDiffusion
