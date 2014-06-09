@@ -3,12 +3,11 @@
   dim = 2
   nx = 10
   ny = 10
-  elem_type = QUAD8
+  elem_type = QUAD4
 []
 
 [Variables]
-  [./u]
-    order = SECOND
+  [./T]
   [../]
 []
 
@@ -24,33 +23,40 @@
     type = ParsedFunction
     value = -t*(x*y)*(x*y)*(x*y)
   [../]
-  [./u_func]
+  [./T_func]
     type = ParsedFunction
-    value = t*sin(2*pi*x)*sin(2*pi*y)
+    value = t*sin(2.0*pi*x)*sin(2.0*pi*y)
+  [../]
+  [./dphi_dt]
+    type = ParsedFunction
+    value = (x*y)*(x*y)*(x*y)
   [../]
 []
 
 [Kernels]
-  [./u_time]
-    type = TimeDerivative
-    variable = u
+  [./T_time]
+    type = CoefficientTimeDerivative
+    variable = T
+    property = heat_capacity
+    block = 0
   [../]
-  [./u_diff]
+  [./T_diff]
     type = MatDiffusion
-    variable = u
+    variable = T
     D_name = conductivity
     block = 0
   [../]
   [./mms]
     type = HeatEquationSourceMMS
-    variable = u
+    variable = T
     phi = phi
-    use_dt_dphi = true
   [../]
   [./phi_time]
     type = MaterialUserForcingFunction
-    variable = u
-    function = -0.5*(x*y)*(x*y)*(x*y)
+    variable = T
+    function = dphi_dt
+    scale = 0.5
+    material_coefficient = latent_heat
   [../]
 []
 
@@ -64,17 +70,22 @@
   [./error_aux]
     type = ErrorFunctionAux
     variable = abs_error
-    function = u_func
-    solution_variable = u
+    function = T_func
+    solution_variable = T
+  [../]
+  [./T_exact]
+    type = FunctionAux
+    variable = T_exact
+    function = T_func
   [../]
 []
 
 [BCs]
   [./all]
     type = FunctionDirichletBC
-    variable = u
+    variable = T
     boundary = 'bottom left right top'
-    function = u_func
+    function = T_func
   [../]
 []
 
@@ -104,8 +115,8 @@
 [Postprocessors]
   [./L2_errror]
     type = ElementL2Error
-    variable = u
-    function = u_func
+    variable = T
+    function = T_func
   [../]
 []
 
@@ -121,19 +132,22 @@
   dt = 0.1
 []
 
-[Adaptivity]
-[]
-
 [Outputs]
+  active = ''
   output_initial = true
   exodus = true
-  console = true
+  file_base = mms_heat_equation_dphi_dt_out
+  [./oversample]
+    refinements = 2
+    oversample = true
+    type = Exodus
+  [../]
 []
 
 [ICs]
-  [./u_ic]
-    function = u_func
-    variable = u
+  [./T_ic]
+    function = T_func
+    variable = T
     type = FunctionIC
   [../]
   [./phi_ic]
@@ -142,3 +156,4 @@
     type = FunctionIC
   [../]
 []
+
