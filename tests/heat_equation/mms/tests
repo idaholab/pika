@@ -1,0 +1,16 @@
+[Tests]
+  [./test]
+    # MMS test for dT/dt - Div(D grad(T) = 0
+    type = 'Exodiff'
+    input = 'mms_heat_equation.i'
+    exodiff = 'mms_heat_equation_out.e'
+    cli_args = 'Kernels/mms/use_dphi_dt=false'
+  [../]
+  [./test_with_dphi_dt]
+    # MMS test for dT/dt - Div(D grad(T) + 1/2 dphi/dt = 0
+    type = 'Exodiff'
+    input = 'mms_heat_equation_dphi_dt.i'
+    exodiff = 'mms_heat_equation_dphi_dt_out.e'
+    prereq = 'test'
+  [../]
+[]

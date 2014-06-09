@@ -6,8 +6,8 @@ InputParameters validParams<CoefficientTimeDerivative>()
   InputParameters params = validParams<TimeDerivative>();
   params.addParam<Real>("coefficient", 1.0, "Time derivative coefficient");
   params.addParam<std::string>("property", "The name of the material property to utilize as the coefficient");
-  params.addParam<Real>("offset", 0, "Offset added to the material property value");
-  params.addParam<Real>("scale", 1, "Multiplier applied to the material property value");
+  params.addParam<Real>("offset", 0., "Offset added to the material property value");
+  params.addParam<Real>("scale", 1., "Multiplier applied to the material property value");
 //  params.addParam<Real>("hasMaterial", 0, "Boolean showing that material property has been assigned");
   return params;
 }

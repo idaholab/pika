@@ -1,0 +1,16 @@
+[Tests]
+  [./test]
+    # MMS test for du/dt - Div(D grad(u) = 0
+    type = 'Exodiff'
+    input = 'mms_mass_transport.i'
+    exodiff = 'mms_mass_transport_out.e'
+    cli_args = 'Kernels/mms/use_dphi_dt=false'
+  [../]
+  [./test_with_dphi_dt]
+    # MMS test for du/dt - Div(D grad(u) + 1/2 dphi/dt = 0
+    type = 'Exodiff'
+    input = 'mms_mass_transport_dphi_dt.i'
+    exodiff = 'mms_mass_transport_dphi_dt_out.e'
+    prereq = 'test'
+  [../]
+[]

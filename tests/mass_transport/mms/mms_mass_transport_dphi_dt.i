@@ -1,0 +1,144 @@
+[Mesh]
+  type = GeneratedMesh
+  dim = 2
+  nx = 10
+  ny = 10
+  elem_type = QUAD8
+[]
+
+[Variables]
+  [./u]
+    order = SECOND
+  [../]
+[]
+
+[AuxVariables]
+  [./phi]
+  [../]
+  [./abs_error]
+  [../]
+[]
+
+[Functions]
+  [./phi_func]
+    type = ParsedFunction
+    value = t*x*y
+  [../]
+  [./u_func]
+    type = ParsedFunction
+    value = t*sin(2*pi*x)*cos(2*pi*y)
+  [../]
+[]
+
+[Kernels]
+  [./u_time]
+    type = TimeDerivative
+    variable = u
+  [../]
+  [./u_diff]
+    type = MatDiffusion
+    variable = u
+    D_name = diffusion_coefficient
+    block = 0
+  [../]
+  [./mms]
+    type = MassTransportSourceMMS
+    variable = u
+    phi = phi
+    use_dt_dphi = true
+  [../]
+  [./phi_time]
+    type = UserForcingFunction
+    variable = u
+    function = -0.5*x*y
+  [../]
+[]
+
+[AuxKernels]
+  active = 'error_aux phi_kernel'
+  [./phi_kernel]
+    type = FunctionAux
+    variable = phi
+    function = phi_func
+  [../]
+  [./error_aux]
+    type = ErrorFunctionAux
+    variable = abs_error
+    function = u_func
+    solution_variable = u
+  [../]
+[]
+
+[BCs]
+  [./all]
+    type = FunctionDirichletBC
+    variable = u
+    boundary = 'bottom left right top'
+    function = u_func
+  [../]
+[]
+
+[Materials]
+  [./air]
+    type = AirProperties
+    block = 0
+    property_user_object = potential_uo
+  [../]
+  [./phase]
+    type = PhaseFieldProperties
+    block = 0
+    phi = phi
+    property_user_object = potential_uo
+  [../]
+  [./constants]
+    type = ConstantProperties
+    block = 0
+  [../]
+  [./ice]
+    type = IceProperties
+    block = 0
+    property_user_object = potential_uo
+  [../]
+[]
+
+[Postprocessors]
+  [./L2_errror]
+    type = ElementL2Error
+    variable = u
+    function = u_func
+  [../]
+[]
+
+[UserObjects]
+  [./potential_uo]
+    type = ChemicalPotentialPropertyUserObject
+  [../]
+[]
+
+[Executioner]
+  type = Transient
+  num_steps = 10
+  dt = 0.1
+[]
+
+[Adaptivity]
+[]
+
+[Outputs]
+  output_initial = true
+  exodus = true
+  console = true
+[]
+
+[ICs]
+  [./u_ic]
+    function = u_func
+    variable = u
+    type = FunctionIC
+  [../]
+  [./phi_ic]
+    function = phi_func
+    variable = phi
+    type = FunctionIC
+  [../]
+[]
