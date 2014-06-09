@@ -45,7 +45,7 @@ ErrorFunctionAux::computeValue()
     output /= _soln[_qp];
 
   if (_error_type == 2)
-    output *= 100;
+    output *= 100.0;
 
   return output;
 

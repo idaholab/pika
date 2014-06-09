@@ -64,19 +64,19 @@ PhaseFieldProperties::computeQpProperties()
   /// @todo{This needs to be computed}
   _interface_velocity[_qp] = 1e-9; // [m/s]
 
-  _capillary_length[_qp] = (gamma * std::pow(a, 3) ) / (k * _temperature[_qp]);
+  _capillary_length[_qp] = (gamma * std::pow(a, 3.) ) / (k * _temperature[_qp]);
 
-  _beta[_qp] = (1/alpha) * rho_i[_qp] / rho_vs * std::sqrt((2*libMesh::pi*m) / (k * _temperature[_qp]));
+  _beta[_qp] = (1./alpha) * rho_i[_qp] / rho_vs * std::sqrt((2.*libMesh::pi*m) / (k * _temperature[_qp]));
 
   _lambda[_qp] = (_a1 * w * rho_i[_qp]) / (_capillary_length[_qp] * rho_vs);
 
   _tau[_qp] = (_beta[_qp] * rho_vs * w * _lambda[_qp]) / (rho_i[_qp] * _a1);
 
-  _conductivity[_qp] = ki[_qp] * (1 + _phase[_qp]) / 2 + ka[_qp] * (1 - _phase[_qp]) / 2;
+  _conductivity[_qp] = ki[_qp] * (1. + _phase[_qp]) / 2. + ka[_qp] * (1. - _phase[_qp]) / 2.;
 
-  _heat_capacity[_qp] = ci[_qp] * (1 + _phase[_qp]) / 2 + ca[_qp] * (1 - _phase[_qp]) / 2;
+  _heat_capacity[_qp] = ci[_qp] * (1. + _phase[_qp]) / 2. + ca[_qp] * (1. - _phase[_qp]) / 2.;
 
-  _diffusion_coefficient[_qp] = dv[_qp] * (1 - _phase[_qp]) / 2;
+  _diffusion_coefficient[_qp] = dv[_qp] * (1. - _phase[_qp]) / 2.;
 
   _interface_thickness_squared[_qp] = w*w;
 
