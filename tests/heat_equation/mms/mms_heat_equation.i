@@ -32,7 +32,7 @@
 [Kernels]
   active = 'T_diff mms T_time'
   [./T_time]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = T
     property = heat_capacity
     block = 0

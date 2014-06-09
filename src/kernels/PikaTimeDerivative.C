@@ -1,7 +1,7 @@
-#include "CoefficientTimeDerivative.h"
+#include "PikaTimeDerivative.h"
 
 template<>
-InputParameters validParams<CoefficientTimeDerivative>()
+InputParameters validParams<PikaTimeDerivative>()
 {
   InputParameters params = validParams<TimeDerivative>();
   params.addParam<Real>("coefficient", 1.0, "Time derivative coefficient");
@@ -12,7 +12,7 @@ InputParameters validParams<CoefficientTimeDerivative>()
   return params;
 }
 
-CoefficientTimeDerivative::CoefficientTimeDerivative(const std::string & name, InputParameters parameters) :
+PikaTimeDerivative::PikaTimeDerivative(const std::string & name, InputParameters parameters) :
     TimeDerivative(name, parameters),
     _has_material(isParamValid("property")),
     _coefficient(getParam<Real>("coefficient")),
@@ -29,7 +29,7 @@ CoefficientTimeDerivative::CoefficientTimeDerivative(const std::string & name, I
 }
 
 Real
-CoefficientTimeDerivative::computeQpResidual()
+PikaTimeDerivative::computeQpResidual()
 {
     if (_has_material)
      return (_scale * ((*_material_coefficient)[_qp]) + _offset) * TimeDerivative::computeQpResidual();
@@ -39,7 +39,7 @@ CoefficientTimeDerivative::computeQpResidual()
 }
 
 Real
-CoefficientTimeDerivative::computeQpJacobian()
+PikaTimeDerivative::computeQpJacobian()
 {
     if (_has_material)
      return (_scale * ((*_material_coefficient)[_qp]) + _offset) * TimeDerivative::computeQpJacobian();
