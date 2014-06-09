@@ -19,7 +19,7 @@
 
 [Kernels]
   [./phase_t]
-    type = MaterialTimeDerivative
+    type = PikaTimeDerivative
     variable = phi
     property = tau
   [../]
@@ -41,7 +41,7 @@
     mob_name = mobility
   [../]
   [./heat_t]
-    type = MaterialTimeDerivative
+    type = PikaTimeDerivative
     variable = T
     property = heat_capacity
   [../]
@@ -51,7 +51,7 @@
     D_name = conductivity
   [../]
   [./heat_phi_t]
-    type = MaterialTimeDerivative
+    type = PikaTimeDerivative
     variable = phi
     property = latent_heat
     scale = 0.5
@@ -66,7 +66,7 @@
     D_name = diffusion_coefficient
   [../]
   [./potential_phi_t]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = phi
     coefficient = -0.5
   [../]

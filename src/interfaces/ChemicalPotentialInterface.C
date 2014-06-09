@@ -37,8 +37,8 @@ ChemicalPotentialInterface::specificHumidityRatio(Real T)
 Real
 ChemicalPotentialInterface::saturationPressureOfWaterVaporOverIce(Real T)
 {
-  return std::exp(_K[0]*std::pow(T,-1) + _K[1]*std::pow(T,0) + _K[2]*std::pow(T,1) +
-                  _K[3]*std::pow(T,2) + _K[4]*std::pow(T,3)) + std::pow(T, _K[5]);
+  return std::exp(_K[0]*std::pow(T,-1.0) + _K[1]*std::pow(T,0.0) + _K[2]*std::pow(T,1.0) +
+                  _K[3]*std::pow(T,2.0) + _K[4]*std::pow(T,3.0)) + std::pow(T, _K[5]);
 }
 
 Real

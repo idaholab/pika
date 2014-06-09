@@ -4,6 +4,7 @@
     type = 'Exodiff'
     input = 'specific_humidity_ratio.i'
     exodiff = 'specific_humidity_ratio_out.e'
+    skip = ' Under development # 9'
   [../]
 
 []

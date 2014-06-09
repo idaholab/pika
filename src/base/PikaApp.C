@@ -17,11 +17,13 @@
 #include "TensorMobilityMaterial.h"
 
 // Kernels
-#include "CoefficientTimeDerivative.h"
+#include "PikaTimeDerivative.h"
 #include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
+#include "HeatEquationSourceMMS.h"
+#include "MaterialUserForcingFunction.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -77,11 +79,13 @@ PikaApp::registerObjects(Factory & factory)
   registerMaterial(TensorMobilityMaterial);
 
   // Kernels
-  registerKernel(CoefficientTimeDerivative);
+  registerKernel(PikaTimeDerivative);
   registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
   registerKernel(TensorDiffusion);
   registerKernel(MassTransportSourceMMS);
+  registerKernel(HeatEquationSourceMMS);
+  registerKernel(MaterialUserForcingFunction);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);

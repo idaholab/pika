@@ -44,8 +44,8 @@ TensorMobilityMaterial::~TensorMobilityMaterial()
 void
 TensorMobilityMaterial::computeQpProperties()
 {
-  _M_parallel[_qp] = _M_1 * _phase[_qp] + _M_2 * (1 - _phase[_qp]);
-  _M_perpendicular[_qp] = 1 / (1/_M_1 * _phase[_qp] + 1/_M_2 * (1 - _phase[_qp]));
+  _M_parallel[_qp] = _M_1 * _phase[_qp] + _M_2 * (1.0 - _phase[_qp]);
+  _M_perpendicular[_qp] = 1.0 / (1.0/_M_1 * _phase[_qp] + 1.0/_M_2 * (1.0 - _phase[_qp]));
   RealTensorValue nxn = normalOutputProduct();
 
   _M_tensor[_qp] = _M_perpendicular[_qp]*nxn + _M_parallel[_qp]*(_identity - nxn);

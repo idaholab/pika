@@ -12,41 +12,26 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#include "ErrorFunctionAux.h"
+#include "MaterialUserForcingFunction.h"
 
 template<>
-InputParameters validParams<ErrorFunctionAux>()
+InputParameters validParams<MaterialUserForcingFunction>()
 {
-
-  MooseEnum error_type("absolute=0, relative=1, percent=2", "absolute");
-
-  InputParameters params = validParams<FunctionAux>();
-  params.addRequiredCoupledVar("solution_variable", "The variable to compare the function against");
-  params.addParam<MooseEnum>("error_type", error_type, "The type of error to compute");
+  InputParameters params = validParams<UserForcingFunction>();
+  params.addRequiredParam<std::string>("material_coefficient", "Provide a material property to multiply the provided function by");
+  params.addParam<Real>("scale", 1.0, "Value to scale the material property (e.g. coefficients)");
   return params;
 }
 
-ErrorFunctionAux::ErrorFunctionAux(const std::string & name, InputParameters parameters) :
-    FunctionAux(name, parameters),
-    _soln(coupledValue("solution_variable")),
-    _error_type(getParam<MooseEnum>("error_type"))
+MaterialUserForcingFunction::MaterialUserForcingFunction(const std::string & name, InputParameters parameters) :
+    UserForcingFunction(name, parameters),
+    _material_coefficient(getMaterialProperty<Real>(getParam<std::string>("material_coefficient"))),
+    _scale(getParam<Real>("scale"))
 {
 }
 
 Real
-ErrorFunctionAux::computeValue()
+MaterialUserForcingFunction::computeQpResidual()
 {
-
-  Real exact = FunctionAux::computeValue();
-
-  Real output = std::abs(exact - _soln[_qp]);
-
-  if (_error_type >= 1)
-    output /= _soln[_qp];
-
-  if (_error_type == 2)
-    output *= 100.0;
-
-  return output;
-
+  return _scale * _material_coefficient[_qp] * UserForcingFunction::computeQpResidual(); 
 }
