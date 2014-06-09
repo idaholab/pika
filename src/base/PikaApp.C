@@ -17,7 +17,7 @@
 #include "TensorMobilityMaterial.h"
 
 // Kernels
-#include "CoefficientTimeDerivative.h"
+#include "PikaTimeDerivative.h"
 #include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
 #include "TensorDiffusion.h"
@@ -79,7 +79,7 @@ PikaApp::registerObjects(Factory & factory)
   registerMaterial(TensorMobilityMaterial);
 
   // Kernels
-  registerKernel(CoefficientTimeDerivative);
+  registerKernel(PikaTimeDerivative);
   registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
   registerKernel(TensorDiffusion);

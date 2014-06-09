@@ -35,7 +35,7 @@
 
 [Kernels]
   [./T_time]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = T
     property = heat_capacity
     block = 0

@@ -21,19 +21,19 @@
     D_name = conductivity
   [../]
   [./heat_time]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = T
     property = heat_capacity
     scale = -1
   [../]
   [./heat_phi_time]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = phi
     property = latent_heat
     scale = 0.5
   [../]
   [./vapor_time]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = u
     coefficient = -1
   [../]
@@ -43,12 +43,12 @@
     D_name = diffusion_coefficient
   [../]
   [./vapor_phi_time]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = phi
     coefficient = -0.5
   [../]
   [./phi_time]
-    type = CoefficientTimeDerivative
+    type = PikaTimeDerivative
     variable = phi
     coefficient = 0.0001
   [../]
