@@ -1,41 +1,11 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
-  uniform_refine = 4
 []
 
 [Variables]
   [./T]
     initial_condition = 263.15
-  [../]
-[]
-
-[Kernels]
-  [./diff]
-    type = MatDiffusion
-    variable = T
-    D_name = conductivity
-  [../]
-  [./time]
-    type = TimeDerivative
-    variable = T
-  [../]
-[]
-
-[BCs]
-  [./left]
-    type = DirichletBC
-    variable = T
-    boundary = left
-    value = 263.15
-  [../]
-  [./right]
-    type = DirichletBC
-    variable = T
-    boundary = right
-    value = 273.15
   [../]
 []
 
@@ -95,26 +65,31 @@
   [../]
 []
 
+[Problem]
+  type = FEProblem
+  solve = false
+  kernel_coverage_check = false
+[]
+
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 3
-  dt = 0.1
+  num_steps = 1
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
 []
 
 [Outputs]
-  output_initial = false
+  exodus = true
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./out]
+  [./data]
     type = CSV
-    output_initial = false
   [../]
 []
+

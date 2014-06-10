@@ -3,6 +3,7 @@
   dim = 2
   nx = 10
   ny = 10
+  uniform_refine = 1
   elem_type = QUAD8
 []
 
@@ -55,7 +56,6 @@
 []
 
 [AuxKernels]
-  active = 'error_aux phi_kernel'
   [./phi_kernel]
     type = FunctionAux
     variable = phi
@@ -117,8 +117,8 @@
 
 [Executioner]
   type = Transient
-  num_steps = 10
-  dt = 0.1
+  num_steps = 4
+  dt = 0.25
 []
 
 [Adaptivity]
@@ -127,7 +127,10 @@
 [Outputs]
   output_initial = true
   exodus = true
-  console = true
+  [./console]
+    type = Console
+    linear_residuals = true
+  [../]
 []
 
 [ICs]
@@ -142,3 +145,4 @@
     type = FunctionIC
   [../]
 []
+
