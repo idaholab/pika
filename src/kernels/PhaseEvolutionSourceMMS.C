@@ -5,15 +5,22 @@ InputParameters validParams<PhaseEvolutionSourceMMS>()
 {
   InputParameters params = validParams<Kernel>();
   params += validParams<ChemicalPotentialInterface>();
+/*
+  params.addParam<std::string>("relaxation_time", "tau",  "Relaxation coefficient on dPhi/dt in phase evolution equation [tau]");
+  params.addParam<std::string>("interface_thickness", "w",  " Material property specifying the thickness between phases [w]");
+  params.addParam<std::string>("lambda", "lambda",  " Material property specifying the phase field's coupling with chemical potential [lambda]");
+  params.addParam<std::string>("solid_density", "density_ice",  " Material property specifying the density of the solid phase [rho_i]");
+  params.addParam<std::string>("gas_density", "density_vapor",  " Material property specifying the density of the gas phase [rho_a]");
+*/
   return params;
 }
 
 PhaseEvolutionSourceMMS::PhaseEvolutionSourceMMS(const std::string & name, InputParameters parameters) :
     Kernel(name, parameters),
     ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),
-    _tau(getMaterialProperty<Real>(getParam<std::string>("relaxation_time"))),
-    _w(getMaterialProperty<Real>(getParam<std::string>("interface_thickness"))),
-    _lambda(getMaterialProperty<Real>(getParam<std::string>("phase_coupling_constant"))),
+    _tau(getMaterialProperty<Real>("tau")),
+    _w(getMaterialProperty<Real>("interface_thickness")),
+    _lambda(getMaterialProperty<Real>("lambda")),
     _rho_i(getMaterialProperty<Real>("density_ice")),
     _rho_a(getMaterialProperty<Real>("density_air")),
     _R_da(getMaterialProperty<Real>("gas_constant_dry_air")),
@@ -30,7 +37,7 @@ PhaseEvolutionSourceMMS::computeQpResidual()
   Real t = _t;
   Real x = _q_point[_qp](0);
   Real y = _q_point[_qp](1);
-  Real tau = _tau[_qp];
+  Real tau = 1.0; //_tau[_qp];
   Real w = _w[_qp];
   Real lambda = _lambda[_qp];
   Real R_da = _R_da[_qp];
