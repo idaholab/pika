@@ -44,7 +44,7 @@ protected:
   virtual Real computeQpResidual();
 
 private:
-  const MaterialProperty<Real> & _tau;
+   MaterialProperty<Real> & _tau;
   const MaterialProperty<Real> & _w;
   const MaterialProperty<Real> & _lambda;
   const MaterialProperty<Real> & _rho_i;
