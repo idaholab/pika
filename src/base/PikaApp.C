@@ -23,6 +23,7 @@
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
 #include "HeatEquationSourceMMS.h"
+#include "PhaseEvolutionSourceMMS.h"
 #include "MaterialUserForcingFunction.h"
 
 // AuxKernels
@@ -85,6 +86,7 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(TensorDiffusion);
   registerKernel(MassTransportSourceMMS);
   registerKernel(HeatEquationSourceMMS);
+  registerKernel(PhaseEvolutionSourceMMS);
   registerKernel(MaterialUserForcingFunction);
 
   // InitialConditions
