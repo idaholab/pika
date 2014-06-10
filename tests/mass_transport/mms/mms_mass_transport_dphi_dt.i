@@ -117,8 +117,8 @@
 
 [Executioner]
   type = Transient
-  num_steps = 10
-  dt = 0.1
+  num_steps = 4
+  dt = 0.25
 []
 
 [Adaptivity]
@@ -127,15 +127,9 @@
 [Outputs]
   output_initial = true
   exodus = true
-  exodus = true
   [./console]
     type = Console
     linear_residuals = true
-  [../]
-  [./oversample]
-    refinements = 2
-    oversample = true
-    type = Exodus
   [../]
 []
 
@@ -151,3 +145,4 @@
     type = FunctionIC
   [../]
 []
+
