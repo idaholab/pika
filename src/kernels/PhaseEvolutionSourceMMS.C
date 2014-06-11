@@ -49,6 +49,6 @@ PhaseEvolutionSourceMMS::computeQpResidual()
 
   Real pi = libMesh::pi;
 
-  Real f = -lambda*pow(-pow(t, 2)*pow(sin(4.0*M_PI*x), 2)*pow(sin(4.0*M_PI*y), 2) + 1.0, 2.0)*(sin(4*x*y) - (110379418992.988*R_da*rho_a*pow(x*y, 0.6918651)*exp(-58.653696*1.0/(x*y) + 1.3749042*pow(x*y, 1.0) - 0.34031775*pow(x*y, 2.0) + 0.026967687*pow(x*y, 3.0))/(R_v*(P_a - 110379418992.988*pow(x*y, 0.6918651)*exp(-58.653696*1.0/(x*y) + 1.3749042*pow(x*y, 1.0) - 0.34031775*pow(x*y, 2.0) + 0.026967687*pow(x*y, 3.0)))) - 5.4296946499373*pow(263, 0.6918651)*R_da*rho_a/(R_v*(P_a - 5.4296946499373*pow(263, 0.6918651))))/rho_i) + pow(t, 3)*pow(sin(4.0*M_PI*x), 3)*pow(sin(4.0*M_PI*y), 3) + 32.0*pow(M_PI, 2)*t*pow(w, 2.0)*sin(4.0*M_PI*x)*sin(4.0*M_PI*y) - t*sin(4.0*M_PI*x)*sin(4.0*M_PI*y) + tau*sin(4.0*M_PI*x)*sin(4.0*M_PI*y);
+  Real f = -lambda*pow(-pow(t, 2)*pow(sin(4.0*pi*x), 2)*pow(sin(4.0*pi*y), 2) + 1.0, 2.0)*(sin(4*x*y) - (110379418992.988*R_da*rho_a*pow(x*y, 0.6918651)*exp(-58.653696*1.0/(x*y) + 1.3749042*pow(x*y, 1.0) - 0.34031775*pow(x*y, 2.0) + 0.026967687*pow(x*y, 3.0))/(R_v*(P_a - 110379418992.988*pow(x*y, 0.6918651)*exp(-58.653696*1.0/(x*y) + 1.3749042*pow(x*y, 1.0) - 0.34031775*pow(x*y, 2.0) + 0.026967687*pow(x*y, 3.0)))) - 5.4296946499373*pow(263, 0.6918651)*R_da*rho_a/(R_v*(P_a - 5.4296946499373*pow(263, 0.6918651))))/rho_i) + pow(t, 3)*pow(sin(4.0*pi*x), 3)*pow(sin(4.0*pi*y), 3) + 32.0*pow(pi, 2)*t*pow(w, 2.0)*sin(4.0*pi*x)*sin(4.0*pi*y) - t*sin(4.0*pi*x)*sin(4.0*pi*y) + tau*sin(4.0*pi*x)*sin(4.0*pi*y);
   return -_test[_i][_qp] * f;
 }

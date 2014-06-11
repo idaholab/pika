@@ -103,3 +103,7 @@ phase_evol = term1-term2-term3-term4
 [(c_name, c_code), (h_name, c_header)] = codegen(
      ("f", phase_evol), "C", "test", header=False, empty=False)
 print(c_code)
+
+
+print('\n')
+pprint(phase_evol)
