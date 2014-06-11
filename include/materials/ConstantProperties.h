@@ -24,12 +24,21 @@ protected:
 
 private:
 
-  std::vector<std::string> _property_names;
-  std::vector<Real> _property_values;
-  std::vector<MaterialProperty<Real> *> _property_ptrs;
+  MaterialProperty<Real> & _interface_free_energy;
 
+  MaterialProperty<Real> & _mean_molecular_spacing;
+
+  MaterialProperty<Real> & _boltzmann;
+
+  MaterialProperty<Real> & _condensation_coefficient;
+
+  MaterialProperty<Real> & _mass_water_molecule;
+
+  MaterialProperty<Real> & _interface_thickness;
 
   MaterialProperty<Real> & _atmospheric_pressure;
+
+  MaterialProperty<Real> & _latent_heat;
 };
 
 #endif // CONSTANTPROPERTIES_H
