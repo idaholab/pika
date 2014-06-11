@@ -104,6 +104,7 @@
   [./constants]
     type = ConstantProperties
     block = 0
+    property_user_object = potential_uo
   [../]
   [./ice]
     type = IceProperties
@@ -156,4 +157,3 @@
     type = FunctionIC
   [../]
 []
-

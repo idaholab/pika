@@ -55,6 +55,7 @@
   [./constants]
     type = ConstantProperties
     block = 0
+    property_user_object = property_uo
   [../]
   [./phase_field]
     # Use the default phi = 1 so that the material behaves as solid ice.

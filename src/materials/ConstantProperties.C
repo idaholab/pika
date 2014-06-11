@@ -1,6 +1,6 @@
 #include "ConstantProperties.h"
 #include "InputParameters.h"
-
+#include "ChemicalPotentialPropertyUserObject.h"
 
 template<>
 InputParameters validParams<ConstantProperties>()
@@ -8,8 +8,10 @@ InputParameters validParams<ConstantProperties>()
   typedef std::pair<Real, std::string> PropertyPair;
   typedef std::map<std::string, PropertyPair > PropertyMap;
 
-
   InputParameters params = validParams<Material>();
+  params += validParams<ChemicalPotentialInterface>();
+
+
   PropertyMap map;
   map["interface_free_energy"] = PropertyPair(1.09e-1, "Interface free energy [J/m^2]");
   map["mean_molecular_spacing"] = std::pair<Real, std::string>(3.19e-10, "Mean inter-molecular spacing in ice [m]");
@@ -43,11 +45,16 @@ InputParameters validParams<ConstantProperties>()
 
 ConstantProperties::ConstantProperties(const std::string & name, InputParameters parameters) :
     Material(name, parameters),
+    ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),
     _property_names(getParam<std::vector<std::string> >("_property_names")),
-    _property_values(getParam<std::vector<Real> >("_property_values"))
+    _property_values(getParam<std::vector<Real> >("_property_values")),
+    _atmospheric_pressure(declareProperty<Real>("atmospheric_pressure"))
 {
   for (std::vector<std::string>::iterator it = _property_names.begin(); it != _property_names.end(); ++it)
     _property_ptrs.push_back(&declareProperty<Real>(*it));
+
+
+
 }
 
 void
@@ -57,4 +64,5 @@ ConstantProperties::computeQpProperties()
     (*_property_ptrs[i])[_qp] = _property_values[i];
 
 
+  _atmospheric_pressure[_qp] = atmosphericPressure();
 }

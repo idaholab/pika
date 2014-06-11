@@ -26,6 +26,7 @@
   [../]
   [./constants]
     type = ConstantProperties
+    property_user_object = property_uo
     block = 0
   [../]
   [./phase_field]
@@ -92,4 +93,3 @@
     type = CSV
   [../]
 []
-
