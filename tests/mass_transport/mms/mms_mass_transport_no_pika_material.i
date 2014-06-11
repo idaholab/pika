@@ -84,13 +84,29 @@
   [../]
 []
 
+[Materials]
+  [./air]
+    type = AirProperties
+    block = 0
+    property_user_object = _pika_property_user_object
+  [../]
+  [./phase]
+    type = PhaseFieldProperties
+    block = 0
+    phi = phi
+    property_user_object = _pika_property_user_object
+  [../]
+  [./constants]
+    type = ConstantProperties
+    block = 0
+    property_user_object = _pika_property_user_object
+  [../]
+  [./ice]
+    type = IceProperties
+    block = 0
+    property_user_object = _pika_property_user_object
   [../]
 []
-
-[PikaMaterials]
-  phi = phi
-  temperature = 273.15
-[../]
 
 [Postprocessors]
   [./L2_errror]
@@ -100,10 +116,19 @@
   [../]
 []
 
+[UserObjects]
+  [./_pika_property_user_object]
+    type = PropertyUserObject
+  [../]
+[]
+
 [Executioner]
   type = Transient
   num_steps = 10
   dt = 0.1
+[]
+
+[Adaptivity]
 []
 
 [Outputs]

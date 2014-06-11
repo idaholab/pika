@@ -1,23 +1,19 @@
 
 // PIKA includes
 #include "PhaseFieldProperties.h"
-#include "ChemicalPotentialPropertyUserObject.h"
 
 template<>
 InputParameters validParams<PhaseFieldProperties>()
 {
-  InputParameters params = validParams<Material>();
-  params += validParams<ChemicalPotentialInterface>();
+  InputParameters params = validParams<PikaMaterialBase>();
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple (default: 273.15)");
   params.addCoupledVar("phi", 1, "The phase-field variable to couple");
-
   return params;
 }
 
 
 PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParameters parameters) :
-    Material(name, parameters),
-    ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),
+    PikaMaterialBase(name, parameters),
     _temperature(coupledValue("temperature")),
     _phase(coupledValue("phi")),
     _a1(5./8.*std::sqrt(2.)),
@@ -47,7 +43,7 @@ PhaseFieldProperties::computeQpProperties()
   Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
   Real & L_sg = getMaterialProperty<Real>("latent_heat")[_qp];
 
-  Real rho_vs = equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
+  Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
 
   MaterialProperty<Real> & ki = getMaterialProperty<Real>("conductivity_ice");
   MaterialProperty<Real> & ka = getMaterialProperty<Real>("conductivity_air");
@@ -79,11 +75,11 @@ PhaseFieldProperties::computeQpProperties()
 
   _interface_thickness_squared[_qp] = w*w;
 
-  _equilibrium_concentration[_qp] = equilibriumConcentration(_temperature[_qp]);
+  _equilibrium_concentration[_qp] = _property_uo.equilibriumConcentration(_temperature[_qp]);
 
   // x_s, Eq. (1)
-  _specific_humidity_ratio[_qp] = specificHumidityRatio(_temperature[_qp]);
+  _specific_humidity_ratio[_qp] = _property_uo.specificHumidityRatio(_temperature[_qp]);
 
   // _rho_{vs}, Eq. (3)
-  _saturation_pressure_of_water_vapor_over_ice[_qp] = saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
+  _saturation_pressure_of_water_vapor_over_ice[_qp] = _property_uo.saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
 }

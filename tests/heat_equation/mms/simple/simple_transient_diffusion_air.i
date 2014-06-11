@@ -69,7 +69,7 @@
 
 [UserObjects]
   [./property_uo]
-    type = ChemicalPotentialPropertyUserObject
+    type = PropertyUserObject
   [../]
 []
 

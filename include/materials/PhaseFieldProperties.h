@@ -1,8 +1,7 @@
 #ifndef PHASEFIELDPROPERTIES_H
 #define PHASEFIELDPROPERTIES_H
 
-#include "Material.h"
-#include "ChemicalPotentialInterface.h"
+#include "PikaMaterialBase.h"
 
 class PhaseFieldProperties;
 
@@ -13,8 +12,7 @@ InputParameters validParams<PhaseFieldProperties>();
  * A material for defining properties associated with the phase-field equation
  */
 class PhaseFieldProperties :
-  public Material,
-  public ChemicalPotentialInterface
+  public PikaMaterialBase  InputParameters params = validParams<PikaMaterialBase>();
 {
 public:
   PhaseFieldProperties(const std::string & name, InputParameters parameters);

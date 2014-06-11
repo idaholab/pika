@@ -61,7 +61,7 @@
 
 [UserObjects]
   [./property_uo]
-    type = ChemicalPotentialPropertyUserObject
+    type = PropertyUserObject
     atmospheric_pressure = 1.01325e5
   [../]
 []

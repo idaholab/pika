@@ -2,10 +2,7 @@
 #define AIRPROPERTIES_H
 
 // MOOSE includes
-#include "Material.h"
-
-// PIKA includes
-#include "ChemicalPotentialInterface.h"
+#include "PikaMaterialBase.h"
 
 // Forward declarations
 class AirProperties;
@@ -17,8 +14,7 @@ InputParameters validParams<AirProperties>();
  * A material for defining properties associated with the phase-field equation
  */
 class AirProperties :
-  public Material,
-  public ChemicalPotentialInterface
+  public PikaMaterialBase
 {
 public:
   AirProperties(const std::string & name, InputParameters parameters);

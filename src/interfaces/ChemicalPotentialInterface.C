@@ -9,7 +9,7 @@ InputParameters validParams<ChemicalPotentialInterface>()
 {
   // Define parameters
   InputParameters params = emptyInputParameters();
-  params.addRequiredParam<UserObjectName>("property_user_object", "User object containing material property methods related to chemical potential calculations");
+  params.addRequiredParam<UserObjectName>("property_user_object", "User object containing material property methods calculations");
 
   // Description
   params.addClassDescription("An interface class for computing material properties that are need in an InitialCondition and Kernel. Any object in PIKA requiring these material should inherit from this interface.");

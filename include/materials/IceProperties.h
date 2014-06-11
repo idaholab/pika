@@ -2,10 +2,7 @@
 #define ICEPROPERTIES_H
 
 // MOOSE includes
-#include "Material.h"
-
-// PIKA includes
-#include "ChemicalPotentialInterface.h"
+#include "PikaMaterialBase.h"
 
 // Forward declarations
 class IceProperties;
@@ -17,8 +14,7 @@ InputParameters validParams<IceProperties>();
  * A material for defining properties associated with the phase-field equation
  */
 class IceProperties :
-  public Material,
-  public ChemicalPotentialInterface
+  public PikaMaterialBase
 {
 public:
   IceProperties(const std::string & name, InputParameters parameters);

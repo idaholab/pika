@@ -1,8 +1,7 @@
 #ifndef CONSTANTPROPERTIES_H
 #define CONSTANTPROPERTIES_H
 
-#include "Material.h"
-#include "ChemicalPotentialInterface.h"
+#include "PikaMaterialBase.h"
 
 class ConstantProperties;
 
@@ -13,8 +12,7 @@ InputParameters validParams<ConstantProperties>();
  * A material for defining properties associated with the phase-field equation
  */
 class ConstantProperties :
-  public Material,
-  public ChemicalPotentialInterface
+  public PikaMaterialBase
 {
 public:
   ConstantProperties(const std::string & name, InputParameters parameters);
@@ -23,7 +21,6 @@ protected:
   virtual void computeQpProperties();
 
 private:
-
   MaterialProperty<Real> & _interface_free_energy;
 
   MaterialProperty<Real> & _mean_molecular_spacing;
