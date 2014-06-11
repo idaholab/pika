@@ -50,7 +50,7 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    coefficient = 0.0001
+    coefficient = 1.0
   [../]
   [./phi_interface]
     type = ACInterface

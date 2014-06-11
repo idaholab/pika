@@ -48,7 +48,9 @@ ConstantProperties::ConstantProperties(const std::string & name, InputParameters
     ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),
     _property_names(getParam<std::vector<std::string> >("_property_names")),
     _property_values(getParam<std::vector<Real> >("_property_values")),
-    _atmospheric_pressure(declareProperty<Real>("atmospheric_pressure"))
+    _atmospheric_pressure(declareProperty<Real>("atmospheric_pressure")),
+    _gas_constant_dry_air(declareProperty<Real>("gas_constant_dry_air")),
+    _gas_constant_water_vapor(declareProperty<Real>("gas_constant_water_vapor"))
 {
   for (std::vector<std::string>::iterator it = _property_names.begin(); it != _property_names.end(); ++it)
     _property_ptrs.push_back(&declareProperty<Real>(*it));
@@ -64,5 +66,7 @@ ConstantProperties::computeQpProperties()
     (*_property_ptrs[i])[_qp] = _property_values[i];
 
 
-  _atmospheric_pressure[_qp] = atmosphericPressure();
+  _atmospheric_pressure[_qp] =_property_uo. atmosphericPressure();
+  _gas_constant_dry_air[_qp] = _property_uo.gasConstantDryAir();
+  _gas_constant_water_vapor[_qp] =_property_uo.gasConstantWaterVapor();
 }

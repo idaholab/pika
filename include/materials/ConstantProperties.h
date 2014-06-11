@@ -30,6 +30,8 @@ private:
 
 
   MaterialProperty<Real> & _atmospheric_pressure;
+  MaterialProperty<Real> & _gas_constant_dry_air;
+  MaterialProperty<Real> & _gas_constant_water_vapor;
 };
 
 #endif // CONSTANTPROPERTIES_H

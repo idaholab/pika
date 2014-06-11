@@ -44,7 +44,6 @@ protected:
 
   Real equilibriumConcentration(Real T);
 
-  Real atmosphericPressure();
 
   const ChemicalPotentialPropertyUserObject & _property_uo;
 

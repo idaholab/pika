@@ -75,7 +75,7 @@
 []
 
 [AuxKernels]
-  active = 'T_exact u_exact'
+  active = 'u_exact T_exact'
   [./error_aux]
     type = ErrorFunctionAux
     variable = abs_error
@@ -113,6 +113,7 @@
   [./constants]
     type = ConstantProperties
     block = 0
+    property_user_object = potential_uo
   [../]
   [./ice]
     type = IceProperties

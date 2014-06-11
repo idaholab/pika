@@ -67,9 +67,3 @@ ChemicalPotentialInterface::equilibriumConcentration(Real T)
   return (rho_vs_T - rho_vs_T_0) / _property_uo.iceDensity(T);
 
 }
-
-Real
-ChemicalPotentialInterface::atmosphericPressure()
-{
-  return _property_uo.atmosphericPressure();
-}
