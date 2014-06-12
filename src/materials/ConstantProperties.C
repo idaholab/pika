@@ -4,14 +4,15 @@
 template<>
 InputParameters validParams<ConstantProperties>()
 {
-  InputParameters params = validParams<PikaMaterialBase>();
-
+  InputParameters params = validParams<Material>();
+  params += validParams<PropertyUserObjectInterface>();
   return params;
 }
 
 
 ConstantProperties::ConstantProperties(const std::string & name, InputParameters parameters) :
-    PikaMaterialBase(name, parameters),
+    Material(name, parameters),
+    PropertyUserObjectInterface(name, parameters),
     _interface_free_energy(declareProperty<Real>("interface_free_energy")),
     _mean_molecular_spacing(declareProperty<Real>("mean_molecular_spacing")),
     _boltzmann(declareProperty<Real>("boltzmann")),

@@ -5,15 +5,17 @@
 template<>
 InputParameters validParams<PhaseFieldProperties>()
 {
-  InputParameters params = validParams<PikaMaterialBase>();
-  params.addRequiredCoupledVar("temperature", "The temperature variable to couple (default: 273.15)");
+  InputParameters params = validParams<Material>();
+  params += validParams<PropertyUserObjectInterface>();
+  params.addCoupledVar("temperature", 273.15, "The temperature variable to couple (default: 273.15)");
   params.addCoupledVar("phi", 1, "The phase-field variable to couple");
   return params;
 }
 
 
 PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParameters parameters) :
-    PikaMaterialBase(name, parameters),
+    Material(name, parameters),
+    PropertyUserObjectInterface(name, parameters),
     _temperature(coupledValue("temperature")),
     _phase(coupledValue("phi")),
     _a1(5./8.*std::sqrt(2.)),

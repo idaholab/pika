@@ -1,7 +1,11 @@
 #ifndef CONSTANTPROPERTIES_H
 #define CONSTANTPROPERTIES_H
 
-#include "PikaMaterialBase.h"
+// MOOSE includes
+#include "Material.h"
+
+// PIKA includes
+#include "PropertyUserObjectInterface.h"
 
 class ConstantProperties;
 
@@ -12,7 +16,8 @@ InputParameters validParams<ConstantProperties>();
  * A material for defining properties associated with the phase-field equation
  */
 class ConstantProperties :
-  public PikaMaterialBase
+  public Material,
+  public PropertyUserObjectInterface
 {
 public:
   ConstantProperties(const std::string & name, InputParameters parameters);

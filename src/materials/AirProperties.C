@@ -1,13 +1,13 @@
 
 // Pika includes
 #include "AirProperties.h"
-//#include "PropertyUserObject.h"
 
 template<>
 InputParameters validParams<AirProperties>()
 {
-  InputParameters params = validParams<PikaMaterialBase>();
-  params.addRequiredCoupledVar("temperature", "The temperature variable to couple (default: 273.15)");
+  InputParameters params = validParams<Material>();
+  params += validParams<PropertyUserObjectInterface>();
+  params.addCoupledVar("temperature", 273.15, "The temperature variable to couple (default: 273.15 K)");
   params.addParam<Real>("conductivity_air", 0.02, "Thermal conductivity or air, kappa_a [ W/(m K)]");
   params.addParam<Real>("heat_capacity_air", 1.4e3, "Heat capacity of air, C_a [J/(m^3 K)]");
   params.addParam<Real>("water_vapor_diffusion_coefficient", 2.178e-5, "Diffusion coefficient water vapor in air, D_v [m^2/s]");
@@ -15,17 +15,15 @@ InputParameters validParams<AirProperties>()
 }
 
 AirProperties::AirProperties(const std::string & name, InputParameters parameters) :
-    PikaMaterialBase(name, parameters),
+    Material(name, parameters),
+    PropertyUserObjectInterface(name, parameters),
     _temperature(coupledValue("temperature")),
     _rho_a(declareProperty<Real>("density_air")),
     _kappa_a(declareProperty<Real>("conductivity_air")),
     _C_a(declareProperty<Real>("heat_capacity_air")),
     _D_v(declareProperty<Real>("water_vapor_diffusion_coefficient"))
 {
-  libMesh::print_trace();
-
 }
-
 
 void
 AirProperties::computeQpProperties()

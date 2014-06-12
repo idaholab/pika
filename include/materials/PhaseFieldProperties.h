@@ -1,7 +1,11 @@
 #ifndef PHASEFIELDPROPERTIES_H
 #define PHASEFIELDPROPERTIES_H
 
-#include "PikaMaterialBase.h"
+// MOOSE includes
+#include "Material.h"
+
+// PIKA includes
+#include "PropertyUserObjectInterface.h"
 
 class PhaseFieldProperties;
 
@@ -12,7 +16,8 @@ InputParameters validParams<PhaseFieldProperties>();
  * A material for defining properties associated with the phase-field equation
  */
 class PhaseFieldProperties :
-  public PikaMaterialBase  InputParameters params = validParams<PikaMaterialBase>();
+  public Material,
+  public PropertyUserObjectInterface
 {
 public:
   PhaseFieldProperties(const std::string & name, InputParameters parameters);
