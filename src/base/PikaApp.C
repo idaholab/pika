@@ -8,7 +8,6 @@
 #include "HeatConductionApp.h"
 
 // UserObjects
-#include "ChemicalPotentialPropertyUserObject.h"
 #include "PropertyUserObject.h"
 
 // Materials
@@ -74,7 +73,6 @@ void
 PikaApp::registerObjects(Factory & factory)
 {
   // UserObjects
-  registerUserObject(ChemicalPotentialPropertyUserObject);
   registerUserObject(PropertyUserObject);
 
   // Materials
