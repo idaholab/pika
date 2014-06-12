@@ -98,10 +98,21 @@ term3 = phi-(phi*phi*phi)
 #Phase Potential
 term4 = lam*(u-u_eq)*(1.0-phi*phi)**2.0
 
+# Eq. (33) wihtout potential 
+phase_evol = term1-term2-term3
 # Eq. (33) 
-phase_evol = term1-term2-term3-term4
+#phase_evol = term1-term2-term3-term4
 
 #Generate the C/C++ version of the code.
+print('\n')
 [(c_name, c_code), (h_name, c_header)] = codegen(
      ("f", phase_evol), "C", "test", header=False, empty=False)
 print(c_code)
+print('\n')
+
+
+#Generate C/C++ code for term 4
+[(c_name, c_code), (h_name, c_header)] = codegen(
+     ("f", term4), "C", "test", header=False, empty=False)
+print(c_code)
+print('\n')
