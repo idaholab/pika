@@ -52,13 +52,7 @@ private:
   const MaterialProperty<Real> & _R_da;
   const MaterialProperty<Real> & _R_v;
   const MaterialProperty<Real> & _P_a;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
   const bool  & _use_potential_transition;
-=======
->>>>>>> 3fbfd84f8fad91aea639a1611852e440ccd7de63
->>>>>>> 4615a920e98284e4192a2f6796205b222b7c25da
 
 };
 
