@@ -19,8 +19,13 @@ y = symbols('y')
 t = symbols('t')
 
 #auxVariables
+<<<<<<< HEAD
 u = 0.5*sin(4.0*x*y) 
 T=-10*(x*y)+273
+=======
+u = sin(4*x*y) 
+T=100.0*(x*y)
+>>>>>>> 3fbfd84f8fad91aea639a1611852e440ccd7de63
 #variables
 phi = t*sin(4.0*pi*x)*sin(4.0*pi*y)
 
@@ -74,9 +79,13 @@ x_s = (R_da/R_v)*(P_vs/(P_a-P_vs))
 rho_vs = rho_a * x_s
 
 u_eq = (rho_vs-rho_vs_o)/rho_i
+<<<<<<< HEAD
 print('\n')
 print('evaluated = \n')
 print(u_eq.evalf(subs={x:1.0, y:1.0, t:1.0, rho_a:1.341, rho_i:918.9, P_a:101325}))
+=======
+
+>>>>>>> 3fbfd84f8fad91aea639a1611852e440ccd7de63
 #Simplifying Math terms
 grad_phi = [diff(phi,x), diff(phi,y)]
 
@@ -98,6 +107,7 @@ term3 = phi-(phi*phi*phi)
 #Phase Potential
 term4 = lam*(u-u_eq)*(1.0-phi*phi)**2.0
 
+<<<<<<< HEAD
 # Eq. (33) wihtout potential 
 phase_evol = term1-term2-term3
 # Eq. (33) 
@@ -116,3 +126,12 @@ print('\n')
      ("f", term4), "C", "test", header=False, empty=False)
 print(c_code)
 print('\n')
+=======
+# Eq. (33) 
+phase_evol = term1-term2-term3-term4
+
+#Generate the C/C++ version of the code.
+[(c_name, c_code), (h_name, c_header)] = codegen(
+     ("f", phase_evol), "C", "test", header=False, empty=False)
+print(c_code)
+>>>>>>> 3fbfd84f8fad91aea639a1611852e440ccd7de63
