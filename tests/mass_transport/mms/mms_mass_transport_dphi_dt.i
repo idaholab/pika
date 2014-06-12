@@ -83,12 +83,14 @@
     type = AirProperties
     block = 0
     property_user_object = potential_uo
+    temperature = 273.15
   [../]
   [./phase]
     type = PhaseFieldProperties
     block = 0
     phi = phi
     property_user_object = potential_uo
+    temperature = 273.15
   [../]
   [./constants]
     type = ConstantProperties
@@ -99,6 +101,7 @@
     type = IceProperties
     block = 0
     property_user_object = potential_uo
+    temperature = 273.15
   [../]
 []
 
@@ -146,3 +149,4 @@
     type = FunctionIC
   [../]
 []
+
