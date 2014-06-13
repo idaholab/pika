@@ -4,15 +4,18 @@
 // MOOSE includes
 #include "InitialCondition.h"
 
+// PIKA includes
+#include "PropertyUserObjectInterface.h"
+
 //Forward Declarations
 class ChemicalPotentialIC;
-class PropertyUserObject;
 
 template<>
 InputParameters validParams<ChemicalPotentialIC>();
 
 class ChemicalPotentialIC :
-  public InitialCondition
+  public InitialCondition,
+  public PropertyUserObjectInterface
 {
 public:
   ChemicalPotentialIC(const std::string & name, InputParameters parameters);
@@ -29,8 +32,6 @@ protected:
   virtual Real value(const Point & /*p*/);
 
 private:
-
-  const PropertyUserObject & _property_uo;
 
   VariableValue & _temperature;
 };

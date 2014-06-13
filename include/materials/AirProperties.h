@@ -23,6 +23,8 @@ class AirProperties :
 public:
   AirProperties(const std::string & name, InputParameters parameters);
 
+  static InputParameters objectParams();
+
 protected:
   virtual void computeQpProperties();
 

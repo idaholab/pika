@@ -4,14 +4,14 @@ template<>
 InputParameters validParams<ChemicalPotentialIC>()
 {
   InputParameters params = validParams<InitialCondition>();
-  params.addParam<UserObjectName>("property_user_object", "_pika_property_user_object", "User object containing material property methods calculations");
+  params += validParams<PropertyUserObjectInterface>();
   params.addRequiredCoupledVar("temperature", "The temperature variable");
   return params;
 }
 
 ChemicalPotentialIC::ChemicalPotentialIC(const std::string & name, InputParameters parameters) :
     InitialCondition(name, parameters),
-    _property_uo(getUserObject<PropertyUserObject>("property_user_object")),
+    PropertyUserObjectInterface(name, parameters),
     _temperature(coupledValue("temperature"))
 {
 }

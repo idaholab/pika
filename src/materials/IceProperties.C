@@ -5,9 +5,8 @@ InputParameters validParams<IceProperties>()
 {
   InputParameters params = validParams<Material>();
   params += validParams<PropertyUserObjectInterface>();
+  params += IceProperties::objectParams();
   params.addCoupledVar("temperature", 273.15,  "The temperature variable to couple (default: 273.15)");
-  params.addParam<Real>("conductivity_ice", 2.29, "Thermal conductivity or air, kappa_i [ W/(m K)]");
-  params.addParam<Real>("heat_capacity_ice", 1.8e6, "Heat capacity of air, C_i [J/(m^3 K)]");
   return params;
 }
 
@@ -28,4 +27,13 @@ IceProperties::computeQpProperties()
   _rho_i[_qp] = _property_uo.iceDensity(_temperature[_qp]);
   _kappa_i[_qp] = getParam<Real>("conductivity_ice");
   _C_i[_qp] = getParam<Real>("heat_capacity_ice");
+}
+
+InputParameters
+IceProperties::objectParams()
+{
+  InputParameters params = emptyInputParameters();
+  params.addParam<Real>("conductivity_ice", 2.29, "Thermal conductivity or air, kappa_i [ W/(m K)]");
+  params.addParam<Real>("heat_capacity_ice", 1.8e6, "Heat capacity of air, C_i [J/(m^3 K)]");
+  return params;
 }

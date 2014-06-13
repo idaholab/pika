@@ -22,7 +22,7 @@ class IceProperties :
 {
 public:
   IceProperties(const std::string & name, InputParameters parameters);
-
+  static InputParameters objectParams();
 protected:
   virtual void computeQpProperties();
 

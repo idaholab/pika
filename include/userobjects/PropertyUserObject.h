@@ -25,7 +25,10 @@ template<>
 InputParameters validParams<PropertyUserObject>();
 
 /**
+ * Container for constant properties and property calculations.
  *
+ * Inherit from the PropertyUserObjectInterface for general access to
+ * the members and methods of this class.
  */
 class PropertyUserObject : public GeneralUserObject
 {
@@ -43,13 +46,19 @@ public:
    */
   virtual ~PropertyUserObject(){}
 
+  /* Static function containing the constant properties; this is called by
+     both the UserObject and PikaMaterialAction; generally the later should
+     be used for changing these values */
+  static InputParameters objectParams();
+
+  ///@{
   /**
-   *
+   * Not implemented.
    */
   virtual void execute(){}
   virtual void initialize(){}
   virtual void finalize(){}
-
+  ///@}
 
   /**
    * Return the density of ice as a function of temperature

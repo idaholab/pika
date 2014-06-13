@@ -12,27 +12,39 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-// Pika includes
-#include "PikaMaterialAction.h"
-
 // Moose includes
 #include "InputParameters.h"
 #include "ActionFactory.h"
 #include "ActionWarehouse.h"
 #include "MooseObjectAction.h"
 
+// Pika includes
+#include "PikaMaterialAction.h"
+#include "PropertyUserObject.h"
+#include "AirProperties.h"
+#include "IceProperties.h"
+
 template<>
 InputParameters validParams<PikaMaterialAction>()
 {
   InputParameters params = validParams<Action>();
-  params.addParam<Real>("atmospheric_pressure", 1.01325e5, "Atmospheric pressure, P_a [Pa]");
 
+  // Add the constant properties that are defined by the various objects
+  params += PropertyUserObject::objectParams();
+  params += AirProperties::objectParams();
+  params += IceProperties::objectParams();
+
+  // Add the block parameter
   params.addParam<std::vector<SubdomainName> >("block", std::vector<SubdomainName>(1,"0"), "The list subdomain ids that the generated materials should be limited");
 
+  // Add the variables needed
   params.addCoupledVar("temperature", 273.15, "The temperature variable to couple (default: 273.15)");
   params.addCoupledVar("phi", 1, "The phase-field variable to couple (default: 1)");
 
-  params.addParamNamesToGroup("atmospheric_pressure", "General");
+  // Parameters for outputting Material properties
+  params.addParam<std::vector<OutputName> >("outputs", std::vector<OutputName>(1, "none"), "Vector of output names were you would like to restrict the output of material data (empty outputs to all)");
+  params.addParam<std::vector<std::string> >("output_properties", "List of material properties, from this material, to output (outputs must also be defined to an output type)");
+
   return params;
 }
 
