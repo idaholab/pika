@@ -6,7 +6,7 @@ InputParameters validParams<IceProperties>()
 {
   InputParameters params = validParams<Material>();
   params += validParams<ChemicalPotentialInterface>();
-  params.addCoupledVar("temperature", 273.15,  "The temperature variable to couple (default: 273.15)");
+  params.addRequiredCoupledVar("temperature", "The temperature variable to couple (default: 273.15)");
   params.addParam<Real>("conductivity_ice", 2.29, "Thermal conductivity or air, kappa_i [ W/(m K)]");
   params.addParam<Real>("heat_capacity_ice", 1.8e6, "Heat capacity of air, C_i [J/(m^3 K)]");
   return params;

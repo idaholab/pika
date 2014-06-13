@@ -23,7 +23,7 @@ InputParameters validParams<ChemicalPotentialPropertyUserObject>()
   params.addParam<Real>("atmospheric_pressure", 1.01325e5, "Atmospheric pressure, P_a [Pa]");
   params.addParam<Real>("gas_constant_dry_air", 286.9, "Gas constant for dry air, R_{da} [J/(Kg K)]");
   params.addParam<Real>("gas_constant_water_vapor", 461.5, "Gas constant for water vapor, R_v [J/(Kg K)]");
-  params.addParam<Real>("reference_temperature", 258.2 ,"Reference temperature [K]");
+  params.addParam<Real>("reference_temperature", 263.15 ,"Reference temperature [K]");
   return params;
 }
 

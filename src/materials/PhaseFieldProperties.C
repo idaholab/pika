@@ -8,7 +8,7 @@ InputParameters validParams<PhaseFieldProperties>()
 {
   InputParameters params = validParams<Material>();
   params += validParams<ChemicalPotentialInterface>();
-  params.addCoupledVar("temperature", 273.15, "The temperature variable to couple (default: 273.15)");
+  params.addRequiredCoupledVar("temperature", "The temperature variable to couple (default: 273.15)");
   params.addCoupledVar("phi", 1, "The phase-field variable to couple");
 
   return params;
