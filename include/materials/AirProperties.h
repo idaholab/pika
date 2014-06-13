@@ -5,7 +5,7 @@
 #include "Material.h"
 
 // PIKA includes
-#include "ChemicalPotentialInterface.h"
+#include "PropertyUserObjectInterface.h"
 
 // Forward declarations
 class AirProperties;
@@ -18,10 +18,12 @@ InputParameters validParams<AirProperties>();
  */
 class AirProperties :
   public Material,
-  public ChemicalPotentialInterface
+  public PropertyUserObjectInterface
 {
 public:
   AirProperties(const std::string & name, InputParameters parameters);
+
+  static InputParameters objectParams();
 
 protected:
   virtual void computeQpProperties();

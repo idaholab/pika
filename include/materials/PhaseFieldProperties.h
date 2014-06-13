@@ -1,8 +1,11 @@
 #ifndef PHASEFIELDPROPERTIES_H
 #define PHASEFIELDPROPERTIES_H
 
+// MOOSE includes
 #include "Material.h"
-#include "ChemicalPotentialInterface.h"
+
+// PIKA includes
+#include "PropertyUserObjectInterface.h"
 
 class PhaseFieldProperties;
 
@@ -14,7 +17,7 @@ InputParameters validParams<PhaseFieldProperties>();
  */
 class PhaseFieldProperties :
   public Material,
-  public ChemicalPotentialInterface
+  public PropertyUserObjectInterface
 {
 public:
   PhaseFieldProperties(const std::string & name, InputParameters parameters);

@@ -86,32 +86,9 @@
   [../]
 []
 
-[Materials]
-  [./air]
-    type = AirProperties
-    block = 0
-    property_user_object = potential_uo
-    temperature = T
-  [../]
-  [./phase]
-    type = PhaseFieldProperties
-    block = 0
-    phi = phi
-    property_user_object = potential_uo
-    temperature = T
-  [../]
-  [./constants]
-    type = ConstantProperties
-    block = 0
-    property_user_object = potential_uo
-    reference_temperature = 263.15
-  [../]
-  [./ice]
-    type = IceProperties
-    block = 0
-    property_user_object = potential_uo
-    temperature = T
-  [../]
+[PikaMaterials]
+  phi = phi
+  temperature = T
 []
 
 [Postprocessors]
@@ -119,12 +96,6 @@
     type = ElementL2Error
     variable = T
     function = T_func
-  [../]
-[]
-
-[UserObjects]
-  [./potential_uo]
-    type = ChemicalPotentialPropertyUserObject
   [../]
 []
 
@@ -158,4 +129,3 @@
     type = FunctionIC
   [../]
 []
-
