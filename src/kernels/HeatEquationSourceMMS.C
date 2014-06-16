@@ -52,6 +52,5 @@ HeatEquationSourceMMS::computeQpResidual()
      
   if (_use_dphi_dt)
     f += -0.5*L_sg*(x*y)*(x*y)*(x*y);
- // cout<<t<<" "<<x<<" "<<y<<" "<< phi << endl;
   return -_test[_i][_qp] * f;
 }

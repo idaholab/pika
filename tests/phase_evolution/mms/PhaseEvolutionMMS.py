@@ -20,7 +20,7 @@ t = symbols('t')
 
 #auxVariables
 u = 0.5*sin(4.0*x*y) 
-T=-10*(x*y)+273
+T=-10.0*(x*y)+273.0
 #variables
 phi = t*sin(4.0*pi*x)*sin(4.0*pi*y)
 
@@ -60,7 +60,7 @@ rho_a = symbols('rho_a')
 rho_i = symbols('rho_i')
 
 #Saturated Vapor Density at Reference Temp.
-T_o =263 #[K] or -10 C
+T_o =263.0 #[K] or -10 C
 K_fit = [-0.58653696e4, 0.2224103300e2, 0.13749042e-1, -0.34031775e-4, 0.26967687e-7, 0.6918651]
 
 P_vs_o = exp(K_fit[0]*T_o**(-1.0) + K_fit[1]*T_o**0.0 + K_fit[2]*T_o**1.0 + K_fit[3]*T_o**2.0 + K_fit[4]*T_o**3.0 + K_fit[5]*log(T_o))
@@ -97,7 +97,7 @@ term3 = phi-(phi**3.0)
 term4 = lam*(u-u_eq)*(1.0-phi*phi)**2.0
 
 # Eq. (33) wihtout potential 
-phase_evol = term1-term2-term3
+phase_evol = -term3
 
 #Generate the C/C++ version of the code.
 print('\n')

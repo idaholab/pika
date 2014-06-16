@@ -25,6 +25,9 @@
 #include "HeatEquationSourceMMS.h"
 #include "PhaseEvolutionSourceMMS.h"
 #include "MaterialUserForcingFunction.h"
+#include "DoubleWellPotential.h"
+#include "DoubleWellPotentialMMS.h"
+#include "PikaDoubleWellPotential.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -88,6 +91,9 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(HeatEquationSourceMMS);
   registerKernel(PhaseEvolutionSourceMMS);
   registerKernel(MaterialUserForcingFunction);
+  registerKernel(DoubleWellPotential);
+  registerKernel(PikaDoubleWellPotential);
+  registerKernel(DoubleWellPotentialMMS);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
