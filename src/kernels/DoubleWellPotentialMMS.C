@@ -19,6 +19,6 @@ DoubleWellPotentialMMS::computeQpResidual()
   Real x = _q_point[_qp](0);
   Real y = _q_point[_qp](1);
   Real f = 
-  -t*sin(4.0*pi*x)*sin(4.0*pi*y) + pow(t*sin(4.0*pi*x)*sin(4.0*pi*y), 3.0);
+    -t*sin(4.0*pi*x)*sin(4.0*pi*y) + pow(t*sin(4.0*pi*x)*sin(4.0*pi*y), 3.0);
   return -_test[_i][_qp] * f;
 }

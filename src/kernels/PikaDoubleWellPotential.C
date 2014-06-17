@@ -20,13 +20,15 @@ Real
 PikaDoubleWellPotential::computeDFDOP(PFFunctionType type)
 {
   switch (type)
-  {
-    case Residual:
-      return (_u[_qp]*_u[_qp]*_u[_qp] - _u[_qp]) * _test[_i][_qp] ;
+      {
+        case Residual:
+          std::cout<<"Compute Residual"<<std::endl;
+          return _u[_qp]*_u[_qp]*_u[_qp] - _u[_qp] ;
 
-    case Jacobian:
-      return _phi[_j][_qp]*(3.0*_u[_qp]*_u[_qp] - 1.0);
-  }
+        case Jacobian:
+          std::cout<<"Compute Jacobian"<<std::endl;
+          return _phi[_j][_qp]*(3.0*_u[_qp]*_u[_qp] - 1.0);
+       }
 
   mooseError("Invalid type passed in");
 }
