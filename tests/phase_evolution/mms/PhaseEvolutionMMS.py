@@ -97,7 +97,7 @@ term3 = phi-(phi**3.0)
 term4 = lam*(u-u_eq)*(1.0-phi*phi)**2.0
 
 # Eq. (33) wihtout potential 
-phase_evol = -term3
+phase_evol = term1-term2-term3
 
 #Generate the C/C++ version of the code.
 print('\n')

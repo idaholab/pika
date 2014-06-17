@@ -3,19 +3,17 @@
   dim = 2
   nx = 20
   ny = 20
-  elem_type = QUAD4
+  elem_type = QUAD8
 []
 
 [Variables]
   [./phi]
-    order = THIRD
-    family = HERMITE
+    order = SECOND
     block = 0
   [../]
 []
 
 [AuxVariables]
-  active = 'u T'
   [./abs_error]
   [../]
   [./u]
@@ -37,12 +35,12 @@
   [../]
   [./phi_func]
     type = ParsedFunction
-    value = t*sin(4.0*pi*x)*sin(4.0*pi*y)
+    value = 't*((x-0.50)*(x-0.5)+(y-0.5)*(y-0.5) -.125)'
   [../]
 []
 
 [Kernels]
-  active = 'phi_double_well mms'
+  active = 'phi_square_gradient phi_double_well mms phi_time'
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
@@ -59,6 +57,7 @@
     type = PhaseEvolutionSourceMMS
     variable = phi
     block = 0
+    chemical_potential = u
   [../]
   [./phi_time]
     type = PikaTimeDerivative
@@ -82,12 +81,11 @@
 []
 
 [AuxKernels]
-  active = 'u_exact T_exact'
   [./error_aux]
     type = ErrorFunctionAux
     variable = abs_error
-    function = u_func
-    solution_variable = u
+    function = phi_func
+    solution_variable = phi
   [../]
   [./u_exact]
     type = FunctionAux
@@ -116,6 +114,8 @@
   type = Transient
   num_steps = 10
   dt = .1
+  l_max_its = 100
+  solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre'
   petsc_options_value = 'hypre boomeramg'
   end_time = 1
@@ -124,6 +124,7 @@
 [Outputs]
   exodus = true
   console = false
+  file_base = mms_phase_evolution_out
   [./console]
     type = Console
     linear_residuals = true
@@ -131,6 +132,7 @@
 []
 
 [ICs]
+  active = 'phi_ic'
   [./phi_ic]
     function = phi_func
     variable = phi

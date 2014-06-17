@@ -6,6 +6,7 @@ InputParameters validParams<PhaseEvolutionSourceMMS>()
   InputParameters params = validParams<Kernel>();
   params += validParams<PropertyUserObjectInterface>();
   params.addParam<bool>("use_potential_transition",false, "Include term proportional to lambda in Eq.(33)");
+  params.addRequiredCoupledVar("chemical_potential","Variable containing the vapor potential , u) ");
   return params;
 }
 
@@ -41,10 +42,10 @@ PhaseEvolutionSourceMMS::computeQpResidual()
   Real rho_i = _rho_i[_qp];
   Real pi = libMesh::pi;
   Real f = 
- 32.0*pow(pi, 2.0)*t*pow(w, 2.0)*sin(4.0*pi*x)*sin(4.0*pi*y) + tau*sin(4.0*pi*x)*sin(4.0*pi*y);
+    -4*t*pow(w, 2.0) - t*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125) + tau*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125) + pow(t*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125), 3.0);
 
   if(_use_potential_transition)
-    f+=lambda*pow(-pow(t, 2.0)*pow(sin(4.0*pi*x), 2.0)*pow(sin(4.0*pi*y), 2.0) + 1.0, 2.0)*(0.5*sin(4.0*x*y) - (4562027550.87433*R_da*rho_a*pow(-10.0*x*y + 273.0, 0.6918651)*exp(-5865.3696*1.0/(-10.0*x*y + 273) + 0.013749042*pow(-10.0*x*y + 273.0, 1.0) - 3.4031775e-5*pow(-10.0*x*y + 273.0, 2.0) + 2.6967687e-8*pow(-10.0*x*y + 273.0, 3.0))/(R_v*(P_a - 4562027550.87433*pow(-10.0*x*y + 273.0, 0.6918651)*exp(-5865.3696*1.0/(-10.0*x*y + 273) + 0.013749042*pow(-10.0*x*y + 273.0, 1.0) - 3.4031775e-5*pow(-10.0*x*y + 273.0, 2.0) + 2.6967687e-8*pow(-10.0*x*y + 273.0, 3.0)))) - 5.4296946499373*pow(263.0, 0.6918651)*R_da*rho_a/(R_v*(P_a - 5.4296946499373*pow(263.0, 0.6918651))))/rho_i); 
-
+    f+=
+      lambda*pow(-pow(t, 2)*pow(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125, 2) + 1.0, 2.0)*(0.5*sin(4.0*x*y) - (4562027550.87433*R_da*rho_a*pow(-10.0*x*y + 273.0, 0.6918651)*exp(-5865.3696*1.0/(-10.0*x*y + 273.0) + 0.013749042*pow(-10.0*x*y + 273.0, 1.0) - 3.4031775e-5*pow(-10.0*x*y + 273.0, 2.0) + 2.6967687e-8*pow(-10.0*x*y + 273.0, 3.0))/(R_v*(P_a - 4562027550.87433*pow(-10.0*x*y + 273.0, 0.6918651)*exp(-5865.3696*1.0/(-10.0*x*y + 273.0) + 0.013749042*pow(-10.0*x*y + 273.0, 1.0) - 3.4031775e-5*pow(-10.0*x*y + 273.0, 2.0) + 2.6967687e-8*pow(-10.0*x*y + 273.0, 3.0)))) - 256.482851122963*R_da*rho_a/(R_v*(P_a - 256.482851122963)))/rho_i);
   return -_test[_i][_qp] * f;
 }
