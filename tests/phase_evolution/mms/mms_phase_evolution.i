@@ -42,7 +42,7 @@
 []
 
 [Kernels]
-  active = 'phi_square_gradient phi_double_well mms phi_time'
+  active = 'phi_double_well mms'
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
@@ -58,7 +58,6 @@
   [./mms]
     type = PhaseEvolutionSourceMMS
     variable = phi
-    property_user_object = property_uo
     block = 0
   [../]
   [./phi_time]
@@ -113,38 +112,6 @@
   [../]
 []
 
-[Materials]
-  [./ice_props]
-    type = IceProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./constant_props]
-    type = ConstantProperties
-    block = 0
-    property_user_object = property_uo
-  [../]
-  [./phase_field_props]
-    type = PhaseFieldProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./air]
-    type = AirProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-[]
-
-[UserObjects]
-  [./property_uo]
-    type = ChemicalPotentialPropertyUserObject
-  [../]
-[]
-
 [Executioner]
   type = Transient
   num_steps = 10
@@ -180,5 +147,11 @@
     variable = u
     type = FunctionIC
   [../]
+[]
+
+[PikaMaterials]
+  reference_temperature = 263.15
+  phi = phi
+  temperature = T
 []
 

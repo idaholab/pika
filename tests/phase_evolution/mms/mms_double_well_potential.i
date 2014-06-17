@@ -3,7 +3,6 @@
   dim = 2
   nx = 20
   ny = 20
-  uniform_refine = 1
   elem_type = QUAD8
 []
 
@@ -15,7 +14,7 @@
 []
 
 [AuxVariables]
-  active = 'u T'
+  active = 'abs_error'
   [./abs_error]
   [../]
   [./u]
@@ -37,7 +36,7 @@
   [../]
   [./phi_func]
     type = ParsedFunction
-    value = sin(4.0*pi*x)*sin(4.0*pi*y)
+    value = 't*((x-0.50)*(x-0.5)+(y-0.5)*(y-0.5) -.125)'
   [../]
 []
 
@@ -82,12 +81,12 @@
 []
 
 [AuxKernels]
-  active = 'u_exact T_exact'
+  active = 'error_aux'
   [./error_aux]
     type = ErrorFunctionAux
     variable = abs_error
-    function = u_func
-    solution_variable = u
+    function = phi_func
+    solution_variable = phi
   [../]
   [./u_exact]
     type = FunctionAux
@@ -112,47 +111,21 @@
   [../]
 []
 
-[Materials]
-  [./ice_props]
-    type = IceProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./constant_props]
-    type = ConstantProperties
-    block = 0
-    property_user_object = property_uo
-  [../]
-  [./phase_field_props]
-    type = PhaseFieldProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./air]
-    type = AirProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-[]
-
-[UserObjects]
-  [./property_uo]
-    type = ChemicalPotentialPropertyUserObject
-  [../]
-[]
-
 [Executioner]
-  type = Steady
+  type = Transient
+  num_steps = 10
+  dt = .1
+  l_max_its = 100
+  solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre'
   petsc_options_value = 'hypre boomeramg'
+  end_time = 1
 []
 
 [Outputs]
   exodus = true
   console = false
+  file_base = mms_double_well_potential_out
   [./console]
     type = Console
     linear_residuals = true
@@ -160,6 +133,7 @@
 []
 
 [ICs]
+  active = 'phi_ic'
   [./phi_ic]
     function = phi_func
     variable = phi
@@ -176,5 +150,11 @@
     variable = u
     type = FunctionIC
   [../]
+[]
+
+[PikaMaterials]
+  reference_temperature = 263.15
+  phi = phi
+  temperature = 263.15
 []
 

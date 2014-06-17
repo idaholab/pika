@@ -22,7 +22,7 @@ t = symbols('t')
 u = 0.5*sin(4.0*x*y) 
 T=-10.0*(x*y)+273.0
 #variables
-phi = t*sin(4.0*pi*x)*sin(4.0*pi*y)
+phi =t*((x-0.50)*(x-0.5)+(y-0.5)*(y-0.5) -.125)  
 
 print '\n'
 print 'T =\n '

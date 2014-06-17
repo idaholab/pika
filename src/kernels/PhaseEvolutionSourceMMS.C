@@ -1,17 +1,17 @@
 #include "PhaseEvolutionSourceMMS.h"
-#include "ChemicalPotentialPropertyUserObject.h"
+#include "PropertyUserObject.h"
 template<>
 InputParameters validParams<PhaseEvolutionSourceMMS>()
 {
   InputParameters params = validParams<Kernel>();
-  params += validParams<ChemicalPotentialInterface>();
+  params += validParams<PropertyUserObjectInterface>();
   params.addParam<bool>("use_potential_transition",false, "Include term proportional to lambda in Eq.(33)");
   return params;
 }
 
 PhaseEvolutionSourceMMS::PhaseEvolutionSourceMMS(const std::string & name, InputParameters parameters) :
     Kernel(name, parameters),
-    ChemicalPotentialInterface(getUserObject<ChemicalPotentialPropertyUserObject>("property_user_object")),
+    PropertyUserObjectInterface(name, parameters),
     _tau(getMaterialProperty<Real>("tau")),
     _w(getMaterialProperty<Real>("interface_thickness")),
     _lambda(getMaterialProperty<Real>("lambda")),

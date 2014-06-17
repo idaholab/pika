@@ -14,7 +14,7 @@
 
 #ifndef PHASEEVOLUTIONSOURCEMMS_H
 #define PHASEEVOLUTIONSOURCEMMS_H
-#include "ChemicalPotentialInterface.h"
+#include "PropertyUserObjectInterface.h"
 // MOOSE includes
 #include "Kernel.h"
 
@@ -29,7 +29,8 @@ InputParameters validParams<PhaseEvolutionSourceMMS>();
  * transport equation, Eq. (34)
  */
 class PhaseEvolutionSourceMMS : 
-				public Kernel, public ChemicalPotentialInterface
+    public Kernel,
+    public PropertyUserObjectInterface
 {
 public:
 
