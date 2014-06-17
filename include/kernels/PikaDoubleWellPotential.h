@@ -18,7 +18,7 @@ public:
   PikaDoubleWellPotential(const std::string & name, InputParameters parameters);
 
 protected:
-  virtual Real computeQpResidual();
+  virtual Real computeDFDOP(PFFunctionType type);
 };
 
 #endif //PIKADOUBLEWELLPOTENTIAL_H

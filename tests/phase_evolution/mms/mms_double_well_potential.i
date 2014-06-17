@@ -3,13 +3,13 @@
   dim = 2
   nx = 20
   ny = 20
-  elem_type = QUAD4
+  uniform_refine = 1
+  elem_type = QUAD8
 []
 
 [Variables]
   [./phi]
-    order = THIRD
-    family = HERMITE
+    order = SECOND
     block = 0
   [../]
 []
@@ -37,12 +37,12 @@
   [../]
   [./phi_func]
     type = ParsedFunction
-    value = t*sin(4.0*pi*x)*sin(4.0*pi*y)
+    value = sin(4.0*pi*x)*sin(4.0*pi*y)
   [../]
 []
 
 [Kernels]
-  active = 'phi_square_gradient phi_double_well mms phi_time'
+  active = 'phi_double_well mms'
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
@@ -56,9 +56,8 @@
     chemical_potential = u
   [../]
   [./mms]
-    type = PhaseEvolutionSourceMMS
+    type = DoubleWellPotentialMMS
     variable = phi
-    property_user_object = property_uo
     block = 0
   [../]
   [./phi_time]
@@ -146,12 +145,9 @@
 []
 
 [Executioner]
-  type = Transient
-  num_steps = 10
-  dt = .1
+  type = Steady
   petsc_options_iname = '-pc_type -pc_hypre'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 1
 []
 
 [Outputs]
