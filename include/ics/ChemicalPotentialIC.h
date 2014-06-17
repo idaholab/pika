@@ -5,7 +5,7 @@
 #include "InitialCondition.h"
 
 // PIKA includes
-#include "ChemicalPotentialInterface.h"
+#include "PropertyUserObjectInterface.h"
 
 //Forward Declarations
 class ChemicalPotentialIC;
@@ -15,7 +15,7 @@ InputParameters validParams<ChemicalPotentialIC>();
 
 class ChemicalPotentialIC :
   public InitialCondition,
-  public ChemicalPotentialInterface
+  public PropertyUserObjectInterface
 {
 public:
   ChemicalPotentialIC(const std::string & name, InputParameters parameters);

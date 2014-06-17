@@ -1,13 +1,14 @@
 #include "PikaApp.h"
 #include "Moose.h"
 #include "AppFactory.h"
+#include "ActionFactory.h"
 
 // Modules
 #include "PhaseFieldApp.h"
 #include "HeatConductionApp.h"
 
 // UserObjects
-#include "ChemicalPotentialPropertyUserObject.h"
+#include "PropertyUserObject.h"
 
 // Materials
 #include "ConstantProperties.h"
@@ -35,6 +36,9 @@
 // InitialConditions
 #include "ChemicalPotentialIC.h"
 #include "KaempferAnalyticPhaseIC.h"
+
+// Actions
+#include "PikaMaterialAction.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -73,7 +77,7 @@ void
 PikaApp::registerObjects(Factory & factory)
 {
   // UserObjects
-  registerUserObject(ChemicalPotentialPropertyUserObject);
+  registerUserObject(PropertyUserObject);
 
   // Materials
   registerMaterial(ConstantProperties);
@@ -104,6 +108,19 @@ PikaApp::registerObjects(Factory & factory)
 }
 
 void
-PikaApp::associateSyntax(Syntax & /*syntax*/, ActionFactory & /*action_factory*/)
+PikaApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
 {
+  // Actions
+  registerTask("setup_pika_material", false);
+  registerAction(PikaMaterialAction, "setup_pika_material");
+
+  // Add the task dependency
+  addTaskDependency("add_material", "setup_pika_material");
+  addTaskDependency("add_user_object", "setup_pika_material");
+
+  // Add the action syntax
+  syntax.registerActionSyntax("PikaMaterialAction", "PikaMaterials");
+
+
+
 }

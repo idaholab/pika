@@ -4,8 +4,8 @@
 // MOOSE includes
 #include "Material.h"
 
-// PIKA includes
-#include "ChemicalPotentialInterface.h"
+// PIKA indluces
+#include "PropertyUserObjectInterface.h"
 
 // Forward declarations
 class IceProperties;
@@ -18,11 +18,11 @@ InputParameters validParams<IceProperties>();
  */
 class IceProperties :
   public Material,
-  public ChemicalPotentialInterface
+  public PropertyUserObjectInterface
 {
 public:
   IceProperties(const std::string & name, InputParameters parameters);
-
+  static InputParameters objectParams();
 protected:
   virtual void computeQpProperties();
 

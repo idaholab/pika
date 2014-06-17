@@ -9,36 +9,13 @@
   [../]
 []
 
-[Materials]
-  [./air]
-    type = AirProperties
-    block = 0
-    conductivity_air = 0.1
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./ice]
-    # Change the condutivity of aior to that of the moose simple_transient_diffusion test. Also, the phi variable in PhaseFieldProperties is set to a default value of -1.
-    type = IceProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./constants]
-    type = ConstantProperties
-    property_user_object = property_uo
-    block = 0
-  [../]
-  [./phase_field]
-    # Use the default phi = 1 so that the material behaves as solid ice.
-    type = PhaseFieldProperties
-    block = 0
-    phi = -1
-    property_user_object = property_uo
-    temperature = T
-    output_properties = 'specific_humidity_ratio saturation_pressure_of_water_vapor_over_ice'
-    outputs = all
-  [../]
+[PikaMaterials]
+  conductivity_air = 0.1
+  atmospheric_pressure = 1.01325e5
+  phi = -1
+  temperature = T
+  output_properties = 'specific_humidity_ratio saturation_pressure_of_water_vapor_over_ice'
+  outputs = all
 []
 
 [Postprocessors]
@@ -56,13 +33,6 @@
     type = PointValue
     variable = saturation_pressure_of_water_vapor_over_ice
     point = '0.5 0.5 0'
-  [../]
-[]
-
-[UserObjects]
-  [./property_uo]
-    type = ChemicalPotentialPropertyUserObject
-    atmospheric_pressure = 1.01325e5
   [../]
 []
 

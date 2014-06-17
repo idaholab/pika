@@ -1,8 +1,11 @@
 #ifndef CONSTANTPROPERTIES_H
 #define CONSTANTPROPERTIES_H
 
+// MOOSE includes
 #include "Material.h"
-#include "ChemicalPotentialInterface.h"
+
+// PIKA includes
+#include "PropertyUserObjectInterface.h"
 
 class ConstantProperties;
 
@@ -14,7 +17,7 @@ InputParameters validParams<ConstantProperties>();
  */
 class ConstantProperties :
   public Material,
-  public ChemicalPotentialInterface
+  public PropertyUserObjectInterface
 {
 public:
   ConstantProperties(const std::string & name, InputParameters parameters);
@@ -23,15 +26,25 @@ protected:
   virtual void computeQpProperties();
 
 private:
+  MaterialProperty<Real> & _interface_free_energy;
 
-  std::vector<std::string> _property_names;
-  std::vector<Real> _property_values;
-  std::vector<MaterialProperty<Real> *> _property_ptrs;
+  MaterialProperty<Real> & _mean_molecular_spacing;
 
+  MaterialProperty<Real> & _boltzmann;
+
+  MaterialProperty<Real> & _condensation_coefficient;
+
+  MaterialProperty<Real> & _mass_water_molecule;
+
+  MaterialProperty<Real> & _interface_thickness;
 
   MaterialProperty<Real> & _atmospheric_pressure;
+
   MaterialProperty<Real> & _gas_constant_dry_air;
+
   MaterialProperty<Real> & _gas_constant_water_vapor;
+
+  MaterialProperty<Real> & _latent_heat;
 };
 
 #endif // CONSTANTPROPERTIES_H
