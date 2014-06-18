@@ -43,10 +43,8 @@ protected:
   virtual Real computeQpResidual();
 
 private:
-  const MaterialProperty<Real> & _ki;
-  const MaterialProperty<Real> & _ka;
-  const MaterialProperty<Real> & _ci;
-  const MaterialProperty<Real> & _ca;
+  const MaterialProperty<Real> & _k;
+  const MaterialProperty<Real> & _c;
   const MaterialProperty<Real> & _L_sg;
   const VariableValue & _phi;
   bool _use_dphi_dt;
