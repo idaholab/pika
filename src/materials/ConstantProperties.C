@@ -6,6 +6,7 @@ InputParameters validParams<ConstantProperties>()
 {
   InputParameters params = validParams<Material>();
   params += validParams<PropertyUserObjectInterface>();
+
   return params;
 }
 
@@ -20,6 +21,9 @@ ConstantProperties::ConstantProperties(const std::string & name, InputParameters
     _mass_water_molecule(declareProperty<Real>("mass_water_molecule")),
     _interface_thickness(declareProperty<Real>("interface_thickness")),
     _atmospheric_pressure(declareProperty<Real>("atmospheric_pressure")),
+    _gas_constant_dry_air(declareProperty<Real>("gas_constant_dry_air")),
+    _gas_constant_water_vapor(declareProperty<Real>("gas_constant_water_vapor")),
+    _mobility(declareProperty<Real>("mobility")),
     _latent_heat(declareProperty<Real>("latent_heat"))
 {
 }
@@ -34,5 +38,8 @@ ConstantProperties::computeQpProperties()
   _mass_water_molecule[_qp] = _property_uo._m;
   _interface_thickness[_qp] = _property_uo._W;
   _atmospheric_pressure[_qp] = _property_uo._P_a;
+  _gas_constant_dry_air[_qp] = _property_uo._R_da;
+  _gas_constant_water_vapor[_qp] = _property_uo._R_v;
   _latent_heat[_qp] = _property_uo._L_sg;
+  _mobility[_qp] = _property_uo._mobility;
 }

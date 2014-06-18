@@ -24,7 +24,10 @@
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
 #include "HeatEquationSourceMMS.h"
+#include "PhaseEvolutionSourceMMS.h"
 #include "MaterialUserForcingFunction.h"
+#include "DoubleWellPotential.h"
+#include "DoubleWellPotentialMMS.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -89,7 +92,10 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(TensorDiffusion);
   registerKernel(MassTransportSourceMMS);
   registerKernel(HeatEquationSourceMMS);
+  registerKernel(PhaseEvolutionSourceMMS);
   registerKernel(MaterialUserForcingFunction);
+  registerKernel(DoubleWellPotential);
+  registerKernel(DoubleWellPotentialMMS);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
