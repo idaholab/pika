@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 5
-  ny = 5
+  nx = 10
+  ny = 10
   elem_type = QUAD4
 []
 
@@ -13,33 +13,26 @@
   [../]
 []
 
-[AuxVariables]
-  [./phi]
-  [../]
-  [./abs_error]
-  [../]
-[]
-
 [Functions]
   [./u_func]
     type = ParsedFunction
     vars = a
-    vals = 2
+    vals = 4
     value = sin(a*pi*x)
   [../]
   [./forcing_func]
     type = ParsedFunction
     vars = a
-    vals = 2
+    vals = 4
     value = a*a*pi*pi*sin(a*pi*x)
   [../]
 []
 
 [Kernels]
   [./u_diff]
+    # D_name = diffusion_coefficient
     type = Diffusion
     variable = u
-    #D_name = diffusion_coefficient
     block = 0
   [../]
   [./f]
@@ -58,11 +51,6 @@
   [../]
 []
 
-#[PikaMaterials]
-#  phi = 1
-#  temperature = 273.15
-#[]
-
 [Postprocessors]
   [./L2_error]
     type = ElementL2Error
@@ -80,11 +68,23 @@
 
 [Executioner]
   type = Steady
+  petsc_options_iname = '-pc_type -pc_hypre_type'
+  petsc_options_value = 'hypre boomeramg'
+[]
+
+[Adaptivity]
+  marker = refine
+  steps = 6
+  [./Markers]
+    [./refine]
+      type = UniformMarker
+      mark = refine
+    [../]
+  [../]
 []
 
 [Outputs]
-  output_initial = true
-  console = true
+  exodus = true
   csv = true
 []
 
