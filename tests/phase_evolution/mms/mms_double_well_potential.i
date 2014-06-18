@@ -119,7 +119,7 @@
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 1
+  end_time = .5
 []
 
 [Outputs]

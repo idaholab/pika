@@ -48,12 +48,9 @@ private:
    MaterialProperty<Real> & _tau;
   const MaterialProperty<Real> & _w;
   const MaterialProperty<Real> & _lambda;
-  const MaterialProperty<Real> & _rho_i;
-  const MaterialProperty<Real> & _rho_a;
-  const MaterialProperty<Real> & _R_da;
-  const MaterialProperty<Real> & _R_v;
-  const MaterialProperty<Real> & _P_a;
   const bool  & _use_potential_transition;
+  const VariableValue  & _T;
+  const VariableValue  & _u;
 
 };
 

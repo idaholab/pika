@@ -83,7 +83,7 @@ PropertyUserObject::iceDensity(const Real &/* T */) const
 Real
 PropertyUserObject::airDensity(const Real & /* T */) const
 {
-  return _rho_i;
+  return _rho_a;
 }
 
 Real

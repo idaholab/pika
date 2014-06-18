@@ -40,7 +40,6 @@
 []
 
 [Kernels]
-  active = 'phi_square_gradient phi_double_well mms phi_time'
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
@@ -58,6 +57,8 @@
     variable = phi
     block = 0
     chemical_potential = u
+    use_potential_transition = true
+    temperature = T
   [../]
   [./phi_time]
     type = PikaTimeDerivative
@@ -118,7 +119,7 @@
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 1
+  end_time = .5
 []
 
 [Outputs]

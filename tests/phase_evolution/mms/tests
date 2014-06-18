@@ -5,12 +5,11 @@
     input = 'mms_double_well_potential.i'
     exodiff = 'mms_double_well_potential_out.e'
   [../]
-  [./test_phase_evolution_no_transition]
+  [./test]
     # MMS test for Eq. (33) w/o transition term =f 
     type = 'Exodiff'
     input = 'mms_phase_evolution.i'
     exodiff = 'mms_phase_evolution_out.e'
-    cli_args ='Kernels/mms/use_potential_transition=false' 
     prereq = 'test_double_well_potential'
   [../]
 
