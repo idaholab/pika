@@ -21,31 +21,40 @@
 []
 
 [Functions]
+  [./phi_func]
+    type = ParsedFunction
+    value = t*x*y
+  [../]
   [./u_func]
     type = ParsedFunction
-    vars = a
-    vals = 2
-    value = sin(a*pi*x)
-  [../]
-  [./forcing_func]
-    type = ParsedFunction
-    vars = a
-    vals = 2
-    value = a*a*pi*pi*sin(a*pi*x)
+    value = t*sin(2*pi*x)*cos(2*pi*y)
   [../]
 []
 
 [Kernels]
-  [./u_diff]
-    type = Diffusion
+  [./u_time]
+    type = TimeDerivative
     variable = u
-    #D_name = diffusion_coefficient
+  [../]
+  [./u_diff]
+    type = MatDiffusion
+    variable = u
+    D_name = diffusion_coefficient
     block = 0
   [../]
-  [./f]
-    type = UserForcingFunction
+  [./mms]
+    type = MassTransportSourceMMS
     variable = u
-    function = forcing_func
+    phi = phi
+    use_dphi_dt = false
+  [../]
+[]
+
+[AuxKernels]
+  [./phi_kernel]
+    type = FunctionAux
+    variable = phi
+    function = phi_func
   [../]
 []
 
@@ -58,10 +67,10 @@
   [../]
 []
 
-#[PikaMaterials]
-#  phi = 1
-#  temperature = 273.15
-#[]
+[PikaMaterials]
+  phi = phi
+  temperature = 273.15
+[]
 
 [Postprocessors]
   [./L2_error]
@@ -69,17 +78,19 @@
     variable = u
     function = u_func
   [../]
-  [./h_max]
-    type = AverageElementSize
-    variable = u
-  [../]
   [./ndofs]
     type = NumDOFs
+  [../]
+  [./hmax]
+    type = AverageElementSize
+    variable = u
   [../]
 []
 
 [Executioner]
-  type = Steady
+  type = Transient
+  num_steps = 5
+  dt = 0.1
 []
 
 [Outputs]
@@ -92,6 +103,11 @@
   [./u_ic]
     function = u_func
     variable = u
+    type = FunctionIC
+  [../]
+  [./phi_ic]
+    function = phi_func
+    variable = phi
     type = FunctionIC
   [../]
 []

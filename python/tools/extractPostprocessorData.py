@@ -1,9 +1,10 @@
 from readCSV import *
+import numpy
 
 ##
 # Reads rows of CSV data
 # @param file_base The base name of the *.csv file(s) to read
-# @return The x and y postprocessor data
+# @return The x and y postprocessor data as numpy arrays
 #
 # Optional:
 #   x=<str> The name of the postprocessor to extract for x-axis data
@@ -32,10 +33,10 @@ def extractPostprocessorData(file_base, **kwargs):
   # Transient: Read last piece of data for each file
   else:
     for i in range(refinements + 1):
-      header, data = tools.readCSV(file_base + '_' + str(i) + '.csv')
+      header, data = readCSV(file_base + '_' + str(i) + '.csv')
       x_idx = header.index(x_name)
       y_idx = header.index(y_name)
       x.append(float(data[-1][x_idx]))
       y.append(float(data[-1][y_idx]))
 
-  return x,y
+  return numpy.array(x), numpy.array(y)
