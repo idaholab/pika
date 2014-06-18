@@ -1,8 +1,10 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
+  nx = 20
+  ny = 20
+  xmax = .005
+  ymax = .005
 []
 
 [Variables]
@@ -24,18 +26,18 @@
     type = PikaTimeDerivative
     variable = T
     property = heat_capacity
-    scale = -1
   [../]
   [./heat_phi_time]
     type = PikaTimeDerivative
-    variable = phi
+    variable = T
     property = latent_heat
-    scale = 0.5
+    scale = -0.5
+    differentiated_variable = phi
   [../]
   [./vapor_time]
     type = PikaTimeDerivative
     variable = u
-    coefficient = -1
+    coefficient = 1.0
   [../]
   [./vapor_diffusion]
     type = MatDiffusion
@@ -44,30 +46,31 @@
   [../]
   [./vapor_phi_time]
     type = PikaTimeDerivative
-    variable = phi
-    coefficient = -0.5
+    variable = u
+    coefficient = 0.5
+    differentiated_variable = phi
   [../]
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    coefficient = 1.0
-  [../]
-  [./phi_interface]
-    type = ACInterface
-    variable = phi
-    mob_name = mobility
-    kappa_name = interface_thickness_squared
-  [../]
-  [./phi_potential]
-    type = PhaseFieldPotential
-    variable = phi
-    mob_name = mobility
+    property = tau
   [../]
   [./phi_transition]
     type = PhaseTransition
     variable = phi
     mob_name = mobility
     chemical_potential = u
+  [../]
+  [./phi_double_well]
+    type = DoubleWellPotential
+    variable = phi
+    mob_name = mobility
+  [../]
+  [./phi_square_gradient]
+    type = ACInterface
+    variable = phi
+    mob_name = mobility
+    kappa_name = interface_thickness_squared
   [../]
 []
 
@@ -86,37 +89,9 @@
   [../]
 []
 
-[Materials]
-  [./air]
-    type = AirProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./ice]
-    # Change the condutivity of ice to that of the moose simple_transient_diffusion test. Also, the phi variable in PhaseFieldProperties is set to a default value of 1.
-    type = IceProperties
-    block = 0
-    property_user_object = property_uo
-    temperature = T
-  [../]
-  [./constants]
-    type = ConstantProperties
-    block = 0
-  [../]
-  [./phase_field]
-    # Use the default phi = 1 so that the material behaves as solid ice.
-    type = PhaseFieldProperties
-    block = 0
-    phi = phi
-    property_user_object = property_uo
-    temperature = T
-  [../]
-[]
-
 [UserObjects]
   [./property_uo]
-    type = ChemicalPotentialPropertyUserObject
+    type = PropertyUserObject
   [../]
 []
 
@@ -161,26 +136,31 @@
   [../]
 []
 
-[ 1.0ICs]
-  1.0 [./phi_ic]
-  1.0   x1 = 0.5
-    y1 = 0.5
-    radius = 0.25
+[ICs]
+  [./phase_ic]
+    x1 = .0025
+    y1 = .0025
+    radius = 0.0005
     outvalue = 1
     variable = phi
     invalue = -1
     type = SmoothCircleIC
   [../]
+  [./temperature_ic]
+    variable = T
+    type = ConstantIC
+    value = 263
+  [../]
   [./vapor_ic]
     variable = u
-    property_user_object = property_uo
     type = ChemicalPotentialIC
     temperature = T
   [../]
-  [./heat_ic]
-    variable = T
-    type = ConstantIC
-    value = 253.15
-  [../]
+[]
+
+[PikaMaterials]
+  reference_temperature = 263.15
+  phi = phi
+  temperature = T
 []
 

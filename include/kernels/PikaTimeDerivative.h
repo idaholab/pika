@@ -1,6 +1,5 @@
 #ifndef PIKATIMEDERIVATIVE_H
 #define PIKATIMEDERIVATIVE_H 
-
 #include "TimeDerivative.h"
 #include "Material.h"
 
@@ -23,9 +22,11 @@ protected:
 
 private:
   const bool _has_material;
-  const Real _coefficient;
   MaterialProperty<Real> * _material_coefficient;
-  Real _scale;
-  Real _offset;
+  const Real _offset;
+  const Real _scale;
+  Real _coefficient;
+  VariableValue & _var_dot;
+  VariableValue & _dvar_dot_dvar;
 };
 #endif //PIKATIMEDERIVATIVE
