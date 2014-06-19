@@ -1,18 +1,20 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
-  elem_type = QUAD4
+  nx = 20
+  ny = 20
+  elem_type = QUAD8
 []
 
 [Variables]
   [./T]
+    order = SECOND
   [../]
 []
 
 [AuxVariables]
   [./phi]
+    order = SECOND
   [../]
   [./abs_error]
   [../]
@@ -21,15 +23,11 @@
 [Functions]
   [./phi_func]
     type = ParsedFunction
-    value = -t*(x*y)*(x*y)*(x*y)
+    value = -t*(x*y)*(x*y)
   [../]
   [./T_func]
     type = ParsedFunction
     value = t*sin(2.0*pi*x)*sin(2.0*pi*y)
-  [../]
-  [./dphi_dt]
-    type = ParsedFunction
-    value = (x*y)*(x*y)*(x*y)
   [../]
 []
 
@@ -49,19 +47,19 @@
   [./mms]
     type = HeatEquationSourceMMS
     variable = T
-    phi = phi
+    phase_variable = phi
+    block = 0
   [../]
   [./phi_time]
-    type = MaterialUserForcingFunction
+    type = PikaTimeDerivative
     variable = T
-    function = dphi_dt
-    scale = 0.5
-    material_coefficient = latent_heat
+    scale = -0.5
+    differentiated_variable = phi
+    property = latent_heat
   [../]
 []
 
 [AuxKernels]
-  active = 'error_aux phi_kernel'
   [./phi_kernel]
     type = FunctionAux
     variable = phi
@@ -72,11 +70,6 @@
     variable = abs_error
     function = T_func
     solution_variable = T
-  [../]
-  [./T_exact]
-    type = FunctionAux
-    variable = T_exact
-    function = T_func
   [../]
 []
 
@@ -92,6 +85,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
+  reference_temperature = 263.15
 []
 
 [Postprocessors]
@@ -104,7 +98,7 @@
 
 [Executioner]
   type = Transient
-  num_steps = 10
+  num_steps = 2
   dt = 0.1
 []
 
@@ -132,3 +126,4 @@
     type = FunctionIC
   [../]
 []
+
