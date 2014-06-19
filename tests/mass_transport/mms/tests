@@ -6,20 +6,6 @@
     exodiff = 'mms_mass_transport_out.e'
     cli_args = 'Kernels/mms/use_dphi_dt=false'
   [../]
-  [./test_with_dphi_dt]
-    # MMS test for du/dt - Div(D grad(u) + 1/2 dphi/dt = 0
-    type = 'Exodiff'
-    input = 'mms_mass_transport_dphi_dt.i'
-    exodiff = 'mms_mass_transport_dphi_dt_out.e'
-    prereq = 'test'
-  [../]
-  [./test_temporally_scaled]
-    # MMS test for scaled  du/dt - Div(D grad(u) + 1/2 dphi/dt = 0
-    type = 'Exodiff'
-    input = 'mms_scaled_mass_transport.i'
-    exodiff = 'mms_mass_transport_dphi_dt_out.e'
-    prereq = 'test'
-  [../]
 
   [./test_no_pika_material]
     # Same as test, but does not used the PikaMaterial
@@ -30,4 +16,19 @@
     prereq = test
   [../]
 
+  [./steady_convergence]
+    # MMS test showing steady state convergence
+    type = 'Exodiff'
+    input = 'mms_mass_transport_steady.i'
+    exodiff = 'mms_mass_transport_steady_out.e-s004'
+  [../]
+
+  [./test_temporally_scaled]
+    # MMS test for scaled  du/dt - Div(D grad(u) + 1/2 dphi/dt = 0
+    type = 'Exodiff'
+    input = 'mms_scaled_mass_transport.i'
+    exodiff = 'mms_mass_transport_dphi_dt_out.e'
+    prereq = 'test'
+    skip = 'see #41'
+  [../]
 []

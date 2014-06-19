@@ -1,15 +1,26 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
-  uniform_refine = 1
-  elem_type = QUAD8
+  nx = 5
+  ny = 5
+  elem_type = QUAD4
+[]
+
+[Adaptivity]
+  marker = refine
+  steps = 3
+  [./Markers]
+    [./refine]
+      type = UniformMarker
+      mark = refine
+    [../]
+  [../]
 []
 
 [Variables]
   [./u]
-    order = SECOND
+    order = FIRST
+    family = LAGRANGE
   [../]
 []
 
@@ -21,38 +32,34 @@
 []
 
 [Functions]
+  [./u_func]
+    type = ParsedFunction
+    vars = a
+    vals = 4
+    value = sin(a*pi*x)
+  [../]
   [./phi_func]
     type = ParsedFunction
     value = t*x*y
   [../]
-  [./u_func]
+  [./forcing_func]
     type = ParsedFunction
-    value = t*sin(2.0*pi*x)*cos(2.0*pi*y)
+    vars = a
+    vals = 4
+    value = a*a*pi*pi*sin(a*pi*x)
   [../]
 []
 
 [Kernels]
-  [./u_time]
-    type = TimeDerivative
-    variable = u
-  [../]
   [./u_diff]
-    type = MatDiffusion
+    type = Diffusion
     variable = u
-    D_name = diffusion_coefficient
     block = 0
   [../]
   [./mms]
-    type = MassTransportSourceMMS
+    type = UserForcingFunction
     variable = u
-    phi = phi
-    use_dt_dphi = true
-  [../]
-  [./phi_time]
-    type = PikaTimeDerivative
-    variable = u
-    coefficient = 0.5
-    differentiated_variable = phi
+    function = forcing_func
   [../]
 []
 
@@ -61,12 +68,6 @@
     type = FunctionAux
     variable = phi
     function = phi_func
-  [../]
-  [./error_aux]
-    type = ErrorFunctionAux
-    variable = abs_error
-    function = u_func
-    solution_variable = u
   [../]
 []
 
@@ -80,34 +81,33 @@
 []
 
 [PikaMaterials]
-  phi = phi
+  phi = -1
   temperature = 273.15
 []
 
 [Postprocessors]
-  [./L2_errror]
+  [./L2_error]
     type = ElementL2Error
     variable = u
     function = u_func
   [../]
+  [./ndofs]
+    type = NumDOFs
+  [../]
+  [./hmax]
+    type = AverageElementSize
+    variable = u
+  [../]
 []
 
 [Executioner]
-  type = Transient
-  num_steps = 2
-  dt = 0.25
-[]
-
-[Adaptivity]
+  type = Steady
 []
 
 [Outputs]
   output_initial = true
-  exodus = true
-  [./console]
-    type = Console
-    linear_residuals = true
-  [../]
+  console = true
+  csv = true
 []
 
 [ICs]
@@ -122,4 +122,3 @@
     type = FunctionIC
   [../]
 []
-

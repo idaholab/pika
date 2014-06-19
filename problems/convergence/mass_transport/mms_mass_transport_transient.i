@@ -3,6 +3,9 @@
   dim = 2
   nx = 5
   ny = 5
+  xmax = 0.01
+  ymax = 0.01
+  uniform_refine = 2
   elem_type = QUAD4
 []
 
@@ -14,9 +17,12 @@
 []
 
 [AuxVariables]
+  active = 'abs_error u_exact'
   [./phi]
   [../]
   [./abs_error]
+  [../]
+  [./u_exact]
   [../]
 []
 
@@ -24,8 +30,8 @@
   [./u_func]
     type = ParsedFunction
     vars = a
-    vals = 4
-    value = sin(a*pi*x)
+    vals = 100
+    value = t*y*sin(a*pi*x)
   [../]
   [./phi_func]
     type = ParsedFunction
@@ -34,20 +40,26 @@
   [./forcing_func]
     type = ParsedFunction
     vars = a
-    vals = 4
-    value = a*a*pi*pi*sin(a*pi*x)
+    vals = 100
+    value = y*sin(a*pi*x)+a*a*t*y*sin(a*pi*x)*pi*pi
   [../]
 []
 
 [Kernels]
-#  [./u_time]
-#    type = TimeDerivative
-#    variable = u
-#  [../]
+  # [./u_time]
+  # type = TimeDerivative
+  # variable = u
+  # [../]
+  # [./mms]
+  # type = MassTransportSourceMMS
+  # variable = u
+  # phi = phi
+  # use_dphi_dt = false
+  # [../]
   [./u_diff]
-    type = MatDiffusion
+    # D_name = diffusion_coefficient
+    type = Diffusion
     variable = u
-    D_name = diffusion_coefficient
     block = 0
   [../]
   [./mms]
@@ -55,20 +67,29 @@
     variable = u
     function = forcing_func
   [../]
-
-#  [./mms]
-#    type = MassTransportSourceMMS
-#    variable = u
-#    phi = phi
-#    use_dphi_dt = false
-#  [../]
+  [./u_time]
+    type = TimeDerivative
+    variable = u
+  [../]
 []
 
 [AuxKernels]
+  active = 'u_exact abs_err'
   [./phi_kernel]
     type = FunctionAux
     variable = phi
     function = phi_func
+  [../]
+  [./u_exact]
+    type = FunctionAux
+    variable = u_exact
+    function = u_func
+  [../]
+  [./abs_err]
+    type = ErrorFunctionAux
+    variable = abs_error
+    function = u_func
+    solution_variable = u
   [../]
 []
 
@@ -82,8 +103,9 @@
 []
 
 [PikaMaterials]
-  phi = phi
+  phi = -1
   temperature = 273.15
+  diffusion_coefficient = 1
 []
 
 [Postprocessors]
@@ -103,17 +125,18 @@
 
 [Executioner]
   type = Transient
-  num_steps = 5
-  dt = 0.1
+  num_steps = 10
+  dt = 0.01
 []
 
 [Outputs]
   output_initial = true
-  console = true
+  exodus = true
   csv = true
 []
 
 [ICs]
+  active = 'u_ic'
   [./u_ic]
     function = u_func
     variable = u
@@ -125,3 +148,4 @@
     type = FunctionIC
   [../]
 []
+

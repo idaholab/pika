@@ -37,13 +37,14 @@ class ConvergencePlot(object):
     grid(True)
     grid(True, which='minor', color='b')
 
-  def fit(self):
+  def fit(self, **kwargs):
     # Perform fit
     coefficients = numpy.polyfit(log10(self._x),log10(self._y), 1)
     polynomial = numpy.poly1d(coefficients)
+    order = kwargs.pop('order', 2)
 
     print coefficients
-    y_ideal = pow(10,coefficients[1])*numpy.power(self._x, sign(coefficients[0])*2)
+    y_ideal = pow(10,coefficients[1])*numpy.power(self._x, sign(coefficients[0])*order)
 
     plot(self._x, y_ideal, '-k', lw=1)
 

@@ -1,14 +1,14 @@
+#!/usr/bin/python
 '''***************************************
    * Generating Method of MFG-able       *
    * Solutions applied to the Heat       *
    * equation (eqn 34) in Kaempfer 2009  *
    *                                     *
    * Compile:                            *
-   * python HeatEquationMMS.py          *
+   * python HeatEquationMMS.py           *
    *                                     *
    ***************************************'''
-#!/usr/bin/python
-                                 
+
 from sympy import *
 from sympy.utilities.codegen import codegen
 init_printing()
@@ -17,7 +17,7 @@ x = symbols('x')
 y = symbols('y')
 t = symbols('t')
 
-phi =-t*(x*y)**2.0 
+phi =-t*(x*y)**2.0
 T = t*sin(2.0*pi*x)*sin(2.0*pi*y)
 
 print '\n'
@@ -30,7 +30,7 @@ k = symbols('k')
 
 c = symbols('c')
 
-L_sg = symbols('L_sg') 
+L_sg = symbols('L_sg')
 
 #Simplifying Math terms
 dT_dt = diff(T,t)
@@ -43,10 +43,10 @@ term1 = c * (dT_dt)
 term2 = diffuse_k_grad_T
 term3 =0.5 * L_sg  * (dPhi_dt)
 
-# Eq. (34) without dPhi_dt 
+# Eq. (34) without dPhi_dt
 hx =term1-term2
 
-#Print out equation 
+#Print out equation
 print '\n'
 print '  F = \n'
 pprint(hx)
@@ -71,4 +71,3 @@ print('-dPhi_dt term Code : \n')
          ("f", -term3), "C", "test", header=False, empty=False)
 print(c_code)
 print('\n')
-
