@@ -4,7 +4,7 @@ template<>
 InputParameters validParams<MassTransportSourceMMS>()
 {
   InputParameters params = validParams<Kernel>();
-  params.addParam<std::string>("water_vapor_diffusion_coefficient_name", "water_vapor_diffusion_coefficient",  "The name of the material property that contains the water vapor diffusion coefficient (D_v)");
+  params.addParam<std::string>("diffusion_coefficient_name", "diffusion_coefficient",  "The name of the phase dependent material property that contains the water vapor diffusion coefficient (D_v)");
   params.addRequiredCoupledVar("phi", "Phase-field variable, phi");
   params.addParam<bool>("use_dphi_dt", true, "Include the dphi_dt portion of the forcing function");
   return params;
@@ -12,7 +12,7 @@ InputParameters validParams<MassTransportSourceMMS>()
 
 MassTransportSourceMMS::MassTransportSourceMMS(const std::string & name, InputParameters parameters) :
     Kernel(name, parameters),
-    _D_v(getMaterialProperty<Real>(getParam<std::string>("water_vapor_diffusion_coefficient_name"))),
+    _D_v(getMaterialProperty<Real>(getParam<std::string>("diffusion_coefficient_name"))),
     _phi(coupledValue("phi")),
     _use_dphi_dt(getParam<bool>("use_dphi_dt"))
 {
@@ -26,7 +26,7 @@ MassTransportSourceMMS::computeQpResidual()
   Real t = _t;
   Real x = _q_point[_qp](0);
   Real y = _q_point[_qp](1);
-  Real D_v = _D_v[_qp];
+  Real D = _D_v[_qp];
   Real Pi = libMesh::pi;
   Real phi = _phi[_qp];
 

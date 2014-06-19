@@ -15,6 +15,7 @@
 
 [AuxVariables]
   [./phi]
+    order = SECOND
   [../]
   [./abs_error]
   [../]
@@ -47,7 +48,6 @@
     type = MassTransportSourceMMS
     variable = u
     phi = phi
-    use_dt_dphi = true
     use_dphi_dt = false
   [../]
   [./phi_time]
@@ -97,7 +97,7 @@
 [Executioner]
   type = Transient
   num_steps = 2
-  dt = 0.25
+  dt = .25
 []
 
 [Adaptivity]

@@ -15,6 +15,7 @@
 
 [AuxVariables]
   [./phi]
+    order = SECOND
   [../]
   [./abs_error]
   [../]
