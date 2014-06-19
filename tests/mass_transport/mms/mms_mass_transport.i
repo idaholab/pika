@@ -3,6 +3,7 @@
   dim = 2
   nx = 10
   ny = 10
+  uniform_refine = 1
   elem_type = QUAD8
 []
 
@@ -26,7 +27,7 @@
   [../]
   [./u_func]
     type = ParsedFunction
-    value = t*sin(2*pi*x)*cos(2*pi*y)
+    value = t*sin(2.0*pi*x)*cos(2.0*pi*y)
   [../]
 []
 
@@ -46,17 +47,18 @@
     type = MassTransportSourceMMS
     variable = u
     phi = phi
+    use_dt_dphi = true
     use_dphi_dt = false
   [../]
   [./phi_time]
-    type = UserForcingFunction
+    type = PikaTimeDerivative
     variable = u
-    function = dphi_dt_func
+    coefficient = 0.5
+    differentiated_variable = phi
   [../]
 []
 
 [AuxKernels]
-  active = 'error_aux phi_kernel'
   [./phi_kernel]
     type = FunctionAux
     variable = phi
@@ -67,11 +69,6 @@
     variable = abs_error
     function = u_func
     solution_variable = u
-  [../]
-  [./u_exact]
-    type = FunctionAux
-    variable = u_exact
-    function = u_func
   [../]
 []
 
@@ -84,13 +81,10 @@
   [../]
 []
 
-  [../]
-[]
-
 [PikaMaterials]
   phi = phi
   temperature = 273.15
-[../]
+[]
 
 [Postprocessors]
   [./L2_errror]
@@ -102,19 +96,19 @@
 
 [Executioner]
   type = Transient
-  num_steps = 10
-  dt = 0.1
+  num_steps = 2
+  dt = 0.25
+[]
+
+[Adaptivity]
 []
 
 [Outputs]
-  active = ''
   output_initial = true
   exodus = true
-  console = true
-  [./oversample]
-    refinements = 2
-    oversample = true
-    type = Exodus
+  [./console]
+    type = Console
+    linear_residuals = true
   [../]
 []
 
@@ -130,3 +124,4 @@
     type = FunctionIC
   [../]
 []
+

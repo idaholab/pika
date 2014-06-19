@@ -106,7 +106,6 @@
   active = ''
   output_initial = true
   exodus = true
-  file_base = mms_heat_equation_dphi_dt_out
   [./oversample]
     refinements = 2
     oversample = true
