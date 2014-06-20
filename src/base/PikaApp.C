@@ -19,7 +19,6 @@
 
 // Kernels
 #include "PikaTimeDerivative.h"
-#include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
@@ -87,7 +86,6 @@ PikaApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(PikaTimeDerivative);
-  registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
   registerKernel(TensorDiffusion);
   registerKernel(MassTransportSourceMMS);
