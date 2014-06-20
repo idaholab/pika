@@ -108,7 +108,6 @@
   active = ''
   output_initial = true
   exodus = true
-  file_base = mms_heat_equation_out
   [./oversample]
     refinements = 2
     oversample = true

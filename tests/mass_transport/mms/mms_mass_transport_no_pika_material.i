@@ -3,6 +3,7 @@
   dim = 2
   nx = 10
   ny = 10
+  uniform_refine = 1
   elem_type = QUAD8
 []
 
@@ -14,6 +15,7 @@
 
 [AuxVariables]
   [./phi]
+    order = SECOND
   [../]
   [./abs_error]
   [../]
@@ -26,7 +28,7 @@
   [../]
   [./u_func]
     type = ParsedFunction
-    value = t*sin(2*pi*x)*cos(2*pi*y)
+    value = t*sin(2.0*pi*x)*cos(2.0*pi*y)
   [../]
 []
 
@@ -49,9 +51,10 @@
     use_dphi_dt = false
   [../]
   [./phi_time]
-    type = UserForcingFunction
+    type = PikaTimeDerivative
     variable = u
-    function = dphi_dt_func
+    coefficient = 0.5
+    differentiated_variable = phi
   [../]
 []
 
@@ -124,8 +127,8 @@
 
 [Executioner]
   type = Transient
-  num_steps = 10
-  dt = 0.1
+  num_steps = 2
+  dt = 0.25
 []
 
 [Adaptivity]
@@ -155,3 +158,4 @@
     type = FunctionIC
   [../]
 []
+

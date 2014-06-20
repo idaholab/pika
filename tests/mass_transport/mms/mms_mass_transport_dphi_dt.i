@@ -27,7 +27,7 @@
   [../]
   [./u_func]
     type = ParsedFunction
-    value = t*sin(2*pi*x)*cos(2*pi*y)
+    value = t*sin(2.0*pi*x)*cos(2.0*pi*y)
   [../]
 []
 
@@ -49,9 +49,10 @@
     use_dt_dphi = true
   [../]
   [./phi_time]
-    type = UserForcingFunction
+    type = PikaTimeDerivative
     variable = u
-    function = -0.5*x*y
+    coefficient = 0.5
+    differentiated_variable = phi
   [../]
 []
 
@@ -93,7 +94,7 @@
 
 [Executioner]
   type = Transient
-  num_steps = 4
+  num_steps = 2
   dt = 0.25
 []
 
@@ -121,3 +122,4 @@
     type = FunctionIC
   [../]
 []
+
