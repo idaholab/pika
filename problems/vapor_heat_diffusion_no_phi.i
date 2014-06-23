@@ -13,15 +13,6 @@
 []
 
 [AuxVariables]
-  [./phi]
-  [../]
-[]
-
-[Functions]
-  [./phi_func]
-    type = ParsedFunction
-    value = (1/15000.0)*t*x^2
-  [../]
 []
 
 [Kernels]
@@ -46,37 +37,29 @@
   [../]
 []
 
-[AuxKernels]
-  [./phi_aux]
-    type = FunctionAux
-    variable = phi
-    function = phi_func
-  [../]
-[]
-
 [BCs]
   [./vapor_right]
     type = DirichletBC
     variable = u
-    boundary = left
+    boundary = right
     value = 0.5
   [../]
   [./vapor_left]
     type = DirichletBC
     variable = u
-    boundary = right
+    boundary = left
     value = 0
   [../]
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = left
+    boundary = right
     value = 265
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = right
+    boundary = left
     value = 260
   [../]
 []
@@ -84,7 +67,7 @@
 [PikaMaterials]
   conductivity_air = 0.1
   temperature = u
-  phi = phi
+  phi = -1
 []
 
 [Executioner]

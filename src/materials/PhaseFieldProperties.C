@@ -44,6 +44,7 @@ PhaseFieldProperties::computeQpProperties()
   Real & m = getMaterialProperty<Real>("mass_water_molecule")[_qp];
   Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
   Real & L_sg = getMaterialProperty<Real>("latent_heat")[_qp];
+  Real & xi = getMaterialProperty<Real>("temporal_scaling")[_qp];
 
   Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
 
@@ -61,11 +62,11 @@ PhaseFieldProperties::computeQpProperties()
   /// @todo{This needs to be computed}
   _interface_velocity[_qp] = 1e-9; // [m/s]
 
-  _capillary_length[_qp] = (rho_vs/rho_i[_qp])*(gamma * std::pow(a, 3.) ) / (k * _temperature[_qp]);
+  _capillary_length[_qp] =(1./xi) * (rho_vs/rho_i[_qp])*(gamma * std::pow(a, 3.) ) / (k * _temperature[_qp]);
 
-  _beta[_qp] = (1./alpha) *(rho_i[_qp]/rho_vs)* std::sqrt((2.*libMesh::pi*m) / (k * _temperature[_qp]));
+  _beta[_qp] =(1./xi) * (1./alpha) *(rho_i[_qp]/rho_vs)* std::sqrt((2.*libMesh::pi*m) / (k * _temperature[_qp]));
 
-  _lambda[_qp] = (_a1 * w / _capillary_length[_qp]);
+  _lambda[_qp] = xi * (_a1 * w / _capillary_length[_qp]);
 
   _tau[_qp] = (_beta[_qp] * w * _lambda[_qp]) / _a1;
 

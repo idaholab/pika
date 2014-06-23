@@ -37,7 +37,8 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _m(getParam<Real>("mass_water_molecule")),
     _W(getParam<Real>("interface_thickness")),
     _L_sg(getParam<Real>("latent_heat")),
-    _mobility(getParam<Real>("mobility"))
+    _mobility(getParam<Real>("mobility")),
+    _xi(getParam<Real>("temporal_scaling"))
 {
     // Define K coefficients (Wexler, 1977, Table 2)
   _K.push_back(-0.58653696e4);
@@ -66,7 +67,8 @@ PropertyUserObject::objectParams()
   params.addParam<Real>("mass_water_molecule", 2.9900332e-26, "Mass of water molecule, m [kg]");
   params.addParam<Real>("interface_thickness", 8e-6, "Interface thickness, W [m]");
   params.addParam<Real>("latent_heat", 2.6e9, "Latent heat of sublimation, L_{sg} [J/m^3]");
-  params.addParam<Real>("mobility", 1, "Phase-field mobility value");
+  params.addParam<Real>("mobility", 1.0, "Phase-field mobility value");
+  params.addParam<Real>("temporal_scaling", 1.0, "Snow metamorphosis time scaling value");
 
   // @todo{Group the above}
   params.addParamNamesToGroup("atmospheric_pressure", "General");
@@ -117,4 +119,10 @@ PropertyUserObject::equilibriumConcentration(const Real & T) const
   Real rho_vs_T   = equilibriumWaterVaporConcentrationAtSaturation(T);
   Real rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
   return (rho_vs_T - rho_vs_T_0) / iceDensity(T);
+}
+
+Real
+PropertyUserObject::temporal_scale() const
+{
+  return   _xi;
 }
