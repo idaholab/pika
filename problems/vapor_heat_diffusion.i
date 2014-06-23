@@ -1,117 +1,111 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 20
-  ny = 20
-  xmin = -1
-  ymin = -1
-  uniform_refine = 2
+  nx = 10
+  ny = 10
+  uniform_refine = 1
+  elem_type = QUAD8
 []
 
 [Variables]
-  active = 'T'
-  [./T]
-  [../]
   [./u]
+    order = SECOND
   [../]
 []
 
 [AuxVariables]
   [./phi]
+    order = SECOND
+  [../]
+  [./abs_error]
   [../]
 []
 
 [Functions]
   [./phi_func]
     type = ParsedFunction
-    value = -y^4+2*y^2
+    value = t*x*y
+  [../]
+  [./u_func]
+    type = ParsedFunction
+    value = t*sin(2.0*pi*x)*cos(2.0*pi*y)
   [../]
 []
 
 [Kernels]
-  active = 'heat_diffusion heat_time'
-  [./heat_diffusion]
-    type = MatDiffusion
-    variable = T
-    D_name = conductivity
+  active = 'u_diff u_time mms'
+  [./u_time]
+    type = TimeDerivative
+    variable = u
   [../]
-  [./heat_time]
-    type = PikaTimeDerivative
-    variable = T
-    property = heat_capacity
-  [../]
-  [./vapor_diffusion]
+  [./u_diff]
     type = MatDiffusion
     variable = u
     D_name = diffusion_coefficient
     block = 0
   [../]
-  [./vapor_time]
+  [./mms]
+    type = MassTransportSourceMMS
+    variable = u
+    phi = phi
+    use_dphi_dt = false
+  [../]
+  [./phi_time]
     type = PikaTimeDerivative
     variable = u
-    coefficient = 1.0
+    coefficient = 0.5
+    differentiated_variable = phi
   [../]
 []
 
 [AuxKernels]
-  [./phi_aux]
+  [./phi_kernel]
     type = FunctionAux
     variable = phi
     function = phi_func
-    block = 0
+  [../]
+  [./error_aux]
+    type = ErrorFunctionAux
+    variable = abs_error
+    function = u_func
+    solution_variable = u
   [../]
 []
 
 [BCs]
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 265
+  [./all]
+    type = FunctionDirichletBC
+    variable = u
+    boundary = 'bottom left right top'
+    function = u_func
   [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 260
-  [../]
-  [./insulated]
-    type = NeumannBC
-    variable = T
-    boundary = 'left right'
+[]
+
+[PikaMaterials]
+  phi = phi
+  temperature = 273.15
+[]
+
+[Postprocessors]
+  [./L2_errror]
+    type = ElementL2Error
+    variable = u
+    function = u_func
   [../]
 []
 
 [Executioner]
   type = Transient
-  num_steps = 10
-  end_time = 10
+  num_steps = 2
+  dt = .25
 []
 
 [Adaptivity]
-  max_h_level = 3
-  steps = 5
-  marker = T_marker
-  initial_marker = T_marker
-  [./Indicators]
-    [./T_indic]
-      type = GradientJumpIndicator
-      variable = T
-    [../]
-  [../]
-  [./Markers]
-    [./T_marker]
-      type = ErrorFractionMarker
-      coarsen = .2
-      indicator = T_indic
-      refine = .7
-    [../]
-  [../]
 []
 
 [Outputs]
+  output_initial = true
   exodus = true
-  console = false
   [./console]
     type = Console
     linear_residuals = true
@@ -119,24 +113,15 @@
 []
 
 [ICs]
-  active = 'T_ic'
   [./u_ic]
+    function = u_func
     variable = u
-    type = ConstantIC
-    value = 0
+    type = FunctionIC
   [../]
-  [./T_ic]
-    variable = T
-    value = 260
-    type = ConstantIC
-    block = 0
+  [./phi_ic]
+    function = phi_func
+    variable = phi
+    type = FunctionIC
   [../]
-[]
-
-[PikaMaterials]
-  reference_temperature = 263.15
-  phi = phi
-  mobility = 1.0
-  temperature = T
 []
 
