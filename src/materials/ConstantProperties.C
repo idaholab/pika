@@ -24,8 +24,7 @@ ConstantProperties::ConstantProperties(const std::string & name, InputParameters
     _gas_constant_dry_air(declareProperty<Real>("gas_constant_dry_air")),
     _gas_constant_water_vapor(declareProperty<Real>("gas_constant_water_vapor")),
     _mobility(declareProperty<Real>("mobility")),
-    _latent_heat(declareProperty<Real>("latent_heat")),
-    _xi(declareProperty<Real>("temporal_scale"))
+    _latent_heat(declareProperty<Real>("latent_heat"))
 {
 }
 
@@ -43,5 +42,4 @@ ConstantProperties::computeQpProperties()
   _gas_constant_water_vapor[_qp] = _property_uo._R_v;
   _latent_heat[_qp] = _property_uo._L_sg;
   _mobility[_qp] = _property_uo._mobility;
-  _xi[_qp] = _property_uo._xi;
 }

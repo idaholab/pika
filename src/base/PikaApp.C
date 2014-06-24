@@ -27,6 +27,8 @@
 #include "MaterialUserForcingFunction.h"
 #include "DoubleWellPotential.h"
 #include "DoubleWellPotentialMMS.h"
+#include "PikaScaledTimeDerivative.h"
+#include "PikaScaledMatDiffusion.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -94,6 +96,8 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(MaterialUserForcingFunction);
   registerKernel(DoubleWellPotential);
   registerKernel(DoubleWellPotentialMMS);
+  registerKernel(PikaScaledTimeDerivative);
+  registerKernel(PikaScaledMatDiffusion);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);

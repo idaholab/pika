@@ -87,7 +87,7 @@ public:
 
   Real equilibriumConcentration(const Real & T) const;
 
-  Real temporal_scale(const Real & T) const;
+  const Real & temporalScale() const;
 
 
   const Real _rho_i;

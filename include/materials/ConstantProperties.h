@@ -48,8 +48,6 @@ private:
 
   MaterialProperty<Real> & _latent_heat;
 
-  MaterialProperty<Real> & _xi;
-
 };
 
 #endif // CONSTANTPROPERTIES_H

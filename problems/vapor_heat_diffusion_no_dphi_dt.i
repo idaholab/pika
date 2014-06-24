@@ -26,13 +26,14 @@
 
 [Kernels]
   [./vapor_diffusion]
-    type = MatDiffusion
+    type = PikaScaledMatDiffusion
     variable = u
     D_name = diffusion_coefficient
   [../]
   [./vapor_time]
-    type = TimeDerivative
+    type = PikaScaledTimeDerivative
     variable = u
+    coefficient = 1.0
   [../]
   [./heat_time]
     type = PikaTimeDerivative

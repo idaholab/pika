@@ -121,8 +121,8 @@ PropertyUserObject::equilibriumConcentration(const Real & T) const
   return (rho_vs_T - rho_vs_T_0) / iceDensity(T);
 }
 
-Real
-PropertyUserObject::temporal_scale() const
+const Real &
+PropertyUserObject::temporalScale() const
 {
   return   _xi;
 }

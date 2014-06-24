@@ -4,6 +4,7 @@
 // modules/phase_field includes
 #include "ACBulk.h"
 
+#include "PropertyUserObjectInterface.h"
 //Forward Declarations
 class PhaseTransition;
 
@@ -11,7 +12,8 @@ template<>
 InputParameters validParams<PhaseTransition>();
 
 class PhaseTransition :
-  public ACBulk
+  public ACBulk,
+  public PropertyUserObjectInterface
 {
 public:
 
