@@ -1,14 +1,15 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 20
-  ny = 20
+  nx = 10
+  ny = 10
   xmax = .005
   ymax = .005
   elem_type = QUAD8
 []
 
 [Variables]
+  active = 'phi'
   [./T]
   [../]
   [./u]
@@ -17,10 +18,8 @@
   [../]
 []
 
-[AuxVariables]
-[]
-
 [Kernels]
+  active = 'phi_time phi_square_gradient'
   [./heat_diffusion]
     type = MatDiffusion
     variable = T
@@ -83,6 +82,7 @@
 []
 
 [BCs]
+  active = 'phi_bc'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -100,9 +100,26 @@
     variable = T
     boundary = 'left right'
   [../]
+  [./phi_bc]
+    type = DirichletBC
+    variable = phi
+    boundary = '0 1 2 3'
+    value = 1
+  [../]
 []
 
 [Postprocessors]
+[]
+
+[VectorPostprocessors]
+  [./bubble_line]
+    type = LineValueSampler
+    variable = phi
+    num_points = 1000
+    start_point = '0 0.0025 0'
+    end_point = '0.005 0.0025 0'
+    sort_by = x
+  [../]
 []
 
 [UserObjects]
@@ -115,18 +132,19 @@
   # Preconditioned JFNK (default)
   type = Transient
   num_steps = 100
-  dt = 10
+  dt = 1e-5
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
 []
 
 [Adaptivity]
-  max_h_level = 6
-  initial_steps = 3
+  max_h_level = 4
+  initial_steps = 4
   initial_marker = phi_marker
-  marker = combo_mark
+  marker = phi_marker
   [./Indicators]
+    active = 'phi_grad_indicator'
     [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
@@ -143,6 +161,7 @@
     [../]
   [../]
   [./Markers]
+    active = 'phi_marker'
     [./phi_marker]
       type = ErrorFractionMarker
       coarsen = 0.2
@@ -173,24 +192,28 @@
 [Outputs]
   output_initial = true
   exodus = true
+  file_base = data/phase_diffusion_out
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
   [../]
+  [./bubb_line_data]
+    type = CSV
+  [../]
 []
 
 [ICs]
+  active = 'phase_ic'
   [./phase_ic]
     x1 = .0025
     y1 = .0025
-    radius = 0.0005
+    radius = .001
     outvalue = 1
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 1e-6
   [../]
   [./temperature_ic]
     variable = T
@@ -208,7 +231,7 @@
 
 [PikaMaterials]
   phi = phi
-  temperature = T
+  temperature = 263.15
   interface_thickness = 1e-6
   reference_temperature = 263.15
   temporal_scaling = 1e-4

@@ -3,6 +3,8 @@
   dim = 2
   nx = 10
   ny = 10
+  xmax = .01
+  ymax = .01
 []
 
 [Variables]
@@ -86,13 +88,15 @@
   conductivity_air = 0.1
   temperature = u
   phi = phi
+  reference_temperature = 263.15
+  temporal_scaling = 1e-4
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
   num_steps = 25
-  dt = 600
+  dt = .1
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
