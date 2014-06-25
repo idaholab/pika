@@ -21,6 +21,7 @@ public:
 
 protected:
   virtual Real computeQpResidual();
+  virtual Real computeQpJacobian();
 
 };
 #endif //PIKASCALEDTIMEDERIVATIVE

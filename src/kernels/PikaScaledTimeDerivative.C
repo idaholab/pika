@@ -16,5 +16,10 @@ PikaScaledTimeDerivative::PikaScaledTimeDerivative(const std::string & name, Inp
 Real
 PikaScaledTimeDerivative::computeQpResidual()
 {
-  return (1.0/_property_uo.temporalScale()) * PikaTimeDerivative::computeQpResidual();
+  return (_property_uo.temporalScale()) * PikaTimeDerivative::computeQpResidual();
+}
+Real
+PikaScaledTimeDerivative::computeQpJacobian()
+{
+  return (_property_uo.temporalScale()) * PikaTimeDerivative::computeQpJacobian();
 }
