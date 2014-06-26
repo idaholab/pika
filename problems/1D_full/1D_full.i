@@ -9,11 +9,17 @@
 []
 
 [Variables]
+  active = 'phi T'
   [./T]
   [../]
   [./u]
   [../]
   [./phi]
+  [../]
+[]
+
+[AuxVariables]
+  [./u]
   [../]
 []
 
@@ -25,6 +31,7 @@
 []
 
 [Kernels]
+  active = 'phi_transition heat_diffusion phi_double_well heat_phi_time heat_time phi_time phi_square_gradient'
   [./heat_diffusion]
     type = MatDiffusion
     variable = T
@@ -121,7 +128,7 @@
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
-  end_time = 2000000
+  end_time = 10
 []
 
 [Adaptivity]

@@ -59,11 +59,11 @@ PropertyUserObject::objectParams()
   params.addParam<Real>("atmospheric_pressure", 1.01325e5, "Atmospheric pressure, P_a [Pa]");
   params.addParam<Real>("gas_constant_dry_air", 286.9, "Gas constant for dry air, R_{da} [J/(Kg K)]");
   params.addParam<Real>("gas_constant_water_vapor", 461.5, "Gas constant for water vapor, R_v [J/(Kg K)]");
-  params.addParam<Real>("reference_temperature", 258.2 ,"Reference temperature, T_0 [K]");
+  params.addParam<Real>("reference_temperature", 263.15 ,"Reference temperature, T_0 [K]");
   params.addParam<Real>("interface_free_energy", 1.09e-1, "Interface free energy, \gamma [J/m^2]");
   params.addParam<Real>("mean_molecular_spacing", 3.19e-10, "Mean inter-molecular spacing in ice, a [m]");
   params.addParam<Real>("boltzmann", 1.3806488e-23, "Boltzmann constant, k [J/k]");
-  params.addParam<Real>("condensation_coefficient", 1e-2, "Condensation coefficient, \alpha [unitless]");
+  params.addParam<Real>("condensation_coefficient", 10e-2, "Condensation coefficient, \alpha [unitless]");
   params.addParam<Real>("mass_water_molecule", 2.9900332e-26, "Mass of water molecule, m [kg]");
   params.addParam<Real>("interface_thickness", 8e-6, "Interface thickness, W [m]");
   params.addParam<Real>("latent_heat", 2.6e9, "Latent heat of sublimation, L_{sg} [J/m^3]");
@@ -119,11 +119,17 @@ PropertyUserObject::temporalScale() const
   return   _xi;
 }
 
+const Real &
+PropertyUserObject::referenceTemp() const
+{
+  return   _T_0;
+}
+
 Real
 PropertyUserObject::equilibriumConcentration(const Real & T) const
 {
   Real rho_vs_T   = equilibriumWaterVaporConcentrationAtSaturation(T);
   Real rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
-  return (rho_vs_T - rho_vs_T_0) / (iceDensity(T));
+  return (rho_vs_T - rho_vs_T_0) / _rho_i;
 }
 

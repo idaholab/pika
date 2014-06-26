@@ -89,6 +89,8 @@ public:
 
   const Real & temporalScale() const;
 
+  const Real & referenceTemp() const;
+
 
   const Real _rho_i;
   const Real _rho_a;
