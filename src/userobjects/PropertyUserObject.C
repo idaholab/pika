@@ -113,16 +113,17 @@ PropertyUserObject::equilibriumWaterVaporConcentrationAtSaturation(const Real & 
   return  airDensity(T) * specificHumidityRatio(T);
 }
 
-Real
-PropertyUserObject::equilibriumConcentration(const Real & T) const
-{
-  Real rho_vs_T   = equilibriumWaterVaporConcentrationAtSaturation(T);
-  Real rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
-  return (rho_vs_T - rho_vs_T_0) / iceDensity(T);
-}
-
 const Real &
 PropertyUserObject::temporalScale() const
 {
   return   _xi;
 }
+
+Real
+PropertyUserObject::equilibriumConcentration(const Real & T) const
+{
+  Real rho_vs_T   = equilibriumWaterVaporConcentrationAtSaturation(T);
+  Real rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
+  return (rho_vs_T - rho_vs_T_0) / (iceDensity(T));
+}
+

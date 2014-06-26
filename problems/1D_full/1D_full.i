@@ -1,10 +1,10 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
+  nx = 100
+  ny = 2
   xmax = .005
-  ymax = .005
+  ymax = .0002
   elem_type = QUAD4
 []
 
@@ -17,7 +17,11 @@
   [../]
 []
 
-[AuxVariables]
+[Functions]
+  [./T_func]
+    type = ParsedFunction
+    value = -200*x+261
+  [../]
 []
 
 [Kernels]
@@ -85,19 +89,19 @@
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 267.515 # -5
+    boundary = left
+    value = 261 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = top
-    value = 264.8 # -20
+    boundary = right
+    value = 260 # -20
   [../]
   [./insulated_sides]
     type = NeumannBC
     variable = T
-    boundary = 'left right'
+    boundary = 'top bottom'
   [../]
 []
 
@@ -113,16 +117,16 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 100
+  dt = 5
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
-  end_time = 140000
+  end_time = 2000000
 []
 
 [Adaptivity]
-  max_h_level = 5
-  initial_steps = 4
+  max_h_level = 3
+  initial_steps = 3
   initial_marker = phi_marker
   marker = combo_mark
   [./Indicators]
@@ -178,19 +182,19 @@
 
 [ICs]
   [./phase_ic]
-    x1 = .0025
-    y1 = .0025
-    radius = 0.0005
-    outvalue = 1
+    x1 = 0.00214285714
     variable = phi
-    invalue = -1
-    type = SmoothCircleIC
-    int_width = 1e-6
+    type = KaempferAnalyticPhaseIC
+    x2 = 0.00285714285
+    phi_new = -1
+    phi_old = 1
+    x3 = 0.00357142857
+    x4 = 0.00428571428
   [../]
   [./temperature_ic]
     variable = T
-    type = ConstantIC
-    value = 264.8
+    type = FunctionIC
+    function = T_func
   [../]
   [./vapor_ic]
     variable = u

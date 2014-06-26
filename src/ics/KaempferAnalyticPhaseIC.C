@@ -18,10 +18,10 @@ template<>
 InputParameters validParams<KaempferAnalyticPhaseIC>()
 {
   InputParameters params = validParams<InitialCondition>();
-  params.addRequiredParam<Real>("x1", "Input least X over which new phi will be applied");
-  params.addRequiredParam<Real>("x2", "Input greatest X  over which new phi will be applied");
-  params.addRequiredParam<Real>("x3", "Input least X over 2nd interval which new phi will be applied");
-  params.addRequiredParam<Real>("x4", "Input greatest X  over 2nd interval which new phi will be applied");
+  params.addRequiredParam<Real>("x1", "Input x_min for box 1");
+  params.addRequiredParam<Real>("x2", "Input x_max for box 1");
+  params.addRequiredParam<Real>("x3", "Input x_min for box 2");
+  params.addRequiredParam<Real>("x4", "Input x_max for box 2");
   params.addParam<Real>("phi_new",0.0, "Set new value of phi to be applied");
   params.addParam<Real>("phi_old",0.0, "Set value of phi everywhere not in an interval");
   return params;

@@ -24,11 +24,13 @@ PhaseTransition::PhaseTransition(const std::string & name, InputParameters param
 Real
 PhaseTransition::computeDFDOP(PFFunctionType type)
 {
+    Real f =  - (_lambda[_qp]) * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
+    std::cout<<f<<std::endl;
   switch (type)
   {
   case Residual:
-    return -(_lambda[_qp]) * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
+    return f;
   case Jacobian:
-    return -(4.0 * _lambda[_qp] * _u[_qp] * (-_u[_qp]*_u[_qp] + 1.0) * (_s[_qp] - _s_eq[_qp]));
+    return  -4.0 * _lambda[_qp] * _u[_qp] * (-_u[_qp]*_u[_qp]+1.0) * (_s[_qp] - _s_eq[_qp]);
   }
 }
