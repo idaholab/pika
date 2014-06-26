@@ -40,7 +40,7 @@ rho_vs_T0 = rho_a*x_s;
 
 #Calculate the Equilibrium Concentration
 print '-----U_eq------\n'
-print 'Temp.   U_eq'
+print 'Temp.\t'
 for T in temperature:
   # Eq. (2) 
   P_vs = exp(K_fit[0]*T**(-1.0) + K_fit[1]*T**0.0 + K_fit[2]*T**1.0 + K_fit[3]*T**2.0 + K_fit[4]*T**3.0 + K_fit[5]*ln(T)) 
@@ -50,7 +50,7 @@ for T in temperature:
   U_eq = (rho_vs_T-rho_vs_T0)/rho_i
 
 
-  d_o_prime = (rho_vs_T/rho_i) * gamma*(a**3.0)/(k*T)
-  beta_o_prime = (1.0/alpha)*((2.0*pi*m/(k*T))**0.5)
+  d_o_prime = (rho_vs_T/rho_i) * gamma*(a**3.0)/(k*T_ref)
+  beta_o_prime = (1.0/alpha)*((2.0*pi*m/(k*T_ref))**0.5)
 
-  print T,' ', U_eq, ' ', d_o_prime, beta_o_prime
+  print T,'\t ',x_s, P_vs,'\t',U_eq, '\t ', d_o_prime,'\t', beta_o_prime
