@@ -86,17 +86,22 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 267.515 # -5
+    value = 264.8 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 264.8 # -20
+    value = 262.085 # -20
   [../]
   [./insulated_sides]
     type = NeumannBC
     variable = T
+    boundary = 'left right'
+  [../]
+  [./vapor_walls]
+    type = NeumannBC
+    variable = u
     boundary = 'left right'
   [../]
 []
@@ -113,7 +118,7 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 100
+  dt = 10
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
@@ -122,7 +127,7 @@
 
 [Adaptivity]
   max_h_level = 5
-  initial_steps = 4
+  initial_steps = 5
   initial_marker = phi_marker
   marker = combo_mark
   [./Indicators]
@@ -185,12 +190,12 @@
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 1e-6
+    int_width = 1e-5
   [../]
   [./temperature_ic]
     variable = T
-    type = ConstantIC
-    value = 264.8
+    type = FunctionIC
+    function = -543.0*y+264.8
   [../]
   [./vapor_ic]
     variable = u
@@ -204,8 +209,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-6
-  reference_temperature = 263.15
+  interface_thickness = 1e-5
   temporal_scaling = 1e-4
 []
 

@@ -42,14 +42,10 @@ Real
 PikaTimeDerivative::computeQpResidual()
 {
     if (_has_material)
-    {
       return (_scale * ((*_material_coefficient)[_qp]) + _offset) * (_test[_i][_qp]) * _var_dot[_qp]; 
-    }
 
     else
-    {
       return (_scale * _coefficient + _offset) * (_test[_i][_qp]) * _var_dot[_qp]; 
-    }
 }
 
 Real

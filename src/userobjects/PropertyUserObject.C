@@ -93,7 +93,6 @@ PropertyUserObject::specificHumidityRatio(const Real & T) const
 {
   Real P_vs = saturationPressureOfWaterVaporOverIce(T); // Eq. (2)
   Real f = (_R_da/_R_v) * P_vs / (_P_a - P_vs); // x_s, Eq. (1)
-  std::cout<<"x_s = "<<f<<std::endl;
   return f;
 }
 

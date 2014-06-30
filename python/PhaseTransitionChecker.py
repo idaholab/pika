@@ -13,7 +13,7 @@ from math import *
 init_printing()
 
 #User Inputs
-temperature =[ 260, 261, 263.15]
+temperature =[ 265, 262, 263.15]
 
 #Constants
 rho_a =1.341 #kg/m^3 

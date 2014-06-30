@@ -16,11 +16,10 @@ PikaScaledMatDiffusion::PikaScaledMatDiffusion(const std::string & name, InputPa
 Real
 PikaScaledMatDiffusion::computeQpResidual()
 {
-  return (_property_uo.temporalScale()) * MatDiffusion::computeQpResidual();;
+  return (_property_uo.temporalScale()) * MatDiffusion::computeQpResidual();
 }
 Real
 PikaScaledMatDiffusion::computeQpJacobian()
 {
-  return (_property_uo.temporalScale()) * MatDiffusion::computeQpJacobian();;
+  return (_property_uo.temporalScale()) * MatDiffusion::computeQpJacobian();
 }
-
