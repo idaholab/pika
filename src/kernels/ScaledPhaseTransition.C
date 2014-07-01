@@ -1,35 +1,35 @@
-#include "PhaseTransition.h"
+#include "ScaledPhaseTransition.h"
 #include "AirProperties.h"
 
 template<>
-InputParameters validParams<PhaseTransition>()
+InputParameters validParams<ScaledPhaseTransition>()
 {
   InputParameters params = validParams<ACBulk>();
   params.addRequiredCoupledVar("chemical_potential", "The chemical potential variable to couple");
   params.addParam<std::string>("lambda", "lambda", "The name of the material property containing the definition of lambda");
   params.addParam<std::string>("equilibrium_concentration", "equilibrium_concentration", "The name of the material property containing the equilibrium concentration");
-
   return params;
 }
 
-PhaseTransition::PhaseTransition(const std::string & name, InputParameters parameters) :
+ScaledPhaseTransition::ScaledPhaseTransition(const std::string & name, InputParameters parameters) :
     ACBulk(name, parameters),
     PropertyUserObjectInterface(name, parameters),
     _s(coupledValue("chemical_potential")),
     _lambda(getMaterialProperty<Real>(getParam<std::string>("lambda"))),
-    _s_eq(getMaterialProperty<Real>(getParam<std::string>("equilibrium_concentration")))
+    _s_eq(getMaterialProperty<Real>(getParam<std::string>("equilibrium_concentration"))),
+    _xi(_property_uo.getParam<Real>("temporal_scaling"))
 {
 }
 
 Real
-PhaseTransition::computeDFDOP(PFFunctionType type)
+ScaledPhaseTransition::computeDFDOP(PFFunctionType type)
 {
   switch (type)
   {
   case Residual:
-    return -(_lambda[_qp]) * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
+    return -(_lambda[_qp]*_xi) * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
 
   case Jacobian:
-    return  4.0 * _lambda[_qp] * _u[_qp] * (-_u[_qp]*_u[_qp]+1.0) * (_s[_qp] - (_s_eq[_qp]));
+    return  4.0 * _xi * _lambda[_qp] * _u[_qp] * (-_u[_qp]*_u[_qp]+1.0) * (_s[_qp] - (_s_eq[_qp]));
   }
 }

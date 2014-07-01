@@ -47,7 +47,7 @@
     block = 0
   [../]
   [./phase_transition]
-    type = PhaseTransition
+    type = ScaledPhaseTransition
     variable = phi
     mob_name = mobility
     chemical_potential = u
@@ -59,6 +59,7 @@
     chemical_potential = u
     use_potential_transition = true
     temperature = T
+    use_time_scaling = true
   [../]
   [./phi_time]
     type = PikaTimeDerivative
@@ -125,7 +126,7 @@
 [Outputs]
   exodus = true
   console = false
-  file_base = mms_phase_evolution_out
+  file_base = mms_scaled_phase_evolution_out
   [./console]
     type = Console
     linear_residuals = true
@@ -155,5 +156,6 @@
 [PikaMaterials]
   phi = phi
   temperature = T
+  temporal_scaling = 1e-4
 []
 

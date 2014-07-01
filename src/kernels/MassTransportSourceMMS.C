@@ -7,14 +7,19 @@ InputParameters validParams<MassTransportSourceMMS>()
   params.addParam<std::string>("diffusion_coefficient_name", "diffusion_coefficient",  "The name of the phase dependent material property that contains the water vapor diffusion coefficient (D_v)");
   params.addRequiredCoupledVar("phi", "Phase-field variable, phi");
   params.addParam<bool>("use_dphi_dt", true, "Include the dphi_dt portion of the forcing function");
+  params.addParam<bool>("use_time_scaling", false, "Temporally scale this term");
+
   return params;
 }
 
 MassTransportSourceMMS::MassTransportSourceMMS(const std::string & name, InputParameters parameters) :
     Kernel(name, parameters),
+    PropertyUserObjectInterface(name,parameters),
     _D_v(getMaterialProperty<Real>(getParam<std::string>("diffusion_coefficient_name"))),
     _phi(coupledValue("phi")),
-    _use_dphi_dt(getParam<bool>("use_dphi_dt"))
+    _use_dphi_dt(getParam<bool>("use_dphi_dt")),
+    _use_scale(getParam<bool>("use_time_scaling")),
+    _xi(_property_uo.getParam<Real>("temporal_scaling"))
 {
 }
 
@@ -30,10 +35,21 @@ MassTransportSourceMMS::computeQpResidual()
   Real Pi = libMesh::pi;
   Real phi = _phi[_qp];
 
-  Real f =
-    8.0*pow(pi, 2)*D*t*sin(2.0*pi*x)*cos(2.0*pi*y) + sin(2.0*pi*x)*cos(2.0*pi*y);
+  Real f,term1,term2,term3;
+  term1 = sin(2.0*pi*x)*cos(2.0*pi*y);
+  term2 = 8.0*pow(pi, 2.0)*D*t*sin(2.0*pi*x)*cos(2.0*pi*y);
+  term3  = 0.5*x*y;
+
+  if (_use_scale)
+  {
+    term2=_xi*term2;
+    term3=_xi*term3;
+  }
+  
+  f=term1+term2;
+
   if (_use_dphi_dt)
-    f += 0.5*x*y;
+    f+=term3;
 
   return -_test[_i][_qp] * f;
 }

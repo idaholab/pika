@@ -29,6 +29,7 @@
 #include "DoubleWellPotentialMMS.h"
 #include "PikaScaledTimeDerivative.h"
 #include "PikaScaledMatDiffusion.h"
+#include "ScaledPhaseTransition.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -102,6 +103,7 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(DoubleWellPotentialMMS);
   registerKernel(PikaScaledTimeDerivative);
   registerKernel(PikaScaledMatDiffusion);
+  registerKernel(ScaledPhaseTransition);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);

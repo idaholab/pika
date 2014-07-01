@@ -1,7 +1,8 @@
-#ifndef PIKASCALEDMATDIFFUSION_H
-#define  PIKASCALEDMATDIFFUSION_H
+#ifndef MATDIFFUSION_H
+#define MATDIFFUSION_H
 
-#include "MatDiffusion.h"
+#include "Diffusion.h"
+#include "Material.h"
 #include "PropertyUserObjectInterface.h"
 
 //Forward Declarations
@@ -11,8 +12,8 @@ template<>
 InputParameters validParams<PikaScaledMatDiffusion>();
 
 class PikaScaledMatDiffusion : 
-  public MatDiffusion,
-  public PropertyUserObjectInterface
+  public Diffusion,
+  PropertyUserObjectInterface
 {
 public:
   PikaScaledMatDiffusion(const std::string & name, InputParameters parameters);
@@ -21,6 +22,12 @@ protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();
 
+private:
+  std::string _D_name;
+
+  MaterialProperty<Real> & _D;
+
+  const Real & _xi;
 };
 
-#endif // PIKASCALEDMATDIFFUSION_H
+#endif //MATDIFFUSION_H

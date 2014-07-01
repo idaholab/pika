@@ -17,6 +17,8 @@
 
 // MOOSE includes
 #include "Kernel.h"
+//Pika Includes
+#include "PropertyUserObjectInterface.h"
 
 // Forward declarations
 class MassTransportSourceMMS;
@@ -28,7 +30,10 @@ InputParameters validParams<MassTransportSourceMMS>();
  * A kernel for adding forcing function for the MMS tests of the mass
  * transport equation, Eq. (35)
  */
-class MassTransportSourceMMS : public Kernel
+class MassTransportSourceMMS :
+  public Kernel,
+         PropertyUserObjectInterface
+
 {
 public:
 
@@ -46,6 +51,8 @@ private:
   const MaterialProperty<Real> & _D_v;
   const VariableValue & _phi;
   bool _use_dphi_dt;
+  bool _use_scale;
+  const Real & _xi;
 
 };
 

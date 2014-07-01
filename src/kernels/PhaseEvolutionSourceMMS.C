@@ -8,6 +8,7 @@ InputParameters validParams<PhaseEvolutionSourceMMS>()
   params.addParam<bool>("use_potential_transition",false, "Include term proportional to lambda in Eq.(33)");
   params.addRequiredCoupledVar("temperature","temperature specifying vapor density, T) ");
   params.addRequiredCoupledVar("chemical_potential","vapor concentration, u) ");
+  params.addParam<bool>("use_time_scaling", false, "Temporally scale the forcing term");
   return params;
 }
 
@@ -19,8 +20,9 @@ PhaseEvolutionSourceMMS::PhaseEvolutionSourceMMS(const std::string & name, Input
     _lambda(getMaterialProperty<Real>("lambda")),
     _use_potential_transition(getParam<bool>("use_potential_transition")),
     _T(coupledValue("temperature")),
-    _u(coupledValue("chemical_potential"))
-
+    _u(coupledValue("chemical_potential")),
+    _use_scale(getParam<bool>("use_time_scaling")),
+    _xi(_property_uo.getParam<Real>("temporal_scaling"))
 
 {
 }
@@ -36,11 +38,19 @@ PhaseEvolutionSourceMMS::computeQpResidual()
   Real w = _w[_qp];
   Real lambda = _lambda[_qp];
   Real u_eq =_property_uo.equilibriumConcentration( _T[_qp]);
-  Real f = 
+
+  Real terms123 = 
     -4*t*pow(w, 2.0) - t*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125) + tau*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125) + pow(t*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125), 3.0);
 
+  Real term4 = -lambda*(_u[_qp] - u_eq)*pow(-pow(t, 2)*pow(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125, 2) + 1.0, 2.0);
+
+  if (_use_scale)
+    term4 = _xi*term4;  
+
+  Real f = terms123;
+
   if(_use_potential_transition)
-    f+=
-       -lambda*(_u[_qp] - u_eq)*pow(-pow(t, 2)*pow(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125, 2) + 1.0, 2.0);
+    f+=term4;
+
   return -_test[_i][_qp] * f;
 }

@@ -1,23 +1,23 @@
-#ifndef PHASETRANSITION_H
-#define PHASETRANSITION_H
+#ifndef SCALEDPHASETRANSITION_H
+#define SCALEPHASETRANSITION_H
 
 // modules/phase_field includes
 #include "ACBulk.h"
 
 #include "PropertyUserObjectInterface.h"
 //Forward Declarations
-class PhaseTransition;
+class ScaledPhaseTransition;
 
 template<>
-InputParameters validParams<PhaseTransition>();
+InputParameters validParams<ScaledPhaseTransition>();
 
-class PhaseTransition :
+class ScaledPhaseTransition :
   public ACBulk,
   public PropertyUserObjectInterface
 {
 public:
 
-  PhaseTransition(const std::string & name, InputParameters parameters);
+  ScaledPhaseTransition(const std::string & name, InputParameters parameters);
 
 protected:
   virtual Real computeDFDOP(PFFunctionType type);
@@ -29,5 +29,7 @@ private:
 
   MaterialProperty<Real> & _s_eq;
 
+  const Real & _xi;
+
 };
-#endif // PHASETRANSITION_H
+#endif // SCALEDPHASETRANSITION_H

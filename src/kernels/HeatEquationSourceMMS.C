@@ -9,7 +9,7 @@ InputParameters validParams<HeatEquationSourceMMS>()
   params.addParam<std::string>("latent_heat_name", "latent_heat",  "The name of the material property that contains the latent heat coefficient for sublimation (L_sg)");
   params.addRequiredCoupledVar("phase_variable", "Phase-field variable, phi");
   params.addParam<bool>("use_dphi_dt", true, "Include the dphi_dt portion of the forcing function");
-  params.addParam<bool>("use_time_scaling", true, "Temporally scale this term");
+  params.addParam<bool>("use_time_scaling", false, "Temporally scale the forcing term");
   return params;
 }
 

@@ -51,6 +51,8 @@ private:
   const bool  & _use_potential_transition;
   const VariableValue  & _T;
   const VariableValue  & _u;
+  const bool  & _use_scale;
+  const Real & _xi;
 
 };
 
