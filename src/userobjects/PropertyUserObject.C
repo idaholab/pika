@@ -69,6 +69,8 @@ PropertyUserObject::objectParams()
   params.addParam<Real>("latent_heat", 2.6e9, "Latent heat of sublimation, L_{sg} [J/m^3]");
   params.addParam<Real>("mobility", 1.0, "Phase-field mobility value");
   params.addParam<Real>("temporal_scaling", 1.0, "Snow metamorphosis time scaling value");
+  params.addParam<Real>("capillary_length", 1.3e-9 , "Capillary Length (d_o) ");
+  params.addParam<Real>("interface_kinetic_coefficient", 5.5e5, "Interface kinetic coefficient (beta)");
 
   // @todo{Group the above}
   params.addParamNamesToGroup("atmospheric_pressure", "General");

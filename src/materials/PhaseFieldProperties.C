@@ -31,7 +31,10 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration")),
     _saturation_pressure_of_water_vapor_over_ice(declareProperty<Real>("saturation_pressure_of_water_vapor_over_ice")),
     _specific_humidity_ratio(declareProperty<Real>("specific_humidity_ratio")),
-    _xi(_property_uo.temporalScale())
+    _xi(_property_uo.temporalScale()),
+    _d_o(_property_uo.getParam<Real>("capillary_length")),
+    _interface_kinetic_coefficient(_property_uo.getParam<Real>("interface_kinetic_coefficient"))
+
 {
 }
 
@@ -62,12 +65,12 @@ PhaseFieldProperties::computeQpProperties()
   _interface_velocity[_qp] = 1e-9; // [m/s]
 
   //_capillary_length[_qp] =(rho_vs/rho_i[_qp])*(gamma * std::pow(a, 3.) ) / (k * _property_uo.referenceTemp());
-  _capillary_length[_qp] =(1.3e-9)/_xi;
+   _capillary_length[_qp] =_d_o/_xi;
  // _capillary_length[_qp] =(1.3e-9);
 //  std::cout<<"d_o = " <<_capillary_length[_qp]<<std::endl;
 
   //_beta[_qp] = (1./alpha) * (rho_i[_qp]/rho_vs)* std::sqrt((2.*libMesh::pi*m) / (k * _property_uo.referenceTemp()));
-  _beta[_qp] = (5.5e5)/_xi;
+   _beta[_qp]=_interface_kinetic_coefficient/_xi;
   //_beta[_qp] = (5.5e5);
   //std::cout<<"beta = "<<_beta[_qp]<<std::endl;
 
