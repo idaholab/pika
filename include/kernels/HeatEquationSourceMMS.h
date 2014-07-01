@@ -17,6 +17,8 @@
 
 // MOOSE includes
 #include "Kernel.h"
+//Pika Includes
+#include "PropertyUserObjectInterface.h"
 
 // Forward declarations
 class HeatEquationSourceMMS;
@@ -28,7 +30,9 @@ InputParameters validParams<HeatEquationSourceMMS>();
  * A kernel for adding forcing function for the MMS tests of the heat
  * transport equation, Eq. (34)
  */
-class HeatEquationSourceMMS : public Kernel
+class HeatEquationSourceMMS : 
+  public Kernel,
+         PropertyUserObjectInterface
 {
 public:
 
@@ -48,6 +52,8 @@ private:
   const MaterialProperty<Real> & _L_sg;
   const VariableValue & _phi;
   bool _use_dphi_dt;
+  bool _use_scale;
+  const Real & _xi;
 
 };
 

@@ -13,4 +13,12 @@
     exodiff = 'mms_heat_equation_dphi_dt_out.e'
     prereq = 'test'
   [../]
+  [./test_temporally_scaled]
+    # MMS test for dT/dt - Div(D grad(T) + 1/2 dphi/dt = 0
+    type = 'Exodiff'
+    input = 'mms_scaled_heat_equation.i'
+    exodiff = 'mms_heat_equation_dphi_dt_out.e'
+    prereq = 'test'
+  [../]
+
 []

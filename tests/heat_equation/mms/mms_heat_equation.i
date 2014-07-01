@@ -51,6 +51,7 @@
     phase_variable = phi
     block = 0
     use_dphi_dt = false
+    use_time_scaling = false
   [../]
   [./phi_time]
     type = PikaTimeDerivative
