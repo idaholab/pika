@@ -19,7 +19,6 @@
 
 // Kernels
 #include "PikaTimeDerivative.h"
-#include "PhaseFieldPotential.h"
 #include "PhaseTransition.h"
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
@@ -28,6 +27,9 @@
 #include "MaterialUserForcingFunction.h"
 #include "DoubleWellPotential.h"
 #include "DoubleWellPotentialMMS.h"
+#include "PikaScaledTimeDerivative.h"
+#include "PikaScaledMatDiffusion.h"
+#include "ScaledPhaseTransition.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -38,6 +40,10 @@
 
 // Actions
 #include "PikaMaterialAction.h"
+
+//Outputs
+#include "PikaDebug.h"
+
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -87,7 +93,6 @@ PikaApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(PikaTimeDerivative);
-  registerKernel(PhaseFieldPotential);
   registerKernel(PhaseTransition);
   registerKernel(TensorDiffusion);
   registerKernel(MassTransportSourceMMS);
@@ -96,6 +101,9 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(MaterialUserForcingFunction);
   registerKernel(DoubleWellPotential);
   registerKernel(DoubleWellPotentialMMS);
+  registerKernel(PikaScaledTimeDerivative);
+  registerKernel(PikaScaledMatDiffusion);
+  registerKernel(ScaledPhaseTransition);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);
@@ -103,6 +111,9 @@ PikaApp::registerObjects(Factory & factory)
 
   // AuxKernels
   registerAux(ErrorFunctionAux);
+
+  //outputs
+  registerOutput(PikaDebug);
 }
 
 void

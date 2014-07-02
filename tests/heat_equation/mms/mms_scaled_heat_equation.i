@@ -1,8 +1,9 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 20
-  ny = 20
+  nx = 15
+  ny = 15
+  uniform_refine = 1
   elem_type = QUAD8
 []
 
@@ -37,22 +38,22 @@
     variable = T
     property = heat_capacity
     block = 0
+    scale = 1.0
   [../]
   [./T_diff]
-    type = MatDiffusion
+    type = PikaScaledMatDiffusion
     variable = T
-    D_name = conductivity
     block = 0
+    diffusivity = conductivity
   [../]
   [./mms]
     type = HeatEquationSourceMMS
     variable = T
     phase_variable = phi
     block = 0
-    use_time_scaling = false
   [../]
   [./phi_time]
-    type = PikaTimeDerivative
+    type = PikaScaledTimeDerivative
     variable = T
     scale = -0.5
     differentiated_variable = phi
@@ -86,7 +87,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  reference_temperature = 263.15
+  temporal_scaling = 1e-4
 []
 
 [Postprocessors]
@@ -100,7 +101,7 @@
 [Executioner]
   type = Transient
   num_steps = 2
-  dt = 0.1
+  dt = .1
 []
 
 [Outputs]

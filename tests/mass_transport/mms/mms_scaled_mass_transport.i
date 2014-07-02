@@ -1,13 +1,14 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 20
-  ny = 20
+  nx = 10
+  ny = 10
+  uniform_refine = 1
   elem_type = QUAD8
 []
 
 [Variables]
-  [./T]
+  [./u]
     order = SECOND
   [../]
 []
@@ -23,40 +24,36 @@
 [Functions]
   [./phi_func]
     type = ParsedFunction
-    value = -t*(x*y)*(x*y)
+    value = t*x*y
   [../]
-  [./T_func]
+  [./u_func]
     type = ParsedFunction
-    value = t*sin(2.0*pi*x)*sin(2.0*pi*y)
+    value = t*sin(2.0*pi*x)*cos(2.0*pi*y)
   [../]
 []
 
 [Kernels]
-  [./T_time]
-    type = PikaTimeDerivative
-    variable = T
-    property = heat_capacity
-    block = 0
+  [./u_time]
+    type = TimeDerivative
+    variable = u
   [../]
-  [./T_diff]
-    type = MatDiffusion
-    variable = T
-    D_name = conductivity
+  [./u_diff]
+    type = PikaScaledMatDiffusion
+    variable = u
     block = 0
+    diffusivity = diffusion_coefficient
   [../]
   [./mms]
-    type = HeatEquationSourceMMS
-    variable = T
-    phase_variable = phi
-    block = 0
-    use_time_scaling = false
+    type = MassTransportSourceMMS
+    variable = u
+    phi = phi
+    use_dt_dphi = true
   [../]
   [./phi_time]
-    type = PikaTimeDerivative
-    variable = T
-    scale = -0.5
+    type = PikaScaledTimeDerivative
+    variable = u
+    coefficient = 0.5
     differentiated_variable = phi
-    property = latent_heat
   [../]
 []
 
@@ -69,55 +66,56 @@
   [./error_aux]
     type = ErrorFunctionAux
     variable = abs_error
-    function = T_func
-    solution_variable = T
+    function = u_func
+    solution_variable = u
   [../]
 []
 
 [BCs]
   [./all]
     type = FunctionDirichletBC
-    variable = T
+    variable = u
     boundary = 'bottom left right top'
-    function = T_func
+    function = u_func
   [../]
 []
 
 [PikaMaterials]
   phi = phi
-  temperature = T
-  reference_temperature = 263.15
+  temperature = 273.15
+  temporal_scaling = 1e-4
 []
 
 [Postprocessors]
   [./L2_errror]
     type = ElementL2Error
-    variable = T
-    function = T_func
+    variable = u
+    function = u_func
   [../]
 []
 
 [Executioner]
   type = Transient
   num_steps = 2
-  dt = 0.1
+  dt = 0.25
+[]
+
+[Adaptivity]
 []
 
 [Outputs]
-  active = ''
   output_initial = true
   exodus = true
-  [./oversample]
-    refinements = 2
-    oversample = true
-    type = Exodus
+  [./console]
+    type = Console
+    linear_residuals = true
   [../]
 []
 
 [ICs]
-  [./T_ic]
-    function = T_func
-    variable = T
+  [./u_ic]
+    function = u_func
+    variable = u
     type = FunctionIC
   [../]
   [./phi_ic]

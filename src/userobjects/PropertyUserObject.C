@@ -37,7 +37,8 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _m(getParam<Real>("mass_water_molecule")),
     _W(getParam<Real>("interface_thickness")),
     _L_sg(getParam<Real>("latent_heat")),
-    _mobility(getParam<Real>("mobility"))
+    _mobility(getParam<Real>("mobility")),
+    _xi(getParam<Real>("temporal_scaling"))
 {
     // Define K coefficients (Wexler, 1977, Table 2)
   _K.push_back(-0.58653696e4);
@@ -58,15 +59,18 @@ PropertyUserObject::objectParams()
   params.addParam<Real>("atmospheric_pressure", 1.01325e5, "Atmospheric pressure, P_a [Pa]");
   params.addParam<Real>("gas_constant_dry_air", 286.9, "Gas constant for dry air, R_{da} [J/(Kg K)]");
   params.addParam<Real>("gas_constant_water_vapor", 461.5, "Gas constant for water vapor, R_v [J/(Kg K)]");
-  params.addParam<Real>("reference_temperature", 263.15,"Reference temperature, T_0 [K]");
+  params.addParam<Real>("reference_temperature", 263.15, "Reference temperature, T_0 [K]");
   params.addParam<Real>("interface_free_energy", 1.09e-1, "Interface free energy, \gamma [J/m^2]");
   params.addParam<Real>("mean_molecular_spacing", 3.19e-10, "Mean inter-molecular spacing in ice, a [m]");
   params.addParam<Real>("boltzmann", 1.3806488e-23, "Boltzmann constant, k [J/k]");
-  params.addParam<Real>("condensation_coefficient", 1e-2, "Condensation coefficient, \alpha [unitless]");
+  params.addParam<Real>("condensation_coefficient", 10e-2, "Condensation coefficient, \alpha [unitless]");
   params.addParam<Real>("mass_water_molecule", 2.9900332e-26, "Mass of water molecule, m [kg]");
   params.addParam<Real>("interface_thickness", 8e-6, "Interface thickness, W [m]");
   params.addParam<Real>("latent_heat", 2.6e9, "Latent heat of sublimation, L_{sg} [J/m^3]");
-  params.addParam<Real>("mobility", 1, "Phase-field mobility value");
+  params.addParam<Real>("mobility", 1.0, "Phase-field mobility value");
+  params.addParam<Real>("temporal_scaling", 1.0, "Snow metamorphosis time scaling value");
+  params.addParam<Real>("capillary_length", 1.3e-9 , "Capillary Length (d_o) ");
+  params.addParam<Real>("interface_kinetic_coefficient", 5.5e5, "Interface kinetic coefficient (beta)");
 
   // @todo{Group the above}
   params.addParamNamesToGroup("atmospheric_pressure", "General");
@@ -90,19 +94,23 @@ Real
 PropertyUserObject::specificHumidityRatio(const Real & T) const
 {
   Real P_vs = saturationPressureOfWaterVaporOverIce(T); // Eq. (2)
-  return (_R_da/_R_v) * P_vs / (_P_a - P_vs); // x_s, Eq. (1)
+  Real f = (_R_da/_R_v) * P_vs / (_P_a - P_vs); // x_s, Eq. (1)
+  return f;
 }
 
 Real
 PropertyUserObject::saturationPressureOfWaterVaporOverIce(const Real & T) const
 {
   // Eq. (2)
-  return std::exp(_K[0]*std::pow(T,-1.)
+  Real f =  std::exp(_K[0]*std::pow(T,-1.)
                   + _K[1]*std::pow(T,0.)
                   + _K[2]*std::pow(T,1.)
                   + _K[3]*std::pow(T,2.)
                   + _K[4]*std::pow(T,3.)
                   + _K[5]*log(T));
+//  std::cout<<"P_vs = "<<f<<std::endl;
+
+  return f;
 }
 
 Real
@@ -111,10 +119,22 @@ PropertyUserObject::equilibriumWaterVaporConcentrationAtSaturation(const Real & 
   return  airDensity(T) * specificHumidityRatio(T);
 }
 
+const Real &
+PropertyUserObject::temporalScale() const
+{
+  return   _xi;
+}
+
+const Real &
+PropertyUserObject::referenceTemp() const
+{
+  return   _T_0;
+}
+
 Real
 PropertyUserObject::equilibriumConcentration(const Real & T) const
 {
   Real rho_vs_T   = equilibriumWaterVaporConcentrationAtSaturation(T);
   Real rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
-  return (rho_vs_T - rho_vs_T_0) / iceDensity(T);
+  return (rho_vs_T - rho_vs_T_0) / _rho_i;
 }

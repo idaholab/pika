@@ -13,6 +13,14 @@
     exodiff = 'mms_mass_transport_dphi_dt_out.e'
     prereq = 'test'
   [../]
+  [./test_temporally_scaled]
+    # MMS test for scaled  du/dt - Div(D grad(u) + 1/2 dphi/dt = 0
+    type = 'Exodiff'
+    input = 'mms_scaled_mass_transport.i'
+    exodiff = 'mms_mass_transport_dphi_dt_out.e'
+    prereq = 'test'
+  [../]
+
   [./test_no_pika_material]
     # Same as test, but does not used the PikaMaterial
     type = 'Exodiff'

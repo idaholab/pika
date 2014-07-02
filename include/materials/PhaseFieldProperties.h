@@ -56,6 +56,13 @@ private:
   MaterialProperty<Real> & _saturation_pressure_of_water_vapor_over_ice;
 
   MaterialProperty<Real> & _specific_humidity_ratio;
+
+  const Real & _xi;
+
+  const Real & _d_o;
+
+  const Real & _interface_kinetic_coefficient;
+
 };
 
 #endif // PHASEFIELDPROPERTIES_H

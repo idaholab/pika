@@ -6,18 +6,24 @@ InputParameters validParams<ChemicalPotentialIC>()
   InputParameters params = validParams<InitialCondition>();
   params += validParams<PropertyUserObjectInterface>();
   params.addRequiredCoupledVar("temperature", "The temperature variable");
+  params.addRequiredCoupledVar("phase_variable", "The variable containing the phase of the continuum (phi)");
   return params;
 }
 
 ChemicalPotentialIC::ChemicalPotentialIC(const std::string & name, InputParameters parameters) :
     InitialCondition(name, parameters),
     PropertyUserObjectInterface(name, parameters),
-    _temperature(coupledValue("temperature"))
+    _temperature(coupledValue("temperature")),
+    _phase(coupledValue("phase_variable"))
 {
 }
 
 Real
 ChemicalPotentialIC::value(const Point & /*p*/)
 {
-  return _property_uo.equilibriumConcentration(_temperature[_qp]);
+  if (_phase[_qp]<1.0)
+    return _property_uo.equilibriumConcentration(_temperature[_qp])*(1-_phase[_qp])*(1-_phase[_qp]);
+  //return _property_uo.equilibriumConcentration(_temperature[_qp]);
+  else
+    return 0;
 }

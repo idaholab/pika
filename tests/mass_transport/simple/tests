@@ -1,0 +1,8 @@
+[Tests]
+  [./simple_vapor]
+    # Gold for this test comes from moose/test/tests/kernels/simple_transient_diffusion, but this test utilizes the PIKA materials
+    type = 'Exodiff'
+    input = 'simple_transient_diffusion_air.i'
+    exodiff = 'simple_transient_diffusion_air_out.e'
+  [../]
+[]

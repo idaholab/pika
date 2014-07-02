@@ -34,6 +34,7 @@ protected:
 private:
 
   VariableValue & _temperature;
+  VariableValue & _phase;
 };
 
 #endif // CHEMICALPOTENTIALIC_H

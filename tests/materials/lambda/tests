@@ -1,0 +1,8 @@
+[Tests]
+  [./specific_humidity_ratio]
+    # Gold for this test comes python/KaempferPlapp2009.py
+    type = 'CSVDiff'
+    input = 'specific_humidity_ratio.i'
+    csvdiff = 'specific_humidity_ratio_data.csv'
+  [../]
+[]

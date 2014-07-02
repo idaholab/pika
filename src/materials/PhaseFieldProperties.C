@@ -8,7 +8,7 @@ InputParameters validParams<PhaseFieldProperties>()
   InputParameters params = validParams<Material>();
   params += validParams<PropertyUserObjectInterface>();
   params.addCoupledVar("temperature", 273.15, "The temperature variable to couple (default: 273.15)");
-  params.addCoupledVar("phi", 1, "The phase-field variable to couple");
+  params.addCoupledVar("phi", 1.0, "The phase-field variable to couple");
   return params;
 }
 
@@ -30,7 +30,11 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
     _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration")),
     _saturation_pressure_of_water_vapor_over_ice(declareProperty<Real>("saturation_pressure_of_water_vapor_over_ice")),
-    _specific_humidity_ratio(declareProperty<Real>("specific_humidity_ratio"))
+    _specific_humidity_ratio(declareProperty<Real>("specific_humidity_ratio")),
+    _xi(_property_uo.temporalScale()),
+    _d_o(_property_uo.getParam<Real>("capillary_length")),
+    _interface_kinetic_coefficient(_property_uo.getParam<Real>("interface_kinetic_coefficient"))
+
 {
 }
 
@@ -60,23 +64,31 @@ PhaseFieldProperties::computeQpProperties()
   /// @todo{This needs to be computed}
   _interface_velocity[_qp] = 1e-9; // [m/s]
 
-  _capillary_length[_qp] = (rho_vs/rho_i[_qp])*(gamma * std::pow(a, 3.) ) / (k * _temperature[_qp]);
+ // _capillary_length[_qp] =(rho_vs/(rho_i[_qp]*_xi)) * (gamma * std::pow(a, 3.) ) / (k * _property_uo.referenceTemp());
+  // _capillary_length[_qp] =_d_o/_xi;
+  _capillary_length[_qp] =(1.3e-9);
+//  std::cout<<"d_o = " <<_capillary_length[_qp]<<std::endl;
 
-  _beta[_qp] = (1./alpha) *(rho_i[_qp]/rho_vs)* std::sqrt((2.*libMesh::pi*m) / (k * _temperature[_qp]));
+  //_beta[_qp] = (1./(alpha * _xi)) * std::sqrt((2.*libMesh::pi*m) / (k * _property_uo.referenceTemp()));
+  // _beta[_qp]=_interface_kinetic_coefficient/_xi;
+  _beta[_qp] = (5.5e5);
+  //std::cout<<"beta = "<<_beta[_qp]<<std::endl;
 
+  //_lambda[_qp] = (_xi*_a1 * w / _capillary_length[_qp]);
   _lambda[_qp] = (_a1 * w / _capillary_length[_qp]);
+  //std::cout<<"lambda = "<<_lambda[_qp]<<std::endl;
 
   _tau[_qp] = (_beta[_qp] * w * _lambda[_qp]) / _a1;
 
-  _conductivity[_qp] = ki[_qp] * (1. + _phase[_qp]) / 2. + ka[_qp] * (1. - _phase[_qp]) / 2.;
+  _conductivity[_qp] = (ki[_qp] * (1. + _phase[_qp]) / 2. + ka[_qp] * (1. - _phase[_qp]) / 2.);
 
   _heat_capacity[_qp] = ci[_qp] * (1. + _phase[_qp]) / 2. + ca[_qp] * (1. - _phase[_qp]) / 2.;
 
-  _diffusion_coefficient[_qp] = dv[_qp] * (1. - _phase[_qp]) / 2.;
+  _diffusion_coefficient[_qp] = (dv[_qp] * (1. - _phase[_qp]) / 2.);
 
   _interface_thickness_squared[_qp] = w*w;
 
-  _equilibrium_concentration[_qp] = _property_uo.equilibriumConcentration(_temperature[_qp]);
+  _equilibrium_concentration[_qp] =  _property_uo.equilibriumConcentration(_temperature[_qp]);
 
   // x_s, Eq. (1)
   _specific_humidity_ratio[_qp] = _property_uo.specificHumidityRatio(_temperature[_qp]);

@@ -1,0 +1,101 @@
+[Mesh]
+  type = GeneratedMesh
+  dim = 2
+  nx = 10
+  ny = 10
+[]
+
+[Variables]
+  [./u]
+  [../]
+  [./T]
+  [../]
+[]
+
+[AuxVariables]
+[]
+
+[Kernels]
+  [./vapor_diffusion]
+    type = MatDiffusion
+    variable = u
+    D_name = diffusion_coefficient
+  [../]
+  [./vapor_time]
+    type = TimeDerivative
+    variable = u
+  [../]
+  [./heat_time]
+    type = PikaTimeDerivative
+    variable = T
+    property = heat_capacity
+  [../]
+  [./heat_diffusion]
+    type = MatDiffusion
+    variable = T
+    D_name = conductivity
+  [../]
+[]
+
+[BCs]
+  [./vapor_right]
+    type = DirichletBC
+    variable = u
+    boundary = right
+    value = 0.5
+  [../]
+  [./vapor_left]
+    type = DirichletBC
+    variable = u
+    boundary = left
+    value = 0
+  [../]
+  [./T_hot]
+    type = DirichletBC
+    variable = T
+    boundary = right
+    value = 265
+  [../]
+  [./T_cold]
+    type = DirichletBC
+    variable = T
+    boundary = left
+    value = 260
+  [../]
+[]
+
+[PikaMaterials]
+  conductivity_air = 0.1
+  temperature = u
+  phi = -1
+[]
+
+[Executioner]
+  # Preconditioned JFNK (default)
+  type = Transient
+  num_steps = 25
+  dt = 600
+  solve_type = PJFNK
+  petsc_options_iname = '-pc_type -pc_hypre_type'
+  petsc_options_value = 'hypre boomeramg'
+[]
+
+[Outputs]
+  output_initial = true
+  exodus = true
+  [./console]
+    type = Console
+    perf_log = true
+    nonlinear_residuals = true
+    linear_residuals = true
+  [../]
+[]
+
+[ICs]
+  [./T_ic]
+    variable = T
+    type = ConstantIC
+    value = 263.15
+  [../]
+[]
+

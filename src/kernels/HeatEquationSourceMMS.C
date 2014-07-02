@@ -9,16 +9,20 @@ InputParameters validParams<HeatEquationSourceMMS>()
   params.addParam<std::string>("latent_heat_name", "latent_heat",  "The name of the material property that contains the latent heat coefficient for sublimation (L_sg)");
   params.addRequiredCoupledVar("phase_variable", "Phase-field variable, phi");
   params.addParam<bool>("use_dphi_dt", true, "Include the dphi_dt portion of the forcing function");
+  params.addParam<bool>("use_time_scaling", false, "Temporally scale the forcing term");
   return params;
 }
 
 HeatEquationSourceMMS::HeatEquationSourceMMS(const std::string & name, InputParameters parameters) :
     Kernel(name, parameters),
+    PropertyUserObjectInterface(name,parameters),
     _k(getMaterialProperty<Real>(getParam<std::string>("conductivity_name"))),
     _c(getMaterialProperty<Real>(getParam<std::string>("heat_capacity_name"))),
     _L_sg(getMaterialProperty<Real>(getParam<std::string>("latent_heat_name"))),
     _phi(coupledValue("phase_variable")),
-    _use_dphi_dt(getParam<bool>("use_dphi_dt"))
+    _use_dphi_dt(getParam<bool>("use_dphi_dt")),
+    _use_scale(getParam<bool>("use_time_scaling")),
+    _xi(_property_uo.getParam<Real>("temporal_scaling"))
 {
 }
 
@@ -35,12 +39,22 @@ HeatEquationSourceMMS::computeQpResidual()
   Real L_sg = _L_sg[_qp];
   Real pi = libMesh::pi;
   Real phi = _phi[_qp];
+  Real f,term1,term2,term3;
+  term1 = c*sin(2.0*pi*x)*sin(2.0*pi*y);
+  term2 = 8.0*pow(pi, 2)*k*t*sin(2.0*pi*x)*sin(2.0*pi*y);
+  term3 = 0.5*L_sg*pow(x*y, 2.0);
+    
 
-  Real f =
-    c*sin(2.0*pi*x)*sin(2.0*pi*y) + 8.0*pow(pi, 2)*k*t*sin(2.0*pi*x)*sin(2.0*pi*y);
+  if (_use_scale)
+  {
+    term2=_xi*term2;
+    term3=_xi*term3;
+  }
+
+  f=term1+term2;
 
   if (_use_dphi_dt)
-    f+= 0.5*L_sg*pow(x*y, 2.0);
+    f+=term3;
 
   return -_test[_i][_qp] * f;
 }

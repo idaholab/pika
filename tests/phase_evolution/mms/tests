@@ -6,12 +6,20 @@
     exodiff = 'mms_double_well_potential_out.e'
   [../]
   [./test]
-    # MMS test for Eq. (33) w/o transition term =f 
+    # MMS test for Eq. (33) w/ transition term =f 
     type = 'Exodiff'
     input = 'mms_phase_evolution.i'
     exodiff = 'mms_phase_evolution_out.e'
     prereq = 'test_double_well_potential'
   [../]
+  [./test_temporally_scaled]
+    # MMS test for time scaled Eq. (33) w/ transition term =f 
+    type = 'Exodiff'
+    input = 'mms_scaled_phase_evolution.i'
+    exodiff = 'mms_phase_evolution_out.e'
+    prereq = 'test_double_well_potential'
+  [../]
+
 
 
 []
