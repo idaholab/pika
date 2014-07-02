@@ -93,6 +93,6 @@ PhaseFieldProperties::computeQpProperties()
   // x_s, Eq. (1)
   _specific_humidity_ratio[_qp] = _property_uo.specificHumidityRatio(_temperature[_qp]);
 
-  // _rho_{vs}, Eq. (3)
+  // P_{vs}, Eq. (2)
   _saturation_pressure_of_water_vapor_over_ice[_qp] = _property_uo.saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
 }
