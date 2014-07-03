@@ -9,7 +9,7 @@ InputParameters validParams<PikaTimeDerivative>()
   params.addParam<Real>("scale", 1.0, "Multiplier applied to the coefficient");
   params.addParam<Real>("coefficient", "Constant scalar coefficient alternate to a material property coefficient. Cannot be specified simultaneously as property.");
   params.addCoupledVar("differentiated_variable", "Variable actually being differentiated");
-//  params.addParam<Real>("hasMaterial", 0, "Boolean showing that material property has been assigned");
+  params.addParam<bool>("use_temporal_scaling",false, "Temporally scale this kernal with a value specified in PikaMaterials");
   return params;
 }
 
@@ -20,8 +20,8 @@ PikaTimeDerivative::PikaTimeDerivative(const std::string & name, InputParameters
     _offset(getParam<Real>("offset")),
     _scale(getParam<Real>("scale")),
     _coefficient(0.0),
-   _var_dot(isCoupled("differentiated_variable") ? coupledDot("differentiated_variable") : _u_dot),
-    _dvar_dot_dvar(isCoupled("differentiated_variable") ? coupledDotDu("differentiated_variable") : _du_dot_du)
+    _has_time_scale(getParam<bool>("use_temporal_scaling")),
+    _time_scale(0.0)
     
 {
   if (_has_material && isParamValid("coefficient"))
@@ -35,6 +35,13 @@ PikaTimeDerivative::PikaTimeDerivative(const std::string & name, InputParameters
 
   else
     _coefficient = getParam<Real>("coefficient");
+
+   if(_has_time_scale)
+      _time_scale = _property_uo.getParam<Real>("temporal_scaling");
+
+   else
+     _time_scale = 1.0;
+
 }
 
 
@@ -42,18 +49,18 @@ Real
 PikaTimeDerivative::computeQpResidual()
 {
     if (_has_material)
-      return (_scale * ((*_material_coefficient)[_qp]) + _offset) * (_test[_i][_qp]) * _var_dot[_qp]; 
+      return _time_scale *(_scale * ((*_material_coefficient)[_qp]) + _offset) * (_test[_i][_qp]) * TimeDerivative::computeQpResidual(); 
 
     else
-      return (_scale * _coefficient + _offset) * (_test[_i][_qp]) * _var_dot[_qp]; 
+      return _time_scale *(_scale * _coefficient + _offset) * (_test[_i][_qp]) * TimeDerivative::computeQpResidual(); 
 }
 
 Real
 PikaTimeDerivative::computeQpJacobian()
 {
     if (_has_material)
-     return  (_scale * ((*_material_coefficient)[_qp]) + _offset) * _test[_i][_qp]*_phi[_j][_qp]*_dvar_dot_dvar[_qp]; 
+     return _time_scale * (_scale * ((*_material_coefficient)[_qp]) + _offset) *  TimeDerivative::computeQpJacobian(); 
 
     else
-     return (_scale * _coefficient + _offset) * _test[_i][_qp]*_phi[_j][_qp]*_dvar_dot_dvar[_qp]; 
+     return _time_scale *(_scale * _coefficient + _offset) *  TimeDerivative::computeQpJacobian(); 
 }

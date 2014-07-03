@@ -1,6 +1,7 @@
 #ifndef PIKATIMEDERIVATIVE_H
 #define PIKATIMEDERIVATIVE_H 
 #include "TimeDerivative.h"
+#include "PropertyUserObjectInterface.h"
 #include "Material.h"
 
 //Forward Declarations
@@ -9,7 +10,9 @@ class PikaTimeDerivative;
 template<>
 InputParameters validParams<PikaTimeDerivative>();
 
-class PikaTimeDerivative : public TimeDerivative
+class PikaTimeDerivative :
+  public TimeDerivative,
+  PropertyUserObjectInterface
 {
 public:
 
@@ -28,5 +31,7 @@ private:
   Real _coefficient;
   VariableValue & _var_dot;
   VariableValue & _dvar_dot_dvar;
+  const bool & _has_time_scale;
+  const Real _time_scale;
 };
 #endif //PIKATIMEDERIVATIVE

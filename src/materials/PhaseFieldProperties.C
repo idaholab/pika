@@ -64,14 +64,14 @@ PhaseFieldProperties::computeQpProperties()
   /// @todo{This needs to be computed}
   _interface_velocity[_qp] = 1e-9; // [m/s]
 
- // _capillary_length[_qp] =(rho_vs/(rho_i[_qp]*_xi)) * (gamma * std::pow(a, 3.) ) / (k * _property_uo.referenceTemp());
+  _capillary_length[_qp] =(rho_vs/(rho_i[_qp])) * (gamma * std::pow(a, 3.) ) / (k * _property_uo.referenceTemp());
   // _capillary_length[_qp] =_d_o/_xi;
-  _capillary_length[_qp] =(1.3e-9);
+  //_capillary_length[_qp] =(1.3e-9);
 //  std::cout<<"d_o = " <<_capillary_length[_qp]<<std::endl;
 
-  //_beta[_qp] = (1./(alpha * _xi)) * std::sqrt((2.*libMesh::pi*m) / (k * _property_uo.referenceTemp()));
+  _beta[_qp] = (1./(alpha)) * std::sqrt((2.*libMesh::pi*m) / (k * _property_uo.referenceTemp()));
   // _beta[_qp]=_interface_kinetic_coefficient/_xi;
-  _beta[_qp] = (5.5e5);
+  //_beta[_qp] = (5.5e5);
   //std::cout<<"beta = "<<_beta[_qp]<<std::endl;
 
   //_lambda[_qp] = (_xi*_a1 * w / _capillary_length[_qp]);

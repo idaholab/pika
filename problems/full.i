@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
+  nx = 20
+  ny = 20
   xmax = .005
   ymax = .005
   elem_type = QUAD4
@@ -22,9 +22,9 @@
 
 [Kernels]
   [./heat_diffusion]
-    type = MatDiffusion
+    type = PikaScaledMatDiffusion
     variable = T
-    D_name = conductivity
+    diffusivity = conductivity
   [../]
   [./heat_time]
     type = PikaTimeDerivative
@@ -46,9 +46,9 @@
     scale = 1.0
   [../]
   [./vapor_diffusion]
-    type = MatDiffusion
+    type = PikaScaledMatDiffusion
     variable = u
-    D_name = diffusion_coefficient
+    diffusivity = 'diffusion coefficient'
   [../]
   [./vapor_phi_time]
     type = PikaScaledTimeDerivative
@@ -99,11 +99,6 @@
     variable = T
     boundary = 'left right'
   [../]
-  [./vapor_walls]
-    type = NeumannBC
-    variable = u
-    boundary = 'left right'
-  [../]
 []
 
 [Postprocessors]
@@ -118,11 +113,10 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 10
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
-  end_time = 140000
+  end_time = 50
 []
 
 [Adaptivity]
