@@ -9,7 +9,7 @@ template<>
 InputParameters validParams<CoupledPikaTimeDerivative>();
 
 class CoupledPikaTimeDerivative :
-  public PikaTimeDerivative,
+  public PikaTimeDerivative
 {
 public:
 
@@ -21,11 +21,9 @@ protected:
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
 private:
-  VariableValue & _var_dot;
-  VariableValue & _dvar_dot_dvar;
-  VariableValue & _v_var;
-  const bool _time_scale; 
-  const Real  _xi;
+ const VariableValue & _var_dot;
+ const VariableValue & _dvar_dot_dvar;
+ unsigned int  _v_var;
   
 };
 #endif //COUPLEDPIKATIMEDERIVATIVE

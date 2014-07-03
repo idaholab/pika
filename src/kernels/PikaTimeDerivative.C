@@ -15,6 +15,7 @@ InputParameters validParams<PikaTimeDerivative>()
 
 PikaTimeDerivative::PikaTimeDerivative(const std::string & name, InputParameters parameters) :
     TimeDerivative(name, parameters),
+    PropertyUserObjectInterface(name,parameters),
     _has_material(isParamValid("property")),
     _material_coefficient(NULL),
     _offset(getParam<Real>("offset")),

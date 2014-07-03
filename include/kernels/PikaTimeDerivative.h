@@ -23,15 +23,14 @@ protected:
 
   virtual Real computeQpJacobian();
 
-private:
   const bool _has_material;
   MaterialProperty<Real> * _material_coefficient;
   const Real _offset;
   const Real _scale;
   Real _coefficient;
-  VariableValue & _var_dot;
-  VariableValue & _dvar_dot_dvar;
   const bool & _has_time_scale;
-  const Real _time_scale;
+  Real _time_scale;
+
+private:
 };
 #endif //PIKATIMEDERIVATIVE
