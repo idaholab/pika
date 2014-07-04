@@ -21,7 +21,7 @@ InputParameters validParams<PropertyUserObjectInterface>();
 class PropertyUserObjectInterface
 {
 public:
-  PropertyUserObjectInterface(const std::string & name, InputParameters parameters);
+  PropertyUserObjectInterface(const std::string & name, InputParameters & parameters);
 
 private:
   FEProblem * _problem_ptr;
@@ -30,4 +30,5 @@ protected:
   const PropertyUserObject & _property_uo;
 
 };
+
 #endif // PROPERTYUSEROBJECTINTERFACE_H

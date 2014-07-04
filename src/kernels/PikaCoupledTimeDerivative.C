@@ -19,12 +19,7 @@ PikaCoupledTimeDerivative::PikaCoupledTimeDerivative(const std::string & name, I
 Real
 PikaCoupledTimeDerivative::computeQpResidual()
 {
-  // Material property coefficient
-  if (_has_material)
-    return _time_scale * (_scale * ((*_material_coefficient)[_qp]) + _offset) * (_test[_i][_qp]) * _var_dot[_qp];
-  // Scalar coefficient
-  else
-    return _time_scale * (_scale * _coefficient + _offset) * (_test[_i][_qp]) * _var_dot[_qp];
+  return coefficient(_qp) * _test[_i][_qp] * _var_dot[_qp];
 }
 
 Real
@@ -36,19 +31,8 @@ PikaCoupledTimeDerivative::computeQpJacobian()
 Real
 PikaCoupledTimeDerivative::computeQpOffDiagJacobian(unsigned int jvar)
 {
-  // Off-diagonal term exists
   if (jvar == _v_var)
-  {
-    // Material property coefficient
-    if (_has_material)
-     return _time_scale * (_scale * ((*_material_coefficient)[_qp]) + _offset) * _test[_i][_qp]*_phi[_j][_qp]*_dvar_dot_dvar[_qp];
-
-    // Scalar coefficient
-    else
-     return _time_scale * (_scale * _coefficient + _offset) * _test[_i][_qp]*_phi[_j][_qp]*_dvar_dot_dvar[_qp];
-  }
-
-  // No contribution to off-diagonal
+    return coefficient(_qp) * _test[_i][_qp]*_phi[_j][_qp]*_dvar_dot_dvar[_qp];
   else
     return 0.0;
 }

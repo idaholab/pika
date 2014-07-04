@@ -1,8 +1,12 @@
 #ifndef PIKATIMEDERIVATIVE_H
 #define PIKATIMEDERIVATIVE_H
+
+// MOOSE includes
 #include "TimeDerivative.h"
+
+// Pika includes
 #include "PropertyUserObjectInterface.h"
-#include "Material.h"
+#include "CoefficientKernelInterface.h"
 
 //Forward Declarations
 class PikaTimeDerivative;
@@ -21,13 +25,14 @@ InputParameters validParams<PikaTimeDerivative>();
  *     (scale * coefficient + offset) * du/dt
  *
  * Also, include the ability to toggle the additional temporal scaling parameter (\xi)
- * as defined by Kaempfer and Plapp (2009). This temporal scalling is applied in
+ * as defined by Kaempfer and Plapp (2009). This temporal scaling is applied in
  * additions to the coefficient scaling:
  *     xi * (scale * coefficient + offset) * du/dt
  */
 class PikaTimeDerivative :
   public TimeDerivative,
-  PropertyUserObjectInterface
+  public PropertyUserObjectInterface,
+  public CoefficientKernelInterface
 {
 public:
 
@@ -49,26 +54,6 @@ protected:
    * Utilizes TimeDerivative::computeQpJacobian with applied coefficients and scaling
    */
   virtual Real computeQpJacobian();
-
-  /// Flag indicating to use material property rather than scalar coefficient
-  const bool _has_material;
-
-  /// Pointer to material property to utilize as a coefficient
-  /* This must be a pointer because getMaterialProperty returns a const reference and
-   * this member is optional, so NULL is a valid value */
-  MaterialProperty<Real> * _material_coefficient;
-
-  /// Scalar coefficient
-  const Real _coefficient;
-
-  /// Coefficient offset
-  const Real _offset;
-
-  /// Coefficient offset
-  const Real _scale;
-
-  /// Time scaling factor (\xi)
-  const Real _time_scale;
 };
 
 #endif //PIKATIMEDERIVATIVE

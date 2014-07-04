@@ -1,7 +1,6 @@
 #ifndef PIKACOUPLEDTIMEDERIVATIVE_H
 #define PIKACOUPLEDTIMEDERIVATIVE_H
 
-
 // Pika includes
 #include "PikaTimeDerivative.h"
 
