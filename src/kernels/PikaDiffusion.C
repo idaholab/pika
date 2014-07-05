@@ -18,7 +18,7 @@ PikaDiffusion::PikaDiffusion(const std::string & name, InputParameters parameter
 {
   // The getMaterialProperty method cannot be replicated in interface
   if (useMaterial())
-    setMaterialPropertyPointer(&getMaterialProperty<Real>("property"));
+    setMaterialPropertyPointer(&getMaterialProperty<Real>(getParam<std::string>("property")));
 }
 
 Real

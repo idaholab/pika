@@ -16,7 +16,7 @@ PikaTimeDerivative::PikaTimeDerivative(const std::string & name, InputParameters
 {
   // The getMaterialProperty method cannot be replicated in interface
   if (useMaterial())
-    setMaterialPropertyPointer(&getMaterialProperty<Real>("property"));
+    setMaterialPropertyPointer(&getMaterialProperty<Real>(getParam<std::string>("property")));
 }
 
 Real
