@@ -33,9 +33,6 @@ if not args.disable:
   runApp(input_name, refinements=args.refinements, mpi=4)
 
 # Extract the data
-x, y = extractPostprocessorData('out')
-
-# Extract the data
 x, y = extractPostprocessorData('out', y='L2_error', x='hmax', refinements=args.refinements)
 plt = ConvergencePlot(x, y, xlabel='Element size', ylabel='L2_norm')
 

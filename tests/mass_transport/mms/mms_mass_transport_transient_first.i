@@ -6,6 +6,7 @@
   xmax = 0.01
   ymax = 0.01
   elem_type = QUAD4
+  uniform_refine = 1
 []
 
 [Variables]
@@ -98,7 +99,7 @@
 
 [Outputs]
   output_initial = true
-  csv = true
+  exodus = true
 []
 
 [ICs]

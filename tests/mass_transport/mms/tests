@@ -17,10 +17,31 @@
   [../]
 
   [./steady_convergence]
-    # MMS test showing steady state convergence
+    # MMS test showing steady state convergence, see problems/convergence/steady.py
+    #  ./steady.py
     type = 'Exodiff'
     input = 'mms_mass_transport_steady.i'
     exodiff = 'mms_mass_transport_steady_out.e-s004'
+  [../]
+
+  [./trasient_first_convergence]
+    # MMS test showing transient convergence on first-order shape functions
+    # This tests a single point on the convergence plot, see problems/convergence/transient.py for
+    # the complete plots:
+    # ./transient.py --first -r4
+    type = 'Exodiff'
+    input = 'mms_mass_transport_transient_first.i'
+    exodiff = 'mms_mass_transport_transient_first_out.e'
+  [../]
+
+  [./trasient_second_convergence]
+    # MMS test showing transient convergence on second-order shape functions
+    # This tests a single point on the convergence plot, see problems/convergence/transient.py for
+    # the complete plots:
+    # ./transient.py --second -r4
+    type = 'Exodiff'
+    input = 'mms_mass_transport_transient_second.i'
+    exodiff = 'mms_mass_transport_transient_second_out.e'
   [../]
 
   [./test_temporally_scaled]
