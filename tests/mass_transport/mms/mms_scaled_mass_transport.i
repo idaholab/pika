@@ -38,10 +38,10 @@
     variable = u
   [../]
   [./u_diff]
-    type = PikaScaledMatDiffusion
+    type = PikaDiffusion
     variable = u
     block = 0
-    diffusivity = diffusion_coefficient
+    property = diffusion_coefficient
   [../]
   [./mms]
     type = MassTransportSourceMMS
@@ -50,10 +50,10 @@
     use_dt_dphi = true
   [../]
   [./phi_time]
-    type = PikaScaledTimeDerivative
+    type = PikaCoupledTimeDerivative
     variable = u
     coefficient = 0.5
-    differentiated_variable = phi
+    coupled_variable = phi
   [../]
 []
 
@@ -124,4 +124,3 @@
     type = FunctionIC
   [../]
 []
-

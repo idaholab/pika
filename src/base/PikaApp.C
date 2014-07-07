@@ -19,6 +19,8 @@
 
 // Kernels
 #include "PikaTimeDerivative.h"
+#include "PikaCoupledTimeDerivative.h"
+#include "PikaDiffusion.h"
 #include "PhaseTransition.h"
 #include "TensorDiffusion.h"
 #include "MassTransportSourceMMS.h"
@@ -27,8 +29,6 @@
 #include "MaterialUserForcingFunction.h"
 #include "DoubleWellPotential.h"
 #include "DoubleWellPotentialMMS.h"
-#include "PikaScaledTimeDerivative.h"
-#include "PikaScaledMatDiffusion.h"
 #include "ScaledPhaseTransition.h"
 
 // AuxKernels
@@ -93,6 +93,8 @@ PikaApp::registerObjects(Factory & factory)
 
   // Kernels
   registerKernel(PikaTimeDerivative);
+  registerKernel(PikaCoupledTimeDerivative);
+  registerKernel(PikaDiffusion);
   registerKernel(PhaseTransition);
   registerKernel(TensorDiffusion);
   registerKernel(MassTransportSourceMMS);
@@ -101,8 +103,6 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(MaterialUserForcingFunction);
   registerKernel(DoubleWellPotential);
   registerKernel(DoubleWellPotentialMMS);
-  registerKernel(PikaScaledTimeDerivative);
-  registerKernel(PikaScaledMatDiffusion);
   registerKernel(ScaledPhaseTransition);
 
   // InitialConditions
