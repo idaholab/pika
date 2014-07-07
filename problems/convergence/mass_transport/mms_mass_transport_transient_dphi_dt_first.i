@@ -3,6 +3,9 @@
   dim = 2
   nx = 5
   ny = 5
+  xmax = 0.01
+  ymax = 0.01
+  uniform_refine = 2
   elem_type = QUAD4
 []
 
@@ -16,7 +19,7 @@
 [AuxVariables]
   [./phi]
   [../]
-  [./abs_error]
+  [./u_diff]
   [../]
 []
 
@@ -24,51 +27,56 @@
   [./u_func]
     type = ParsedFunction
     vars = a
-    vals = 4
-    value = sin(a*pi*x)
-  [../]
-  [./phi_func]
-    type = ParsedFunction
-    value = t*x*y
+    vals = 100
+    value = t*y*sin(a*pi*x)
   [../]
   [./forcing_func]
     type = ParsedFunction
-    vars = a
-    vals = 4
-    value = a*a*pi*pi*sin(a*pi*x)
+    vars = 'a Dv'
+    vals = '100 0.00002178'
+    value = y*sin(a*pi*x)+a*a*Dv*t*t*y*cos(a*pi*x)*pi+a*a*Dv*(-a*t*x+1)*t*y*sin(a*pi*x)*pi*pi-100*x
+  [../]
+  [./phi_func]
+    type = ParsedFunction
+    value = 200*t*x-1
   [../]
 []
 
 [Kernels]
-#  [./u_time]
-#    type = TimeDerivative
-#    variable = u
-#  [../]
   [./u_diff]
     type = MatDiffusion
     variable = u
-    D_name = diffusion_coefficient
     block = 0
+    D_name = diffusion_coefficient
   [../]
   [./mms]
     type = UserForcingFunction
     variable = u
     function = forcing_func
   [../]
-
-#  [./mms]
-#    type = MassTransportSourceMMS
-#    variable = u
-#    phi = phi
-#    use_dphi_dt = false
-#  [../]
+  [./u_time]
+    type = TimeDerivative
+    variable = u
+  [../]
+  [./u_phi_time]
+    type = PikaCoupledTimeDerivative
+    variable = u
+    coupled_variable = phi
+    coefficient = 0.5
+  [../]
 []
 
 [AuxKernels]
-  [./phi_kernel]
+  [./phi_aux]
     type = FunctionAux
     variable = phi
     function = phi_func
+  [../]
+  [./u_diff_aux]
+    type = ErrorFunctionAux
+    variable = u_diff
+    function = u_func
+    solution_variable = u
   [../]
 []
 
@@ -81,22 +89,18 @@
   [../]
 []
 
-[PikaMaterials]
-  phi = phi
-  temperature = 273.15
-[]
-
 [Postprocessors]
   [./L2_error]
     type = ElementL2Error
     variable = u
     function = u_func
   [../]
-  [./ndofs]
-    type = NumDOFs
-  [../]
   [./hmax]
     type = AverageElementSize
+    variable = u
+  [../]
+  [./L2_norm]
+    type = ElementL2Norm
     variable = u
   [../]
 []
@@ -104,12 +108,12 @@
 [Executioner]
   type = Transient
   num_steps = 5
-  dt = 0.1
+  dt = 10000
 []
 
 [Outputs]
   output_initial = true
-  console = true
+  exodus = true
   csv = true
 []
 
@@ -119,9 +123,11 @@
     variable = u
     type = FunctionIC
   [../]
-  [./phi_ic]
-    function = phi_func
-    variable = phi
-    type = FunctionIC
-  [../]
+[]
+
+[PikaMaterials]
+  reference_temperature = 263.15
+  phi = phi
+  temperature = 268.15
+  water_vapor_diffusion_coefficient = 0.00002178
 []

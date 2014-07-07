@@ -6,6 +6,17 @@
   elem_type = QUAD4
 []
 
+[Adaptivity]
+  marker = refine
+  steps = 3
+  [./Markers]
+    [./refine]
+      type = UniformMarker
+      mark = refine
+    [../]
+  [../]
+[]
+
 [Variables]
   [./u]
     order = FIRST
@@ -40,14 +51,9 @@
 []
 
 [Kernels]
-#  [./u_time]
-#    type = TimeDerivative
-#    variable = u
-#  [../]
   [./u_diff]
-    type = MatDiffusion
+    type = Diffusion
     variable = u
-    D_name = diffusion_coefficient
     block = 0
   [../]
   [./mms]
@@ -55,13 +61,6 @@
     variable = u
     function = forcing_func
   [../]
-
-#  [./mms]
-#    type = MassTransportSourceMMS
-#    variable = u
-#    phi = phi
-#    use_dphi_dt = false
-#  [../]
 []
 
 [AuxKernels]
@@ -82,7 +81,7 @@
 []
 
 [PikaMaterials]
-  phi = phi
+  phi = -1
   temperature = 273.15
 []
 
@@ -102,15 +101,13 @@
 []
 
 [Executioner]
-  type = Transient
-  num_steps = 5
-  dt = 0.1
+  type = Steady
 []
 
 [Outputs]
   output_initial = true
   console = true
-  csv = true
+  exodus = true
 []
 
 [ICs]

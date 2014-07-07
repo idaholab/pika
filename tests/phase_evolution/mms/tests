@@ -1,25 +1,24 @@
 [Tests]
   [./test_double_well_potential]
-    # MMS test for phi - phi^3 =f 
+    # MMS test for phi - phi^3 =f
     type = 'Exodiff'
     input = 'mms_double_well_potential.i'
     exodiff = 'mms_double_well_potential_out.e'
   [../]
   [./test]
-    # MMS test for Eq. (33) w/ transition term =f 
+    # MMS test for Eq. (33) w/ transition term =f
     type = 'Exodiff'
     input = 'mms_phase_evolution.i'
     exodiff = 'mms_phase_evolution_out.e'
     prereq = 'test_double_well_potential'
+    skip = 'see #40'
   [../]
   [./test_temporally_scaled]
-    # MMS test for time scaled Eq. (33) w/ transition term =f 
+    # MMS test for time scaled Eq. (33) w/ transition term =f
     type = 'Exodiff'
     input = 'mms_scaled_phase_evolution.i'
     exodiff = 'mms_phase_evolution_out.e'
     prereq = 'test_double_well_potential'
+    skip = 'see #40'
   [../]
-
-
-
 []
