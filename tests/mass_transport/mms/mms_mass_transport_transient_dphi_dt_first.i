@@ -5,21 +5,21 @@
   ny = 5
   xmax = 0.01
   ymax = 0.01
-  elem_type = QUAD8
+  uniform_refine = 1
+  elem_type = QUAD4
 []
 
 [Variables]
   [./u]
-    order = SECOND
+    order = FIRST
+    family = LAGRANGE
   [../]
 []
 
 [AuxVariables]
   [./phi]
-    order = SECOND
   [../]
   [./u_diff]
-    order = SECOND
   [../]
 []
 
@@ -40,15 +40,9 @@
     type = ParsedFunction
     value = 200*t*x-1
   [../]
-  [./dphi_dt]
-    type = ParsedFunction
-    value = 100*x
-  [../]
 []
 
 [Kernels]
-#  active = 'u_diff u_time mms dphi_dt_func'
-  active = 'u_diff u_time mms u_phi_time'
   [./u_diff]
     type = MatDiffusion
     variable = u
@@ -69,11 +63,6 @@
     variable = u
     coupled_variable = phi
     coefficient = 0.5
-  [../]
-  [./dphi_dt_func]
-    type = UserForcingFunction
-    variable = u
-    function = dphi_dt
   [../]
 []
 
@@ -119,20 +108,12 @@
 [Executioner]
   type = Transient
   num_steps = 5
-  solve_type = PJFNK
-  petsc_options_iname = '-pc_type -pc_hypre_type'
-  petsc_options_value = 'hypre boomeramg'
   dt = 10000
 []
 
 [Outputs]
   output_initial = true
   exodus = true
-  csv = true
-  [./console]
-    type = Console
-    linear_residuals = true
-  [../]
 []
 
 [ICs]

@@ -40,14 +40,9 @@
     type = ParsedFunction
     value = 200*t*x-1
   [../]
-  [./dphi_dt]
-    type = ParsedFunction
-    value = 100*x
-  [../]
 []
 
 [Kernels]
-  active = 'u_diff u_time mms dphi_dt_func'
   [./u_diff]
     type = MatDiffusion
     variable = u
@@ -64,15 +59,10 @@
     variable = u
   [../]
   [./u_phi_time]
-    type = PikaTimeDerivative
+    type = PikaCoupledTimeDerivative
     variable = u
-    differentiated_variable = phi
+    coupled_variable = phi
     coefficient = 0.5
-  [../]
-  [./dphi_dt_func]
-    type = UserForcingFunction
-    variable = u
-    function = dphi_dt
   [../]
 []
 
@@ -118,7 +108,7 @@
 [Executioner]
   type = Transient
   num_steps = 5
-  dt = 0.0001
+  dt = 10000
 []
 
 [Outputs]

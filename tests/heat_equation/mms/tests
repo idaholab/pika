@@ -5,6 +5,7 @@
     input = 'mms_heat_equation.i'
     exodiff = 'mms_heat_equation_out.e'
     cli_args = 'Kernels/mms/use_dphi_dt=false'
+    skip = 'see #42'
   [../]
   [./test_with_dphi_dt]
     # MMS test for dT/dt - Div(D grad(T) + 1/2 dphi/dt = 0

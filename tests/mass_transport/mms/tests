@@ -44,6 +44,26 @@
     exodiff = 'mms_mass_transport_transient_second_out.e'
   [../]
 
+  [./trasient_dphi_dt_first_convergence]
+    # MMS test showing transient convergence with dphi/dt term on first-order shape functions
+    # This tests a single point on the convergence plot, see problems/convergence/transient.py for
+    # the complete plots:
+    # ./transient.py --first -r4 --dphi-dt
+    type = 'Exodiff'
+    input = 'mms_mass_transport_transient_dphi_dt_first.i'
+    exodiff = 'mms_mass_transport_transient_dphi_dt_first_out.e'
+  [../]
+
+  [./trasient_dphi_dt_second_convergence]
+    # MMS test showing transient convergence with dphi/dt term on second-order shape functions
+    # This tests a single point on the convergence plot, see problems/convergence/transient.py for
+    # the complete plots:
+    # ./transient.py --second -r4 --dphi-dt
+    type = 'Exodiff'
+    input = 'mms_mass_transport_transient_dphi_dt_second.i'
+    exodiff = 'mms_mass_transport_transient_dphi_dt_second_out.e'
+  [../]
+
   [./test_temporally_scaled]
     # MMS test for scaled  du/dt - Div(D grad(u) + 1/2 dphi/dt = 0
     type = 'Exodiff'
