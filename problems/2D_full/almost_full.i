@@ -10,7 +10,6 @@
 []
 
 [Variables]
-  active = 'T'
   [./T]
   [../]
   [./u]
@@ -20,7 +19,7 @@
 []
 
 [AuxVariables]
-  active = 'phi'
+  active = ''
   [./phi]
   [../]
   [./u]
@@ -30,7 +29,6 @@
 []
 
 [Kernels]
-  active = 'heat_diffusion heat_phi_time heat_time'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -60,7 +58,7 @@
   [./vapor_diffusion]
     type = PikaDiffusion
     variable = u
-    property = diffusion_coefficient
+    coefficient = 1e-7
     use_temporal_scaling = true
   [../]
   [./vapor_phi_time]
@@ -146,11 +144,16 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 5
-  dt = 10000
+  dt = 200
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
+  end_time = 100000
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    dt = 1
+    percent_change = .25
+  [../]
 []
 
 [Adaptivity]
@@ -159,7 +162,6 @@
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
-    active = 'phi_grad_indicator'
     [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
@@ -171,7 +173,7 @@
     [../]
   [../]
   [./Markers]
-    active = 'phi_marker'
+    active = 'phi_marker u_marker'
     [./phi_marker]
       type = ErrorFractionMarker
       coarsen = .12
@@ -200,30 +202,18 @@
 []
 
 [Outputs]
-  active = 'exodus console'
   output_initial = true
-  file_base = temp_diffusion
-  xda = true
+  exodus = true
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./exodus]
-    file_base = temp_diffusion
-    type = Exodus
-  [../]
-  [./results_for_initial]
-    num_files = 1
-    output_input = true
-    file_base = temp_initial
-    type = Checkpoint
-  [../]
 []
 
 [ICs]
-  active = 'phase_ic temperature_ic'
+  active = 'phase_ic vapor_ic temperature_ic'
   [./phase_ic]
     x1 = .0025
     y1 = .0025
@@ -242,6 +232,7 @@
   [./vapor_ic]
     variable = u
     type = ChemicalPotentialIC
+    block = 0
     phase_variable = phi
     temperature = T
   [../]
@@ -250,20 +241,12 @@
     type = ConstantIC
     value = 264.8
   [../]
-  [./vapor_function_ic]
-    function = -4.7e-6+0.00188*y
-    variable = u
-    type = FunctionIC
-    block = 0
-  [../]
 []
 
 [PikaMaterials]
   phi = phi
-  temperature = T
+  temperature = 263.15
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
-  output_properties = diffusion_coefficient
-  outputs = all
 []
 

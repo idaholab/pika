@@ -1,16 +1,11 @@
 [Mesh]
-  type = GeneratedMesh
+  type = FileMesh
+  file = temp_initial_cp/0005_mesh.cpr
   dim = 2
-  nx = 25
-  ny = 25
-  xmax = .005
-  ymax = .005
-  uniform_refine = 2
-  elem_type = QUAD4
 []
 
 [Variables]
-  active = 'T'
+  active = 'phi u'
   [./T]
   [../]
   [./u]
@@ -20,7 +15,7 @@
 []
 
 [AuxVariables]
-  active = 'phi'
+  active = 'T'
   [./phi]
   [../]
   [./u]
@@ -29,8 +24,16 @@
   [../]
 []
 
+[Functions]
+  active = ''
+  [./T_func]
+    type = SolutionFunction
+    solution = T_initial_uo
+  [../]
+[]
+
 [Kernels]
-  active = 'heat_diffusion heat_phi_time heat_time'
+  active = 'vapor_time phi_transition phi_double_well vapor_phi_time vapor_diffusion phi_time phi_square_gradient'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -60,7 +63,7 @@
   [./vapor_diffusion]
     type = PikaDiffusion
     variable = u
-    property = diffusion_coefficient
+    coefficient = 1e-7
     use_temporal_scaling = true
   [../]
   [./vapor_phi_time]
@@ -95,8 +98,17 @@
   [../]
 []
 
+[AuxKernels]
+  active = ''
+  [./T_aux]
+    type = FunctionAux
+    variable = T
+    function = T_func
+  [../]
+[]
+
 [BCs]
-  active = 'T_hot T_cold'
+  active = ''
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -138,8 +150,16 @@
 []
 
 [UserObjects]
+  active = 'property_uo'
   [./property_uo]
     type = PropertyUserObject
+  [../]
+  [./T_initial_uo]
+    type = SolutionUserObject
+    mesh = temp_diffusion_0005_mesh.xdr
+    nodal_variables = T
+    execute_on = custom
+    es = temp_initial_cp
   [../]
 []
 
@@ -200,30 +220,20 @@
 []
 
 [Outputs]
-  active = 'exodus console'
   output_initial = true
+  exodus = true
   file_base = temp_diffusion
-  xda = true
+  xdr = true
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./exodus]
-    file_base = temp_diffusion
-    type = Exodus
-  [../]
-  [./results_for_initial]
-    num_files = 1
-    output_input = true
-    file_base = temp_initial
-    type = Checkpoint
-  [../]
 []
 
 [ICs]
-  active = 'phase_ic temperature_ic'
+  active = 'phase_ic vapor_ic'
   [./phase_ic]
     x1 = .0025
     y1 = .0025
@@ -255,6 +265,11 @@
     variable = u
     type = FunctionIC
     block = 0
+  [../]
+  [./pre_solved_T]
+    function = T_func_initial
+    variable = T
+    type = FunctionIC
   [../]
 []
 

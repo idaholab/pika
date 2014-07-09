@@ -60,7 +60,7 @@
   [./vapor_diffusion]
     type = PikaDiffusion
     variable = u
-    property = diffusion_coefficient
+    coefficient = 1e-7
     use_temporal_scaling = true
   [../]
   [./vapor_phi_time]
@@ -200,10 +200,9 @@
 []
 
 [Outputs]
-  active = 'exodus console'
   output_initial = true
   file_base = temp_diffusion
-  xda = true
+  xdr = true
   [./console]
     type = Console
     perf_log = true
