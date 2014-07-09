@@ -1,7 +1,8 @@
 [Mesh]
   type = FileMesh
-  file = temp_initial_cp/0005_mesh.cpr
+  file = temp_diffusion.e
   dim = 2
+  distribution = serial
 []
 
 [Variables]
@@ -99,11 +100,11 @@
 []
 
 [AuxKernels]
-  active = ''
   [./T_aux]
-    type = FunctionAux
+    type = SolutionAux
     variable = T
-    function = T_func
+    execute_on = initial
+    solution = T_initial_uo
   [../]
 []
 
@@ -150,16 +151,15 @@
 []
 
 [UserObjects]
-  active = 'property_uo'
   [./property_uo]
     type = PropertyUserObject
   [../]
   [./T_initial_uo]
     type = SolutionUserObject
-    mesh = temp_diffusion_0005_mesh.xdr
+    mesh = temp_diffusion.e
     nodal_variables = T
-    execute_on = custom
-    es = temp_initial_cp
+    execute_on = initial
+    system = nl0
   [../]
 []
 

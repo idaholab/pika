@@ -1,11 +1,10 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 25
-  ny = 25
+  nx = 15
+  ny = 15
   xmax = .005
   ymax = .005
-  uniform_refine = 2
   elem_type = QUAD4
 []
 
@@ -156,58 +155,34 @@
 [Adaptivity]
   max_h_level = 5
   initial_steps = 5
-  initial_marker = phi_marker
   marker = phi_marker
+  initial_marker = phi_marker
   [./Indicators]
-    active = 'phi_grad_indicator'
-    [./phi_grad_indicator]
+    [./phi_jump]
       type = GradientJumpIndicator
       variable = phi
     [../]
-    [./u_jump_indicator]
-      type = GradientJumpIndicator
-      variable = u
-      block = 0
-    [../]
   [../]
   [./Markers]
-    active = 'phi_marker'
     [./phi_marker]
       type = ErrorFractionMarker
       coarsen = .12
-      indicator = phi_grad_indicator
+      indicator = phi_jump
       refine = .6
-    [../]
-    [./T_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.2
-      indicator = T_jump_indicator
-      refine = 0.7
-    [../]
-    [./u_marker]
-      type = ErrorFractionMarker
-      indicator = u_jump_indicator
-      coarsen = .02
-      refine = .5
-      block = 0
-    [../]
-    [./combo_mark]
-      type = ComboMarker
-      block = 0
-      markers = 'u_marker phi_marker'
     [../]
   [../]
 []
 
 [Outputs]
-  active = 'exodus console'
+  active = 'console'
   output_initial = true
+  exodus = true
   file_base = temp_diffusion
-  xda = true
+  output_intermediate = false
+  output_final = true
   [./console]
     type = Console
     perf_log = true
-    nonlinear_residuals = true
     linear_residuals = true
   [../]
   [./exodus]
