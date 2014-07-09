@@ -1,12 +1,7 @@
 [Mesh]
-  type = GeneratedMesh
+  type = FileMesh
+  file = temp_diffusion_0001_mesh.xdr
   dim = 2
-  nx = 25
-  ny = 25
-  xmax = .005
-  ymax = .005
-  uniform_refine = 2
-  elem_type = QUAD4
 []
 
 [Variables]
@@ -18,13 +13,11 @@
   [../]
 []
 
-[AuxVariables]
-  active = ''
-  [./phi]
-  [../]
-  [./u]
-  [../]
-  [./T]
+[Functions]
+  [./T_func]
+    type = SolutionFunction
+    from_variable = T
+    solution = initial_uo
   [../]
 []
 
@@ -58,8 +51,8 @@
   [./vapor_diffusion]
     type = PikaDiffusion
     variable = u
-    coefficient = 1e-7
     use_temporal_scaling = true
+    property = diffusion_coefficient
   [../]
   [./vapor_phi_time]
     type = PikaCoupledTimeDerivative
@@ -94,7 +87,7 @@
 []
 
 [BCs]
-  active = 'T_hot T_cold'
+  active = 'insulated_sides T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -136,8 +129,13 @@
 []
 
 [UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
+  [./initial_uo]
+    type = SolutionUserObject
+    system = nl0
+    mesh = temp_diffusion_0001_mesh.xdr
+    nodal_variables = T
+    execute_on = initial
+    es = temp_diffusion_0001.xdr
   [../]
 []
 
@@ -146,21 +144,21 @@
   type = Transient
   dt = 200
   solve_type = PJFNK
-  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '500 hypre boomeramg'
+  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type '
+  petsc_options_value = '100 hypre boomeramg'
   end_time = 100000
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 1
-    percent_change = .25
+    dt = 10
+    percent_change = .1
   [../]
 []
 
 [Adaptivity]
   max_h_level = 5
-  initial_steps = 5
   initial_marker = phi_marker
-  marker = phi_marker
+  marker = combo_mark
+  initial_steps = 1
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -173,7 +171,7 @@
     [../]
   [../]
   [./Markers]
-    active = 'phi_marker u_marker'
+    active = 'phi_marker combo_mark u_marker'
     [./phi_marker]
       type = ErrorFractionMarker
       coarsen = .12
@@ -189,8 +187,8 @@
     [./u_marker]
       type = ErrorFractionMarker
       indicator = u_jump_indicator
-      coarsen = .02
-      refine = .5
+      coarsen = .12
+      refine = .8
       block = 0
     [../]
     [./combo_mark]
@@ -227,7 +225,7 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = -543.0*y+267.515
+    function = T_func
   [../]
   [./vapor_ic]
     variable = u
@@ -245,7 +243,7 @@
 
 [PikaMaterials]
   phi = phi
-  temperature = 263.15
+  temperature = T
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
 []

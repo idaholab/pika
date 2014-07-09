@@ -136,12 +136,6 @@
 [Postprocessors]
 []
 
-[UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
-  [../]
-[]
-
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
@@ -153,8 +147,8 @@
 []
 
 [Adaptivity]
-  max_h_level = 5
-  initial_steps = 5
+  max_h_level = 4
+  initial_steps = 4
   marker = phi_marker
   initial_marker = phi_marker
   [./Indicators]
@@ -180,6 +174,7 @@
   file_base = temp_diffusion
   output_intermediate = false
   output_final = true
+  xdr = true
   [./console]
     type = Console
     perf_log = true
