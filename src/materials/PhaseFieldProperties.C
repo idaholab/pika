@@ -49,7 +49,7 @@ PhaseFieldProperties::computeQpProperties()
   Real & w = getMaterialProperty<Real>("interface_thickness")[_qp];
   Real & L_sg = getMaterialProperty<Real>("latent_heat")[_qp];
 
-  Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
+  Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_property_uo.referenceTemp());
 
   MaterialProperty<Real> & ki = getMaterialProperty<Real>("conductivity_ice");
   MaterialProperty<Real> & ka = getMaterialProperty<Real>("conductivity_air");

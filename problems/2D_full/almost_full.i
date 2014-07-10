@@ -139,12 +139,19 @@
   [../]
 []
 
+[Preconditioning]
+  [./smp_precond]
+    type = SMP
+    off_diag_row = u
+    off_diag_column = T
+  [../]
+[]
+
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 200
   solve_type = PJFNK
-  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type '
+  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '100 hypre boomeramg'
   end_time = 100000
   [./TimeStepper]
@@ -155,10 +162,10 @@
 []
 
 [Adaptivity]
-  max_h_level = 5
+  max_h_level = 2
   initial_marker = phi_marker
   marker = combo_mark
-  initial_steps = 1
+  initial_steps = 2
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -244,7 +251,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-5
+  interface_thickness = 5e-5
   temporal_scaling = 1e-4
 []
 

@@ -26,7 +26,7 @@ protected:
  * The off-diagonal jacobain term, i.e., the derivative of the coupled time derivative with respect
  * to the coupled variable.
  */
-  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
+//  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
 private:
   VariableValue & _s;
@@ -34,6 +34,8 @@ private:
   MaterialProperty<Real> & _lambda;
 
   MaterialProperty<Real> & _s_eq;
+
+  unsigned int _v_var;
 
 };
 #endif // PHASETRANSITION_H
