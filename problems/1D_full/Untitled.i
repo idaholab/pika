@@ -1,10 +1,15 @@
 [Mesh]
-  type = FileMesh
-  file = phi_diffusion_0021_mesh.xdr
+  type = GeneratedMesh
   dim = 2
+  nx = 100
+  ny = 2
+  xmax = .005
+  ymax = .0002
+  elem_type = QUAD4
 []
 
 [Variables]
+  active = 'phi'
   [./T]
   [../]
   [./u]
@@ -13,20 +18,21 @@
   [../]
 []
 
+[AuxVariables]
+  active = ''
+  [./phi]
+  [../]
+[]
+
 [Functions]
   [./T_func]
-    type = SolutionFunction
-    from_variable = T
-    solution = intial_T
-  [../]
-  [./phi_func]
-    type = SolutionFunction
-    from_variable = phi
-    solution = initial_phi
+    type = ParsedFunction
+    value = -200*x+261
   [../]
 []
 
 [Kernels]
+  active = 'phi_double_well phi_time phi_square_gradient'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -92,110 +98,71 @@
   [../]
 []
 
-[BCs]
-  active = 'T_hot T_cold phi_bc'
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = left
-    value = 261 # -5
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = right
-    value = 260 # -20
-  [../]
-  [./insulated_sides]
-    type = NeumannBC
-    variable = T
-    boundary = 'top bottom'
-  [../]
-  [./phi_bc]
-    type = DirichletBC
-    variable = phi
-    boundary = 'left right'
-    value = 1
-  [../]
+[AuxKernels]
 []
 
 [Postprocessors]
 []
 
 [UserObjects]
-  [./intial_T]
-    type = SolutionUserObject
-    system = nl0
-    mesh = temp_diffusion_0003_mesh.xdr
-    nodal_variables = T
-    es = temp_diffusion_0003.xdr
-  [../]
-  [./initial_phi]
-    type = SolutionUserObject
-    system = nl0
-    mesh = phi_diffusion_0021_mesh.xdr
-    nodal_variables = phi
-    es = phi_diffusion_0021.xdr
-  [../]
-[]
-
-[Preconditioning]
-  [./smp_precond]
-    type = SMP
-    full = true
-  [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  dt = 5
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '100 hypre boomeramg'
-  end_time = 1300
+  petsc_options_value = '500 hypre boomeramg'
+  end_time = 300
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    dt = 5
+  [../]
 []
 
 [Adaptivity]
   max_h_level = 5
-  initial_steps = 2
-  marker = combo
+  initial_steps = 5
   initial_marker = phi_marker
+  marker = phi_marker
   [./Indicators]
-    [./phi_grad_jump]
+    active = 'phi_grad_indicator'
+    [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
     [../]
-    [./u_grad_jump]
+    [./u_jump_indicator]
       type = GradientJumpIndicator
       variable = u
-    [../]
-    [./T_grad_jump]
-      type = GradientJumpIndicator
-      variable = T
+      block = 0
     [../]
   [../]
   [./Markers]
+    active = 'phi_marker'
     [./phi_marker]
       type = ErrorFractionMarker
       coarsen = .01
-      indicator = phi_grad_jump
-      refine = .6
+      indicator = phi_grad_indicator
+      refine = .5
+    [../]
+    [./T_marker]
+      type = ErrorFractionMarker
+      coarsen = 0.2
+      indicator = T_jump_indicator
+      refine = 0.7
     [../]
     [./u_marker]
       type = ErrorFractionMarker
-      coarsen = .01
-      indicator = u_grad_jump
-      refine = 0.6
-    [../]
-    [./combo]
-      type = ComboMarker
-      markers = 'phi_marker u_marker t_marker'
-    [../]
-    [./t_marker]
-      type = ErrorFractionMarker
-      coarsen = .01
-      indicator = T_grad_jump
+      indicator = u_jump_indicator
+      coarsen = 0.01
       refine = .5
+      block = 0
+    [../]
+    [./combo_mark]
+      type = ComboMarker
+      block = 0
+      markers = 'u_marker phi_marker'
     [../]
   [../]
 []
@@ -210,13 +177,24 @@
     nonlinear_residuals = true
     linear_residuals = true
   [../]
+  [./xdr]
+    file_base = phi_diffusion
+    type = XDR
+    show = phi
+  [../]
 []
 
 [ICs]
+  active = 'phase_ic'
   [./phase_ic]
+    x1 = 0.00214285714
     variable = phi
-    type = FunctionIC
-    function = phi_func
+    type = KaempferAnalyticPhaseIC
+    x2 = 0.00285714285
+    phi_new = -1
+    phi_old = 1
+    x3 = 0.00357142857
+    x4 = 0.00428571428
   [../]
   [./temperature_ic]
     variable = T
@@ -234,10 +212,8 @@
 
 [PikaMaterials]
   phi = phi
-  temperature = T
-  interface_thickness = 8e-5
-  output_properties = 'tau equilibrium_concentration heat_capacity conductivity diffusion_coefficient latent_heat lambda'
-  outputs = all
+  temperature = 263.15
+  interface_thickness = 5e-5
   temporal_scaling = 1e-4
 []
 
