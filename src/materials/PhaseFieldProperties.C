@@ -77,7 +77,7 @@ PhaseFieldProperties::computeQpProperties()
 
   _interface_thickness_squared[_qp] = (convert_meters) * (convert_meters) * w*w;
 
-  _equilibrium_concentration[_qp] = (1.0/std::pow(convert_meters,3.0)) * _property_uo.equilibriumConcentration(_temperature[_qp]);
+  _equilibrium_concentration[_qp] =  _property_uo.equilibriumConcentration(_temperature[_qp]);
 
   // x_s, Eq. (1)
   _specific_humidity_ratio[_qp] = _property_uo.specificHumidityRatio(_temperature[_qp]);
