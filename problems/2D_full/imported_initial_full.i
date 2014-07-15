@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = temp_diffusion_0001_mesh.xdr
+  file = phi_temp_diffusion_0010_mesh.xdr
   dim = 2
   uniform_refine = 1
 []
@@ -18,6 +18,11 @@
   [./T_func]
     type = SolutionFunction
     from_variable = T
+    solution = initial_uo
+  [../]
+  [./phi_func]
+    type = SolutionFunction
+    from_variable = phi
     solution = initial_uo
   [../]
 []
@@ -133,10 +138,10 @@
   [./initial_uo]
     type = SolutionUserObject
     system = nl0
-    mesh = temp_diffusion_0001_mesh.xdr
-    nodal_variables = T
+    mesh = phi_temp_diffusion_0010_mesh.xdr
+    nodal_variables = 'T phi'
     execute_on = initial
-    es = temp_diffusion_0001.xdr
+    es = phi_temp_diffusion_0010.xdr
   [../]
 []
 
@@ -160,14 +165,14 @@
   reset_dt = true
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 1
+    dt = .5
     percent_change = .1
     reset_dt = true
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 4
+  max_h_level = 5
   initial_marker = phi_marker
   marker = combo_mark
   [./Indicators]
@@ -224,14 +229,9 @@
 [ICs]
   active = 'phase_ic vapor_ic temperature_ic'
   [./phase_ic]
-    x1 = .0025
-    y1 = .0025
-    radius = 0.0005
-    outvalue = 1
     variable = phi
-    invalue = -1
-    type = SmoothCircleIC
-    int_width = 5e-5
+    type = FunctionIC
+    function = phi_func
   [../]
   [./temperature_ic]
     variable = T
@@ -255,7 +255,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-4
+  interface_thickness = 1e-5
   temporal_scaling = 1e-4
 []
 

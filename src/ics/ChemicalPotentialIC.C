@@ -21,11 +21,12 @@ ChemicalPotentialIC::ChemicalPotentialIC(const std::string & name, InputParamete
 Real
 ChemicalPotentialIC::value(const Point & /*p*/)
 {
-
-//  return -4.7e-6+ _q_point[_qp](1) * 0.00188;
-/*  if(_phase[_qp]<1.0)
-   return _property_uo.equilibriumConcentration(_temperature[_qp]);
+  if (_phase[_qp]<0.95)
+  {
+    Real f =  _property_uo.equilibriumConcentration(_temperature[_qp]) * (1.0-_phase[_qp])/2.0;
+    std::cout<<_temperature[_qp]<<' ' <<_phase[_qp]<< ' '<<f<<std::endl; 
+    return f;
+  }    
   else
-    return 0.0;*/
-   return _property_uo.equilibriumConcentration(_temperature[_qp])*(1.0-_phase[_qp])/2.0;
+    return 0.0;
 }

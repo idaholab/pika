@@ -5,7 +5,6 @@
   ny = 25
   xmax = .005
   ymax = .005
-  uniform_refine = 2
   elem_type = QUAD4
 []
 
@@ -138,8 +137,12 @@
 []
 
 [UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
+[]
+
+[Preconditioning]
+  [./smp_precond]
+    type = SMP
+    full = true
   [../]
 []
 
@@ -153,7 +156,8 @@
   end_time = 100000
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 1
+    dt = .5
+    reset_dt = true
   [../]
 []
 
@@ -177,7 +181,7 @@
     active = 'phi_marker u_marker'
     [./phi_marker]
       type = ErrorFractionMarker
-      coarsen = .12
+      coarsen = .08
       indicator = phi_grad_indicator
       refine = .6
     [../]
@@ -223,7 +227,7 @@
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 5e-5
+    int_width = 1e-4
   [../]
   [./temperature_ic]
     variable = T
@@ -234,7 +238,7 @@
     variable = u
     type = FunctionIC
     block = 0
-    function = -4.7e-6+0.00188*y
+    function = (-4.7e-6)+0.00188*y
   [../]
   [./constant_temp_ic]
     variable = T
@@ -246,7 +250,8 @@
 [PikaMaterials]
   phi = phi
   temperature = 263.15
-  interface_thickness = 1e-5
+  interface_thickness = 1e-4
   temporal_scaling = 1e-4
+  mobility = 1.0
 []
 
