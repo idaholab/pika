@@ -1,11 +1,10 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 15
-  ny = 15
+  nx = 30
+  ny = 30
   xmax = 5 # mm
   ymax = 5 # mm
-  uniform_refine = 2
   elem_type = QUAD4
 []
 
@@ -127,8 +126,8 @@
 []
 
 [Adaptivity]
-  max_h_level = 6
-  initial_steps = 6
+  max_h_level = 4
+  initial_steps = 4
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -146,9 +145,9 @@
     active = 'phi_marker'
     [./phi_marker]
       type = ErrorFractionMarker
-      coarsen = .02
+      coarsen = .01
       indicator = phi_grad_indicator
-      refine = .5
+      refine = .8
     [../]
     [./T_marker]
       type = ErrorFractionMarker

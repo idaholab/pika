@@ -59,5 +59,5 @@ print "rho_vs(263.15) = ", rho_vs.evalf(subs={T: 263.15})
 print "rho_vs(268.15) = ", rho_vs.evalf(subs={T: 263.15})
 
 print ""
-print "u_eq(263.15) = ", u_eq.evalf(subs={T: 263.15})
-print "u_eq(268.15) = ", u_eq.evalf(subs={T: 268.15})
+print "u_eq(263.15) = ", u_eq.evalf(subs={T: 264.8})
+print "u_eq(268.15) = ", u_eq.evalf(subs={T: 267.515})

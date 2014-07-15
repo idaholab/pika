@@ -2,7 +2,6 @@
   type = FileMesh
   file = phi_temp_diffusion_0010_mesh.xdr
   dim = 2
-  uniform_refine = 1
 []
 
 [Variables]
@@ -145,14 +144,6 @@
   [../]
 []
 
-[Preconditioning]
-  [./smp_precond]
-    type = SMP
-    off_diag_row = u
-    off_diag_column = T
-  [../]
-[]
-
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
@@ -257,5 +248,8 @@
   temperature = T
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
+  output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
+  outputs = all
+  conversion_factor = 1000
 []
 
