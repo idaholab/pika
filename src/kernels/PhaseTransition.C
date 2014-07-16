@@ -34,30 +34,12 @@ PhaseTransition::PhaseTransition(const std::string & name, InputParameters param
 Real
 PhaseTransition::computeDFDOP(PFFunctionType type)
 {
-  Real f =  -(_lambda[_qp]) * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
-//  std::cout<<f<<std::endl;
   switch (type)
   { 
     case Residual:
-     return f;
+     return - _property_uo.temporalScale() * (_lambda[_qp]) * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
 
     case Jacobian:
-      return  4.0 * _lambda[_qp] * _u[_qp] * (-_u[_qp]*_u[_qp]+1.0) * ( _s[_qp] - (_s_eq[_qp]));
+      return   _property_uo.temporalScale() * 4.0 * _lambda[_qp] * _u[_qp] * (-_u[_qp]*_u[_qp]+1.0) * (_s[_qp] - _s_eq[_qp])*_phi[_j][_qp];
   }
 }
-/*  Real
-  PhaseTransition::computeQpOffDiagJacobian(unsigned int jvar)
-  { 
-    if (jvar == _v_var)
-      return -_test[_i][_qp]*_phi[_j][_qp] * _lambda[_qp] * (-_u[_qp]*_u[_qp]+1.0) * (-_u[_qp]*_u[_qp]+1.0);
-
-    else
-      return 0.0;
-  }
-*/
-  /*case Residual:
-    return -(_lambda[_qp])*_property_uo.temporalScale() * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
-
-  case Jacobian:
-    return  4.0 * _lambda[_qp] * _property_uo.temporalScale() * _u[_qp] * (-_u[_qp]*_u[_qp]+1.0) * ( _s[_qp] - (_s_eq[_qp]));
-  }*/

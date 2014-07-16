@@ -33,11 +33,15 @@ u_eq = symbols('u_eq')
 term3 =-lam*(u-u_eq)*((1-phi**2)**2)
 
 #Print out equation 
+print 'Residual'
+pprint (term3)
+
 print '\n'
-print '  d(Term4)/dphi = \n'
+print '  jacobian d(Term4)/dphi = \n'
 pprint(diff(term3,phi))
 print '\n'
-print '  d(Term4)/du = \n'
+
+print ' offDiagonal  d(Term4)/du = \n'
 pprint(diff(term3,u))
 print '\n'
 
