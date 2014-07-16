@@ -1,3 +1,13 @@
+/****************************************************************/
+/*       PIKA - Phase field snow micro-structure model          */
+/*                                                              */
+/*          Prepared by Battelle Energy Alliance, LLC           */
+/*            Under Contract No. DE-AC07-05ID14517              */
+/*            With the U. S. Department of Energy               */
+/*                                                              */
+/*            See COPYRIGHT for full restrictions               */
+/****************************************************************/
+
 #! /usr/bin/python
 # A simple demonstration of the convergence tools in Pika, the
 # executable is slightly modified version of Example 14 of Moose.

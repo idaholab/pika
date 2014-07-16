@@ -1,9 +1,5 @@
 /****************************************************************/
-/*               DO NOT MODIFY THIS HEADER                      */
-/* MOOSE - Multiphysics Object Oriented Simulation Environment  */
-/*                                                              */
-/*           (c) 2010 Battelle Energy Alliance, LLC             */
-/*                   ALL RIGHTS RESERVED                        */
+/*       PIKA - Phase field snow micro-structure model          */
 /*                                                              */
 /*          Prepared by Battelle Energy Alliance, LLC           */
 /*            Under Contract No. DE-AC07-05ID14517              */
@@ -28,7 +24,7 @@ InputParameters validParams<PhaseEvolutionSourceMMS>();
  * A kernel for adding forcing function for the MMS tests of the heat
  * transport equation, Eq. (34)
  */
-class PhaseEvolutionSourceMMS : 
+class PhaseEvolutionSourceMMS :
     public Kernel,
     public PropertyUserObjectInterface
 {
