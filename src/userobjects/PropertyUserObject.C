@@ -71,6 +71,7 @@ PropertyUserObject::objectParams()
   params.addParam<Real>("temporal_scaling", 1.0, "Snow metamorphosis time scaling value");
   params.addParam<Real>("capillary_length", 1.3e-9 , "Capillary Length (d_o) ");
   params.addParam<Real>("interface_kinetic_coefficient", 5.5e5, "Interface kinetic coefficient (beta)");
+  params.addParam<Real>("conversion_factor", 1.0, "Conversion value for switching between spatial units (i.e meters to mm)");
 
   // @todo{Group the above}
   params.addParamNamesToGroup("atmospheric_pressure", "General");

@@ -1,14 +1,11 @@
 [Mesh]
-  type = GeneratedMesh
+  type = FileMesh
+  file = phi_diffusion_0021_mesh.xdr
   dim = 2
-  nx = 20
-  ny = 20
-  xmax = .005
-  ymax = .005
-  elem_type = QUAD4
 []
 
 [Variables]
+  active = 'T'
   [./T]
   [../]
   [./u]
@@ -17,7 +14,25 @@
   [../]
 []
 
+[AuxVariables]
+  [./phi]
+  [../]
+[]
+
+[Functions]
+  [./T_func]
+    type = ParsedFunction
+    value = -200*x+261
+  [../]
+  [./phi_func]
+    type = SolutionFunction
+    from_variable = phi
+    solution = intial_phi
+  [../]
+[]
+
 [Kernels]
+  active = 'heat_diffusion heat_time'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -54,6 +69,7 @@
     type = PikaCoupledTimeDerivative
     variable = u
     coefficient = 0.5
+    differentiated_variable = phi
     use_temporal_scaling = true
     coupled_variable = phi
   [../]
@@ -83,34 +99,23 @@
 []
 
 [BCs]
+  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 267.515 # -5
+    boundary = left
+    value = 261 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = top
-    value = 264.8 # -20
+    boundary = right
+    value = 260 # -20
   [../]
   [./insulated_sides]
     type = NeumannBC
     variable = T
-    boundary = 'left right'
-  [../]
-  [./phi_bc]
-    type = DirichletBC
-    variable = phi
-    boundary = '0 1 2 3 '
-    value = 1.0
-  [../]
-  [./vapor_ic]
-    type = DirichletBC
-    variable = u
-    boundary = '0 1 2 3 '
-    value = 0
+    boundary = 'top bottom'
   [../]
 []
 
@@ -118,69 +123,33 @@
 []
 
 [UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
+  [./intial_phi]
+    type = SolutionUserObject
+    system = nl0
+    mesh = phi_diffusion_0021_mesh.xdr
+    nodal_variables = phi
+    es = phi_diffusion_0021.xdr
   [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = .5
+  num_steps = 3
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
-  end_time = 200
-[]
-
-[Adaptivity]
-  max_h_level = 4
-  initial_steps = 4
-  initial_marker = phi_marker
-  marker = combo_mark
-  [./Indicators]
-    [./phi_grad_indicator]
-      type = GradientJumpIndicator
-      variable = phi
-    [../]
-    [./u_jump_indicator]
-      type = GradientJumpIndicator
-      variable = u
-      block = 0
-    [../]
-  [../]
-  [./Markers]
-    active = 'phi_marker combo_mark u_marker'
-    [./phi_marker]
-      type = ErrorFractionMarker
-      coarsen = .02
-      indicator = phi_grad_indicator
-      refine = .5
-    [../]
-    [./T_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.2
-      indicator = T_jump_indicator
-      refine = 0.7
-    [../]
-    [./u_marker]
-      type = ErrorFractionMarker
-      indicator = u_jump_indicator
-      coarsen = .02
-      refine = .5
-      block = 0
-    [../]
-    [./combo_mark]
-      type = ComboMarker
-      block = 0
-      markers = 'u_marker phi_marker'
-    [../]
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    dt = 5
   [../]
 []
 
 [Outputs]
   output_initial = true
   exodus = true
+  file_base = temp_diffusion
+  xdr = true
   [./console]
     type = Console
     perf_log = true
@@ -190,21 +159,16 @@
 []
 
 [ICs]
-  active = 'phase_ic vapor_ic temperature_ic'
+  active = 'phase_ic temperature_ic'
   [./phase_ic]
-    x1 = .0025
-    y1 = .0025
-    radius = 0.0005
-    outvalue = 1
     variable = phi
-    invalue = -1
-    type = SmoothCircleIC
-    int_width = 1e-4
+    type = FunctionIC
+    function = phi_func
   [../]
   [./temperature_ic]
     variable = T
-    type = FunctionIC
-    function = -543.0*y+267.515
+    type = ConstantIC
+    value = 260
   [../]
   [./vapor_ic]
     variable = u
@@ -213,17 +177,11 @@
     phase_variable = phi
     temperature = T
   [../]
-  [./constant_temp_ic]
-    variable = T
-    type = ConstantIC
-    value = 264.8
-  [../]
 []
 
 [PikaMaterials]
   phi = phi
   temperature = T
   interface_thickness = 5e-5
-  temporal_scaling = 1e-4
 []
 

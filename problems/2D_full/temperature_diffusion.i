@@ -1,14 +1,15 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 20
-  ny = 20
+  nx = 15
+  ny = 15
   xmax = .005
   ymax = .005
   elem_type = QUAD4
 []
 
 [Variables]
+  active = 'T'
   [./T]
   [../]
   [./u]
@@ -17,7 +18,18 @@
   [../]
 []
 
+[AuxVariables]
+  active = 'phi'
+  [./phi]
+  [../]
+  [./u]
+  [../]
+  [./T]
+  [../]
+[]
+
 [Kernels]
+  active = 'heat_diffusion heat_phi_time heat_time'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -47,15 +59,15 @@
   [./vapor_diffusion]
     type = PikaDiffusion
     variable = u
-    use_temporal_scaling = true
     property = diffusion_coefficient
+    use_temporal_scaling = true
   [../]
   [./vapor_phi_time]
     type = PikaCoupledTimeDerivative
     variable = u
     coefficient = 0.5
-    use_temporal_scaling = true
     coupled_variable = phi
+    use_temporal_scaling = true
   [../]
   [./phi_time]
     type = PikaTimeDerivative
@@ -83,6 +95,7 @@
 []
 
 [BCs]
+  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -106,91 +119,81 @@
     boundary = '0 1 2 3 '
     value = 1.0
   [../]
-  [./vapor_ic]
+  [./u_bottom]
     type = DirichletBC
     variable = u
-    boundary = '0 1 2 3 '
-    value = 0
+    boundary = bottom
+    value = -4.7e-6
+  [../]
+  [./u_top]
+    type = DirichletBC
+    variable = u
+    boundary = top
+    value = 4.7e-6
   [../]
 []
 
 [Postprocessors]
 []
 
-[UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
-  [../]
-[]
-
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = .5
+  num_steps = 5
+  dt = 10000
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
-  end_time = 200
 []
 
 [Adaptivity]
   max_h_level = 4
   initial_steps = 4
+  marker = phi_marker
   initial_marker = phi_marker
-  marker = combo_mark
   [./Indicators]
-    [./phi_grad_indicator]
+    [./phi_jump]
       type = GradientJumpIndicator
       variable = phi
     [../]
-    [./u_jump_indicator]
-      type = GradientJumpIndicator
-      variable = u
-      block = 0
-    [../]
   [../]
   [./Markers]
-    active = 'phi_marker combo_mark u_marker'
     [./phi_marker]
       type = ErrorFractionMarker
-      coarsen = .02
-      indicator = phi_grad_indicator
-      refine = .5
-    [../]
-    [./T_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.2
-      indicator = T_jump_indicator
-      refine = 0.7
-    [../]
-    [./u_marker]
-      type = ErrorFractionMarker
-      indicator = u_jump_indicator
-      coarsen = .02
-      refine = .5
-      block = 0
-    [../]
-    [./combo_mark]
-      type = ComboMarker
-      block = 0
-      markers = 'u_marker phi_marker'
+      coarsen = .12
+      indicator = phi_jump
+      refine = .6
     [../]
   [../]
 []
 
 [Outputs]
+  active = 'console'
   output_initial = true
   exodus = true
+  file_base = temp_diffusion
+  output_intermediate = false
+  output_final = true
+  xdr = true
   [./console]
     type = Console
     perf_log = true
-    nonlinear_residuals = true
     linear_residuals = true
+  [../]
+  [./exodus]
+    file_base = temp_diffusion
+    type = Exodus
+  [../]
+  [./results_for_initial]
+    num_files = 1
+    output_input = true
+    file_base = temp_initial
+    type = Checkpoint
   [../]
 []
 
 [ICs]
-  active = 'phase_ic vapor_ic temperature_ic'
+  active = 'phase_ic temperature_ic'
   [./phase_ic]
     x1 = .0025
     y1 = .0025
@@ -199,7 +202,7 @@
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 1e-4
+    int_width = 5e-5
   [../]
   [./temperature_ic]
     variable = T
@@ -209,7 +212,6 @@
   [./vapor_ic]
     variable = u
     type = ChemicalPotentialIC
-    block = 0
     phase_variable = phi
     temperature = T
   [../]
@@ -218,12 +220,20 @@
     type = ConstantIC
     value = 264.8
   [../]
+  [./vapor_function_ic]
+    function = -4.7e-6+0.00188*y
+    variable = u
+    type = FunctionIC
+    block = 0
+  [../]
 []
 
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 5e-5
+  interface_thickness = 1e-5
   temporal_scaling = 1e-4
+  output_properties = diffusion_coefficient
+  outputs = all
 []
 

@@ -24,9 +24,13 @@ term3 =-lam*(u-u_eq)*((1-phi**2)**2)
 
 #Print out equation 
 print '\n'
-print '  Term 4 = \n'
+print '  d(Term4)/dphi = \n'
 pprint(diff(term3,phi))
 print '\n'
+print '  d(Term4)/du = \n'
+pprint(diff(term3,u))
+print '\n'
+
 
 '''
 #Generate the C/C++ version of the code.
