@@ -126,8 +126,8 @@
 []
 
 [Adaptivity]
-  max_h_level = 4
-  initial_steps = 4
+  max_h_level = 5
+  initial_steps = 5
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -193,7 +193,7 @@
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 0.01
+    int_width = 0.005
   [../]
   [./temperature_ic]
     variable = T
@@ -216,7 +216,7 @@
 [PikaMaterials]
   phi = phi
   temperature = 263.15
-  interface_thickness = 1e-5
+  interface_thickness = 5e-6
   temporal_scaling = 1e-4
   conversion_factor = 1000
 []
