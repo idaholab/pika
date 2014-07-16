@@ -1,9 +1,5 @@
 /****************************************************************/
-/*               DO NOT MODIFY THIS HEADER                      */
-/* MOOSE - Multiphysics Object Oriented Simulation Environment  */
-/*                                                              */
-/*           (c) 2010 Battelle Energy Alliance, LLC             */
-/*                   ALL RIGHTS RESERVED                        */
+/*       PIKA - Phase field snow micro-structure model          */
 /*                                                              */
 /*          Prepared by Battelle Energy Alliance, LLC           */
 /*            Under Contract No. DE-AC07-05ID14517              */
@@ -33,5 +29,5 @@ MaterialUserForcingFunction::MaterialUserForcingFunction(const std::string & nam
 Real
 MaterialUserForcingFunction::computeQpResidual()
 {
-  return _scale * _material_coefficient[_qp] * UserForcingFunction::computeQpResidual(); 
+  return _scale * _material_coefficient[_qp] * UserForcingFunction::computeQpResidual();
 }

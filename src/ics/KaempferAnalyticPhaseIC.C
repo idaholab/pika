@@ -1,9 +1,5 @@
 /****************************************************************/
-/*               DO NOT MODIFY THIS HEADER                      */
-/* MOOSE - Multiphysics Object Oriented Simulation Environment  */
-/*                                                              */
-/*           (c) 2010 Battelle Energy Alliance, LLC             */
-/*                   ALL RIGHTS RESERVED                        */
+/*       PIKA - Phase field snow micro-structure model          */
 /*                                                              */
 /*          Prepared by Battelle Energy Alliance, LLC           */
 /*            Under Contract No. DE-AC07-05ID14517              */
@@ -40,8 +36,8 @@ KaempferAnalyticPhaseIC::KaempferAnalyticPhaseIC(const std::string & name, Input
 Real
 KaempferAnalyticPhaseIC::value( const Point & p)
 {
-  if ( (p(0) >= _x1 && p(0) <= _x2) ||  (p(0) >= _x3 && p(0) <= _x4) ) 
-    return _phi_new; 
+  if ( (p(0) >= _x1 && p(0) <= _x2) ||  (p(0) >= _x3 && p(0) <= _x4) )
+    return _phi_new;
 
   else
     return _phi_old;

@@ -1,9 +1,5 @@
 /****************************************************************/
-/*               DO NOT MODIFY THIS HEADER                      */
-/* MOOSE - Multiphysics Object Oriented Simulation Environment  */
-/*                                                              */
-/*           (c) 2010 Battelle Energy Alliance, LLC             */
-/*                   ALL RIGHTS RESERVED                        */
+/*       PIKA - Phase field snow micro-structure model          */
 /*                                                              */
 /*          Prepared by Battelle Energy Alliance, LLC           */
 /*            Under Contract No. DE-AC07-05ID14517              */
@@ -32,7 +28,7 @@ InputParameters validParams<PikaDebug>()
 
   // Base class parameters
   InputParameters params = validParams<PetscOutput>();
-  params.addParam<unsigned int>("_tid",0,"HACKED thread ID, fix later!"); 
+  params.addParam<unsigned int>("_tid",0,"HACKED thread ID, fix later!");
   // Suppressing the output of nodal and elemental variables disables this type of output
   params.suppressParameter<bool>("output_elemental_variables");
   params.suppressParameter<bool>("output_nodal_variables");
@@ -42,7 +38,7 @@ InputParameters validParams<PikaDebug>()
   params.suppressParameter<bool>("output_postprocessors");
   params.suppressParameter<bool>("output_vector_postprocessors");
   params.suppressParameter<bool>("file_base");
-  
+
   return params;
 }
 
@@ -96,7 +92,7 @@ std::string PikaDebug::filename()
   return std::string();
 }
 
-void 
+void
 PikaDebug::output()
 {
   _console << "Moose Test in pika" << std::endl;
@@ -105,5 +101,3 @@ PikaDebug::output()
   _console<< "Capillary Length (d_o)  = "<<  _d_o<<std::endl;
   _console<< "Interface Kinetic Coefficient (beta)  = "<<  _beta<<std::endl;
 }
-
-
