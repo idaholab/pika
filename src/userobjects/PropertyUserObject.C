@@ -34,7 +34,8 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _W(getParam<Real>("interface_thickness")),
     _L_sg(getParam<Real>("latent_heat")),
     _mobility(getParam<Real>("mobility")),
-    _xi(getParam<Real>("temporal_scaling"))
+    _xi(getParam<Real>("temporal_scaling")),
+    _convert_meters(getParam<Real>("conversion_factor"))
 {
     // Define K coefficients (Wexler, 1977, Table 2)
   _K.push_back(-0.58653696e4);
@@ -91,7 +92,7 @@ Real
 PropertyUserObject::specificHumidityRatio(const Real & T) const
 {
   Real P_vs = saturationPressureOfWaterVaporOverIce(T); // Eq. (2)
-  Real f = (_R_da/_R_v) * P_vs / (_P_a - P_vs); // x_s, Eq. (1)
+  Real f =  (_R_da/_R_v) * P_vs / (_P_a - P_vs); // x_s, Eq. (1)
   return f;
 }
 
@@ -119,19 +120,19 @@ PropertyUserObject::equilibriumWaterVaporConcentrationAtSaturation(const Real & 
 const Real &
 PropertyUserObject::temporalScale() const
 {
-  return   _xi;
+  return _xi;
 }
 
 const Real &
 PropertyUserObject::referenceTemp() const
 {
-  return   _T_0;
+  return _T_0;
 }
 
 Real
 PropertyUserObject::equilibriumConcentration(const Real & T) const
 {
-  Real rho_vs_T   = equilibriumWaterVaporConcentrationAtSaturation(T);
+  Real rho_vs_T = equilibriumWaterVaporConcentrationAtSaturation(T);
   Real rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
   return (rho_vs_T - rho_vs_T_0) / _rho_i;
 }
