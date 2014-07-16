@@ -107,6 +107,7 @@ public:
   const Real _L_sg;
   const Real _mobility;
   const Real _xi;
+  const Real _convert_meters;
 
 private:
 
