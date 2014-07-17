@@ -73,7 +73,7 @@ PhaseFieldProperties::computeQpProperties()
 
   _heat_capacity[_qp] =(1.0/(convert_meters)) * ci[_qp] * (1. + _phase[_qp]) / 2. + ca[_qp] * (1. - _phase[_qp]) / 2.;
 
-  _diffusion_coefficient[_qp] =(convert_meters) * (convert_meters) * (dv[_qp] *std::pow( (1. - _phase[_qp]) / 2.,2.0));
+  _diffusion_coefficient[_qp] =(convert_meters) * (convert_meters) * dv[_qp] * std::pow((1. - _phase[_qp]) / 2.,2.0);
 
   _interface_thickness_squared[_qp] = (convert_meters*convert_meters) *  w*w;
 
