@@ -42,5 +42,4 @@ PhaseTransition::computeDFDOP(PFFunctionType type)
     case Jacobian:
       return  4.0 * _lambda[_qp] * _u[_qp] * (-_u[_qp]*_u[_qp]+1.0) * (_s[_qp] - _s_eq[_qp])*_phi[_j][_qp];
   }
-  // _property_uo.temporalScale() * 
 }
