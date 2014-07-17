@@ -147,12 +147,12 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = .5
+  dt = 100
   solve_type = PJFNK
   petsc_options = -
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
-  end_time = 1300
+  end_time = 7200
   reset_dt = true
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
@@ -163,9 +163,10 @@
 []
 
 [Adaptivity]
-  max_h_level = 5
-  initial_marker = phi_marker
+  max_h_level = 6
+  initial_marker = u_marker
   marker = combo_mark
+  initial_steps = 6
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -183,7 +184,7 @@
       type = ErrorFractionMarker
       coarsen = .01
       indicator = phi_grad_indicator
-      refine = .6
+      refine = .5
     [../]
     [./T_marker]
       type = ErrorFractionMarker
@@ -194,7 +195,7 @@
     [./u_marker]
       type = ErrorFractionMarker
       indicator = u_jump_indicator
-      coarsen = .01
+      coarsen = .001
       refine = .8
       block = 0
     [../]
@@ -250,6 +251,6 @@
   temporal_scaling = 1e-4
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all
-  conversion_factor = 1000
+  condensation_coefficient = .001
 []
 
