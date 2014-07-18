@@ -44,6 +44,8 @@
 // AuxKernels
 #include "ErrorFunctionAux.h"
 #include "PikaInterfaceVelocity.h"
+#include "PikaWaterVaporConcentration.h"
+#include "PikaSupersaturation.h"
 #include "SharpInterfaceCheckIce.h"
 #include "SharpInterfaceCheckAir.h"
 #include "SharpInterfaceCheckVapor.h"
@@ -122,6 +124,8 @@ PikaApp::registerObjects(Factory & factory)
   // AuxKernels
   registerAux(ErrorFunctionAux);
   registerAux(PikaInterfaceVelocity);
+  registerAux(PikaWaterVaporConcentration);
+  registerAux(PikaSupersaturation);
   registerAux(SharpInterfaceCheckIce);
   registerAux(SharpInterfaceCheckAir);
   registerAux(SharpInterfaceCheckVapor);

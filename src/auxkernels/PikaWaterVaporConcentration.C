@@ -8,10 +8,10 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#include "PikaInterfaceVelocity.h"
+#include "PikaWaterVaporConcentration.h"
 
 template<>
-InputParameters validParams<PikaInterfaceVelocity>()
+InputParameters validParams<PikaWaterVaporConcentration>()
 {
   InputParameters params = validParams<AuxKernel>();
   params.addRequiredCoupledVar("phase", "Phase-field variable");
@@ -19,21 +19,20 @@ InputParameters validParams<PikaInterfaceVelocity>()
   return params;
 }
 
-PikaInterfaceVelocity::PikaInterfaceVelocity(const std::string & name, InputParameters parameters) :
+PikaWaterVaporConcentration::PikaWaterVaporConcentration(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
-    _D_v(getMaterialProperty<Real>("water_vapor_diffusion_coefficient")),
-    _grad_phase(coupledGradient("phase")),
-    _grad_s(coupledGradient("chemical_potential"))
+    PropertyUserObjectInterface(name, parameters),
+    _rho_i(getMaterialProperty<Real>("density_ice")),
+    _s(coupledValue("chemical_potential"))
 {
 }
 
-PikaInterfaceVelocity::~PikaInterfaceVelocity()
+PikaWaterVaporConcentration::~PikaWaterVaporConcentration()
 {
 }
 
 Real
-PikaInterfaceVelocity::computeValue()
+PikaWaterVaporConcentration::computeValue()
 {
-  RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].size();
-  return _D_v[_qp] * n * _grad_s[_qp];
+  return _s[_qp] * _rho_i[_qp] + _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_property_uo.referenceTemp());
 }
