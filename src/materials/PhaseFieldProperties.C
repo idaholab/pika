@@ -31,7 +31,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _a1((5./8.)*std::sqrt(2.)),
     _interface_velocity(declareProperty<Real>("interface_velocity")),
     _capillary_length(declareProperty<Real>("capillary_length")),
-    _beta(declareProperty<Real>("beta")),
+    _beta(declareProperty<Real>("interface_kinetic_coefficient")),
     _lambda(declareProperty<Real>("lambda")),
     _tau(declareProperty<Real>("tau")),
     _conductivity(declareProperty<Real>("conductivity")),
@@ -42,9 +42,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _saturation_pressure_of_water_vapor_over_ice(declareProperty<Real>("saturation_pressure_of_water_vapor_over_ice")),
     _specific_humidity_ratio(declareProperty<Real>("specific_humidity_ratio")),
     _xi(_property_uo.temporalScale()),
-    _d_o(_property_uo.getParam<Real>("capillary_length")),
-    _interface_kinetic_coefficient(_property_uo.getParam<Real>("interface_kinetic_coefficient"))
-
+    _d_o(_property_uo.getParam<Real>("capillary_length"))
 {
 }
 
