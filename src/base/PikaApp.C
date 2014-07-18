@@ -46,6 +46,9 @@
 #include "PikaInterfaceVelocity.h"
 #include "PikaWaterVaporConcentration.h"
 #include "PikaSupersaturation.h"
+#include "SharpInterfaceCheckIce.h"
+#include "SharpInterfaceCheckAir.h"
+#include "SharpInterfaceCheckVapor.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -123,6 +126,9 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(PikaInterfaceVelocity);
   registerAux(PikaWaterVaporConcentration);
   registerAux(PikaSupersaturation);
+  registerAux(SharpInterfaceCheckIce);
+  registerAux(SharpInterfaceCheckAir);
+  registerAux(SharpInterfaceCheckVapor);
 }
 
 void
