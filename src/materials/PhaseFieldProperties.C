@@ -8,7 +8,6 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-
 // PIKA includes
 #include "PhaseFieldProperties.h"
 
@@ -41,6 +40,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
     _equilibrium_concentration(declareProperty<Real>("equilibrium_concentration")),
     _saturation_pressure_of_water_vapor_over_ice(declareProperty<Real>("saturation_pressure_of_water_vapor_over_ice")),
     _specific_humidity_ratio(declareProperty<Real>("specific_humidity_ratio")),
+    _rho_vs(declareProperty<Real>("equilibrium_water_vapor_concentration_at_saturation")),
     _xi(_property_uo.temporalScale()),
     _d_o(_property_uo.getParam<Real>("capillary_length"))
 {
@@ -58,7 +58,8 @@ PhaseFieldProperties::computeQpProperties()
   const Real & w =getMaterialProperty<Real>("interface_thickness")[_qp];
   const Real & L_sg = (1.0/std::pow(convert_meters,2.0)) *  getMaterialProperty<Real>("latent_heat")[_qp];
 
-  Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_property_uo.referenceTemp());
+  _rho_vs[_qp] = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
+
   MaterialProperty<Real> & rho_i = getMaterialProperty<Real>("density_ice");
 
   MaterialProperty<Real> & ki = getMaterialProperty<Real>("conductivity_ice");
@@ -69,7 +70,7 @@ PhaseFieldProperties::computeQpProperties()
 
   MaterialProperty<Real> & dv = getMaterialProperty<Real>("water_vapor_diffusion_coefficient");
 
-  _capillary_length[_qp] =  (rho_vs/(rho_i[_qp])) * (gamma * std::pow(a, 3.) ) / (k * _property_uo.referenceTemp());
+  _capillary_length[_qp] =  (_rho_vs[_qp]/(rho_i[_qp])) * (gamma * std::pow(a, 3.) ) / (k * _property_uo.referenceTemp());
 
   _beta[_qp] = (1./(alpha)) * std::sqrt((2.*libMesh::pi*m) / (k * _property_uo.referenceTemp()));
 
