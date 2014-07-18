@@ -45,6 +45,8 @@
 #include "ErrorFunctionAux.h"
 #include "PikaInterfaceVelocity.h"
 #include "SharpInterfaceCheckIce.h"
+#include "SharpInterfaceCheckAir.h"
+#include "SharpInterfaceCheckVapor.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -121,6 +123,8 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(ErrorFunctionAux);
   registerAux(PikaInterfaceVelocity);
   registerAux(SharpInterfaceCheckIce);
+  registerAux(SharpInterfaceCheckAir);
+  registerAux(SharpInterfaceCheckVapor);
 }
 
 void

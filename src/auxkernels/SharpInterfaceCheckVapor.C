@@ -7,25 +7,24 @@
 /*                                                              */
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
-#include "SharpInterfaceCheckIce.h"
+#include "SharpInterfaceCheckVapor.h"
 template<>
-InputParameters validParams<SharpInterfaceCheckIce>()
+InputParameters validParams<SharpInterfaceCheckVapor>()
 {
   InputParameters params = validParams<AuxKernel>();
   return params;
 }
 
-SharpInterfaceCheckIce::SharpInterfaceCheckIce(const std::string & name, InputParameters parameters) :
+SharpInterfaceCheckVapor::SharpInterfaceCheckVapor(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
     _w(getMaterialProperty<Real>("interface_thickness")),
-    _ki(getMaterialProperty<Real>("conductivity_ice")),
-    _ci(getMaterialProperty<Real>("heat_capacity_ice")),
+    _dv(getMaterialProperty<Real>("water_vapor_diffusion_coefficient")),
     _beta(getMaterialProperty<Real>("interface_kinetic_coefficient"))
 {}
 
 Real
-SharpInterfaceCheckIce::computeValue()
+SharpInterfaceCheckVapor::computeValue()
 {
-  return _w[_qp] - ( _ki[_qp] / _ci[_qp] ) * _beta[_qp];
+  return _w[_qp] - _dv[_qp] * _beta[_qp];
 }
 
