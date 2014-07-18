@@ -1,9 +1,5 @@
 /****************************************************************/
-/*               DO NOT MODIFY THIS HEADER                      */
-/* MOOSE - Multiphysics Object Oriented Simulation Environment  */
-/*                                                              */
-/*           (c) 2010 Battelle Energy Alliance, LLC             */
-/*                   ALL RIGHTS RESERVED                        */
+/*       PIKA - Phase field snow micro-structure model          */
 /*                                                              */
 /*          Prepared by Battelle Energy Alliance, LLC           */
 /*            Under Contract No. DE-AC07-05ID14517              */
@@ -11,26 +7,25 @@
 /*                                                              */
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
-
 #include "SharpInterfaceCheckIce.h"
-
 template<>
-InputParameters validParams<SharpInterfaceCheck>()
+InputParameters validParams<SharpInterfaceCheckIce>()
 {
   InputParameters params = validParams<AuxKernel>();
   return params;
 }
 
-SharpInterfaceCheck::SharpInterfaceCheck(const std::string & name, InputParameters parameters) :
+SharpInterfaceCheckIce::SharpInterfaceCheckIce(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
     _w(getMaterialProperty<Real>("interface_thickness")),
     _ki(getMaterialProperty<Real>("conductivity_ice")),
     _ci(getMaterialProperty<Real>("heat_capacity_ice")),
-    _beta(getMaterialProperty<Real>("beta")),
+    _beta(getMaterialProperty<Real>("beta"))
 {}
 
-void SharpInterfaceCheck::computeValue()
+Real
+SharpInterfaceCheckIce::computeValue()
 {
-  return _w - ( _ki / _ci ) * _beta;
+  return _w[_qp] - ( _ki[_qp] / _ci[_qp] ) * _beta[_qp];
 }
 
