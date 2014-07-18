@@ -45,6 +45,7 @@
 #include "ErrorFunctionAux.h"
 #include "PikaInterfaceVelocity.h"
 #include "PikaWaterVaporConcentration.h"
+#include "PikaSupersaturation.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -121,6 +122,7 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(ErrorFunctionAux);
   registerAux(PikaInterfaceVelocity);
   registerAux(PikaWaterVaporConcentration);
+  registerAux(PikaSupersaturation);
 }
 
 void
