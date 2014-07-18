@@ -43,6 +43,7 @@
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
+#include "PikaInterfaceVelocity.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -50,10 +51,6 @@
 
 // Actions
 #include "PikaMaterialAction.h"
-
-//Outputs
-#include "PikaDebug.h"
-
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -121,9 +118,7 @@ PikaApp::registerObjects(Factory & factory)
 
   // AuxKernels
   registerAux(ErrorFunctionAux);
-
-  //outputs
-  registerOutput(PikaDebug);
+  registerAux(PikaInterfaceVelocity);
 }
 
 void

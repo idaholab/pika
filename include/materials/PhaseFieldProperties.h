@@ -70,9 +70,6 @@ private:
   const Real & _xi;
 
   const Real & _d_o;
-
-  const Real & _interface_kinetic_coefficient;
-
 };
 
 #endif // PHASEFIELDPROPERTIES_H

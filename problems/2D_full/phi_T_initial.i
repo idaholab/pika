@@ -3,8 +3,8 @@
   dim = 2
   nx = 30
   ny = 30
-  xmax = 5 # mm
-  ymax = 5 # mm
+  xmax = .005 # mm
+  ymax = .005 # mm
   elem_type = QUAD4
 []
 
@@ -186,19 +186,19 @@
 [ICs]
   active = 'phase_ic temperature_ic'
   [./phase_ic]
-    x1 = 2.5
-    y1 = 2.5
-    radius = .5
+    x1 = .0025
+    y1 = .0025
+    radius = .0005
     outvalue = 1
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 0.01
+    int_width = 1e-5
   [../]
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = -.543*y+267.515
+    function = -543*y+267.515
   [../]
   [./vapor_ic]
     variable = u
@@ -218,6 +218,5 @@
   temperature = 263.15
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
-  conversion_factor = 1000
 []
 
