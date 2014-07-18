@@ -67,6 +67,8 @@ private:
 
   MaterialProperty<Real> & _specific_humidity_ratio;
 
+  MaterialProperty<Real> & _rho_vs;
+
   const Real & _xi;
 
   const Real & _d_o;

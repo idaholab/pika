@@ -8,23 +8,27 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef PIKAINTERFACEVELOCITY_H
-#define PIKAINTERFACEVELOCITY_H
+#ifndef PIKAWATERVAPORCONCENTRATION_H
+#define PIKAWATERVAPORCONCENTRATION_H
 
 // MOOSE includes
 #include "AuxKernel.h"
 
+// Pika includes
+#include "PropertyUserObjectInterface.h"
+
 // Forward declarations
-class PikaInterfaceVelocity;
+class PikaWaterVaporConcentration;
 
 template<>
-InputParameters validParams<PikaInterfaceVelocity>();
+InputParameters validParams<PikaWaterVaporConcentration>();
 
 /**
  *
  */
-class PikaInterfaceVelocity :
-  public AuxKernel
+class PikaWaterVaporConcentration :
+  public AuxKernel,
+  public PropertyUserObjectInterface
 {
 public:
 
@@ -32,12 +36,12 @@ public:
    * Class constructor
    * @param name
    */
-  PikaInterfaceVelocity(const std::string & name, InputParameters parameters);
+  PikaWaterVaporConcentration(const std::string & name, InputParameters parameters);
 
   /**
    * Class destructor
    */
-  virtual ~PikaInterfaceVelocity();
+  virtual ~PikaWaterVaporConcentration();
 
 protected:
 
@@ -47,10 +51,9 @@ protected:
   virtual Real computeValue();
 
 private:
-  MaterialProperty<Real> & _D_v;
-  VariableGradient & _grad_phase;
-  VariableGradient & _grad_s;
+  MaterialProperty<Real> & _rho_i;
+  VariableValue & _s;
 
 };
 
-#endif //PIKAINTERFACEVELOCITY_H
+#endif //PIKAWATERVAPORCONCENTRATION_H

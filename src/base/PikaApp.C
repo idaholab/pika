@@ -44,6 +44,7 @@
 // AuxKernels
 #include "ErrorFunctionAux.h"
 #include "PikaInterfaceVelocity.h"
+#include "PikaWaterVaporConcentration.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -119,6 +120,7 @@ PikaApp::registerObjects(Factory & factory)
   // AuxKernels
   registerAux(ErrorFunctionAux);
   registerAux(PikaInterfaceVelocity);
+  registerAux(PikaWaterVaporConcentration);
 }
 
 void
