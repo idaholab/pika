@@ -20,13 +20,17 @@
 []
 
 [Kernels]
-  [./vapor_diffusion]
-    type = Diffusion
-    variable = u
-  [../]
   [./vapor_time]
-    type = TimeDerivative
+    type = PikaTimeDerivative
     variable = u
+    coefficient = 1.0
+    scale = 1.0
+  [../]
+  [./vapor_diffusion]
+    type = PikaDiffusion
+    variable = u
+    use_temporal_scaling = true
+    property = diffusion_coefficient
   [../]
 []
 
@@ -123,4 +127,3 @@
   temperature = 263.15
   interface_thickness = 5e-6
 []
-

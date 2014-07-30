@@ -5,31 +5,15 @@
   ny = 10
   xmax = .005
   ymax = .005
-  uniform_refine = 4
   elem_type = QUAD4
 []
 
-
 [Variables]
-  [./T]
-  [../]
   [./phi]
   [../]
 []
 
 [Kernels]
-  [./heat_diffusion]
-    type = PikaDiffusion
-    variable = T
-    use_temporal_scaling = true
-    property = conductivity
-  [../]
-  [./heat_time]
-    type = PikaTimeDerivative
-    variable = T
-    property = heat_capacity
-    scale = 1.0
-  [../]
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
@@ -53,15 +37,15 @@
   # Preconditioned JFNK (default)
   type = Transient
   num_steps = 100
-  dt = 200
+  dt = 100
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
 []
 
 [Adaptivity]
-  max_h_level = 6
-  initial_steps = 8
+  max_h_level = 7
+  initial_steps = 10
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -82,10 +66,9 @@
 
 [Outputs]
   output_initial = true
-  exodus = true
   [./xdr]
     type = XDR
-    file_base = phi_init_out
+    file_base = init_phi_out
     interval = 10
   [../]
   [./console]
@@ -94,21 +77,13 @@
     nonlinear_residuals = true
     linear_residuals = true
   [../]
+  [./exodus]
+    file_base = init_phi_out
+    type = Exodus
+  [../]
 []
 
 [BCs]
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.15
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.15
-  [../]
 []
 
 [ICs]
@@ -129,3 +104,4 @@
   temperature = 263.15
   interface_thickness = 5e-6
 []
+

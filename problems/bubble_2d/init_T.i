@@ -14,13 +14,6 @@
   [../]
 []
 
-[Functions]
-  [./phi_init_func]
-    type = SolutionFunction
-    solution = init_phi
-  [../]
-[]
-
 [Kernels]
   [./heat_diffusion]
     type = PikaDiffusion
@@ -81,9 +74,9 @@
   [./init_phi]
     type = SolutionUserObject
     system = nl0
-    mesh = init_phi_out_0100_mesh.xdr
+    mesh = init_phi_out_0010_mesh.xdr
     nodal_variables = phi
-    es = init_phi_out_0100.xdr
+    es = init_phi_out_0010.xdr
   [../]
 []
 
