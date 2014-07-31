@@ -15,6 +15,7 @@
 
 [AuxVariables]
   [./velocity]
+    family = MONOMIAL
   [../]
 []
 
@@ -82,6 +83,7 @@
     variable = phi
     mob_name = mobility
     chemical_potential = u
+    coefficient = 1.0
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
