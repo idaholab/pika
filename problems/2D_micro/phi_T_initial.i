@@ -5,7 +5,6 @@
   ny = 10
   xmax = .005
   ymax = .005
-  uniform_refine = 5
 []
 
 [Variables]
@@ -120,14 +119,6 @@
 [Postprocessors]
 []
 
-[UserObjects]
-  [./phi_uo]
-    type = SolutionUserObject
-    mesh = i0930_2d_out.e
-    nodal_variables = u
-  [../]
-[]
-
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
@@ -141,6 +132,7 @@
 [Adaptivity]
   max_h_level = 7
   marker = phi_marker
+  initial_steps = 7
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator

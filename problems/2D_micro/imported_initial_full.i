@@ -13,6 +13,12 @@
   [../]
 []
 
+[AuxVariables]
+  [./velocity]
+    family = MONOMIAL
+  [../]
+[]
+
 [Functions]
   [./T_func]
     type = SolutionFunction
@@ -77,6 +83,7 @@
     variable = phi
     mob_name = mobility
     chemical_potential = u
+    coefficient = 1.0
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
@@ -88,6 +95,15 @@
     variable = phi
     mob_name = mobility
     kappa_name = interface_thickness_squared
+  [../]
+[]
+
+[AuxKernels]
+  [./velocity_aux]
+    type = PikaInterfaceVelocity
+    variable = velocity
+    phase = phi
+    chemical_potential = u
   [../]
 []
 

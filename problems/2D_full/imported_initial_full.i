@@ -13,6 +13,11 @@
   [../]
 []
 
+[AuxVariables]
+  [./velocity]
+  [../]
+[]
+
 [Functions]
   [./T_func]
     type = SolutionFunction
@@ -91,6 +96,15 @@
   [../]
 []
 
+[AuxKernels]
+  [./interface_velocity]
+    type = PikaInterfaceVelocity
+    variable = velocity
+    phase = phi
+    chemical_potential = u
+  [../]
+[]
+
 [BCs]
   active = 'insulated_sides T_hot T_cold'
   [./T_hot]
@@ -166,7 +180,7 @@
   max_h_level = 6
   initial_marker = u_marker
   marker = combo_mark
-  initial_steps = 6
+  initial_steps = 10
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -195,8 +209,7 @@
     [./u_marker]
       type = ErrorFractionMarker
       indicator = u_jump_indicator
-      coarsen = .001
-      refine = .8
+      refine = .95
       block = 0
     [../]
     [./combo_mark]
