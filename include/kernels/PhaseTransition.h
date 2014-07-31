@@ -14,7 +14,9 @@
 // modules/phase_field includes
 #include "ACBulk.h"
 
+//Pika Includs
 #include "PropertyUserObjectInterface.h"
+#include "CoefficientKernelInterface.h"
 //Forward Declarations
 class PhaseTransition;
 
@@ -23,7 +25,8 @@ InputParameters validParams<PhaseTransition>();
 
 class PhaseTransition :
   public ACBulk,
-  public PropertyUserObjectInterface
+  public PropertyUserObjectInterface,
+  public CoefficientKernelInterface
 {
 public:
 
