@@ -21,19 +21,17 @@
 []
 
 [PikaCriteriaOutput]
+  phase = phi
+  chemical_potential = u
 []
 
 [AuxVariables]
-  active = 'u criteria_ice'
+  active = 'u'
   [./phi]
   [../]
   [./u]
   [../]
   [./T]
-  [../]
-  [./criteria_ice]
-    order = CONSTANT
-    family = MONOMIAL
   [../]
 []
 
@@ -98,14 +96,6 @@
     variable = phi
     mob_name = mobility
     kappa_name = interface_thickness_squared
-  [../]
-[]
-
-[AuxKernels]
-  [./ice]
-    type = PikaCriteria
-    variable = criteria_ice
-    criteria = ice
   [../]
 []
 

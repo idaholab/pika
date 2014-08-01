@@ -9,6 +9,7 @@
 /****************************************************************/
 
 #include "Action.h"
+#include "MooseObjectAction.h"
 
 class PikaCriteriaAction;
 
@@ -25,5 +26,9 @@ public:
   void act();
 
 private:
-  void addAction(std::string name);
+  void addAction(const std::string & type, const std::string & name);
+  void addCriteriaAction(const std::string & name);
+  MooseObjectAction * createAction(const std::string & type, const std::string & name);
+  void applyCoupledVar(const std::string & coupled_name, InputParameters & object_params);
+
 };
