@@ -8,12 +8,15 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef PIKACOUPLEDTIMEDERIVATIVE_H
-#define PIKACOUPLEDTIMEDERIVATIVE_H
+#ifndef ANTITRAPPING_H
+#define ANTITRAPPING_H
 
 //Moose Includes
 #include "Kernel.h"
 
+//PIKA Includes
+#include "PropertyUserObjectInterface.h"
+#include "CoefficientKernelInterface.h"
 //Pika
 
 // Forward Declarations
@@ -32,7 +35,9 @@ InputParameters validParams<AntiTrapping>();
  */
 
 class AntiTrapping :
-  public Kernel
+  public Kernel,
+  public PropertyUserObjectInterface,
+  public CoefficientKernelInterface
 {
 public:
 
@@ -60,13 +65,13 @@ protected:
    * The off-diagonal jacobain term, i.e., the derivative of the coupled time derivative with respect
    * to the coupled variable.
    */
-  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
+//  virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
 private:
- const <Real> &_w;
- VariableValue & _phase_dot;
- VariableValue & _grad_phase;
+ const VariableValue & _phase_dot;
+ const VariableGradient & _grad_phase;
+ const Real & _w;
 
 };
 
-#endif //COUPLEDPIKATIMEDERIVATIVE
+#endif // ANTITRAPPING_H

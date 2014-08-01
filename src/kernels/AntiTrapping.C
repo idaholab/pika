@@ -13,14 +13,19 @@
 template<>
 InputParameters validParams<AntiTrapping>()
 {
-  InputParameters params = validParams<PikaCoupledTimeDerivative>();
-  params.addRequiredCoupledVar("phase","Phase-field vairable")
+  InputParameters params = validParams<Kernel>();
+  params+=validParams<PropertyUserObjectInterface>();
+  params+=validParams<CoefficientKernelInterface>();
+  params.addRequiredCoupledVar("phase", "Phase-field variable");
   return params;
 }
 
 AntiTrapping::AntiTrapping(const std::string & name, InputParameters parameters) :
-    _phase_dot = CoupledDot("phase") 
-    _grad_phase = CoupledGradient("phase") 
+    Kernel(name,parameters),
+    PropertyUserObjectInterface(name,parameters),
+    CoefficientKernelInterface(name,parameters),
+    _phase_dot(coupledDot("phase")), 
+    _grad_phase(coupledGradient("phase")), 
     _w(_property_uo.getParam<Real>("interface_thickness"))
 {
 }
@@ -29,7 +34,7 @@ Real
 AntiTrapping::computeQpResidual()
 {
   RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].size();
-  return (1.0/(2.0 * std::pow(2.0,0.5))) * n * _w[qp] * _phase_dot _grad_test[_i][_qp];
+  return -(1.0/(2.0 * std::pow(2.0,0.5))) * n * _w * _phase_dot[_qp] * _grad_test[_i][_qp];
 }
 
 Real
@@ -37,7 +42,7 @@ AntiTrapping::computeQpJacobian()
 {
   return 0.0;
 }
-
+/*
 Real
 AntiTrapping::computeQpOffDiagJacobian(unsigned int jvar)
 {
@@ -47,4 +52,4 @@ AntiTrapping::computeQpOffDiagJacobian(unsigned int jvar)
 
   else
     return 0.0;
-}
+}*/
