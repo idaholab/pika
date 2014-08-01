@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = init_phi_out_0100_mesh.xdr
+  file = init_phi_out_0010_mesh.xdr
   dim = 2
 []
 

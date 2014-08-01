@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = init_phi_out_0100_mesh.xdr
+  file = init_u_out_0010_mesh.xdr
   dim = 2
 []
 
@@ -33,6 +33,10 @@
   [./init_T_func]
     type = SolutionFunction
     solution = init_T
+  [../]
+  [./init_u_func]
+    type = SolutionFunction
+    solution = init_u
   [../]
 []
 
@@ -154,10 +158,10 @@
   [./init_phi]
     type = SolutionUserObject
     system = nl0
-    mesh = init_phi_out_0100_mesh.xdr
+    mesh = init_phi_out_0010_mesh.xdr
     nodal_variables = phi
     execute_on = initial
-    es = init_phi_out_0100.xdr
+    es = init_phi_out_0010.xdr
   [../]
   [./init_T]
     type = SolutionUserObject
@@ -165,6 +169,12 @@
     mesh = init_T_out_0001_mesh.xdr
     nodal_variables = T
     es = init_T_out_0001.xdr
+  [../]
+  [./init_u]
+    type = SolutionUserObject
+    mesh = init_u_out_0010_mesh.xdr
+    es = init_u_out_0010.xdr
+    nodal_variables = u
   [../]
 []
 
@@ -224,10 +234,9 @@
   [../]
   [./vapor_ic]
     variable = u
-    type = ChemicalPotentialIC
+    type = FunctionIC
     block = 0
-    phase_variable = phi
-    temperature = T
+    function = init_u_func
   [../]
 []
 

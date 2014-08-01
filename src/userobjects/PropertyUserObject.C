@@ -15,6 +15,7 @@ InputParameters validParams<PropertyUserObject>()
 {
   InputParameters params = validParams<GeneralUserObject>();
   params += PropertyUserObject::objectParams();
+  params.suppressParameter<std::vector<MooseEnum> >("execute_on");
   return params;
 }
 
@@ -37,7 +38,7 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _xi(getParam<Real>("temporal_scaling")),
     _convert_meters(getParam<Real>("conversion_factor"))
 {
-    // Define K coefficients (Wexler, 1977, Table 2)
+  // Define K coefficients (Wexler, 1977, Table 2)
   _K.push_back(-0.58653696e4);
   _K.push_back(0.2224103300e2);
   _K.push_back(0.13749042e-1);

@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = init_phi_out_0100_mesh.xdr
+  file = init_T_out_0001_mesh.xdr
   dim = 2
 []
 
@@ -16,9 +16,6 @@
   [../]
 []
 
-[Functions]
-[]
-
 [Kernels]
   [./vapor_time]
     type = PikaTimeDerivative
@@ -29,7 +26,6 @@
   [./vapor_diffusion]
     type = PikaDiffusion
     variable = u
-    use_temporal_scaling = true
     property = diffusion_coefficient
   [../]
 []
@@ -39,14 +35,12 @@
     type = SolutionAux
     variable = T
     solution = init_T
-    direct = true
     execute_on = initial
   [../]
   [./phi_aux]
     type = SolutionAux
     variable = phi
     solution = init_phi
-    direct = true
     execute_on = initial
   [../]
 []
@@ -54,14 +48,17 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  num_steps = 50
+  dt = 1e-6
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '500 hypre boomeramg'
+  petsc_options_value = '50 hypre boomeramg'
 []
 
 [Outputs]
   output_initial = true
   exodus = true
+  interval = 10
   [./xdr]
     type = XDR
     file_base = init_u_out
@@ -75,23 +72,10 @@
 []
 
 [BCs]
-  active = 'vapor_bc'
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.15
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.15
-  [../]
   [./vapor_bc]
     type = DirichletBC
     variable = u
-    boundary = '0 1 2 3'
+    boundary = 'bottom left top'
     value = 0
   [../]
 []
@@ -100,9 +84,9 @@
   [./init_phi]
     type = SolutionUserObject
     system = nl0
-    mesh = init_phi_out_0100_mesh.xdr
+    mesh = init_phi_out_0010_mesh.xdr
     nodal_variables = phi
-    es = init_phi_out_0100.xdr
+    es = init_phi_out_0010.xdr
   [../]
   [./init_T]
     type = SolutionUserObject
@@ -113,12 +97,35 @@
   [../]
 []
 
+[Adaptivity]
+  max_h_level = 7
+  initial_steps = 10
+  marker = u_marker
+  initial_marker = u_marker
+  [./Indicators]
+    [./u_indicator]
+      type = GradientJumpIndicator
+      variable = u
+    [../]
+  [../]
+  [./Markers]
+    [./u_marker]
+      type = ErrorFractionMarker
+      indicator = u_indicator
+      refine = 0.95
+    [../]
+  [../]
+[]
+
 [ICs]
   [./vapor_ic]
     variable = u
-    type = ChemicalPotentialIC
-    phase_variable = phi
-    temperature = T
+    type = SmoothCircleIC
+    x1 = 0.0025
+    y1 = 0.0025
+    radius = 0.0005
+    outvalue = 0
+    invalue = 1e-9
   [../]
 []
 
@@ -127,3 +134,4 @@
   temperature = 263.15
   interface_thickness = 5e-6
 []
+
