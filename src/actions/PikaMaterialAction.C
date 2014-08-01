@@ -34,7 +34,7 @@ InputParameters validParams<PikaMaterialAction>()
   params.addParam<std::vector<SubdomainName> >("block", std::vector<SubdomainName>(1,"0"), "The list subdomain ids that the generated materials should be limited");
 
   // Add the variables needed
-  params.addRequiredCoupledVar("temperature", "The temperature variable to couple ");
+  params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
   params.addRequiredCoupledVar("phi", "The phase-field variable to couple ");
 
   // Parameters for outputting Material properties
