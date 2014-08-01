@@ -53,9 +53,11 @@
 // InitialConditions
 #include "ChemicalPotentialIC.h"
 #include "KaempferAnalyticPhaseIC.h"
+#include "PikaCriteria.h"
 
 // Actions
 #include "PikaMaterialAction.h"
+#include "PikaCriteriaAction.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -129,6 +131,8 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(SharpInterfaceCheckIce);
   registerAux(SharpInterfaceCheckAir);
   registerAux(SharpInterfaceCheckVapor);
+  registerAux(PikaCriteria);
+
 }
 
 void
@@ -138,13 +142,16 @@ PikaApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
   registerTask("setup_pika_material", false);
   registerAction(PikaMaterialAction, "setup_pika_material");
 
+  registerTask("setup_pika_criteria", false);
+  registerAction(PikaCriteriaAction, "setup_pika_criteria");
+
   // Add the task dependency
   addTaskDependency("add_material", "setup_pika_material");
   addTaskDependency("add_user_object", "setup_pika_material");
+  addTaskDependency("setup_material_output", "setup_pika_criteria");
+  addTaskDependency("setup_pika_criteria", "add_material");
 
   // Add the action syntax
   syntax.registerActionSyntax("PikaMaterialAction", "PikaMaterials");
-
-
-
+  syntax.registerActionSyntax("PikaCriteriaAction", "PikaCriteriaOutput");
 }
