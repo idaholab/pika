@@ -13,7 +13,9 @@
 
 // MOOSE includes
 #include "Diffusion.h"
-
+//Pika includes
+#include "PropertyUserObjectInterface.h"
+#include "CoefficientKernelInterface.h"
 // Forward declerations
 class TensorDiffusion;
 
@@ -23,7 +25,11 @@ InputParameters validParams<TensorDiffusion>();
 /**
  *
  */
-class TensorDiffusion : public Diffusion
+class TensorDiffusion : 
+  public Diffusion,
+  public PropertyUserObjectInterface,
+  public CoefficientKernelInterface
+
 {
 public:
 
