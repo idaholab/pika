@@ -24,9 +24,11 @@ InputParameters validParams<PikaCriteriaAction>()
   params.addParam<bool>("vapor_criteria", true, "Compute the criteria for vapor, Eq. (43)c");
   params.addParam<bool>("interface_velocity", true, "Compute the interface velocity, Eq. (23)");
   params.addParam<bool>("super_saturation", true, "Compute the super saturation, Eqs. (30)-(32)");
+  params.addParam<bool>("use_temporal_scaling", false, "Temporally scale this Kernel with a value specified in PikaMaterials");
 
   params.addRequiredCoupledVar("phase", "Phase-field variable");
   params.addRequiredCoupledVar("chemical_potential", "Chemical potential variable");
+  params.addRequiredCoupledVar("temperature", "Temperature variable");
 
   MooseEnum pps_types("min=0, max=1, average=2");
   std::vector<MooseEnum> vec_types(1, pps_types);
@@ -71,6 +73,7 @@ PikaCriteriaAction::addAction(const std::string & type, const std::string & name
   MooseObjectAction * action = createAction(type, name);
   applyCoupledVar("phase", action->getObjectParams());
   applyCoupledVar("chemical_potential", action->getObjectParams());
+  applyCoupledVar("temperature", action->getObjectParams());
   _awh.addActionBlock(action);
 }
 
@@ -104,6 +107,12 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   var_name << "_pika_" << name << "_aux";
   action->getObjectParams().set<AuxVariableName>("variable") = var_name.str();
   action->getObjectParams().set<std::vector<MooseEnum> >("execute_on")[0] = "timestep";
+  action->getObjectParams().set<bool>("use_temporal_scaling") = getParam<bool>("use_temporal_scaling");
+  action->getObjectParams().set<Real>("coefficient") = 1.0;
+  applyCoupledVar("phase", action->getObjectParams());
+  applyCoupledVar("chemical_potential", action->getObjectParams());
+  applyCoupledVar("temperature", action->getObjectParams());
+
 
   // Add the variable
   FEType fe_type(CONSTANT, MONOMIAL);

@@ -10,12 +10,17 @@
 
 #include "AuxKernel.h"
 
+//Pika includes
+#include "PropertyUserObjectInterface.h"
+#include "CoefficientKernelInterface.h"
 class PikaCriteria;
 
 template<>
 InputParameters validParams<PikaCriteria>();
 
-class PikaCriteria : public AuxKernel
+class PikaCriteria : public AuxKernel,
+                     public PropertyUserObjectInterface,
+                     public CoefficientKernelInterface
 {
 public:
   PikaCriteria(const std::string & name, InputParameters parameters);
