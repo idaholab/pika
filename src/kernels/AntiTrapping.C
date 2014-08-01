@@ -14,22 +14,22 @@ template<>
 InputParameters validParams<AntiTrapping>()
 {
   InputParameters params = validParams<PikaCoupledTimeDerivative>();
-  params.addRequiredCoupledVar("coupled_variable", "Variable to being differentiated with respect to time");
+  params.addRequiredCoupledVar("phase","Phase-field vairable")
   return params;
 }
 
 AntiTrapping::AntiTrapping(const std::string & name, InputParameters parameters) :
-    PikaCoupledTimeDerivative(name,parameters),
-    _var_dot(coupledDot("coupled_variable")),
-    _dvar_dot_dvar(coupledDotDu("coupled_variable")),
-    _v_var(coupled("coupled_variable"))
+    _phase_dot = CoupledDot("phase") 
+    _grad_phase = CoupledGradient("phase") 
+    _w(_property_uo.getParam<Real>("interface_thickness"))
 {
 }
 
 Real
 AntiTrapping::computeQpResidual()
 {
-  return coefficient(_qp) * _test[_i][_qp] * _var_dot[_qp];
+  RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].size();
+  return (1.0/(2.0 * std::pow(2.0,0.5))) * n * _w[qp] * _phase_dot _grad_test[_i][_qp];
 }
 
 Real
@@ -42,7 +42,9 @@ Real
 AntiTrapping::computeQpOffDiagJacobian(unsigned int jvar)
 {
   if (jvar == _v_var)
-    return coefficient(_qp) * _test[_i][_qp]*_phi[_j][_qp]*_dvar_dot_dvar[_qp];
+    RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].size();
+    return (1.0/(2.0 * std::pow(2.0,0.5))) * n * _w[qp] * _grad_test[_i][_qp];
+
   else
     return 0.0;
 }

@@ -11,39 +11,41 @@
 #ifndef PIKACOUPLEDTIMEDERIVATIVE_H
 #define PIKACOUPLEDTIMEDERIVATIVE_H
 
-// Pika includes
-#include "PikaTimeDerivative.h"
+//Moose Includes
+#include "Kernel.h"
+
+//Pika
 
 // Forward Declarations
-class PikaCoupledTimeDerivative;
+class AntiTrapping;
 
 template<>
-InputParameters validParams<PikaCoupledTimeDerivative>();
+InputParameters validParams<AntiTrapping>();
 
  /**
  * A coefficient time derivative Kernel acting on a coupled variable
  *
- * This Kernel behaves exactly as PikaTimeDerivative, but instead the
+ * This Kernel behaves exactly as AntiTrapping, but instead the
  * time derivative is for a coupled variable.
  *
- * @see PikaTimeDerivative
+ * @see AntiTrapping
  */
 
-class PikaCoupledTimeDerivative :
-  public PikaTimeDerivative
+class AntiTrapping :
+  public Kernel
 {
 public:
 
   /**
    * Class constructor
    */
-  PikaCoupledTimeDerivative(const std::string & name, InputParameters parameters);
+  AntiTrapping(const std::string & name, InputParameters parameters);
 
 protected:
 
   /**
    * Compute residual
-   * Utilizes PikaTimeDerivative::computeQpResidual to compute residual of coupled time variable
+   * Utilizes AntiTrapping::computeQpResidual to compute residual of the antiTrapping method applied
    */
   virtual Real computeQpResidual();
 
@@ -61,15 +63,9 @@ protected:
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
 private:
-
-  /// Time derivative of coupled variable
-  const VariableValue & _var_dot;
-
-  /// Derivative of time derivative of the coupled variable
-  const VariableValue & _dvar_dot_dvar;
-
-  /// The coupled variable number
-  unsigned int _v_var;
+ const <Real> &_w;
+ VariableValue & _phase_dot;
+ VariableValue & _grad_phase;
 
 };
 
