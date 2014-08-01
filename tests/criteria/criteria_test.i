@@ -23,6 +23,7 @@
 [PikaCriteriaOutput]
   phase = phi
   chemical_potential = u
+  ice_postprocessors = 'average min max'
 []
 
 [AuxVariables]
@@ -100,6 +101,10 @@
 []
 
 [Postprocessors]
+  [./ice]
+    type = ElementAverageValue
+    variable = '_pika_ice_aux'
+  [../]
 []
 
 [UserObjects]
