@@ -12,15 +12,13 @@
 
 //Pika includes
 #include "PropertyUserObjectInterface.h"
-#include "CoefficientKernelInterface.h"
 class PikaCriteria;
 
 template<>
 InputParameters validParams<PikaCriteria>();
 
 class PikaCriteria : public AuxKernel,
-                     public PropertyUserObjectInterface,
-                     public CoefficientKernelInterface
+                     public PropertyUserObjectInterface
 {
 public:
   PikaCriteria(const std::string & name, InputParameters parameters);
@@ -40,4 +38,8 @@ private:
   const MaterialProperty<Real> & _D_v;
   const MaterialProperty<Real> & _beta;
   MooseEnum _criteria;
+  Real _pore_size;
+  const PostprocessorValue & _v_n;
+  Real _xi;
+
 };

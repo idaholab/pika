@@ -22,19 +22,21 @@ InputParameters validParams<PikaCriteriaAction>()
   params.addParam<bool>("ice_criteria", true, "Compute the criteria for ice, Eq. (43)a");
   params.addParam<bool>("air_criteria", true, "Compute the criteria for air, Eq. (43)b");
   params.addParam<bool>("vapor_criteria", true, "Compute the criteria for vapor, Eq. (43)c");
+  params.addParam<bool>("time_criteria", true, "Compute the criteria for time, Eq. (47)");
   params.addParam<bool>("interface_velocity", true, "Compute the interface velocity, Eq. (23)");
   params.addParam<bool>("super_saturation", true, "Compute the super saturation, Eqs. (30)-(32)");
   params.addParam<bool>("use_temporal_scaling", false, "Temporally scale this Kernel with a value specified in PikaMaterials");
 
+  // Coupled variables needed
   params.addRequiredCoupledVar("phase", "Phase-field variable");
   params.addRequiredCoupledVar("chemical_potential", "Chemical potential variable");
-  params.addRequiredCoupledVar("temperature", "Temperature variable");
 
   MooseEnum pps_types("min=0, max=1, average=2");
   std::vector<MooseEnum> vec_types(1, pps_types);
   params.addParam<std::vector<MooseEnum> >("ice_postprocessors", vec_types, "Types of postprocessors for ice criteria.");
   params.addParam<std::vector<MooseEnum> >("air_postprocessors", vec_types, "Types of postprocessors for air criteria.");
   params.addParam<std::vector<MooseEnum> >("vapor_postprocessors", vec_types, "Types of postprocessors for vapor criteria.");
+  params.addParam<std::vector<MooseEnum> >("time_postprocessors", vec_types, "Types of postprocessors for time  criteria.");
   params.addParam<std::vector<MooseEnum> >("velocity_postprocessors", vec_types, "Types of postprocessors for interface velocity.");
   params.addParam<std::vector<MooseEnum> >("super_saturation_postprocessors", vec_types, "Types of postprocessors for super saturation.");
 
@@ -60,6 +62,13 @@ PikaCriteriaAction::act()
   if (getParam<bool>("vapor_criteria"))
     addCriteriaAction("vapor");
 
+  if (getParam<bool>("time_criteria"))
+  {
+    addPostprocessorAction("velocity", "_pika_velocity_aux", 1);
+    MooseObjectAction * action = addCriteriaAction("time");
+    action->getObjectParams().set<PostprocessorName>("interface_velocity_postprocessor") = "_pika_velocity_max";
+  }
+
   if (getParam<bool>("interface_velocity"))
     addAction("PikaInterfaceVelocity", "velocity");
 
@@ -73,18 +82,16 @@ PikaCriteriaAction::addAction(const std::string & type, const std::string & name
   MooseObjectAction * action = createAction(type, name);
   applyCoupledVar("phase", action->getObjectParams());
   applyCoupledVar("chemical_potential", action->getObjectParams());
-  applyCoupledVar("temperature", action->getObjectParams());
   _awh.addActionBlock(action);
 }
 
-void
+MooseObjectAction *
 PikaCriteriaAction::addCriteriaAction(const std::string & name)
 {
   MooseObjectAction * action = createAction("PikaCriteria", name);
   action->getObjectParams().set<MooseEnum>("criteria") = name;
   _awh.addActionBlock(action);
-
-
+  return action;
 }
 
 MooseObjectAction *
@@ -111,15 +118,13 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   action->getObjectParams().set<Real>("coefficient") = 1.0;
   applyCoupledVar("phase", action->getObjectParams());
   applyCoupledVar("chemical_potential", action->getObjectParams());
-  applyCoupledVar("temperature", action->getObjectParams());
-
 
   // Add the variable
   FEType fe_type(CONSTANT, MONOMIAL);
   _problem->addAuxVariable(var_name.str(), fe_type);
 
   // Add the postprocessors actions
-  addPostprocessorActionss(name, var_name.str());
+  createPostprocessorActions(name, var_name.str());
 
   // Return the action
   return action;
@@ -141,51 +146,51 @@ PikaCriteriaAction::applyCoupledVar(const std::string & coupled_name, InputParam
 }
 
 void
-PikaCriteriaAction::addPostprocessorActions(const std::string & name, const std::string & var_name)
+PikaCriteriaAction::createPostprocessorActions(const std::string & name, const std::string & var_name)
 {
-  // Add postprocessors
   std::vector<MooseEnum> pps = getParam<std::vector<MooseEnum> >(name + "_postprocessors");
-
   for (std::vector<MooseEnum>::const_iterator it = pps.begin(); it != pps.end(); ++it)
-  {
-    if (!it->isValid())
-      continue;
+    if (it->isValid())
+      addPostprocessorAction(name, var_name, *it);
+}
 
-    // Name suffix
-    std::string suffix;
-    if ((*it) == 0)
-      suffix = "min";
-    else if ((*it) == 1)
-      suffix = "max";
-    else
-      suffix = "avg";
+void
+PikaCriteriaAction::addPostprocessorAction(const std::string & name, const std::string & var_name, int id)
+{
+  // Name suffix
+  std::string suffix;
+  if (id == 0)
+    suffix = "min";
+  else if (id == 1)
+    suffix = "max";
+  else
+    suffix = "avg";
 
-    // Build the parameters
-    std::ostringstream long_name;
-    long_name << "Postprocessors/_pika_" << name << "_" << suffix;
-    InputParameters action_params = _action_factory.getValidParams("AddPostprocessorAction");
-    action_params.set<ActionWarehouse *>("awh") = &_awh;
-    action_params.set<std::string>("registered_identifier") = "(AutoBuilt)";
-    action_params.set<std::string>("task") = "add_postprocessor";
+  // Build the parameters
+  std::ostringstream long_name;
+  long_name << "Postprocessors/_pika_" << name << "_" << suffix;
+  InputParameters action_params = _action_factory.getValidParams("AddPostprocessorAction");
+  action_params.set<ActionWarehouse *>("awh") = &_awh;
+  action_params.set<std::string>("registered_identifier") = "(AutoBuilt)";
+  action_params.set<std::string>("task") = "add_postprocessor";
 
-    // Account for the differing types
-    if ((*it) == 0 || (*it) == 1)
-      action_params.set<std::string>("type") = "ElementExtremeValue";
-    else
-      action_params.set<std::string>("type") = "ElementAverageValue";
+  // Account for the differing types
+  if (id == 0 || id == 1)
+    action_params.set<std::string>("type") = "ElementExtremeValue";
+  else
+    action_params.set<std::string>("type") = "ElementAverageValue";
 
-    // Create the action
-    MooseObjectAction * action = static_cast<MooseObjectAction *>(_action_factory.create("AddPostprocessorAction", long_name.str(), action_params));
-    action->getObjectParams().set<VariableName>("variable") = var_name;
-    action->getObjectParams().set<std::vector<MooseEnum> >("execute_on")[0] = "timestep";
+  // Create the action
+  MooseObjectAction * action = static_cast<MooseObjectAction *>(_action_factory.create("AddPostprocessorAction", long_name.str(), action_params));
+  action->getObjectParams().set<VariableName>("variable") = var_name;
+  action->getObjectParams().set<std::vector<MooseEnum> >("execute_on")[0] = "timestep";
 
-    // Account for the differing types
-    if ((*it) == 0)
-      action_params.set<std::string>("value_type") = "min";
-    else if ((*it) == 1)
-      action_params.set<std::string>("value_type") = "max";
+  // Account for the differing types
+  if (id == 0)
+    action_params.set<std::string>("value_type") = "min";
+  else if (id == 1)
+    action_params.set<std::string>("value_type") = "max";
 
-    // Add the action to the warehouse
-    _awh.addActionBlock(action);
-  }
+  // Add the action to the warehouse
+  _awh.addActionBlock(action);
 }
