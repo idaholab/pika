@@ -23,6 +23,7 @@ InputParameters validParams<PikaCriteriaAction>()
   params.addParam<bool>("air_criteria", true, "Compute the criteria for air, Eq. (43)b");
   params.addParam<bool>("vapor_criteria", true, "Compute the criteria for vapor, Eq. (43)c");
   params.addParam<bool>("time_criteria", true, "Compute the criteria for time, Eq. (47)");
+  params.addParam<bool>("velocity_criteria", true, "Compute the criteria for time, Eq. (45)");
   params.addParam<bool>("interface_velocity", true, "Compute the interface velocity, Eq. (23)");
   params.addParam<bool>("super_saturation", true, "Compute the super saturation, Eqs. (30)-(32)");
   params.addParam<bool>("use_temporal_scaling", false, "Temporally scale this Kernel with a value specified in PikaMaterials");
@@ -63,14 +64,14 @@ PikaCriteriaAction::act()
     addCriteriaAction("vapor");
 
   if (getParam<bool>("time_criteria"))
-  {
-    addPostprocessorAction("velocity", "_pika_velocity_aux", 1);
-    MooseObjectAction * action = addCriteriaAction("time");
-    action->getObjectParams().set<PostprocessorName>("interface_velocity_postprocessor") = "_pika_velocity_max";
-  }
+    addCriteriaAction("time");
 
-  if (getParam<bool>("interface_velocity"))
-    addAction("PikaInterfaceVelocity", "velocity");
+  if (getParam<bool>("velocity_criteria"))
+    addCriteriaAction("velocity");
+
+  // If time_criteria or velocity_criteria are true, then the interface velocity is required
+  if (getParam<bool>("interface_velocity") || getParam<bool>("time_criteria") || getParam<bool>("velocity_criteria"))
+    addAction("PikaInterfaceVelocity", "interface_velocity");
 
   if (getParam<bool>("super_saturation"))
     addAction("PikaSupersaturation", "super_saturation");

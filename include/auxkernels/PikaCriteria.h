@@ -29,6 +29,7 @@ protected:
   Real computeValue();
 
 private:
+  const VariableValue & _v_n;
   const MaterialProperty<Real> & _k_i;
   const MaterialProperty<Real> & _k_a;
   const MaterialProperty<Real> & _c_i;
@@ -37,9 +38,9 @@ private:
   const MaterialProperty<Real> & _rho_i;
   const MaterialProperty<Real> & _D_v;
   const MaterialProperty<Real> & _beta;
+  const Real & _d_0;
   MooseEnum _criteria;
   Real _pore_size;
-  const PostprocessorValue & _v_n;
   Real _xi;
 
 };

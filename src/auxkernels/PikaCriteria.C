@@ -18,13 +18,13 @@ InputParameters validParams<PikaCriteria>()
   params += validParams<PropertyUserObjectInterface>();
 
   // Controls which type of AuxKernel calculation if performed
-  MooseEnum criteria("ice=0, air=1, vapor=2, time=3");
+  MooseEnum criteria("ice=0, air=1, vapor=2, velocity=3, time=4");
   params.addParam<MooseEnum>("criteria", criteria, "Select the type of criteria to compute, see Eq. (43)");
   params.addParam<bool>("use_temporal_scaling", false, "Temporally scale this Kernel with a value specified in PikaMaterials");
 
   // Temporal scaling
-  params.addParam<Real>("estimated_pore_size", 10e-4, "Estimated pore size for time criterial (m); ; only need with 'time = true");
-  params.addParam<PostprocessorName>("interface_velocity_postprocessor", 3.2e-10, "The name of the postprocessor containing the estimate of the interface velocity; only need with 'time = true'. Default: 3.2e-10 m/s");
+  params.addParam<Real>("estimated_pore_size", 10e-4, "Estimated pore size for time criterial (m); ; only need with 'criteria = time'");
+  params.addCoupledVar("interface_velocity", 3.2e-10, "The name of the variable containing the interface velocity; only need with 'criteria = time | velocity'. Default: 3.2e-10 m/s");
 
   // These terms are not used, CoefficientKernelIntrface for temporal scaling of rho_i
   params.suppressParameter<Real>("offset");
@@ -37,6 +37,7 @@ InputParameters validParams<PikaCriteria>()
 PikaCriteria::PikaCriteria(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
     PropertyUserObjectInterface(name,parameters),
+    _v_n(coupledValue("interface_velocity")),
     _k_i(getMaterialProperty<Real>("conductivity_ice")),
     _k_a(getMaterialProperty<Real>("conductivity_air")),
     _c_i(getMaterialProperty<Real>("heat_capacity_ice")),
@@ -45,9 +46,9 @@ PikaCriteria::PikaCriteria(const std::string & name, InputParameters parameters)
     _rho_i(getMaterialProperty<Real>("density_ice")),
     _D_v(getMaterialProperty<Real>("water_vapor_diffusion_coefficient")),
     _beta(getMaterialProperty<Real>("interface_kinetic_coefficient")),
+    _d_0(_property_uo.getParam<Real>("capillary_length")),
     _criteria(getParam<MooseEnum>("criteria")),
     _pore_size(getParam<Real>("estimated_pore_size")),
-    _v_n(getPostprocessorValue("interface_velocity_postprocessor")),
     _xi(getParam<bool>("use_temporal_scaling") ? _property_uo.temporalScale() : 1.0)
 {
 }
@@ -67,8 +68,11 @@ PikaCriteria::computeValue()
     output = (_D_v[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_rho_i[_qp] * _xi);
 
   else if (_criteria == 3)
+    output = _d_0 / (_v_n[_qp] * _beta[_qp]);
+
+  else if (_criteria == 4)
   {
-    Real tn = _pore_size / _v_n;
+    Real tn = _pore_size / _v_n[_qp];
     Real td = _pore_size * _pore_size / _D_v[_qp];
     output = td / (_xi * tn);
   }
