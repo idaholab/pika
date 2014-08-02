@@ -30,5 +30,5 @@ private:
   void addCriteriaAction(const std::string & name);
   MooseObjectAction * createAction(const std::string & type, const std::string & name);
   void applyCoupledVar(const std::string & coupled_name, InputParameters & object_params);
-  void addPostprocessorActionss(const std::string & name, const std::string & var_name);
+  void addPostprocessorActions(const std::string & name, const std::string & var_name);
 };

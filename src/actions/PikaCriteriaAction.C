@@ -141,7 +141,7 @@ PikaCriteriaAction::applyCoupledVar(const std::string & coupled_name, InputParam
 }
 
 void
-PikaCriteriaAction::addPostprocessorActionss(const std::string & name, const std::string & var_name)
+PikaCriteriaAction::addPostprocessorActions(const std::string & name, const std::string & var_name)
 {
   // Add postprocessors
   std::vector<MooseEnum> pps = getParam<std::vector<MooseEnum> >(name + "_postprocessors");
