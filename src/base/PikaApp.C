@@ -39,7 +39,6 @@
 #include "MaterialUserForcingFunction.h"
 #include "DoubleWellPotential.h"
 #include "DoubleWellPotentialMMS.h"
-#include "ScaledPhaseTransition.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -117,7 +116,6 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(MaterialUserForcingFunction);
   registerKernel(DoubleWellPotential);
   registerKernel(DoubleWellPotentialMMS);
-  registerKernel(ScaledPhaseTransition);
 
   // InitialConditions
   registerInitialCondition(ChemicalPotentialIC);

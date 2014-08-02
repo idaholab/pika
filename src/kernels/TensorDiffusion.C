@@ -14,12 +14,16 @@ template<>
 InputParameters validParams<TensorDiffusion>()
 {
   InputParameters params = validParams<Diffusion>();
+  params += validParams<PropertyUserObjectInterface>();
+  params += validParams<CoefficientKernelInterface>();
   params.addParam<std::string>("mobility_tensor", "The tensor form of mobility (Nicoli, 2011)");
   return params;
 }
 
 TensorDiffusion::TensorDiffusion(const std::string & name, InputParameters parameters) :
     Diffusion(name, parameters),
+    PropertyUserObjectInterface(name,parameters),
+    CoefficientKernelInterface(name, parameters),
     _coef(getMaterialProperty<RealTensorValue>(getParam<std::string>("mobility_tensor")))
 {
 }
@@ -32,11 +36,11 @@ TensorDiffusion::~TensorDiffusion()
 Real
 TensorDiffusion::computeQpResidual()
 {
-  return _coef[_qp] * _grad_test[_i][_qp] * _grad_u[_qp];
+  return coefficient(_qp) * _coef[_qp] * _grad_test[_i][_qp] * _grad_u[_qp];
 }
 
 Real
 TensorDiffusion::computeQpJacobian()
 {
-  return _coef[_qp] * _grad_test[_i][_qp] * _grad_phi[_j][_qp];
+  return coefficient(_qp) * _coef[_qp] * _grad_test[_i][_qp] * _grad_phi[_j][_qp];
 }

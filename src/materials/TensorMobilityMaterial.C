@@ -17,6 +17,7 @@ InputParameters validParams<TensorMobilityMaterial>()
   params.addRequiredCoupledVar("phi", "The phase-field variable to couple");
   params.addRequiredParam<Real>("M_1", "First mobility coefficient");
   params.addRequiredParam<Real>("M_2", "Second mobility coefficient");
+  params.addParam<std::string>("coefficient_name","M_tensor", "The name of the tensor mobility material property");
   return params;
 }
 
@@ -29,7 +30,7 @@ TensorMobilityMaterial::TensorMobilityMaterial(const std::string & name, InputPa
     _M_2(getParam<Real>("M_2")),
     _M_parallel(declareProperty<Real>("M_parallel")),
     _M_perpendicular(declareProperty<Real>("M_perpendicular")),
-    _M_tensor(declareProperty<RealTensorValue>("M_tensor"))
+    _M_tensor(declareProperty<RealTensorValue>(getParam<std::string>("coefficient_name")))
 {
 }
 
@@ -40,8 +41,14 @@ TensorMobilityMaterial::~TensorMobilityMaterial()
 void
 TensorMobilityMaterial::computeQpProperties()
 {
-  _M_parallel[_qp] = _M_1 * _phase[_qp] + _M_2 * (1.0 - _phase[_qp]);
+  //Mobility for PHI = {0,1}
+  /*_M_parallel[_qp] = _M_1 * _phase[_qp] + _M_2 * (1.0 - _phase[_qp]);
   _M_perpendicular[_qp] = 1.0 / (1.0/_M_1 * _phase[_qp] + 1.0/_M_2 * (1.0 - _phase[_qp]));
+  */
+
+  //Mobility for PHI = {-1,1}
+  _M_parallel[_qp] = _M_1 * (1.0 + _phase[_qp]) / 2.0 + _M_2 * (1.0 - _phase[_qp])/2.0;
+  _M_perpendicular[_qp] = 1.0 / ((1.0/_M_1) * (1 + _phase[_qp])/2.0 + (1.0/_M_2) * ((1.0 - _phase[_qp])/2.0));
   RealTensorValue nxn = normalOutputProduct();
 
   _M_tensor[_qp] = _M_perpendicular[_qp]*nxn + _M_parallel[_qp]*(_identity - nxn);
