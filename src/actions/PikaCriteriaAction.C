@@ -39,9 +39,10 @@ InputParameters validParams<PikaCriteriaAction>()
   params.addParam<std::vector<MooseEnum> >("vapor_postprocessors", vec_types, "Types of postprocessors for vapor criteria.");
   params.addParam<std::vector<MooseEnum> >("time_postprocessors", vec_types, "Types of postprocessors for time  criteria.");
   params.addParam<std::vector<MooseEnum> >("velocity_postprocessors", vec_types, "Types of postprocessors for interface velocity.");
+  params.addParam<std::vector<MooseEnum> >("interface_velocity_postprocessors", vec_types, "Types of postprocessors for interface velocity.");
   params.addParam<std::vector<MooseEnum> >("super_saturation_postprocessors", vec_types, "Types of postprocessors for super saturation.");
 
-  params.addParamNamesToGroup("ice_postprocessors air_postprocessors vapor_postprocessors velocity_postprocessors super_saturation_postprocessors", "Postprocesors");
+  params.addParamNamesToGroup("ice_postprocessors air_postprocessors vapor_postprocessors velocity_postprocessors interface_velocity_postprocessors super_saturation_postprocessors", "Postprocesors");
 
   return params;
 }
