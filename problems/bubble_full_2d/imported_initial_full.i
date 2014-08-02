@@ -192,8 +192,9 @@
     [./u_marker]
       type = ErrorFractionMarker
       indicator = u_jump_indicator
-      refine = .95
+      refine = .96
       block = 0
+      coarsen = 0.01
     [../]
     [./combo_mark]
       type = ComboMarker
@@ -248,7 +249,7 @@
 
 [PikaCriteriaOutput]
   phase = phi
-  use_temporal_scaling = true
+  interface_velocity_postprocessors = average
   chemical_potential = u
 []
 
