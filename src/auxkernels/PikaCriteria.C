@@ -15,12 +15,20 @@ InputParameters validParams<PikaCriteria>()
 {
   MooseEnum criteria("ice=0, air=1, vapor=2");
   InputParameters params = validParams<AuxKernel>();
+  params += validParams<PropertyUserObjectInterface>();
+  params += validParams<CoefficientKernelInterface>();
+  params.suppressParameter<Real>("offset");
+  params.suppressParameter<Real>("scale");
+  params.suppressParameter<Real>("coefficient");
+  params.suppressParameter<std::string>("property");
   params.addParam<MooseEnum>("criteria", criteria, "Select the type of criteria to compute, see Eq. (43)");
   return params;
 }
 
 PikaCriteria::PikaCriteria(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
+    PropertyUserObjectInterface(name,parameters),
+    CoefficientKernelInterface(name,parameters),
     _k_i(getMaterialProperty<Real>("conductivity_ice")),
     _k_a(getMaterialProperty<Real>("conductivity_air")),
     _c_i(getMaterialProperty<Real>("heat_capacity_ice")),
@@ -30,6 +38,7 @@ PikaCriteria::PikaCriteria(const std::string & name, InputParameters parameters)
     _D_v(getMaterialProperty<Real>("water_vapor_diffusion_coefficient")),
     _beta(getMaterialProperty<Real>("interface_kinetic_coefficient")),
     _criteria(getParam<MooseEnum>("criteria"))
+    
 {
 }
 
@@ -39,13 +48,13 @@ PikaCriteria::computeValue()
   Real output;
 
   if (_criteria == 0)
-    output = (_k_i[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_c_i[_qp] * _rho_i[_qp]);
+    output = (_k_i[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_c_i[_qp] * _rho_i[_qp] * coefficient(_qp));
 
   else if (_criteria == 1)
-    output = (_k_a[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_c_a[_qp] * _rho_i[_qp]);
+    output = (_k_a[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_c_a[_qp] * _rho_i[_qp] * coefficient(_qp) );
 
   else if (_criteria == 2)
-    output = (_D_v[_qp] * _rho_vs[_qp] * _beta[_qp]) / _rho_i[_qp];
+    output = (_D_v[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_rho_i[_qp] * coefficient(_qp));
 
   else
     // Should not be possible to get here
