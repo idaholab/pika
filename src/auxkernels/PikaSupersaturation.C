@@ -15,7 +15,7 @@ InputParameters validParams<PikaSupersaturation>()
 {
   InputParameters params = validParams<AuxKernel>();
   params.addRequiredCoupledVar("phase", "Phase-field variable");
-  params.addRequiredCoupledVar("chemical_potential", "Chemical potential variable");
+  params.addParam<bool>("use_temporal_scaling", true, "Apply the temporal scaling parameter");
   return params;
 }
 
@@ -23,9 +23,8 @@ PikaSupersaturation::PikaSupersaturation(const std::string & name, InputParamete
     AuxKernel(name, parameters),
     PropertyUserObjectInterface(name, parameters),
     _rho_i(getMaterialProperty<Real>("density_ice")),
-    _rho_vs(getMaterialProperty<Real>("equilibrium_water_vapor_concentration_at_saturation")),
-    _phase(coupledValue("phase")),
-    _s(coupledValue("chemical_potential"))
+    _s(coupledValue("chemical_potential")),
+    _xi(getParam<bool>("use_temporal_scaling") ? _property_uo.temporalScale() : 1.0)
 {
 }
 
@@ -36,8 +35,5 @@ PikaSupersaturation::~PikaSupersaturation()
 Real
 PikaSupersaturation::computeValue()
 {
-  Real rho_eq = _rho_i[_qp] * (1 + _phase[_qp])/2 + _rho_vs[_qp] * (1 - _phase[_qp])/2;
-  Real rho = _s[_qp] * _rho_i[_qp] + _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_property_uo.referenceTemp());
-  return rho_eq - rho;
-
+  return -s[_qp] * _rho_i[_qp] * _xi;
 }

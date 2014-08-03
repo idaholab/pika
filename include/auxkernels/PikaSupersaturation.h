@@ -52,10 +52,8 @@ protected:
 
 private:
   MaterialProperty<Real> & _rho_i;
-  MaterialProperty<Real> & _rho_vs;
-  VariableValue & _phase;
   VariableValue & _s;
-
+  Real _xi;
 };
 
 #endif //PIKASUPERSATURATION_H
