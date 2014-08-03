@@ -52,9 +52,9 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    system = nl0
+    system = aux0
     mesh = phi_initial_0000_mesh.xdr
-    nodal_variables = phi
+    nodal_variables = phi_aux
     es = phi_initial_0000.xdr
   [../]
 []
@@ -96,3 +96,4 @@
   temperature = 263.15
   interface_thickness = 5e-6
 []
+

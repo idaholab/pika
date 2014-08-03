@@ -19,6 +19,8 @@
 [AuxVariables]
   [./u]
   [../]
+  [./phi_aux]
+  [../]
 []
 
 [Kernels]
@@ -54,6 +56,14 @@
   [../]
 []
 
+[AuxKernels]
+  [./phase_initialize]
+    type = PikaPhaseInitializeAux
+    variable = phi_aux
+    phase = phi
+  [../]
+[]
+
 [BCs]
   active = ''
   [./T_hot]
@@ -74,17 +84,20 @@
   # Preconditioned JFNK (default)
   type = Transient
   num_steps = 10
-  dt = 500
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
+  [./TimeStepper]
+    type = IterationAdaptiveDT
+    dt = 1
+  [../]
 []
 
 [Adaptivity]
-  max_h_level = 9
-  initial_steps = 9
-  initial_marker = phi_box
-  marker = combo_marker
+  max_h_level = 10
+  initial_steps = 10
+  initial_marker = phi_grad_marker
+  marker = phi_grad_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -92,33 +105,11 @@
     [../]
   [../]
   [./Markers]
-    [./phi_marker]
+    [./phi_grad_marker]
       type = ErrorFractionMarker
-      coarsen = .1
+      coarsen = 0.01
       indicator = phi_grad_indicator
-      refine = .8
-    [../]
-    [./phi_above]
-      type = ValueThresholdMarker
-      variable = phi
-      refine = 1.0000001
-    [../]
-    [./combo_marker]
-      type = ComboMarker
-      markers = 'phi_above phi_marker'
-    [../]
-    [./phi_below]
-      type = ValueThresholdMarker
-      variable = phi
-      invert = true
-      refine = -1.0000001
-    [../]
-    [./phi_box]
-      type = BoxMarker
-      bottom_left = '0.0019 0.0019 0'
-      top_right = '0.0031 0.0031 0'
-      inside = refine
-      outside = coarsen
+      refine = .98
     [../]
   [../]
 []
@@ -143,7 +134,6 @@
 []
 
 [ICs]
-  active = 'phase_ic'
   [./phase_ic]
     x1 = .0025
     y1 = .0025
@@ -152,12 +142,6 @@
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 5e-6
-  [../]
-  [./temperature_ic]
-    variable = T
-    type = FunctionIC
-    function = -543*y+267.515
   [../]
 []
 
