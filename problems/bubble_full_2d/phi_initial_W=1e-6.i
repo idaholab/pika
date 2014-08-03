@@ -117,7 +117,6 @@
 [Outputs]
   output_initial = true
   exodus = true
-  file_base = phi_temp_diffusion
   [./console]
     type = Console
     perf_log = true
@@ -150,4 +149,3 @@
   temperature = 263.15
   interface_thickness = 1e-6
 []
-
