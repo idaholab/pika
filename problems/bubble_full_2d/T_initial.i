@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = phi_T_initial_0000_mesh.xdr
+  file = phi_initial_0000_mesh.xdr
   dim = 2
 []
 
@@ -96,4 +96,3 @@
   temperature = 263.15
   interface_thickness = 5e-6
 []
-
