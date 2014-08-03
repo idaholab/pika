@@ -13,6 +13,9 @@
   [../]
 []
 
+[AuxVariables]
+[]
+
 [Functions]
   [./T_func]
     type = SolutionFunction
@@ -149,6 +152,11 @@
   end_time = 20000
   reset_dt = true
   nl_rel_tol = 1e-07
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    percent_change = 0.01
+    dt = 0.1
+  [../]
 []
 
 [Adaptivity]
@@ -168,7 +176,7 @@
     [../]
   [../]
   [./Markers]
-    [./phi_marker]
+    [./phi_grad_marker]
       type = ErrorFractionMarker
       coarsen = .01
       indicator = phi_grad_indicator
@@ -181,10 +189,21 @@
       block = 0
       coarsen = 0.01
     [../]
+    [./phi_above]
+      type = ValueThresholdMarker
+      variable = phi
+      refine = 1.0000001
+    [../]
+    [./phi_below]
+      type = ValueThresholdMarker
+      variable = phi
+      invert = true
+      refine = -1.0000001
+    [../]
     [./combo_mark]
       type = ComboMarker
       block = 0
-      markers = 'u_marker phi_marker'
+      markers = 'u_marker phi_grad_marker phi_above'
     [../]
   [../]
 []
@@ -234,7 +253,13 @@
 
 [PikaCriteriaOutput]
   phase = phi
-  interface_velocity_postprocessors = average
+  interface_velocity_postprocessors = 'average max min'
   chemical_potential = u
+  air_criteria = false
+  velocity_criteria = false
+  time_criteria = false
+  vapor_criteria = false
+  use_temporal_scaling = true
+  ice_criteria = false
 []
 
