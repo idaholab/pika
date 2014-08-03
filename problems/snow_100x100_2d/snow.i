@@ -140,6 +140,11 @@
   end_time = 20000
   reset_dt = true
   nl_rel_tol = 1e-07
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    percent_change = 0.05
+    dt = 1
+  [../]
 []
 
 [Adaptivity]
