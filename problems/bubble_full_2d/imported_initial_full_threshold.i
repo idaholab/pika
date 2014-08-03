@@ -33,7 +33,6 @@
     type = PikaDiffusion
     variable = T
     use_temporal_scaling = true
-    coefficient = 1
     property = conductivity
   [../]
   [./heat_time]
@@ -144,7 +143,7 @@
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
     percent_change = 0.01
-    dt = 0.1
+    dt = 0.01
   [../]
 []
 
@@ -233,7 +232,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 5e-6
+  interface_thickness = 1e-6
   temporal_scaling = 1e-3
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all
