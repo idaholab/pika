@@ -24,7 +24,6 @@
   [../]
   [./phi_func]
     type = SolutionFunction
-    from_variable = phi
     solution = phi_initial
   [../]
 []
@@ -34,6 +33,7 @@
     type = PikaDiffusion
     variable = T
     use_temporal_scaling = true
+    coefficient = 1
     property = conductivity
   [../]
   [./heat_time]
@@ -96,7 +96,6 @@
 []
 
 [BCs]
-  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -109,29 +108,6 @@
     boundary = top
     value = 264.8 # -20
   [../]
-  [./insulated_sides]
-    type = NeumannBC
-    variable = T
-    boundary = 'left right'
-  [../]
-  [./phi_bc]
-    type = DirichletBC
-    variable = phi
-    boundary = '0 1 2 3 '
-    value = 1.0
-  [../]
-  [./u_bottom]
-    type = DirichletBC
-    variable = u
-    boundary = bottom
-    value = -4.7e-6
-  [../]
-  [./u_top]
-    type = DirichletBC
-    variable = u
-    boundary = top
-    value = 4.7e-6
-  [../]
 []
 
 [Postprocessors]
@@ -140,18 +116,19 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    system = nl0
-    mesh = phi_initial_0000_mesh.xdr
-    nodal_variables = phi
+    system = aux0
+    mesh = phi_initial_0001_mesh.xdr
+    nodal_variables = phi_aux
     execute_on = initial
-    es = phi_initial_0000.xdr
+    es = phi_initial_0001.xdr
+    system_variables = phi_aux
   [../]
   [./T_initial]
     type = SolutionUserObject
-    system = nl0
     mesh = T_initial_0000_mesh.xdr
     nodal_variables = T
     es = T_initial_0000.xdr
+    system_variables = T
   [../]
 []
 
@@ -159,18 +136,23 @@
   # Preconditioned JFNK (default)
   type = Transient
   solve_type = PJFNK
-  petsc_options = -
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   end_time = 20000
   reset_dt = true
+  nl_rel_tol = 1e-07
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    percent_change = 0.01
+    dt = 0.1
+  [../]
 []
 
 [Adaptivity]
-  max_h_level = 8
-  initial_marker = u_marker
+  max_h_level = 10
+  initial_marker = combo_mark
   marker = combo_mark
-  initial_steps = 5
+  initial_steps = 10
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -187,7 +169,7 @@
       type = ErrorFractionMarker
       coarsen = .01
       indicator = phi_grad_indicator
-      refine = .5
+      refine = .9
     [../]
     [./u_marker]
       type = ErrorFractionMarker
@@ -199,18 +181,18 @@
     [./phi_above]
       type = ValueThresholdMarker
       variable = phi
-      refine = 1.000001
+      refine = 1.0000001
     [../]
     [./phi_below]
       type = ValueThresholdMarker
       variable = phi
       invert = true
-      refine = -1.000001
+      refine = -1.0000001
     [../]
     [./combo_mark]
       type = ComboMarker
       block = 0
-      markers = 'phi_grad_mareker phi_above'
+      markers = 'u_marker phi_grad_marker phi_above'
     [../]
   [../]
 []
@@ -260,6 +242,13 @@
 
 [PikaCriteriaOutput]
   phase = phi
-  interface_velocity_postprocessors = average
+  interface_velocity_postprocessors = 'average max min'
   chemical_potential = u
+  air_criteria = false
+  velocity_criteria = false
+  time_criteria = false
+  vapor_criteria = false
+  use_temporal_scaling = true
+  ice_criteria = false
 []
+

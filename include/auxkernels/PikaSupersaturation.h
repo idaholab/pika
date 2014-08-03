@@ -51,12 +51,9 @@ protected:
   virtual Real computeValue();
 
 private:
-
+  MaterialProperty<Real> & _rho_i;
   VariableValue & _s;
-
-  /// Reference to ice density stored in PropertyUserObject
-  const Real _rho_i;
-
+  Real _xi;
 };
 
 #endif //PIKASUPERSATURATION_H
