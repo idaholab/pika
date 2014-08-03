@@ -15,8 +15,8 @@ InputParameters validParams<TensorMobilityMaterial>()
 {
   InputParameters params = validParams<Material>();
   params.addRequiredCoupledVar("phi", "The phase-field variable to couple");
-  params.addRequiredParam<Real>("M_1_property_name", "Name of material property for first mobility coefficient");
-  params.addRequiredParam<Real>("M_2_property_name", "Name of material property for second econd mobility coefficient");
+  params.addRequiredParam<std::string>("M_1_property_name", "Name of material property for first mobility coefficient");
+  params.addRequiredParam<std::string>("M_2_property_name", "Name of material property for second econd mobility coefficient");
   params.addParam<std::string>("coefficient_name","M_tensor", "The name of the tensor mobility material property");
   return params;
 }
@@ -26,8 +26,8 @@ TensorMobilityMaterial::TensorMobilityMaterial(const std::string & name, InputPa
     _identity(1,0,0, 0,1,0, 0,0,1),
     _phase(coupledValue("phi")),
     _grad_phase(coupledGradient("phi")),
-    _M_1(getMaterialProperty<Real>(getParam<Real>("M_1_property_name"))),
-    _M_2(getMaterialProperty<Real>(getParam<Real>("M_2_property_name"))),
+    _M_1(getMaterialProperty<Real>(getParam<std::string>("M_1_property_name"))),
+    _M_2(getMaterialProperty<Real>(getParam<std::string>("M_2_property_name"))),
     _M_parallel(declareProperty<Real>("M_parallel")),
     _M_perpendicular(declareProperty<Real>("M_perpendicular")),
     _M_tensor(declareProperty<RealTensorValue>(getParam<std::string>("coefficient_name")))

@@ -25,7 +25,7 @@ InputParameters validParams<TensorDiffusion>();
 /**
  *
  */
-class TensorDiffusion :
+class TensorDiffusion : 
   public Diffusion,
   public PropertyUserObjectInterface,
   public CoefficientKernelInterface
@@ -49,19 +49,9 @@ protected:
   Real computeQpResidual();
   Real computeQpJacobian();
 
-
 private:
+  MaterialProperty<RealTensorValue> & _coef;
 
-  RealTensorValue mobilityTensor();
-  RealTensorValue normalOutputProduct();
-
-  const RealTensorValue _identity;
-  VariableValue & _phase;
-
-  VariableGradient & _grad_phase;
-
-  MaterialProperty<Real> _M_1;
-  MaterialProperty<Real> _M_2;
 
 };
 
