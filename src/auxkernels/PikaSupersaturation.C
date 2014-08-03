@@ -35,5 +35,5 @@ PikaSupersaturation::~PikaSupersaturation()
 Real
 PikaSupersaturation::computeValue()
 {
-  return -s[_qp] * _rho_i[_qp] * _xi;
+  return -_s[_qp] * _rho_i[_qp] * _xi;
 }
