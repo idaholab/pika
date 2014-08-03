@@ -22,7 +22,7 @@
 []
 
 [Kernels]
-  active = 'phi_double_well phi_time phi_square_gradient'
+  active = 'phi_double_well phi_square_gradient phi_time'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -81,10 +81,10 @@
 []
 
 [Adaptivity]
-  max_h_level = 8
-  initial_steps = 12
-  initial_marker = phi_marker
-  marker = phi_marker
+  max_h_level = 9
+  initial_steps = 9
+  initial_marker = phi_box
+  marker = combo_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -94,14 +94,37 @@
   [./Markers]
     [./phi_marker]
       type = ErrorFractionMarker
-      coarsen = .05
+      coarsen = .1
       indicator = phi_grad_indicator
-      refine = .9
+      refine = .8
+    [../]
+    [./phi_above]
+      type = ValueThresholdMarker
+      variable = phi
+      refine = 1.0000001
+    [../]
+    [./combo_marker]
+      type = ComboMarker
+      markers = 'phi_above phi_marker'
+    [../]
+    [./phi_below]
+      type = ValueThresholdMarker
+      variable = phi
+      invert = true
+      refine = -1.0000001
+    [../]
+    [./phi_box]
+      type = BoxMarker
+      bottom_left = '0.0019 0.0019 0'
+      top_right = '0.0031 0.0031 0'
+      inside = refine
+      outside = coarsen
     [../]
   [../]
 []
 
 [Outputs]
+  output_initial = true
   exodus = true
   file_base = phi_temp_diffusion
   [./console]
@@ -141,6 +164,6 @@
 [PikaMaterials]
   phi = phi
   temperature = 263.15
-  interface_thickness = 5e-6
+  interface_thickness = 1e-6
 []
 

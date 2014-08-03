@@ -48,6 +48,7 @@
 #include "SharpInterfaceCheckIce.h"
 #include "SharpInterfaceCheckAir.h"
 #include "SharpInterfaceCheckVapor.h"
+#include "PikaPhaseInitializeAux.h"
 
 // InitialConditions
 #include "ChemicalPotentialIC.h"
@@ -130,6 +131,7 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(SharpInterfaceCheckAir);
   registerAux(SharpInterfaceCheckVapor);
   registerAux(PikaCriteria);
+  registerAux(PikaPhaseInitializeAux);
 
 }
 
