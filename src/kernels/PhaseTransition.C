@@ -37,11 +37,12 @@ Real
 PhaseTransition::computeDFDOP(PFFunctionType type)
 {
   switch (type)
-  { 
+  {
     case Residual:
      return - coefficient(_qp) * (_lambda[_qp]) * (_s[_qp] - _s_eq[_qp]) * (1.0 - _u[_qp]*_u[_qp])*(1.0 - _u[_qp]*_u[_qp]);
 
     case Jacobian:
       return coefficient(_qp) *  4.0 * _lambda[_qp] * _u[_qp] * (-_u[_qp] * _u[_qp]+1.0) * (_s[_qp] - _s_eq[_qp]) * _phi[_j][_qp];
   }
+  return 0.0;
 }
