@@ -1,0 +1,42 @@
+/****************************************************************/
+/*       PIKA - Phase field snow micro-structure model          */
+/*                                                              */
+/*          Prepared by Battelle Energy Alliance, LLC           */
+/*            Under Contract No. DE-AC07-05ID14517              */
+/*            With the U. S. Department of Energy               */
+/*                                                              */
+/*            See COPYRIGHT for full restrictions               */
+/****************************************************************/
+
+#include "PikaPhaseInitializeAux.h"
+
+template<>
+InputParameters validParams<PikaPhaseInitializeAux>()
+{
+  InputParameters params = validParams<AuxKernel>();
+  params.addRequiredCoupledVar("phase", "Phase-field variable to limit");
+  params.addParam<Real>("upper_limit", 1, "Upper limit of phase-field variable");
+  params.addParam<Real>("lower_limit", -1, "Lower limit of phase-field variable");
+  return params;
+}
+
+PikaPhaseInitializeAux::PikaPhaseInitializeAux(const std::string & name, InputParameters parameters) :
+    AuxKernel(name, parameters),
+    _phase(coupledValue("phase")),
+    _upper(getParam<Real>("upper_limit")),
+    _lower(getParam<Real>("lower_limit"))
+{
+}
+
+Real
+PikaPhaseInitializeAux::computeValue()
+{
+  if (_phase[_qp] > _upper)
+    return _upper;
+  else if (_phase[_qp] < _lower)
+    return _lower;
+  else
+    return _phase[_qp];
+
+
+}
