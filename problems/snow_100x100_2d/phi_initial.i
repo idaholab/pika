@@ -102,7 +102,7 @@
 []
 
 [Adaptivity]
-  max_h_level = 6
+  max_h_level = 4
   initial_steps = 10
   initial_marker = phi_marker
   marker = phi_marker
@@ -150,6 +150,6 @@
 [PikaMaterials]
   phi = phi
   temperature = 263.15
-  interface_thickness = 2e-6
+  interface_thickness = 2e-5
 []
 

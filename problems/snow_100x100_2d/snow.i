@@ -98,14 +98,14 @@
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 267.515 # -5
+    boundary = top
+    value = 270 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = top
-    value = 264.8 # -20
+    boundary = bottom
+    value = 269 # -20
   [../]
 []
 
@@ -148,10 +148,10 @@
 []
 
 [Adaptivity]
-  max_h_level = 7
-  initial_marker = combo_mark
+  max_h_level = 4
+  initial_marker = u_marker
   marker = combo_mark
-  initial_steps = 7
+  initial_steps = 8
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -164,18 +164,19 @@
     [../]
   [../]
   [./Markers]
+    active = 'combo_mark u_marker phi_grad_marker'
     [./phi_grad_marker]
       type = ErrorFractionMarker
-      coarsen = .01
+      coarsen = .05
       indicator = phi_grad_indicator
-      refine = .9
+      refine = .8
     [../]
     [./u_marker]
       type = ErrorFractionMarker
       indicator = u_jump_indicator
-      refine = .96
+      refine = .8
       block = 0
-      coarsen = 0.01
+      coarsen = 0.05
     [../]
     [./phi_above]
       type = ValueThresholdMarker
@@ -191,7 +192,7 @@
     [./combo_mark]
       type = ComboMarker
       block = 0
-      markers = 'u_marker phi_grad_marker phi_above'
+      markers = 'u_marker phi_grad_marker'
     [../]
   [../]
 []
@@ -232,8 +233,8 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-6
-  temporal_scaling = 1e-4
+  interface_thickness = 2e-5
+  temporal_scaling = 1e-3
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all
   condensation_coefficient = .001
