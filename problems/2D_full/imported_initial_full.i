@@ -179,10 +179,10 @@
 []
 
 [Adaptivity]
-  max_h_level = 6
+  max_h_level = 8
   initial_marker = u_marker
   marker = combo_mark
-  initial_steps = 6
+  initial_steps = 8
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -262,7 +262,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 5e-6
+  interface_thickness = 1e-5
   temporal_scaling = 1e-4
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all
