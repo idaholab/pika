@@ -47,8 +47,6 @@
 [AuxVariables]
   [./u]
   [../]
-  [./phi_aux]
-  [../]
 []
 
 [Functions]
@@ -92,14 +90,6 @@
     file = input.png
     threshold = 100
     dimensions = '0.002 0.002 0'
-  [../]
-[]
-
-[AuxKernels]
-  [./phi_initial_aux]
-    type = PikaPhaseInitializeAux
-    variable = phi_aux
-    phase = phi
   [../]
 []
 

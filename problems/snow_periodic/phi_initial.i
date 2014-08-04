@@ -52,46 +52,9 @@
 []
 
 [Functions]
-  active = 'image_bottom_left image_top_left'
-  [./image_bottom_left]
-    type = ImageFunction
-    origin = '0 0 0'
-    upper_value = -1
-    lower_value = 1
-    file = input.png
-    threshold = 100
-    dimensions = '0.002 0.002 0'
-  [../]
-  [./image_bottom_right]
-    type = ImageFunction
-    origin = '0.002 0 0'
-    upper_value = -1
-    lower_value = 1
-    flip_x = true
-    file = input.png
-    threshold = 100
-    dimensions = '0.002 0.002 0'
-  [../]
-  [./image_top_right]
-    type = ImageFunction
-    origin = '0.002 0.002 0'
-    upper_value = -1
-    lower_value = 1
-    flip_x = true
-    flip_y = true
-    file = input.png
-    threshold = 100
-    dimensions = '0.002 0.002 0'
-  [../]
-  [./image_top_left]
-    type = ImageFunction
-    origin = '0 0.002 0'
-    upper_value = -1
-    lower_value = 1
-    flip_y = true
-    file = input.png
-    threshold = 100
-    dimensions = '0.002 0.002 0'
+  [./phi_func]
+    type = SolutionFunction
+    solution = phi_image
   [../]
 []
 
@@ -137,24 +100,20 @@
 []
 
 [BCs]
-  active = 'Periodic'
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.515
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.8
-  [../]
   [./Periodic]
     [./phi_bc]
       variable = phi
       auto_direction = y
     [../]
+  [../]
+[]
+
+[UserObjects]
+  [./phi_image]
+    type = SolutionUserObject
+    mesh = phi_image_initial_0000_mesh.xdr
+    es = phi_image_initial_0000.xdr
+    system_variables = phi
   [../]
 []
 
@@ -223,30 +182,11 @@
 []
 
 [ICs]
-  active = 'phase_ic_top_left phase_ic_bottom_left'
-  [./phase_ic_bottom_right]
-    function = image_bottom_right
-    variable = phi
-    type = FunctionIC
-    block = 3
-  [../]
-  [./phase_ic_top_left]
-    function = image_top_left
+  [./phase_ic]
+    function = phi_func
     variable = phi
     type = FunctionIC
     block = 1
-  [../]
-  [./phase_ic_bottom_left]
-    function = image_bottom_left
-    variable = phi
-    type = FunctionIC
-    block = 0
-  [../]
-  [./phase_top_right]
-    function = image_top_right
-    variable = phi
-    type = FunctionIC
-    block = 2
   [../]
 []
 
