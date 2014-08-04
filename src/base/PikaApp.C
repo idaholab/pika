@@ -20,6 +20,9 @@
 // UserObjects
 #include "PropertyUserObject.h"
 
+// Postprocessors
+#include "PikaPhaseTimestepPostprocessor.h"
+
 // Materials
 #include "ConstantProperties.h"
 #include "PhaseFieldProperties.h"
@@ -97,6 +100,9 @@ PikaApp::registerObjects(Factory & factory)
 {
   // UserObjects
   registerUserObject(PropertyUserObject);
+
+  // Postprocessors
+  registerPostprocessor(PikaPhaseTimestepPostprocessor);
 
   // Materials
   registerMaterial(ConstantProperties);
