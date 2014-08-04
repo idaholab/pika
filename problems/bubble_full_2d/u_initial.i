@@ -221,7 +221,7 @@
   [./xdr]
     output_initial = true
     file_base = u_initial_out
-    interval = 10
+    interval = 1
     type = XDR
   [../]
 []
@@ -255,4 +255,3 @@
   outputs = all
   condensation_coefficient = .001
 []
-
