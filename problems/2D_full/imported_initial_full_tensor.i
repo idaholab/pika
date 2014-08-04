@@ -154,17 +154,17 @@
     type = TensorMobilityMaterial
     block = 0
     phi = phi
-    M_2 = 0.02
-    M_1 = 2.29
     coefficient_name = conductivity_tensor
+    M_2_property_name = conductivity_air
+    M_1_property_name = conductivity_ice
   [../]
   [./diffusion_tensor]
     type = TensorMobilityMaterial
     block = 0
     phi = phi
-    M_2 = 2.178e-5
-    M_1 = 0
     coefficient_name = diffusion_tensor
+    M_2_property_name = water_vapor_diffusion_coefficient
+    M_1_property_name = boltzmann
   [../]
 []
 
@@ -194,10 +194,10 @@
 []
 
 [Adaptivity]
-  max_h_level = 5
+  max_h_level = 6
   initial_marker = u_marker
   marker = combo_mark
-  initial_steps = 5
+  initial_steps = 6
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -228,6 +228,7 @@
       indicator = u_jump_indicator
       refine = .95
       block = 0
+      coarsen = .001
     [../]
     [./combo_mark]
       type = ComboMarker
@@ -277,7 +278,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-4
+  interface_thickness = 5e-6
   temporal_scaling = 1e-4
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all

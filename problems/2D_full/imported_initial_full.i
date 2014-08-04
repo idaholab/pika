@@ -172,7 +172,7 @@
   reset_dt = true
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = .5
+    dt = 1
     percent_change = .1
     reset_dt = true
   [../]
@@ -182,7 +182,7 @@
   max_h_level = 6
   initial_marker = u_marker
   marker = combo_mark
-  initial_steps = 10
+  initial_steps = 6
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -262,7 +262,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-5
+  interface_thickness = 5e-6
   temporal_scaling = 1e-4
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all
