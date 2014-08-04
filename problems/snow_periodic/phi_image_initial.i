@@ -110,7 +110,7 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 10
+  num_steps = 0
   dt = 200
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
@@ -122,7 +122,6 @@
   max_h_level = 4
   initial_steps = 8
   initial_marker = phi_marker
-  marker = combo
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
