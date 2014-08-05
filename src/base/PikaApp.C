@@ -26,6 +26,7 @@
 // Materials
 #include "PikaMaterial.h"
 #include "TensorMobilityMaterial.h"
+#include "IbexSnowMaterial.h"
 
 // Kernels
 #include "PikaTimeDerivative.h"
@@ -40,6 +41,7 @@
 #include "DoubleWellPotential.h"
 #include "DoubleWellPotentialMMS.h"
 #include "AntiTrapping.h"
+#include "IbexShortwaveForcingFunction.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -111,6 +113,7 @@ PikaApp::registerObjects(Factory & factory)
   // Materials
   registerMaterial(PikaMaterial);
   registerMaterial(TensorMobilityMaterial);
+  registerMaterial(IbexSnowMaterial);
 
   // Kernels
   registerKernel(PikaTimeDerivative);
@@ -125,6 +128,8 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(DoubleWellPotential);
   registerKernel(DoubleWellPotentialMMS);
   registerKernel(AntiTrapping);
+  registerKernel(IbexShortwaveForcingFunction);
+
   // InitialConditions
   registerInitialCondition(KaempferAnalyticPhaseIC);
   registerBoundaryCondition(ChemicalPotentialIC);
