@@ -22,7 +22,6 @@ InputParameters validParams<IbexSurfaceFluxBC>()
   InputParameters params = validParams<IntegratedBC>();
 
   // Define the general parameters
-  params.addRequiredCoupledVar("temperature", "The snow temperature variable");
   params.addParam<Real>("air_temperature", 268.15, "Air temperature above the snow surface [K]");
   params.addParam<Real>("relative_humidity", 50, "Relative humidity of air above snow [%]");
   params.addParam<Real>("atmospheric_pressure", 101.325, "Atmospheric pressure [kPa]");
@@ -49,7 +48,6 @@ IbexSurfaceFluxBC::IbexSurfaceFluxBC(const std::string & name, InputParameters p
     _boltzmann(5.670e-8),
     _gas_constant_air(0.622),
     _gas_constant_water_vapor(0.287),
-    _temperature(coupledValue("temperature")),
     _air_temperature(getParam<Real>("air_temperature")),
     _relative_humidity(getParam<Real>("relative_humidity")),
     _atmospheric_pressure(getParam<Real>("atmospheric_pressure")),
@@ -75,14 +73,14 @@ IbexSurfaceFluxBC::computeQpResidual()
 Real
 IbexSurfaceFluxBC::longwave()
 {
-  return _long_wave.value(_t, _q_point[_qp]) - _emissivity * _boltzmann * std::pow(_temperature[_qp], 4);
+  return _long_wave.value(_t, _q_point[_qp]) - _emissivity * _boltzmann * std::pow(_u[_qp], 4);
 }
 
 Real
 IbexSurfaceFluxBC::latent()
 {
   Real e_a = clausiusClapeyron(_air_temperature);
-  Real e_s = clausiusClapeyron(_temperature[_qp]);
+  Real e_s = clausiusClapeyron(_u[_qp]);
   Real e = e_a * _relative_humidity / 100 - e_s;
 
   return (_ratio_of_molecular_weights * airDensity() * _latent_heat * _water_vapor_transport * _air_velocity * e) / _atmospheric_pressure;
@@ -92,7 +90,7 @@ IbexSurfaceFluxBC::latent()
 Real
 IbexSurfaceFluxBC::sensible()
 {
-  return airDensity() * _specific_heat_air * _transport_coefficient * _air_velocity * (_air_temperature - _temperature[_qp]);
+  return airDensity() * _specific_heat_air * _transport_coefficient * _air_velocity * (_air_temperature - _u[_qp]);
 }
 
 Real

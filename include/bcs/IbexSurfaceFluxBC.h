@@ -63,8 +63,6 @@ private:
 
   const Real _gas_constant_water_vapor;
 
-  const VariableValue & _temperature;
-
   const Real _air_temperature;
 
   const Real _relative_humidity;

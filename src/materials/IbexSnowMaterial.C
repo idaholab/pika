@@ -19,6 +19,7 @@ InputParameters validParams<IbexSnowMaterial>()
 {
   InputParameters params = validParams<Material>();
   params.addRequiredCoupledVar("temperature", "The snow temperature variable to couple");
+  params.addParam<Real>("snow_density", 200, "Density of snow [kg/m^3]");
   return params;
 }
 
@@ -27,7 +28,7 @@ IbexSnowMaterial::IbexSnowMaterial(const std::string & name, InputParameters par
     _temperature(coupledValue("temperature")),
     _input_density(getParam<Real>("snow_density")),
     _density(declareProperty<Real>("density")),
-    _conductivity(declareProperty<Real>("conductivity")),
+    _conductivity(declareProperty<Real>("thermal_conductivity")),
     _specific_heat(declareProperty<Real>("specific_heat"))
 {
 }
