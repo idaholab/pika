@@ -49,10 +49,19 @@ private:
 
   Real longwave();
 
-  Real clausiusClapeyron();
+  Real latent();
 
+  Real sensible();
+
+  Real clausiusClapeyron(const Real & T);
+
+  Real airDensity();
 
   const Real _boltzmann;
+
+  const Real _gas_constant_air;
+
+  const Real _gas_constant_water_vapor;
 
   const VariableValue & _temperature;
 
@@ -61,6 +70,8 @@ private:
   const Real _relative_humidity;
 
   const Real _atmospheric_pressure;
+
+  const Real _air_velocity;
 
   Function & _long_wave;
 
@@ -71,11 +82,14 @@ private:
   Real _latent_heat;
 
   Real _water_vapor_transport;
+
   Real _transport_coefficient;
-  Real _gas_constant;
+
   Real _reference_temperature;
+
   Real _reference_vapor_pressure;
 
+  Real _specific_heat_air;
 };
 
 #endif //IBEXSURFACEFLUXBC_H
