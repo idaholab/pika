@@ -56,6 +56,9 @@
 #include "PikaCriteria.h"
 #include "ChemicalPotentialIC.h"
 
+// BoundaryConditions
+#include "IbexSurfaceFluxBC.h"
+
 // Actions
 #include "PikaMaterialAction.h"
 #include "PikaCriteriaAction.h"
@@ -137,9 +140,9 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(PikaCriteria);
   registerAux(PikaPhaseInitializeAux);
 
-  //BCS
+  // BoundaryConditions
+  registerBoundaryCondition(IbexSurfaceFluxBC);
   registerBoundaryCondition(ChemicalPotentialBC);
-
 }
 
 void
