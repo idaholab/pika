@@ -22,12 +22,12 @@ InputParameters validParams<IbexSurfaceFluxBC>()
   InputParameters params = validParams<IntegratedBC>();
 
   // Define the general parameters
-  params.addCoupledVar("temperature", "The snow temperature variable");
+  params.addRequiredCoupledVar("temperature", "The snow temperature variable");
   params.addParam<Real>("air_temperature", 268.15, "Air temperature above the snow surface [K]");
   params.addParam<Real>("relative_humidity", 50, "Relative humidity of air above snow [%]");
   params.addParam<Real>("atmospheric_pressure", 101.325, "Atmospheric pressure [kPa]");
   params.addParam<Real>("air_velocity", 1, "Air velocity over the snow surface [m/s]");
-  params.addParam<FunctionName>("long_wave", "Name of the function computing the incoming long-wave radiation function [W/m^2]");
+  params.addRequiredParam<FunctionName>("long_wave", "Name of the function computing the incoming long-wave radiation function [W/m^2]");
 
   // Advanced
   params.addParam<Real>("emissivity", 0.988, "Emissivity of snow");
