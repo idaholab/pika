@@ -1,13 +1,3 @@
-/****************************************************************/
-/*       PIKA - Phase field snow micro-structure model          */
-/*                                                              */
-/*          Prepared by Battelle Energy Alliance, LLC           */
-/*            Under Contract No. DE-AC07-05ID14517              */
-/*            With the U. S. Department of Energy               */
-/*                                                              */
-/*            See COPYRIGHT for full restrictions               */
-/****************************************************************/
-
 #!/usr/bin/python
 '''
 ***************************************
@@ -62,12 +52,13 @@ rho_vs = rho_a * x_s
 u_eq = (rho_vs - rho_vs.subs(T, 263.15)) / rho_i
 
 
-print "T = 263.15"
-print "P_vs = ", P_vs.evalf(subs={T: 263.15})
-print "x_s = ", x_s.evalf(subs={T: 263.15})
+print "P_vs(263.15) = ", P_vs.evalf(subs={T: 263.15})
+print "P_vs(268.15) = ", P_vs.evalf(subs={T: 268.15})
+print "x_s(263.15) = ", x_s.evalf(subs={T: 263.15})
+print "x_s(268.15) = ", x_s.evalf(subs={T: 268.15})
 print "rho_vs(263.15) = ", rho_vs.evalf(subs={T: 263.15})
-print "rho_vs(268.15) = ", rho_vs.evalf(subs={T: 263.15})
+print "rho_vs(268.15) = ", rho_vs.evalf(subs={T: 268.15})
 
 print ""
-print "u_eq(263.15) = ", u_eq.evalf(subs={T: 264.8})
-print "u_eq(268.15) = ", u_eq.evalf(subs={T: 267.515})
+print "u_eq(263.15) = ", u_eq.evalf(subs={T: 263.15})
+print "u_eq(268.15) = ", u_eq.evalf(subs={T: 268.15})

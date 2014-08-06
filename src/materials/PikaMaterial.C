@@ -29,7 +29,6 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _interface_thickness(_property_uo.getParam<Real>("interface_thickness")),
     _a_1((5./8.)*std::sqrt(2)),
     _density_ice(_property_uo.getParam<Real>("density_ice")),
-    _rho_vs_T_0(_property_uo.equilibriumWaterVaporConcentrationAtSaturation(_property_uo.getParam<Real>("reference_temperature"))),
     _l_sg(_property_uo.getParam<Real>("latent_heat")),
     _ki(_property_uo.getParam<Real>("conductivity_ice")),
     _ka(_property_uo.getParam<Real>("conductivity_air")),
@@ -50,10 +49,19 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
 }
 
 void
+PikaMaterial::initialSetup()
+{
+  const Real & T_0 = _property_uo.getParam<Real>("reference_temperature");
+  _rho_vs_T_0 = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(T_0);
+}
+
+
+void
 PikaMaterial::computeQpProperties()
 {
   // Compute \\rho_vs; Eq. (3)
   _rho_vs[_qp] = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
+  std::cout << "_rho_vs[_qp] = " << _rho_vs[_qp] << std::endl;
 
   // lambda; Eq. (37)
   const Real _d_0_prime = (_rho_vs[_qp] / _density_ice) * _property_uo.capillaryLength(_temperature[_qp]);
@@ -65,6 +73,9 @@ PikaMaterial::computeQpProperties()
 
   // u_eq; Eq. (33)
   _equilibrium_chemical_potential[_qp] = (_rho_vs[_qp] - _rho_vs_T_0) / _density_ice;
+  std::cout << "_rho_vs_T_0 = " << _rho_vs_T_0 << std::endl;
+
+  std::cout << "_equilibrium_chemical_potential[_qp] = " << _equilibrium_chemical_potential[_qp] << std::endl;
 
   // Thermal conductivity
   _conductivity[_qp] = (_spatial_scale) * (_ki * (1. + _phase[_qp]) / 2. + _ka * (1. - _phase[_qp]) / 2.);

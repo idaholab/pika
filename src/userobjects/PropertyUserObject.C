@@ -33,16 +33,11 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _gamma(getParam<Real>("interface_free_energy")),
     _a(getParam<Real>("mean_molecular_spacing")),
     _P_a(getParam<Real>("atmospheric_pressure")),
-
-
     _alpha(getParam<Real>("condensation_coefficient")),
     _rho_a(getParam<Real>("density_air")),
     _rho_i(getParam<Real>("density_ice")),
-  _T_0(getParam<Real>("reference_temperature")),
-
-//    _W(getParam<Real>("interface_thickness")),
-//    _L_sg(getParam<Real>("latent_heat")),
-  _xi(getParam<Real>("temporal_scaling"))
+    _T_0(getParam<Real>("reference_temperature")),
+    _xi(getParam<Real>("temporal_scaling"))
 {
     // Define K coefficients (Wexler, 1977, Table 2)
   _K.push_back(-0.58653696e4);
@@ -120,6 +115,8 @@ PropertyUserObject::specificHumidityRatio(const Real & T) const
 {
   Real P_vs = saturationPressureOfWaterVaporOverIce(T); // Eq. (2)
   Real f =  (_R_da/_R_v) * P_vs / (_P_a - P_vs); // x_s, Eq. (1)
+  std::cout << "x_s = " << f << std::endl;
+
   return f;
 }
 
@@ -133,13 +130,19 @@ PropertyUserObject::saturationPressureOfWaterVaporOverIce(const Real & T) const
                      + _K[3]*std::pow(T,2.)
                      + _K[4]*std::pow(T,3.)
                      + _K[5]*log(T));
+  std::cout << "P_vs = " << f << std::endl;
+
   return f;
+
 }
 
 Real
 PropertyUserObject::equilibriumWaterVaporConcentrationAtSaturation(const Real & T) const
 {
+  //std::cout << "_rho_a = " << _rho_a << std::endl;
+
   return  _rho_a * specificHumidityRatio(T);
+
 }
 
 const Real &

@@ -12,7 +12,7 @@
 [PikaMaterials]
     conductivity_air = 0.1
     temperature = T
-    phi = -1
+    phase = -1
     output_properties = 'equilibrium_chemical_potential'
     outputs = all
   [../]

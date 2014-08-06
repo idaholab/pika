@@ -38,6 +38,11 @@ protected:
    */
   virtual void computeQpProperties();
 
+  /**
+   * Computes rho_vs(T_0) to avoid computing this more the needed
+   */
+  virtual void initialSetup();
+
 private:
 
   /// Coupled temperature variable
@@ -54,9 +59,6 @@ private:
 
   /// Density of ice
   const Real & _density_ice;
-
-  /// \\rho_{vs} at reference temperature
-  const Real & _rho_vs_T_0;
 
   /// Latent heat of sublimation
   const Real &  _l_sg;
@@ -78,6 +80,9 @@ private:
 
   /// Spatial scaling
   const Real & _spatial_scale;
+
+  /// Equilibrium water vapor concentration at reference temperature
+  Real _rho_vs_T_0;
 
   /// Equilibrium water vapor concentration at saturation
   MaterialProperty<Real> & _rho_vs;
