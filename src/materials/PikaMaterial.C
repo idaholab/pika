@@ -53,8 +53,9 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _capillary_length(NULL),
     _interface_kinetic_coefficient(NULL),
     _specific_humidity_ratio(NULL),
-    _saturation_pressure_of_water_vapor_over_ice(NULL)
-
+    _saturation_pressure_of_water_vapor_over_ice(NULL),
+    _capillary_length_prime(NULL),
+    _interface_kinetic_coefficient_prime(NULL)
 {
   // If debugging is enable, declare the extra properties
   if (_debug)
@@ -64,6 +65,8 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _interface_kinetic_coefficient = &declareProperty<Real>("interface_kinetic_coefficient");
     _specific_humidity_ratio = &declareProperty<Real>("specific_humidity_ratio");
     _saturation_pressure_of_water_vapor_over_ice = &declareProperty<Real>("saturation_pressure_of_water_vapor_over_ice");
+    _capillary_length_prime = &declareProperty<Real>("capillary_length_prime");
+    _interface_kinetic_coefficient_prime = &declareProperty<Real>("interface_kinetic_coefficient_prime");
   }
 }
 
@@ -120,5 +123,8 @@ PikaMaterial::computeQpProperties()
     (*_interface_kinetic_coefficient)[_qp] = interface_kinetic_coefficient;
     (*_specific_humidity_ratio)[_qp] = _property_uo.specificHumidityRatio(_temperature[_qp]);
     (*_saturation_pressure_of_water_vapor_over_ice)[_qp] = _property_uo.saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
+    (*_capillary_length_prime)[_qp] = _d_0_prime;
+    (*_interface_kinetic_coefficient_prime)[_qp] = _beta_0_prime;
+
   }
 }

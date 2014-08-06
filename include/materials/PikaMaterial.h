@@ -129,6 +129,11 @@ private:
   MaterialProperty<Real> * _specific_humidity_ratio;
 
   MaterialProperty<Real> * _saturation_pressure_of_water_vapor_over_ice;
+
+  MaterialProperty<Real> * _capillary_length_prime;
+
+  MaterialProperty<Real> * _interface_kinetic_coefficient_prime;
+
 };
 
 #endif // PIKAMATERIAL_H
