@@ -57,8 +57,13 @@ rho_vs = rho_a * x_s
 d_0 = gamma * a**3 / (k * T)
 d_0_prime = (rho_vs/rho_i) * d_0
 
+# Make fixed version for testing user prescribed d0
+d_0_fixed = 1.3e-9
+d_0_prime_fixed = (rho_vs/rho_i) * d_0_fixed
+
 # Lambda Eq. (37)
 lbda = a_1 * W / d_0_prime
+lbda_fixed = a_1 * W / d_0_prime_fixed
 
 # Concentration equilibrium
 u_eq = (rho_vs - rho_vs.subs(T, 263.15)) / rho_i
@@ -84,4 +89,13 @@ print "d0'(268.15) = ", d_0_prime.evalf(subs={T: 268.15})
 print ""
 print "lambda(263.15) = ", lbda.evalf(subs={T: 263.15})
 print "lambda(268.15) = ", lbda.evalf(subs={T: 268.15})
+print ""
+print "d0_fixed(263.15) = ", d_0_fixed
+print "d0_fixed(268.15) = ", d_0_fixed
+print ""
+print "d0_fixed'(263.15) = ", d_0_prime_fixed.evalf(subs={T: 263.15})
+print "d0_fixed'(268.15) = ", d_0_prime_fixed.evalf(subs={T: 268.15})
+print ""
+print "lambda_fixed(263.15) = ", lbda_fixed.evalf(subs={T: 263.15})
+print "lambda_fixed(268.15) = ", lbda_fixed.evalf(subs={T: 268.15})
 print ""

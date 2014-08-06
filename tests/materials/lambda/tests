@@ -5,4 +5,10 @@
     input = 'lambda.i'
     csvdiff = 'lambda_data.csv'
   [../]
+  [./lambda_d0_fixed]
+    # Gold for this test comes python/KaempferPlapp2009.py
+    type = 'CSVDiff'
+    input = 'lambda_fixed.i'
+    csvdiff = 'lambda_fixed_data.csv'
+  [../]
 []

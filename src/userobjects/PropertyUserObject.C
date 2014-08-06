@@ -25,11 +25,9 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _R_da(286.9),
     _R_v(461.5),
     _has_kinetic_coefficient(isParamValid("interface_kinetic_coefficient")),
-    _input_kinetic_coefficieint(_has_kinetic_coefficient ?
-                                getParam<Real>("interface_kinetic_coefficient") : 3232.0),
+    _input_kinetic_coefficieint(_has_kinetic_coefficient ? getParam<Real>("interface_kinetic_coefficient") : 0.0),
     _has_capillary_length(isParamValid("capillary_length")),
-    _input_capillary_length(!_has_capillary_length ?
-                            getParam<Real>("capillary_length") : 0.0),
+    _input_capillary_length(_has_capillary_length ? getParam<Real>("capillary_length") : 0.0),
     _gamma(getParam<Real>("interface_free_energy")),
     _a(getParam<Real>("mean_molecular_spacing")),
     _P_a(getParam<Real>("atmospheric_pressure")),
@@ -101,7 +99,7 @@ PropertyUserObject::capillaryLength(const Real & T) const
 
   Real d0;
   if (_has_capillary_length)
-    d0 = _input_kinetic_coefficieint;
+    d0 = _input_capillary_length;
   else
     d0 = _gamma * std::pow(_a, 3) / (_boltzmann * T);
   return d0;
