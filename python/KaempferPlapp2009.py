@@ -42,7 +42,9 @@ gamma = 1.09e-1
 a = 3.19e-10
 k = 1.38e-23
 a_1 = (5./8.)*sqrt(2.)
-W = 1e-6
+W = 1.e-6
+alpha = 10.e-2
+m = 2.99e-26
 
 # Eq. (2)
 P_vs = exp(K_fit[0]*T**(-1) + K_fit[1]*T**0 + K_fit[2]*T**1 + K_fit[3]*T**2 + K_fit[4]*T**3 + K_fit[5]*log(T))
@@ -64,6 +66,18 @@ d_0_prime_fixed = (rho_vs/rho_i) * d_0_fixed
 # Lambda Eq. (37)
 lbda = a_1 * W / d_0_prime
 lbda_fixed = a_1 * W / d_0_prime_fixed
+
+# beta0, beta0' Eq. (26)
+beta_0 = 1/alpha * sqrt(2*pi*m /(k * T))
+beta_0_prime = (rho_vs/rho_i) * beta_0
+
+# Make fixed version for testing user prescribed d0
+beta_0_fixed = 5.5e5
+beta_0_prime_fixed = (rho_vs/rho_i) * beta_0_fixed
+
+# Tau Eq. (38)
+tau = beta_0_prime * W * lbda / a_1
+tau_fixed = beta_0_prime_fixed * W * lbda / a_1
 
 # Concentration equilibrium
 u_eq = (rho_vs - rho_vs.subs(T, 263.15)) / rho_i
@@ -98,4 +112,22 @@ print "d0_fixed'(268.15) = ", d_0_prime_fixed.evalf(subs={T: 268.15})
 print ""
 print "lambda_fixed(263.15) = ", lbda_fixed.evalf(subs={T: 263.15})
 print "lambda_fixed(268.15) = ", lbda_fixed.evalf(subs={T: 268.15})
+print ""
+print "beta0(263.15) = ", beta_0.evalf(subs={T: 263.15})
+print "beta0(268.15) = ", beta_0.evalf(subs={T: 268.15})
+print ""
+print "beta0'(263.15) = ", beta_0_prime.evalf(subs={T: 263.15})
+print "beta0'(268.15) = ", beta_0_prime.evalf(subs={T: 268.15})
+print ""
+print "tau(263.15) = ", tau.evalf(subs={T: 263.15})
+print "tau(268.15) = ", tau.evalf(subs={T: 268.15})
+print ""
+print "beta0_fixed(263.15) = ", beta_0_fixed
+print "beta0_fixed(268.15) = ", beta_0_fixed
+print ""
+print "beta0_fixed'(263.15) = ", beta_0_prime_fixed.evalf(subs={T: 263.15})
+print "beta0_fixed'(268.15) = ", beta_0_prime_fixed.evalf(subs={T: 268.15})
+print ""
+print "tau_fixed(263.15) = ", tau_fixed.evalf(subs={T: 263.15})
+print "tau_fixed(268.15) = ", tau_fixed.evalf(subs={T: 268.15})
 print ""

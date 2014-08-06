@@ -94,6 +94,10 @@ PikaMaterial::computeQpProperties()
   const Real _beta_0_prime = (rho_vs / _density_ice) * interface_kinetic_coefficient;
   _tau[_qp] = _beta_0_prime * _interface_thickness * _lambda[_qp] / _a_1;
 
+  std::cout << "W = " << _interface_thickness << std::endl;
+  std::cout << "lambda = " << _lambda[_qp] << std::endl;
+  std::cout << "a_1 = " << _a_1 << std::endl;
+
   // u_eq; Eq. (33)
   _equilibrium_chemical_potential[_qp] = (rho_vs- _rho_vs_T_0) / _density_ice;
 

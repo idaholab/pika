@@ -1,0 +1,14 @@
+[Tests]
+  [./tai]
+    # Gold for this test comes python/KaempferPlapp2009.py
+    type = 'CSVDiff'
+    input = 'tau.i'
+    csvdiff = 'tau_data.csv'
+  [../]
+  [./tau_beta0_fixed]
+    # Gold for this test comes python/KaempferPlapp2009.py
+    type = 'CSVDiff'
+    input = 'tau_fixed.i'
+    csvdiff = 'tau_fixed_data.csv'
+  [../]
+[]
