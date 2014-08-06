@@ -40,7 +40,7 @@
 [PikaMaterials]
   conductivity_air = 0.1
   temperature = u
-  phi = -1
+  phase = -1
 []
 
 [Executioner]
@@ -63,4 +63,3 @@
     linear_residuals = true
   [../]
 []
-

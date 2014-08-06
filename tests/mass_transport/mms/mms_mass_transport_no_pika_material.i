@@ -93,7 +93,7 @@
     block = 0
     phase = phi
     temperature = 263.15
-    property_user_object = property_user_object
+    property_user_object = _pika_property_user_object
   [../]
 []
 
@@ -106,7 +106,7 @@
 []
 
 [UserObjects]
-  [./property_user_object]
+  [./_pika_property_user_object]
     type = PropertyUserObject
   [../]
 []
