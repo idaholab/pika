@@ -47,15 +47,15 @@ PhaseEvolutionSourceMMS::computeQpResidual()
   Real tau = _tau[_qp];
   Real w = _w[_qp];
   Real lambda = _lambda[_qp];
-  Real u_eq =_property_uo.equilibriumConcentration( _T[_qp]);
+  Real u_eq = _property_uo.equilibriumChemicalPotential(_T[_qp]);
 
-  Real terms123 = 
+  Real terms123 =
     -4*t*pow(w, 2.0) - t*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125) + tau*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125) + pow(t*(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125), 3.0);
 
   Real term4 = -lambda*(_u[_qp] - u_eq)*pow(-pow(t, 2)*pow(pow(x - 0.5, 2) + pow(y - 0.5, 2) - 0.125, 2) + 1.0, 2.0);
 
   if (_use_scale)
-    term4 = _xi*term4;  
+    term4 = _xi*term4;
 
   Real f = terms123;
 

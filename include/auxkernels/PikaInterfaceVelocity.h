@@ -13,6 +13,7 @@
 
 // MOOSE includes
 #include "AuxKernel.h"
+#include "PropertyUserObjectInterface.h"
 
 // Forward declarations
 class PikaInterfaceVelocity;
@@ -24,7 +25,8 @@ InputParameters validParams<PikaInterfaceVelocity>();
  *
  */
 class PikaInterfaceVelocity :
-  public AuxKernel
+  public AuxKernel,
+  public PropertyUserObjectInterface
 {
 public:
 
@@ -47,7 +49,7 @@ protected:
   virtual Real computeValue();
 
 private:
-  MaterialProperty<Real> & _D_v;
+  const Real & _D_v;
   VariableGradient & _grad_phase;
   VariableGradient & _grad_s;
 

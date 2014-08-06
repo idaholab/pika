@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = T_initial_0000_mesh.xdr
+  file = u_initial_out_0003_mesh.xdr
   dim = 2
 []
 
@@ -25,6 +25,10 @@
   [./phi_func]
     type = SolutionFunction
     solution = phi_initial
+  [../]
+  [./u_func]
+    type = SolutionFunction
+    solution = u_initial
   [../]
 []
 
@@ -129,6 +133,13 @@
     es = T_initial_0000.xdr
     system_variables = T
   [../]
+  [./u_initial]
+    type = SolutionUserObject
+    system_variables = u
+    mesh = u_initial_out_0003_mesh.xdr
+    execute_on = initial
+    es = u_initial_out_0003.xdr
+  [../]
 []
 
 [Executioner]
@@ -143,15 +154,13 @@
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
     percent_change = 0.01
-    dt = 0.01
+    dt = 0.5
   [../]
 []
 
 [Adaptivity]
   max_h_level = 10
-  initial_marker = combo_mark
   marker = combo_mark
-  initial_steps = 10
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -222,10 +231,9 @@
   [../]
   [./vapor_ic]
     variable = u
-    type = ChemicalPotentialIC
+    type = FunctionIC
     block = 0
-    phase_variable = phi
-    temperature = T
+    function = u_func
   [../]
 []
 

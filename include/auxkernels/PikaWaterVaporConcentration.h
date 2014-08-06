@@ -46,13 +46,20 @@ public:
 protected:
 
   /**
-   *
+   *  Computes the value of the water vapor concentration
    */
   virtual Real computeValue();
 
 private:
-  MaterialProperty<Real> & _rho_i;
-  VariableValue & _s;
+
+  /// Coupled chemical potential variable
+   const VariableValue & _s;
+
+  /// Reference to ice density stored in PropertyUserObject
+  const Real _rho_i;
+
+  /// Reference to the reference temperature stored in PropertyUserObject
+  const Real & _T_0;
 
 };
 

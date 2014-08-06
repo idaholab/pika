@@ -1,14 +1,14 @@
 [Tests]
-  [./lambda]
+  [./tai]
     # Gold for this test comes python/KaempferPlapp2009.py
     type = 'CSVDiff'
-    input = 'lambda.i'
-    csvdiff = 'lambda_data.csv'
+    input = 'tau.i'
+    csvdiff = 'tau_data.csv'
   [../]
-  [./lambda_d0_fixed]
+  [./tau_beta0_fixed]
     # Gold for this test comes python/KaempferPlapp2009.py
     type = 'CSVDiff'
-    input = 'lambda_fixed.i'
-    csvdiff = 'lambda_fixed_data.csv'
+    input = 'tau_fixed.i'
+    csvdiff = 'tau_fixed_data.csv'
   [../]
 []

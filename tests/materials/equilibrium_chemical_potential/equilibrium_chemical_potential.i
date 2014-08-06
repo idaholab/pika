@@ -5,18 +5,17 @@
 
 [Variables]
   [./T]
-    initial_condition = 263.15
+    initial_condition = 268.15
   [../]
 []
 
 [PikaMaterials]
-  conductivity_air = 0.1
-  atmospheric_pressure = 1.01325e5
-  phase = -1
-  temperature = T
-  output_properties = 'specific_humidity_ratio saturation_pressure_of_water_vapor_over_ice'
-  outputs = all
-  debug = true
+    conductivity_air = 0.1
+    temperature = T
+    phase = -1
+    output_properties = 'equilibrium_chemical_potential'
+    outputs = all
+  [../]
 []
 
 [Postprocessors]
@@ -25,14 +24,9 @@
     variable = T
     point = '0.5 0.5 0'
   [../]
-  [./x_s]
+  [./u_eq]
     type = PointValue
-    variable = specific_humidity_ratio
-    point = '0.5 0.5 0'
-  [../]
-  [./P_vs]
-    type = PointValue
-    variable = saturation_pressure_of_water_vapor_over_ice
+    variable = 'equilibrium_chemical_potential'
     point = '0.5 0.5 0'
   [../]
 []

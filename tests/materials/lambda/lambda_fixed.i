@@ -11,10 +11,11 @@
 
 [PikaMaterials]
   conductivity_air = 0.1
-  atmospheric_pressure = 1.01325e5
+  interface_thickness = 1e-6
+  capillary_length = 1.3e-9
   phase = -1
   temperature = T
-  output_properties = 'specific_humidity_ratio saturation_pressure_of_water_vapor_over_ice'
+  output_properties = 'capillary_length capillary_length_prime phase_field_coupling_constant'
   outputs = all
   debug = true
 []
@@ -24,15 +25,21 @@
     type = PointValue
     variable = T
     point = '0.5 0.5 0'
+
   [../]
-  [./x_s]
+  [./lambda]
     type = PointValue
-    variable = specific_humidity_ratio
+    variable = phase_field_coupling_constant
     point = '0.5 0.5 0'
   [../]
-  [./P_vs]
+  [./d_0]
     type = PointValue
-    variable = saturation_pressure_of_water_vapor_over_ice
+    variable = capillary_length
+    point = '0.5 0.5 0'
+  [../]
+  [./d_0_prime]
+    type = PointValue
+    variable = capillary_length_prime
     point = '0.5 0.5 0'
   [../]
 []

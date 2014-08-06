@@ -40,7 +40,7 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    property = tau
+    property = relaxation_time
     scale = 1.0
   [../]
   [./phi_double_well]
@@ -57,7 +57,7 @@
 []
 
 [AuxKernels]
-  [./phase_initialize]
+  [./phi_aux_kernel]
     type = PikaPhaseInitializeAux
     variable = phi_aux
     phase = phi
@@ -65,19 +65,6 @@
 []
 
 [BCs]
-  active = ''
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.515
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.8
-  [../]
 []
 
 [Executioner]
@@ -90,14 +77,15 @@
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 1
+    growth_factor = 3
   [../]
 []
 
 [Adaptivity]
   max_h_level = 10
   initial_steps = 10
-  initial_marker = phi_grad_marker
-  marker = phi_grad_marker
+  initial_marker = phi_marker
+  marker = phi_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -105,11 +93,11 @@
     [../]
   [../]
   [./Markers]
-    [./phi_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.01
+    [./phi_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-6
       indicator = phi_grad_indicator
-      refine = .98
+      refine = 1e-5
     [../]
   [../]
 []
@@ -125,8 +113,7 @@
   [../]
   [./xdr]
     file_base = phi_initial
-    output_intermediate = false
-    interval = 10
+    interval = 5
     output_final = true
     type = XDR
   [../]
@@ -141,11 +128,16 @@
     variable = phi
     invalue = -1
     type = SmoothCircleIC
+    int_width = 5e-6
   [../]
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = 263.15
   interface_thickness = 1e-6
+  interface_kinetic_coefficient = 5.5e5
+  capillary_length = 1.3e-9
+  outputs = all
+  phase = phi
 []
+

@@ -40,13 +40,7 @@
 [PikaMaterials]
    temperature = u
    conductivity_ice = 0.1
-   phi = 1
-[]
-
-[UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
-  [../]
+   phase = 1
 []
 
 [Executioner]

@@ -1,0 +1,8 @@
+[Tests]
+  [./equilibrium_chemical_potential]
+    # Gold for this test comes python/KaempferPlapp2009.py
+    type = 'CSVDiff'
+    input = 'equilibrium_chemical_potential.i'
+    csvdiff = 'equilibrium_chemical_potential_data.csv'
+  [../]
+[]

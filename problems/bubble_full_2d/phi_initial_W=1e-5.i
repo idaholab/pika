@@ -119,7 +119,6 @@
 
 [Outputs]
   exodus = true
-  file_base = phi_temp_diffusion
   [./console]
     type = Console
     perf_log = true
@@ -155,7 +154,7 @@
 []
 
 [PikaMaterials]
-  phi = phi
+  phase = phi
   temperature = 263.15
   interface_thickness = 1e-5
 []

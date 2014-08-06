@@ -24,6 +24,7 @@
   [../]
   [./phi_func]
     type = SolutionFunction
+    from_variable = phi
     solution = phi_initial
   [../]
 []
@@ -71,7 +72,7 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    property = tau
+    property = relaxation_time
     scale = 1.0
   [../]
   [./phi_transition]
@@ -80,6 +81,8 @@
     mob_name = mobility
     chemical_potential = u
     coefficient = 1.0
+    use_temporal_scaling = true
+    lambda = phase_field_coupling_constant
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
@@ -95,6 +98,7 @@
 []
 
 [BCs]
+  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -107,6 +111,29 @@
     boundary = top
     value = 264.8 # -20
   [../]
+  [./insulated_sides]
+    type = NeumannBC
+    variable = T
+    boundary = 'left right'
+  [../]
+  [./phi_bc]
+    type = DirichletBC
+    variable = phi
+    boundary = '0 1 2 3 '
+    value = 1.0
+  [../]
+  [./u_bottom]
+    type = DirichletBC
+    variable = u
+    boundary = bottom
+    value = -4.7e-6
+  [../]
+  [./u_top]
+    type = DirichletBC
+    variable = u
+    boundary = top
+    value = 4.7e-6
+  [../]
 []
 
 [Postprocessors]
@@ -115,19 +142,18 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    system = aux0
-    mesh = phi_initial_0001_mesh.xdr
-    nodal_variables = phi_aux
+    system = nl0
+    mesh = phi_initial_0000_mesh.xdr
+    nodal_variables = phi
     execute_on = initial
-    es = phi_initial_0001.xdr
-    system_variables = phi_aux
+    es = phi_initial_0000.xdr
   [../]
   [./T_initial]
     type = SolutionUserObject
+    system = nl0
     mesh = T_initial_0000_mesh.xdr
     nodal_variables = T
     es = T_initial_0000.xdr
-    system_variables = T
   [../]
 []
 
@@ -135,23 +161,23 @@
   # Preconditioned JFNK (default)
   type = Transient
   solve_type = PJFNK
+  petsc_options = -
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   end_time = 20000
   reset_dt = true
-  nl_rel_tol = 1e-07
+  dtmax = 20
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    percent_change = 0.01
-    dt = 0.01
+    dt = 1
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 10
-  initial_marker = combo_mark
-  marker = combo_mark
-  initial_steps = 10
+  max_h_level = 5
+  initial_marker = phi_marker
+  marker = phi_marker
+  initial_steps = 5
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -164,34 +190,11 @@
     [../]
   [../]
   [./Markers]
-    [./phi_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = .01
+    [./phi_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-6
       indicator = phi_grad_indicator
-      refine = .9
-    [../]
-    [./u_marker]
-      type = ErrorFractionMarker
-      indicator = u_jump_indicator
-      refine = .96
-      block = 0
-      coarsen = 0.01
-    [../]
-    [./phi_above]
-      type = ValueThresholdMarker
-      variable = phi
-      refine = 1.0000001
-    [../]
-    [./phi_below]
-      type = ValueThresholdMarker
-      variable = phi
-      invert = true
-      refine = -1.0000001
-    [../]
-    [./combo_mark]
-      type = ComboMarker
-      block = 0
-      markers = 'u_marker phi_grad_marker phi_above'
+      refine = 1e-5
     [../]
   [../]
 []
@@ -230,13 +233,14 @@
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = T
-  interface_thickness = 1e-6
-  temporal_scaling = 1e-3
-  output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
+  interface_thickness = 5e-6
+  temporal_scaling = 1e-4
   outputs = all
   condensation_coefficient = .001
+  interface_kinetic_coefficient = 5.5e5
+  capillary_length = 1.3e-9
+  phase = phi
 []
 
 [PikaCriteriaOutput]
@@ -247,6 +251,6 @@
   velocity_criteria = false
   time_criteria = false
   vapor_criteria = false
-  use_temporal_scaling = true
   ice_criteria = false
 []
+

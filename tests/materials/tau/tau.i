@@ -5,17 +5,18 @@
 
 [Variables]
   [./T]
-    initial_condition = 268.15
+    initial_condition = 263.15
   [../]
 []
 
 [PikaMaterials]
-    conductivity_air = 0.1
-    temperature = T
-    phi = -1
-    output_properties = 'equilibrium_concentration density_air density_ice'
-    outputs = all
-  [../]
+  conductivity_air = 0.1
+  phase = -1
+  interface_thickness = 1e-6
+  temperature = T
+  output_properties = 'relaxation_time interface_kinetic_coefficient interface_kinetic_coefficient_prime'
+  outputs = all
+  debug = true
 []
 
 [Postprocessors]
@@ -24,9 +25,19 @@
     variable = T
     point = '0.5 0.5 0'
   [../]
-  [./u_eq]
+  [./beta_0]
     type = PointValue
-    variable = 'equilibrium_concentration'
+    variable = interface_kinetic_coefficient
+    point = '0.5 0.5 0'
+  [../]
+  [./beta_0_prime]
+    type = PointValue
+    variable = interface_kinetic_coefficient_prime
+    point = '0.5 0.5 0'
+  [../]
+  [./tau]
+    type = PointValue
+    variable = relaxation_time
     point = '0.5 0.5 0'
   [../]
 []

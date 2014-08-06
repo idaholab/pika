@@ -83,21 +83,24 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 10
+  num_steps = 15
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
+  dtmax = 1000
+  dtmin = 0.01
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 1
+    growth_factor = 3
   [../]
 []
 
 [Adaptivity]
   max_h_level = 10
   initial_steps = 10
-  initial_marker = phi_grad_marker
-  marker = phi_grad_marker
+  initial_marker = tolerence_marker
+  marker = tolerence_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -110,6 +113,12 @@
       coarsen = 0.01
       indicator = phi_grad_indicator
       refine = .98
+    [../]
+    [./tolerence_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-9
+      indicator = phi_grad_indicator
+      refine = 1e-7
     [../]
   [../]
 []
@@ -126,7 +135,7 @@
   [./xdr]
     file_base = phi_initial
     output_intermediate = false
-    interval = 10
+    interval = 5
     output_final = true
     type = XDR
   [../]
@@ -145,7 +154,8 @@
 []
 
 [PikaMaterials]
-  phi = phi
+  phi = phi_aux
   temperature = 263.15
   interface_thickness = 1e-6
 []
+

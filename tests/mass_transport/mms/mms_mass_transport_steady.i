@@ -81,7 +81,7 @@
 []
 
 [PikaMaterials]
-  phi = -1
+  phase = -1
   temperature = 273.15
 []
 

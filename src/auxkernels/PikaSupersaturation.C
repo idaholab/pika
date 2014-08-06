@@ -22,8 +22,8 @@ InputParameters validParams<PikaSupersaturation>()
 PikaSupersaturation::PikaSupersaturation(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
     PropertyUserObjectInterface(name, parameters),
-    _rho_i(getMaterialProperty<Real>("density_ice")),
     _s(coupledValue("chemical_potential")),
+    _rho_i(_property_uo.getParam<Real>("density_ice")),
     _xi(getParam<bool>("use_temporal_scaling") ? _property_uo.temporalScale() : 1.0)
 {
 }
@@ -35,5 +35,5 @@ PikaSupersaturation::~PikaSupersaturation()
 Real
 PikaSupersaturation::computeValue()
 {
-  return -_s[_qp] * _rho_i[_qp] * _xi;
+  return -_s[_qp] * _rho_i * _xi;
 }

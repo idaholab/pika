@@ -21,10 +21,7 @@
 #include "PropertyUserObject.h"
 
 // Materials
-#include "ConstantProperties.h"
-#include "PhaseFieldProperties.h"
-#include "IceProperties.h"
-#include "AirProperties.h"
+#include "PikaMaterial.h"
 #include "TensorMobilityMaterial.h"
 
 // Kernels
@@ -99,10 +96,7 @@ PikaApp::registerObjects(Factory & factory)
   registerUserObject(PropertyUserObject);
 
   // Materials
-  registerMaterial(ConstantProperties);
-  registerMaterial(PhaseFieldProperties);
-  registerMaterial(IceProperties);
-  registerMaterial(AirProperties);
+  registerMaterial(PikaMaterial);
   registerMaterial(TensorMobilityMaterial);
 
   // Kernels

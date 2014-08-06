@@ -5,6 +5,7 @@
 []
 
 [Variables]
+  active = 'u'
   [./T]
   [../]
   [./u]
@@ -14,6 +15,10 @@
 []
 
 [AuxVariables]
+  [./phi]
+  [../]
+  [./T]
+  [../]
 []
 
 [Functions]
@@ -29,6 +34,7 @@
 []
 
 [Kernels]
+  active = 'vapor_time vapor_diffusion'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -95,6 +101,7 @@
 []
 
 [BCs]
+  active = 'u'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -106,6 +113,12 @@
     variable = T
     boundary = top
     value = 264.8 # -20
+  [../]
+  [./u]
+    type = DirichletBC
+    variable = u
+    boundary = 'left top bottom'
+    value = 0
   [../]
 []
 
@@ -137,21 +150,19 @@
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 20000
-  reset_dt = true
   nl_rel_tol = 1e-07
   [./TimeStepper]
-    type = SolutionTimeAdaptiveDT
-    percent_change = 0.01
+    type = IterationAdaptiveDT
     dt = 0.01
   [../]
 []
 
 [Adaptivity]
   max_h_level = 10
-  initial_marker = combo_mark
-  marker = combo_mark
-  initial_steps = 10
+  initial_marker = u_marker
+  marker = u_marker
+  initial_steps = 5
+  steps = 10
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -164,6 +175,7 @@
     [../]
   [../]
   [./Markers]
+    active = 'u_marker'
     [./phi_grad_marker]
       type = ErrorFractionMarker
       coarsen = .01
@@ -173,9 +185,8 @@
     [./u_marker]
       type = ErrorFractionMarker
       indicator = u_jump_indicator
-      refine = .96
+      refine = .9
       block = 0
-      coarsen = 0.01
     [../]
     [./phi_above]
       type = ValueThresholdMarker
@@ -207,6 +218,12 @@
     nonlinear_residuals = true
     linear_residuals = true
   [../]
+  [./xdr]
+    output_initial = true
+    file_base = u_initial_out
+    interval = 1
+    type = XDR
+  [../]
 []
 
 [ICs]
@@ -237,16 +254,4 @@
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all
   condensation_coefficient = .001
-[]
-
-[PikaCriteriaOutput]
-  phase = phi
-  interface_velocity_postprocessors = 'average max min'
-  chemical_potential = u
-  air_criteria = false
-  velocity_criteria = false
-  time_criteria = false
-  vapor_criteria = false
-  use_temporal_scaling = true
-  ice_criteria = false
 []
