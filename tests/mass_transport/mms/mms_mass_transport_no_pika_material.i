@@ -88,26 +88,12 @@
 []
 
 [Materials]
-  [./air]
-    type = AirProperties
+  [./properties]
+    type = PikaMaterial
     block = 0
-    property_user_object = _pika_property_user_object
-  [../]
-  [./phase]
-    type = PhaseFieldProperties
-    block = 0
-    phi = phi
-    property_user_object = _pika_property_user_object
-  [../]
-  [./constants]
-    type = ConstantProperties
-    block = 0
-    property_user_object = _pika_property_user_object
-  [../]
-  [./ice]
-    type = IceProperties
-    block = 0
-    property_user_object = _pika_property_user_object
+    phase = phi
+    temperature = 263.15
+    property_user_object = property_user_object
   [../]
 []
 
@@ -120,7 +106,7 @@
 []
 
 [UserObjects]
-  [./_pika_property_user_object]
+  [./property_user_object]
     type = PropertyUserObject
   [../]
 []
@@ -158,4 +144,3 @@
     type = FunctionIC
   [../]
 []
-

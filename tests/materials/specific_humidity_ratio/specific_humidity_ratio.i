@@ -12,7 +12,7 @@
 [PikaMaterials]
   conductivity_air = 0.1
   atmospheric_pressure = 1.01325e5
-  phi = -1
+  phase = -1
   temperature = T
   output_properties = 'specific_humidity_ratio saturation_pressure_of_water_vapor_over_ice'
   outputs = all

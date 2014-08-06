@@ -82,7 +82,7 @@
 []
 
 [PikaMaterials]
-  phi = phi
+  phase = phi
   temperature = 273.15
 []
 
@@ -124,4 +124,3 @@
     type = FunctionIC
   [../]
 []
-
