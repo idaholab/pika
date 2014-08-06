@@ -51,8 +51,9 @@ protected:
   virtual Real computeValue();
 
 private:
-  MaterialProperty<Real> & _rho_i;
+
   VariableValue & _s;
+  const Real & _rho_i;
   Real _xi;
 };
 
