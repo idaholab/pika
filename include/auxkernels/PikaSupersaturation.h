@@ -51,10 +51,11 @@ protected:
   virtual Real computeValue();
 
 private:
-  MaterialProperty<Real> & _rho_i;
-  MaterialProperty<Real> & _rho_vs;
-  VariableValue & _phase;
+
   VariableValue & _s;
+
+  /// Reference to ice density stored in PropertyUserObject
+  const Real _rho_i;
 
 };
 

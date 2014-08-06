@@ -34,9 +34,11 @@ IceProperties::IceProperties(const std::string & name, InputParameters parameter
 void
 IceProperties::computeQpProperties()
 {
+/*
   _rho_i[_qp] = _property_uo.iceDensity(_temperature[_qp]);
   _kappa_i[_qp] = getParam<Real>("conductivity_ice");
   _C_i[_qp] = getParam<Real>("heat_capacity_ice");
+*/
 }
 
 InputParameters

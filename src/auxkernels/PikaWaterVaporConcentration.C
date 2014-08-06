@@ -22,8 +22,9 @@ InputParameters validParams<PikaWaterVaporConcentration>()
 PikaWaterVaporConcentration::PikaWaterVaporConcentration(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
     PropertyUserObjectInterface(name, parameters),
-    _rho_i(getMaterialProperty<Real>("density_ice")),
-    _s(coupledValue("chemical_potential"))
+    _s(coupledValue("chemical_potential")),
+    _rho_i(_property_uo.getParam<Real>("density_ice")),
+    _T_0(_property_uo.getParam<Real>("reference_temperature"))
 {
 }
 
@@ -34,5 +35,5 @@ PikaWaterVaporConcentration::~PikaWaterVaporConcentration()
 Real
 PikaWaterVaporConcentration::computeValue()
 {
-  return _s[_qp] * _rho_i[_qp] + _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_property_uo.referenceTemp());
+  return _s[_qp] * _rho_i + _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_T_0);
 }

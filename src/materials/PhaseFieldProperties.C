@@ -49,6 +49,7 @@ PhaseFieldProperties::PhaseFieldProperties(const std::string & name, InputParame
 void
 PhaseFieldProperties::computeQpProperties()
 {
+/*
   Real convert_meters = _property_uo.getParam<Real>("conversion_factor");
   Real & gamma = getMaterialProperty<Real>("interface_free_energy")[_qp];
   Real & a = getMaterialProperty<Real>("mean_molecular_spacing")[_qp];
@@ -96,4 +97,6 @@ PhaseFieldProperties::computeQpProperties()
 
   // P_{vs}, Eq. (2)
   _saturation_pressure_of_water_vapor_over_ice[_qp] =  _property_uo.saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
+
+*/
 }

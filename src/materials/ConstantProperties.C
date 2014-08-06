@@ -41,6 +41,7 @@ ConstantProperties::ConstantProperties(const std::string & name, InputParameters
 void
 ConstantProperties::computeQpProperties()
 {
+  /*
   _interface_free_energy[_qp] = _property_uo._gamma;
   _mean_molecular_spacing[_qp] = _property_uo._a;
   _boltzmann[_qp] = _property_uo._k;
@@ -52,4 +53,5 @@ ConstantProperties::computeQpProperties()
   _gas_constant_water_vapor[_qp] = _property_uo._R_v;
   _latent_heat[_qp] = _property_uo._L_sg;
   _mobility[_qp] = _property_uo._mobility;
+  */
 }

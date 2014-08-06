@@ -56,16 +56,14 @@ public:
   virtual void finalize(){}
   ///@}
 
-  /**
-   * Return the density of ice as a function of temperature
-   */
-  Real iceDensity(const Real & T) const;
+  /// Returns the capillary length (d_0) using the given value or computed (Eq. (25))
+  Real capillaryLength(const Real & T) const;
+
+  /// Returns the interface kinetic coefficient (beta_0)  using the given value or computed (Eq. (26))
+  Real interfaceKineticCoefficient(const Real & T) const;
+
 
   /**
-   *
-   */
-  Real airDensity(const Real & T) const;
-    /**
    * Computes the specific humidity ratio (x_s; [kg/kg]; Eq. (1))
    * @param T Temperature at which to compute the ratio [kg/kg]
    * @return The specific humidity ratio
@@ -81,31 +79,47 @@ public:
 
   Real equilibriumWaterVaporConcentrationAtSaturation(const Real & T) const;
 
-  Real equilibriumConcentration(const Real & T) const;
+  Real equilibriumChemicalPotential(const Real & T) const;
 
   const Real & temporalScale() const;
 
-  const Real & referenceTemp() const;
+  /// Boltzmann's constant, k [J/K]
+  const Real _boltzmann;
 
+  /// Mass of water molecule, m [kg]
+  const Real _mass_water_molecule;
 
-  const Real _rho_i;
-  const Real _rho_a;
-  const Real _P_a;
+  /// Gas constant of dry air [J/(Kg K)]
   const Real _R_da;
+
+  /// Gas constant of water vapor [J/(Kg K)]
   const Real _R_v;
-  const Real _T_0;
-  const Real _gamma;
-  const Real _a;
-  const Real _k;
-  const Real _alpha;
-  const Real _m;
-  const Real _W;
-  const Real _L_sg;
-  const Real _mobility;
-  const Real _xi;
-  const Real _convert_meters;
 
 private:
+
+  const bool _compute_kinetic_coefficient;
+
+  const Real _input_kinetic_coefficieint;
+
+  const bool _compute_capillary_length;
+
+  const Real _input_capillary_length;
+
+
+  const Real _gamma;
+  const Real _a;
+  const Real _P_a;
+  const Real _alpha;
+  const Real _rho_a;
+
+  const Real _rho_i;
+
+   const Real _T_0;
+  // const Real _W;
+  //const Real _L_sg;
+  //const Real _mobility;
+  const Real _xi;
+  //const Real _convert_meters;
 
   /// Fitting coefficients for saturation vapor pressure, Wexler, 2007, Table 2
   std::vector<Real> _K;

@@ -17,8 +17,8 @@ InputParameters validParams<AirProperties>()
 {
   InputParameters params = validParams<Material>();
   params += validParams<PropertyUserObjectInterface>();
-  params += AirProperties::objectParams();
-  params.addCoupledVar("temperature", 273.15, "The temperature variable to couple (default: 273.15 K)");
+  params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
+  params.addRequiredCoupledVar("phase", "The phase-field variable");
   return params;
 }
 
@@ -26,17 +26,13 @@ AirProperties::AirProperties(const std::string & name, InputParameters parameter
     Material(name, parameters),
     PropertyUserObjectInterface(name, parameters),
     _temperature(coupledValue("temperature")),
-    _rho_a(declareProperty<Real>("density_air")),
-    _kappa_a(declareProperty<Real>("conductivity_air")),
-    _C_a(declareProperty<Real>("heat_capacity_air")),
-    _D_v(declareProperty<Real>("water_vapor_diffusion_coefficient"))
+    _phase(coupledVar("phase"))
 {
 }
 
 void
 AirProperties::computeQpProperties()
 {
-/*
   _rho_a[_qp] = _property_uo.airDensity(_temperature[_qp]);
 
   _kappa_a[_qp] = getParam<Real>("conductivity_air");
@@ -44,7 +40,6 @@ AirProperties::computeQpProperties()
   _C_a[_qp] = getParam<Real>("heat_capacity_air");
 
   _D_v[_qp] = getParam<Real>("water_vapor_diffusion_coefficient");
-*/
 }
 
 InputParameters
