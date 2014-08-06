@@ -52,10 +52,9 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    system = aux0
-    mesh = phi_initial_0000_mesh.xdr
-    nodal_variables = phi_aux
-    es = phi_initial_0000.xdr
+    mesh = phi_initial_0001_mesh.xdr
+    es = phi_initial_0001.xdr
+    system_variables = phi
   [../]
 []
 
@@ -92,8 +91,8 @@
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = 263.15
   interface_thickness = 5e-6
+  phase = phi
 []
 

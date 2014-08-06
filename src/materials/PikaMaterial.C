@@ -46,7 +46,9 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _conductivity(declareProperty<Real>("conductivity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
     _latent_heat(declareProperty<Real>("latent_heat")),
-    _mobility(declareProperty<Real>("mobility"))
+    _mobility(declareProperty<Real>("mobility")),
+    _capillary_length(declareProperty<Real>("capillary_length")),
+    _interface_kinetic_coefficient(declareProperty<Real>("interface_kinetic_coefficient"))
 {
 }
 
@@ -65,11 +67,13 @@ PikaMaterial::computeQpProperties()
   _rho_vs[_qp] = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
 
   // lambda; Eq. (37)
-  const Real _d_0_prime = (_rho_vs[_qp] / _density_ice) * _property_uo.capillaryLength(_temperature[_qp]);
+  _capillary_length[_qp] = _property_uo.capillaryLength(_temperature[_qp]);
+  const Real _d_0_prime = (_rho_vs[_qp] / _density_ice) * _capillary_length[_qp];
   _lambda[_qp] = _a_1 * _interface_thickness / _d_0_prime;
 
   // tau; Eq. (38)
-  const Real _beta_0_prime = (_rho_vs[_qp] / _density_ice) * _property_uo.interfaceKineticCoefficient(_temperature[_qp]);
+  _interface_kinetic_coefficient[_qp] = _property_uo.interfaceKineticCoefficient(_temperature[_qp]);
+  const Real _beta_0_prime = (_rho_vs[_qp] / _density_ice) * _interface_kinetic_coefficient[_qp];
   _tau[_qp] = _beta_0_prime * _interface_thickness * _lambda[_qp] / _a_1;
 
   // u_eq; Eq. (33)

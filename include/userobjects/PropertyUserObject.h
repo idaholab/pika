@@ -97,11 +97,11 @@ public:
 
 private:
 
-  const bool _compute_kinetic_coefficient;
+  const bool _has_kinetic_coefficient;
 
   const Real _input_kinetic_coefficieint;
 
-  const bool _compute_capillary_length;
+  const bool _has_capillary_length;
 
   const Real _input_capillary_length;
 

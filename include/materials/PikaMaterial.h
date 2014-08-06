@@ -117,6 +117,10 @@ private:
   /// Phase-field mobility
   MaterialProperty<Real> & _mobility;
 
+  MaterialProperty<Real> & _capillary_length;
+
+  MaterialProperty<Real> & _interface_kinetic_coefficient;
+
 };
 
 #endif // PIKAMATERIAL_H

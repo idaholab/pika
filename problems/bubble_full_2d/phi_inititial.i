@@ -38,7 +38,7 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    property = tau
+    property = relaxation_time
     scale = 1.0
   [../]
   [./phi_double_well]
@@ -73,18 +73,18 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 10
-  dt = 500
+  num_steps = 100
+  dt = 0.1
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
 []
 
 [Adaptivity]
-  max_h_level = 7
-  initial_steps = 10
+  max_h_level = 6
+  initial_steps = 6
   initial_marker = phi_marker
-  marker = combo_marker
+  marker = phi_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -93,31 +93,16 @@
   [../]
   [./Markers]
     [./phi_marker]
-      type = ErrorFractionMarker
-      coarsen = .1
+      type = ErrorToleranceMarker
+      coarsen = 1e-7
       indicator = phi_grad_indicator
-      refine = .8
-    [../]
-    [./phi_above]
-      type = ValueThresholdMarker
-      variable = phi
-      third_state = DO_NOTHING
-      refine = 1.000001
-    [../]
-    [./combo_marker]
-      type = ComboMarker
-      markers = 'phi_above phi_marker phi_below'
-    [../]
-    [./phi_below]
-      type = ValueThresholdMarker
-      variable = phi
-      invert = true
-      refine = -1.000001
+      refine = 1e-5
     [../]
   [../]
 []
 
 [Outputs]
+  output_initial = true
   exodus = true
   [./console]
     type = Console
@@ -127,8 +112,7 @@
   [../]
   [./xdr]
     file_base = phi_initial
-    output_intermediate = false
-    interval = 10
+    interval = 5
     output_final = true
     type = XDR
   [../]
@@ -151,5 +135,14 @@
     type = FunctionIC
     function = -543*y+267.515
   [../]
+[]
+
+[PikaMaterials]
+  temperature = 263.15
+  interface_thickness = 1e-5
+  interface_kinetic_coefficient = 5.5e5
+  capillary_length = 1.3e-9
+  outputs = all
+  phase = phi
 []
 

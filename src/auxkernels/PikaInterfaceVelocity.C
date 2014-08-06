@@ -21,7 +21,8 @@ InputParameters validParams<PikaInterfaceVelocity>()
 
 PikaInterfaceVelocity::PikaInterfaceVelocity(const std::string & name, InputParameters parameters) :
     AuxKernel(name, parameters),
-    _D_v(getMaterialProperty<Real>("water_vapor_diffusion_coefficient")),
+    PropertyUserObjectInterface(name, parameters),
+    _D_v(_property_uo.getParam<Real>("water_vapor_diffusion_coefficient")),
     _grad_phase(coupledGradient("phase")),
     _grad_s(coupledGradient("chemical_potential"))
 {
@@ -35,5 +36,5 @@ Real
 PikaInterfaceVelocity::computeValue()
 {
   RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].size();
-  return _D_v[_qp] * n * _grad_s[_qp];
+  return _D_v * n * _grad_s[_qp];
 }

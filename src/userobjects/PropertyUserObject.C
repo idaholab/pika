@@ -24,11 +24,11 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _mass_water_molecule(2.99e-26),
     _R_da(286.9),
     _R_v(461.5),
-    _compute_kinetic_coefficient(isParamValid("interface_kinetic_coefficient")),
-    _input_kinetic_coefficieint(_compute_kinetic_coefficient ?
-                                getParam<Real>("interface_kinetic_coefficient") : 0.0),
-    _compute_capillary_length(isParamValid("capillary_length")),
-    _input_capillary_length(_compute_capillary_length ?
+    _has_kinetic_coefficient(isParamValid("interface_kinetic_coefficient")),
+    _input_kinetic_coefficieint(_has_kinetic_coefficient ?
+                                getParam<Real>("interface_kinetic_coefficient") : 3232.0),
+    _has_capillary_length(isParamValid("capillary_length")),
+    _input_capillary_length(!_has_capillary_length ?
                             getParam<Real>("capillary_length") : 0.0),
     _gamma(getParam<Real>("interface_free_energy")),
     _a(getParam<Real>("mean_molecular_spacing")),
@@ -74,14 +74,15 @@ PropertyUserObject::objectParams()
   params.addParam<Real>("mobility", 1.0, "Phase-field mobility value");
   params.addParam<Real>("capillary_length", "Capillary Length (d_0), if not specified this is computed ");
   params.addParam<Real>("interface_kinetic_coefficient", "Interface kinetic coefficient (beta), if not specified this is computed");
-  params.addParam<Real>("interface_free_energy mean_molecular_spacing condensation_coefficient interface_thickness mobility capillary_length interface_kinetic_coefficient", "Phase");
+  params.addParamNamesToGroup("interface_free_energy mean_molecular_spacing condensation_coefficient interface_thickness mobility capillary_length interface_kinetic_coefficient", "Phase");
 
   // General environmental properties
   params.addParam<Real>("latent_heat", 2.6e9, "Latent heat of sublimation, L_{sg} [J/m^3]");
   params.addParam<Real>("atmospheric_pressure", 1.01325e5, "Atmospheric pressure, P_a [Pa]");
   params.addParam<Real>("reference_temperature", 263.15, "Reference temperature, T_0 [K]");
-  params.addParamNamesToGroup("latent_heat reference_temperature atmospheric_pressure ", "Misc.");
+  params.addParamNamesToGroup("latent_heat reference_temperature atmospheric_pressure ", "Misc");
 
+  // Scaling terms
   params.addParam<Real>("temporal_scaling", 1e-5, "Snow metamorphosis time scaling value");
   params.addParam<Real>("spatial_scaling", 1.0, "Conversion value for switching between spatial units (i.e meters to mm)");
   params.addParamNamesToGroup("temporal_scaling spatial_scaling", "Scaling");
@@ -92,10 +93,10 @@ Real
 PropertyUserObject::capillaryLength(const Real & T) const
 {
   Real d0;
-  if (_compute_capillary_length)
-    d0 = _gamma * std::pow(_a, 3) / (_boltzmann * T);
-  else
+  if (_has_capillary_length)
     d0 = _input_kinetic_coefficieint;
+  else
+    d0 = _gamma * std::pow(_a, 3) / (_boltzmann * T);
   return d0;
 }
 
@@ -103,10 +104,10 @@ Real
 PropertyUserObject::interfaceKineticCoefficient(const Real & T) const
 {
   Real beta0;
-  if (_compute_kinetic_coefficient)
-    beta0 = 1./_alpha * std::sqrt((2.*libMesh::pi*_mass_water_molecule)/(_boltzmann * T));
-  else
+  if (_has_kinetic_coefficient)
     beta0 = _input_kinetic_coefficieint;
+  else
+    beta0 = 1./_alpha * std::sqrt((2.*libMesh::pi*_mass_water_molecule)/(_boltzmann * T));
   return beta0;
 }
 
