@@ -81,6 +81,9 @@ private:
   /// Spatial scaling
   const Real & _spatial_scale;
 
+  /// Phase-field mobility
+  const Real & _input_mobility;
+
   /// Equilibrium water vapor concentration at reference temperature
   Real _rho_vs_T_0;
 
@@ -110,6 +113,10 @@ private:
 
   /// Latent heat of sublimation
   MaterialProperty<Real> & _latent_heat;
+
+  /// Phase-field mobility
+  MaterialProperty<Real> & _mobility;
+
 };
 
 #endif // PIKAMATERIAL_H

@@ -36,6 +36,7 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _ca(_property_uo.getParam<Real>("heat_capacity_air")),
     _dv(_property_uo.getParam<Real>("water_vapor_diffusion_coefficient")),
     _spatial_scale(_property_uo.getParam<Real>("spatial_scaling")),
+    _input_mobility(_property_uo.getParam<Real>("mobility")),
     _rho_vs(declareProperty<Real>("equilibrium_water_vapor_concentration_at_saturation")),
     _tau(declareProperty<Real>("relaxation_time")),
     _lambda(declareProperty<Real>("phase_field_coupling_constant")),
@@ -44,7 +45,8 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _heat_capacity(declareProperty<Real>("heat_capacity")),
     _conductivity(declareProperty<Real>("conductivity")),
     _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
-    _latent_heat(declareProperty<Real>("latent_heat"))
+    _latent_heat(declareProperty<Real>("latent_heat")),
+    _mobility(declareProperty<Real>("mobility"))
 {
 }
 
@@ -61,7 +63,6 @@ PikaMaterial::computeQpProperties()
 {
   // Compute \\rho_vs; Eq. (3)
   _rho_vs[_qp] = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
-  std::cout << "_rho_vs[_qp] = " << _rho_vs[_qp] << std::endl;
 
   // lambda; Eq. (37)
   const Real _d_0_prime = (_rho_vs[_qp] / _density_ice) * _property_uo.capillaryLength(_temperature[_qp]);
@@ -73,9 +74,6 @@ PikaMaterial::computeQpProperties()
 
   // u_eq; Eq. (33)
   _equilibrium_chemical_potential[_qp] = (_rho_vs[_qp] - _rho_vs_T_0) / _density_ice;
-  std::cout << "_rho_vs_T_0 = " << _rho_vs_T_0 << std::endl;
-
-  std::cout << "_equilibrium_chemical_potential[_qp] = " << _equilibrium_chemical_potential[_qp] << std::endl;
 
   // Thermal conductivity
   _conductivity[_qp] = (_spatial_scale) * (_ki * (1. + _phase[_qp]) / 2. + _ka * (1. - _phase[_qp]) / 2.);
@@ -91,4 +89,7 @@ PikaMaterial::computeQpProperties()
 
   // Latent heat of sublimation
   _latent_heat[_qp] = _l_sg;
+
+  // Mobility
+  _mobility[_qp] = _input_mobility;
 }

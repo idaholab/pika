@@ -115,15 +115,11 @@ private:
   const Real _rho_i;
 
    const Real _T_0;
-  // const Real _W;
-  //const Real _L_sg;
-  //const Real _mobility;
+  // const Real _mobility;
   const Real _xi;
-  //const Real _convert_meters;
 
   /// Fitting coefficients for saturation vapor pressure, Wexler, 2007, Table 2
   std::vector<Real> _K;
-
 };
 
 #endif // PROPERTYUSEROBJECT_H

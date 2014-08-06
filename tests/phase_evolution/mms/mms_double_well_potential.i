@@ -154,7 +154,6 @@
 
 [PikaMaterials]
   reference_temperature = 263.15
-  phi = phi
+  phase= phi
   temperature = 263.15
 []
-
