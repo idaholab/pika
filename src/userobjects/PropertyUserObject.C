@@ -80,6 +80,8 @@ PropertyUserObject::objectParams()
   params.addParam<Real>("latent_heat", 2.6e9, "Latent heat of sublimation, L_{sg} [J/m^3]");
   params.addParam<Real>("atmospheric_pressure", 1.01325e5, "Atmospheric pressure, P_a [Pa]");
   params.addParam<Real>("reference_temperature", 263.15, "Reference temperature, T_0 [K]");
+  params.addParam<bool>("debug", false, "Enable the creating of material properties for debugging");
+
   params.addParamNamesToGroup("latent_heat reference_temperature atmospheric_pressure ", "Misc");
 
   // Scaling terms

@@ -45,6 +45,9 @@ protected:
 
 private:
 
+  /// Debug flag, when true additional material properties are output
+  bool _debug;
+
   /// Coupled temperature variable
   VariableValue & _temperature;
 
@@ -87,9 +90,6 @@ private:
   /// Equilibrium water vapor concentration at reference temperature
   Real _rho_vs_T_0;
 
-  /// Equilibrium water vapor concentration at saturation
-  MaterialProperty<Real> & _rho_vs;
-
   /// Phase-field relaxation time
   MaterialProperty<Real> & _tau;
 
@@ -117,10 +117,18 @@ private:
   /// Phase-field mobility
   MaterialProperty<Real> & _mobility;
 
-  MaterialProperty<Real> & _capillary_length;
+  /* debugging */
 
-  MaterialProperty<Real> & _interface_kinetic_coefficient;
+  /// Equilibrium water vapor concentration at saturation
+  MaterialProperty<Real> * _rho_vs;
 
+  MaterialProperty<Real> * _capillary_length;
+
+  MaterialProperty<Real> * _interface_kinetic_coefficient;
+
+  MaterialProperty<Real> * _specific_humidity_ratio;
+
+  MaterialProperty<Real> * _saturation_pressure_of_water_vapor_over_ice;
 };
 
 #endif // PIKAMATERIAL_H
