@@ -26,10 +26,9 @@
 []
 
 [AuxKernels]
-  [./phi_aux_kernel]
+  [./phi_aux]
     type = SolutionAux
     variable = phi
-    execute_on = initial
     solution = phi_initial
   [../]
 []
@@ -39,13 +38,13 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 267.515
+    value = 259.27
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 264.8
+    value = 258.2
   [../]
 []
 
@@ -54,8 +53,7 @@
     type = SolutionUserObject
     mesh = phi_initial_0001_mesh.xdr
     es = phi_initial_0001.xdr
-    system_variables = phi
-    system = nl0
+    nodal_variables = phi
   [../]
 []
 
@@ -77,7 +75,6 @@
     linear_residuals = true
   [../]
   [./xdr]
-    file_base = T_initial
     output_final = true
     type = XDR
   [../]
@@ -87,12 +84,13 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = -543*y+267.515
+    function = -214*y+258.2
   [../]
 []
 
 [PikaMaterials]
-  temperature = 263.15
-  interface_thickness = 5e-6
+  temperature = T
+  interface_thickness = 1e-6
   phase = phi
 []
+

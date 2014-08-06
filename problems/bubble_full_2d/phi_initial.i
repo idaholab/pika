@@ -3,15 +3,11 @@
   dim = 2
   nx = 5
   ny = 10
-  xmax = .0025 # m
-  ymax = .005 # m
-  elem_type = QUAD4
+  xmax = 0.0025
+  ymax = 0.005
 []
 
 [Variables]
-  active = 'phi'
-  [./T]
-  [../]
   [./phi]
   [../]
 []
@@ -24,56 +20,39 @@
 []
 
 [Kernels]
-  active = 'phi_double_well phi_square_gradient phi_time'
-  [./heat_diffusion]
-    type = PikaDiffusion
-    variable = T
-    use_temporal_scaling = true
-    property = conductivity
-  [../]
-  [./heat_time]
-    type = PikaTimeDerivative
-    variable = T
-    property = heat_capacity
-    scale = 1.0
-  [../]
-  [./phi_time]
+  [./phase_time]
     type = PikaTimeDerivative
     variable = phi
     property = relaxation_time
-    scale = 1.0
   [../]
-  [./phi_double_well]
+  [./phase_diffusion]
+    type = PikaDiffusion
+    variable = phi
+    property = interface_thickness_squared
+  [../]
+  [./phase_double_well]
     type = DoubleWellPotential
     variable = phi
     mob_name = mobility
   [../]
-  [./phi_square_gradient]
-    type = ACInterface
-    variable = phi
-    mob_name = mobility
-    kappa_name = interface_thickness_squared
-  [../]
 []
 
 [AuxKernels]
-  [./phi_aux_kernel]
+  [./phi_aux]
     type = PikaPhaseInitializeAux
     variable = phi_aux
     phase = phi
   [../]
 []
 
-[BCs]
-[]
-
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 10
+  dt = 10
   solve_type = PJFNK
-  petsc_options_iname = '-pc_type -pc_hypre_type'
-  petsc_options_value = 'hypre boomeramg'
+  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
+  petsc_options_value = '500 hypre boomeramg'
+  nl_rel_tol = 1e-07
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 1
@@ -84,8 +63,8 @@
 [Adaptivity]
   max_h_level = 10
   initial_steps = 10
-  initial_marker = phi_marker
   marker = phi_marker
+  initial_marker = phi_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -95,7 +74,7 @@
   [./Markers]
     [./phi_marker]
       type = ErrorToleranceMarker
-      coarsen = 1e-6
+      coarsen = 1e-7
       indicator = phi_grad_indicator
       refine = 1e-5
     [../]
@@ -105,6 +84,7 @@
 [Outputs]
   output_initial = true
   exodus = true
+  console = false
   [./console]
     type = Console
     perf_log = true
@@ -113,31 +93,31 @@
   [../]
   [./xdr]
     file_base = phi_initial
-    interval = 5
     output_final = true
     type = XDR
+    interval = 10
   [../]
 []
 
 [ICs]
   [./phase_ic]
-    x1 = .0025
-    y1 = .0025
-    radius = .0005
+    int_width = 1e-6
+    x1 = 0.0025
+    y1 = 0.0025
+    radius = 0.001
     outvalue = 1
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 5e-6
   [../]
 []
 
 [PikaMaterials]
-  temperature = 263.15
+  temperature = 258.2
   interface_thickness = 1e-6
+  phase = phi
   interface_kinetic_coefficient = 5.5e5
   capillary_length = 1.3e-9
-  outputs = all
-  phase = phi
+  temporal_scaling = 1e-04
 []
 
