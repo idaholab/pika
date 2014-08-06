@@ -19,6 +19,8 @@
 [AuxVariables]
   [./u]
   [../]
+  [./phi_aux]
+  [../]
 []
 
 [Kernels]
@@ -54,35 +56,34 @@
   [../]
 []
 
+[AuxKernels]
+  [./phi_aux_kernel]
+    type = PikaPhaseInitializeAux
+    variable = phi_aux
+    phase = phi
+  [../]
+[]
+
 [BCs]
-  active = ''
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.515
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.8
-  [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 100
-  dt = 0.1
+  num_steps = 10
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
+  [./TimeStepper]
+    type = IterationAdaptiveDT
+    dt = 1
+    growth_factor = 3
+  [../]
 []
 
 [Adaptivity]
-  max_h_level = 6
-  initial_steps = 6
+  max_h_level = 10
+  initial_steps = 10
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -94,7 +95,7 @@
   [./Markers]
     [./phi_marker]
       type = ErrorToleranceMarker
-      coarsen = 1e-7
+      coarsen = 1e-6
       indicator = phi_grad_indicator
       refine = 1e-5
     [../]
@@ -119,7 +120,6 @@
 []
 
 [ICs]
-  active = 'phase_ic'
   [./phase_ic]
     x1 = .0025
     y1 = .0025
@@ -130,16 +130,11 @@
     type = SmoothCircleIC
     int_width = 5e-6
   [../]
-  [./temperature_ic]
-    variable = T
-    type = FunctionIC
-    function = -543*y+267.515
-  [../]
 []
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 1e-5
+  interface_thickness = 1e-6
   interface_kinetic_coefficient = 5.5e5
   capillary_length = 1.3e-9
   outputs = all

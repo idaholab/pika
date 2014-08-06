@@ -92,11 +92,6 @@ PropertyUserObject::objectParams()
 Real
 PropertyUserObject::capillaryLength(const Real & T) const
 {
-   std::cout << "_gamma = " << _gamma << std::endl;
-   std::cout << "_a = " << _a << std::endl;
-   std::cout << "k = " << _boltzmann << std::endl;
-
-
   Real d0;
   if (_has_capillary_length)
     d0 = _input_capillary_length;
