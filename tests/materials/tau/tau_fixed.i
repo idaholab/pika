@@ -11,11 +11,11 @@
 
 [PikaMaterials]
   conductivity_air = 0.1
-  interface_thickness = 1e-6
-  capillary_length = 1.3e-9
   phase = -1
+  interface_kinetic_coefficient = 5.5e5
+  interface_thickness = 1e-6
   temperature = T
-  output_properties = 'capillary_length capillary_length_prime phase_field_coupling_constant'
+  output_properties = 'relaxation_time interface_kinetic_coefficient interface_kinetic_coefficient_prime'
   outputs = all
   debug = true
 []
@@ -25,21 +25,20 @@
     type = PointValue
     variable = T
     point = '0.5 0.5 0'
-
   [../]
-  [./lambda]
+  [./beta_0]
     type = PointValue
-    variable = phase_field_coupling_constant
+    variable = interface_kinetic_coefficient
     point = '0.5 0.5 0'
   [../]
-  [./d_0]
+  [./beta_0_prime]
     type = PointValue
-    variable = capillary_length
+    variable = interface_kinetic_coefficient_prime
     point = '0.5 0.5 0'
   [../]
-  [./d_0_prime]
+  [./tau]
     type = PointValue
-    variable = capillary_length_prime
+    variable = relaxation_time
     point = '0.5 0.5 0'
   [../]
 []
