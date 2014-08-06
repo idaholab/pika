@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 4
-  ny = 10
+  nx = 3
+  ny = 9
   xmin = .001
   xmax = .0025 # mm
   ymax = .005 # mm
@@ -126,9 +126,10 @@
 [Adaptivity]
   max_h_level = 7
   initial_steps = 7
-  initial_marker = phi_marker
-  marker = phi_marker
+  initial_marker = range_marker
+  marker = range_marker
   [./Indicators]
+    active = 'phi_grad_indicator'
     [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
@@ -140,12 +141,12 @@
     [../]
   [../]
   [./Markers]
-    active = 'phi_marker'
+    active = 'range_marker'
     [./phi_marker]
       type = ErrorFractionMarker
-      coarsen = .01
+      coarsen = .001
       indicator = phi_grad_indicator
-      refine = .8
+      refine = .9
     [../]
     [./T_marker]
       type = ErrorFractionMarker
@@ -163,7 +164,13 @@
     [./combo_mark]
       type = ComboMarker
       block = 0
-      markers = 'u_marker phi_marker'
+      markers = 'phi_marker range_marker'
+    [../]
+    [./range_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-5
+      indicator = phi_grad_indicator
+      refine = 1e-6
     [../]
   [../]
 []
@@ -214,7 +221,7 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-6
+  interface_thickness = 1e-5
   temporal_scaling = 1e-4
 []
 

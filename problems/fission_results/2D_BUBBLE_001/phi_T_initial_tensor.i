@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 4
-  ny = 10
+  nx = 8
+  ny = 20
   xmin = .001
   xmax = .0025 # mm
   ymax = .005 # mm
@@ -124,8 +124,8 @@
 []
 
 [Adaptivity]
-  max_h_level = 7
-  initial_steps = 7
+  max_h_level = 8
+  initial_steps = 8
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -191,7 +191,7 @@
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 1e-6
+    int_width = 5e-6
   [../]
   [./temperature_ic]
     variable = T
@@ -213,8 +213,8 @@
 
 [PikaMaterials]
   phi = phi
-  temperature = T
-  interface_thickness = 1e-6
+  temperature = 263.15
+  interface_thickness = 5e-6
   temporal_scaling = 1e-4
 []
 

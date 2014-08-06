@@ -1,38 +1,38 @@
 [Mesh]
-  type = GeneratedMesh
+  type = FileMesh
+  file = phi_temp_diffusion_0010_mesh.xdr
   dim = 2
-  nx = 4
-  ny = 10
-  xmin = .001
-  xmax = .0025 # mm
-  ymax = .005 # mm
-  elem_type = QUAD4
 []
 
 [Variables]
-  active = 'phi T'
   [./T]
   [../]
   [./u]
   [../]
   [./phi]
-    initial_from_file_var = diffused_phi
-    initial_from_file_timestep = 30
   [../]
 []
 
 [AuxVariables]
-  active = 'u'
-  [./phi]
+  [./velocity]
+    family = MONOMIAL
   [../]
-  [./u]
+[]
+
+[Functions]
+  [./T_func]
+    type = SolutionFunction
+    from_variable = T
+    solution = initial_uo
   [../]
-  [./T]
+  [./phi_func]
+    type = SolutionFunction
+    from_variable = phi
+    solution = initial_uo
   [../]
 []
 
 [Kernels]
-  active = 'heat_diffusion phi_double_well heat_phi_time heat_time phi_time phi_square_gradient'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -62,13 +62,15 @@
   [./vapor_diffusion]
     type = PikaDiffusion
     variable = u
-    coefficient = 1e-7
+    use_temporal_scaling = true
+    property = diffusion_coefficient
   [../]
   [./vapor_phi_time]
     type = PikaCoupledTimeDerivative
     variable = u
     coefficient = 0.5
     coupled_variable = phi
+    use_temporal_scaling = true
   [../]
   [./phi_time]
     type = PikaTimeDerivative
@@ -81,6 +83,7 @@
     variable = phi
     mob_name = mobility
     chemical_potential = u
+    coefficient = 1.0
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
@@ -95,39 +98,91 @@
   [../]
 []
 
+[AuxKernels]
+  [./interface_velocity]
+    type = PikaInterfaceVelocity
+    variable = velocity
+    phase = phi
+    chemical_potential = u
+  [../]
+[]
+
 [BCs]
+  active = 'insulated_sides T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 267.515
+    value = 267.515 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 264.8
+    value = 264.8 # -20
+  [../]
+  [./insulated_sides]
+    type = NeumannBC
+    variable = T
+    boundary = 'left right'
+  [../]
+  [./phi_bc]
+    type = DirichletBC
+    variable = phi
+    boundary = '0 1 2 3 '
+    value = 1.0
+  [../]
+  [./u_bottom]
+    type = DirichletBC
+    variable = u
+    boundary = bottom
+    value = -4.7e-6
+  [../]
+  [./u_top]
+    type = DirichletBC
+    variable = u
+    boundary = top
+    value = 4.7e-6
   [../]
 []
 
 [Postprocessors]
 []
 
+[UserObjects]
+  [./initial_uo]
+    type = SolutionUserObject
+    system = nl0
+    mesh = phi_temp_diffusion_0010_mesh.xdr
+    nodal_variables = 'T phi'
+    execute_on = initial
+    es = phi_temp_diffusion_0010.xdr
+  [../]
+[]
+
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 10
-  dt = 200
+  dt = 100
   solve_type = PJFNK
+  petsc_options = -
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
+  end_time = 7200
+  reset_dt = true
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    dt = 1
+    percent_change = .1
+    reset_dt = true
+  [../]
 []
 
 [Adaptivity]
-  max_h_level = 7
-  initial_steps = 7
-  initial_marker = phi_marker
-  marker = phi_marker
+  max_h_level = 8
+  initial_marker = u_marker
+  marker = combo_mark
+  initial_steps = 8
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -140,12 +195,12 @@
     [../]
   [../]
   [./Markers]
-    active = 'phi_marker'
+    active = 'phi_marker combo_mark u_marker'
     [./phi_marker]
       type = ErrorFractionMarker
       coarsen = .01
       indicator = phi_grad_indicator
-      refine = .8
+      refine = .5
     [../]
     [./T_marker]
       type = ErrorFractionMarker
@@ -156,8 +211,7 @@
     [./u_marker]
       type = ErrorFractionMarker
       indicator = u_jump_indicator
-      coarsen = .02
-      refine = .5
+      refine = .95
       block = 0
     [../]
     [./combo_mark]
@@ -171,8 +225,6 @@
 [Outputs]
   output_initial = true
   exodus = true
-  file_base = phi_temp_diffusion
-  xdr = true
   [./console]
     type = Console
     perf_log = true
@@ -182,27 +234,23 @@
 []
 
 [ICs]
-  active = 'phase_ic temperature_ic'
+  active = 'phase_ic vapor_ic temperature_ic'
   [./phase_ic]
-    x1 = .0025
-    y1 = .0025
-    radius = .0005
-    outvalue = 1
     variable = phi
-    invalue = -1
-    type = SmoothCircleIC
-    int_width = 1e-6
+    type = FunctionIC
+    function = phi_func
   [../]
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = -543*y+267.515
+    function = T_func
   [../]
   [./vapor_ic]
     variable = u
-    type = FunctionIC
+    type = ChemicalPotentialIC
     block = 0
-    function = -4.7e-6
+    phase_variable = phi
+    temperature = T
   [../]
   [./constant_temp_ic]
     variable = T
@@ -214,7 +262,10 @@
 [PikaMaterials]
   phi = phi
   temperature = T
-  interface_thickness = 1e-6
+  interface_thickness = 5e-6
   temporal_scaling = 1e-4
+  output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
+  outputs = all
+  condensation_coefficient = .001
 []
 

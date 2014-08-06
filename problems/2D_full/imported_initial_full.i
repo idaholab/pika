@@ -14,8 +14,7 @@
 []
 
 [AuxVariables]
-  [./velocity]
-    family = MONOMIAL
+  [./phi_aux]
   [../]
 []
 
@@ -99,11 +98,10 @@
 []
 
 [AuxKernels]
-  [./interface_velocity]
-    type = PikaInterfaceVelocity
-    variable = velocity
+  [./phi_correct]
+    type = PikaPhaseInitializeAux
+    variable = phi_aux
     phase = phi
-    chemical_potential = u
   [../]
 []
 
@@ -146,9 +144,6 @@
   [../]
 []
 
-[Postprocessors]
-[]
-
 [UserObjects]
   [./initial_uo]
     type = SolutionUserObject
@@ -170,19 +165,21 @@
   petsc_options_value = '500 hypre boomeramg'
   end_time = 7200
   reset_dt = true
+  dtmax = 25
+  dtmin = .001
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 1
+    dt = .5
     percent_change = .1
     reset_dt = true
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 8
+  max_h_level = 7
   initial_marker = u_marker
   marker = combo_mark
-  initial_steps = 8
+  initial_steps = 7
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -195,12 +192,12 @@
     [../]
   [../]
   [./Markers]
-    active = 'phi_marker combo_mark u_marker'
+    active = 'phi_marker u_tol_marker combo_mark u_marker'
     [./phi_marker]
-      type = ErrorFractionMarker
-      coarsen = .01
+      type = ErrorToleranceMarker
+      coarsen = 1e-6
       indicator = phi_grad_indicator
-      refine = .5
+      refine = 1e-6
     [../]
     [./T_marker]
       type = ErrorFractionMarker
@@ -217,7 +214,13 @@
     [./combo_mark]
       type = ComboMarker
       block = 0
-      markers = 'u_marker phi_marker'
+      markers = 'u_marker phi_marker u_tol_marker'
+    [../]
+    [./u_tol_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-10
+      indicator = u_jump_indicator
+      refine = 1e-7
     [../]
   [../]
 []
@@ -264,8 +267,20 @@
   temperature = T
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
-  output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
+  output_properties = 'capillary_length beta tau capillary_length_prime beta_prime'
   outputs = all
   condensation_coefficient = .001
+[]
+
+[PikaCriteriaOutput]
+  air_criteria = false
+  velocity_criteria = false
+  time_criteria = false
+  vapor_criteria = false
+  chemical_potential = u
+  phase = phi
+  use_temporal_scaling = true
+  ice_criteria = false
+  interface_velocity_postprocessors = 'average max min'
 []
 
