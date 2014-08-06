@@ -23,7 +23,7 @@
 [PikaCriteriaOutput]
   phase = phi
   chemical_potential = u
-  ice_postprocessors = 'average min max'
+  time_postprocessors = 'max'
 []
 
 [AuxVariables]
@@ -97,19 +97,6 @@
     variable = phi
     mob_name = mobility
     kappa_name = interface_thickness_squared
-  [../]
-[]
-
-[Postprocessors]
-  [./ice]
-    type = ElementAverageValue
-    variable = '_pika_ice_aux'
-  [../]
-[]
-
-[UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
   [../]
 []
 

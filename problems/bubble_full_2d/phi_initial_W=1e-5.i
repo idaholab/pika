@@ -153,3 +153,8 @@
   [../]
 []
 
+[PikaMaterials]
+  phase = phi
+  temperature = 263.15
+  interface_thickness = 1e-5
+[]

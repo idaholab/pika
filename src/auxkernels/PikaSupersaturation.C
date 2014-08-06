@@ -14,7 +14,7 @@ template<>
 InputParameters validParams<PikaSupersaturation>()
 {
   InputParameters params = validParams<AuxKernel>();
-  params.addRequiredCoupledVar("chemical_potential", "Chemical potential variable");
+  params.addRequiredCoupledVar("phase", "Phase-field variable");
   params.addParam<bool>("use_temporal_scaling", true, "Apply the temporal scaling parameter");
   return params;
 }

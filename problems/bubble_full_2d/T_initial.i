@@ -55,6 +55,7 @@
     mesh = phi_initial_0001_mesh.xdr
     es = phi_initial_0001.xdr
     system_variables = phi
+    system = nl0
   [../]
 []
 
@@ -95,4 +96,3 @@
   interface_thickness = 5e-6
   phase = phi
 []
-
