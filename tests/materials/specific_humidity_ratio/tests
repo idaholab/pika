@@ -4,6 +4,5 @@
     type = 'CSVDiff'
     input = 'specific_humidity_ratio.i'
     csvdiff = 'specific_humidity_ratio_data.csv'
-    skip = "need test material"
   [../]
 []

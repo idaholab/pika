@@ -16,6 +16,7 @@
   temperature = T
   output_properties = 'specific_humidity_ratio saturation_pressure_of_water_vapor_over_ice'
   outputs = all
+  debug = true
 []
 
 [Postprocessors]
