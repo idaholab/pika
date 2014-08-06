@@ -23,7 +23,7 @@ template<>
 InputParameters validParams<PikaMaterial>();
 
 /**
- * A material for defining properties associated with the energy balance, mass balance, and phase-field equations. This class only contains properties that are directly used in these relationships. All constants and additional parameters for the simluations are stored in PropertyUserObject.
+ * A material for defining properties associated with the energy balance, mass balance, and phase-field equations. This class only contains properties that are directly used in these relationships. All constants and additional parameters for the simulation are stored in PropertyUserObject.
  */
 class PikaMaterial :
   public Material,
@@ -33,6 +33,9 @@ public:
   PikaMaterial(const std::string & name, InputParameters parameters);
 
 protected:
+  /**
+   * Computes the various material properties for solving energy, mass, and phase equations
+   */
   virtual void computeQpProperties();
 
 private:
@@ -73,10 +76,10 @@ private:
   /// Diffusion coefficient of water vapor
   const Real & _dv;
 
-  /// Spatial scalling
+  /// Spatial scaling
   const Real & _spatial_scale;
 
-  /// Equillibrium water vapor concentration at saturation
+  /// Equilibrium water vapor concentration at saturation
   MaterialProperty<Real> & _rho_vs;
 
   /// Phase-field relaxation time
@@ -88,7 +91,7 @@ private:
   /// Square of the interface thickness, W^2
   MaterialProperty<Real> & _interface_thickness_squared;
 
-  /// Equillibriubm chemical potential, u_{eq}
+  /// Equilibrium chemical potential, u_{eq}
   MaterialProperty<Real> & _equilibrium_chemical_potential;
 
   /// Phase-adjusted heat capacity, C

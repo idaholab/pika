@@ -44,8 +44,8 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _equilibrium_chemical_potential(declareProperty<Real>("equilibrium_chemical_potential")),
     _heat_capacity(declareProperty<Real>("heat_capacity")),
     _conductivity(declareProperty<Real>("conductivity")),
-    _latent_heat(declareProperty<Real>("latent_heat")),
-    _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient"))
+    _diffusion_coefficient(declareProperty<Real>("diffusion_coefficient")),
+    _latent_heat(declareProperty<Real>("latent_heat"))
 {
 }
 

@@ -13,7 +13,7 @@
     conductivity_air = 0.1
     temperature = T
     phi = -1
-    output_properties = 'equilibrium_concentration density_air density_ice'
+    output_properties = 'equilibrium_chemical_potential'
     outputs = all
   [../]
 []
@@ -26,7 +26,7 @@
   [../]
   [./u_eq]
     type = PointValue
-    variable = 'equilibrium_concentration'
+    variable = 'equilibrium_chemical_potential'
     point = '0.5 0.5 0'
   [../]
 []

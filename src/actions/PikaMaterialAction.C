@@ -16,9 +16,7 @@
 
 // Pika includes
 #include "PikaMaterialAction.h"
-#include "PropertyUserObject.h"
-#include "AirProperties.h"
-#include "IceProperties.h"
+#include "PikaMaterial.h"
 
 template<>
 InputParameters validParams<PikaMaterialAction>()
@@ -27,15 +25,13 @@ InputParameters validParams<PikaMaterialAction>()
 
   // Add the constant properties that are defined by the various objects
   params += PropertyUserObject::objectParams();
-  params += AirProperties::objectParams();
-  params += IceProperties::objectParams();
 
   // Add the block parameter
-  params.addParam<std::vector<SubdomainName> >("block", std::vector<SubdomainName>(1,"0"), "The list subdomain ids that the generated materials should be limited");
+  params.addParam<std::vector<SubdomainName> >("block", std::vector<SubdomainName>(1, "0"), "The list subdomain ids that the generated materials should be limited");
 
   // Add the variables needed
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
-  params.addRequiredCoupledVar("phi", "The phase-field variable to couple ");
+  params.addRequiredCoupledVar("phase", "The phase-field variable to couple ");
 
   // Parameters for outputting Material properties
   params.addParam<std::vector<OutputName> >("outputs", std::vector<OutputName>(1, "none"), "Vector of output names were you would like to restrict the output of material data (empty outputs to all)");
@@ -59,25 +55,13 @@ PikaMaterialAction::act()
   // Add the UserObject containing constants and property calculations
   MooseObjectAction * uo = create("AddUserObjectAction", "PropertyUserObject", "UserObjects/_pika_property_user_object");
 
- MooseObjectAction * constants = create("AddMaterialAction", "ConstantProperties", "Materials/_pika_constant_properties");
-
-  // Add Materials, being sure to pass down the coupled variables
-  MooseObjectAction * air = create("AddMaterialAction", "AirProperties", "Materials/_pika_air_properties");
-  applyCoupledVar("temperature", air->getObjectParams());
-
-  MooseObjectAction * ice = create("AddMaterialAction", "IceProperties", "Materials/_pika_ice_properties");
-  applyCoupledVar("temperature", ice->getObjectParams());
-
-  MooseObjectAction * phase = create("AddMaterialAction", "PhaseFieldProperties", "Materials/_pika_phase_field_properties");
-  applyCoupledVar("phi", phase->getObjectParams());
-  applyCoupledVar("temperature", phase->getObjectParams());
+  MooseObjectAction * action = create("AddMaterialAction", "PikaMaterial", "Materials/_pika_material");
+  applyCoupledVar("phase", action->getObjectParams());
+  applyCoupledVar("temperature", action->getObjectParams());
 
   // Add the actions to the ActionWarehouse
   _awh.addActionBlock(uo);
-  _awh.addActionBlock(constants);
-  _awh.addActionBlock(air);
-  _awh.addActionBlock(ice);
-  _awh.addActionBlock(phase);
+  _awh.addActionBlock(action);
 }
 MooseObjectAction *
 PikaMaterialAction::create(std::string action_name, std::string type, std::string object_name)
