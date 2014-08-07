@@ -26,7 +26,10 @@ InputParameters validParams<IbexSurfaceFluxBC>()
   params.addParam<Real>("relative_humidity", 50, "Relative humidity of air above snow [%]");
   params.addParam<Real>("atmospheric_pressure", 101.325, "Atmospheric pressure [kPa]");
   params.addParam<Real>("air_velocity", 1, "Air velocity over the snow surface [m/s]");
+  params.addParam<Real>("albedo", 0.95, "Short-wave radiation albedo");
   params.addRequiredParam<FunctionName>("long_wave", "Name of the function computing the incoming long-wave radiation function [W/m^2]");
+  params.addRequiredParam<FunctionName>("short_wave", "Name of the function computing the incoming short-wave radiation function [W/m^2]");
+
 
   // Advanced
   params.addParam<Real>("emissivity", 0.988, "Emissivity of snow");
@@ -52,7 +55,9 @@ IbexSurfaceFluxBC::IbexSurfaceFluxBC(const std::string & name, InputParameters p
     _relative_humidity(getParam<Real>("relative_humidity")),
     _atmospheric_pressure(getParam<Real>("atmospheric_pressure")),
     _air_velocity(getParam<Real>("air_velocity")),
+    _albedo(getParam<Real>("albedo")),
     _long_wave(getFunction("long_wave")),
+    _short_wave(getFunction("short_wave")),
     _emissivity(getParam<Real>("emissivity")),
     _ratio_of_molecular_weights(getParam<Real>("ratio_of_molecular_weights")),
     _latent_heat(getParam<Real>("latent_heat")),
@@ -67,13 +72,19 @@ IbexSurfaceFluxBC::IbexSurfaceFluxBC(const std::string & name, InputParameters p
 Real
 IbexSurfaceFluxBC::computeQpResidual()
 {
-  return -_test[_i][_qp] * (longwave() + latent() + sensible());
+  return -_test[_i][_qp] * (longwave() + shortwave() + latent() + sensible());
 }
 
 Real
 IbexSurfaceFluxBC::longwave()
 {
   return _long_wave.value(_t, _q_point[_qp]) - _emissivity * _boltzmann * std::pow(_u[_qp], 4);
+}
+
+Real
+IbexSurfaceFluxBC::shortwave()
+{
+  return _short_wave.value(_t, _q_point[_qp]) * (1 - _albedo);
 }
 
 Real

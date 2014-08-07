@@ -49,6 +49,8 @@ private:
 
   Real longwave();
 
+  Real shortwave();
+
   Real latent();
 
   Real sensible();
@@ -71,7 +73,11 @@ private:
 
   const Real _air_velocity;
 
+  const Real _albedo;
+
   Function & _long_wave;
+
+  Function & _short_wave;
 
   const Real _emissivity;
 
