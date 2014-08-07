@@ -83,7 +83,6 @@
     mob_name = mobility
     chemical_potential = u
     coefficient = 1.0
-    use_temporal_scaling = true
     lambda = phase_field_coupling_constant
   [../]
   [./phi_double_well]
@@ -150,11 +149,11 @@
   end_time = 20000
   reset_dt = true
   dtmax = 50
-  nl_abs_tol = 1e-13
+  nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 0.1
+    dt = 1
     percent_change = 0.5
   [../]
 []
@@ -234,8 +233,6 @@
   temporal_scaling = 1e-4
   outputs = all
   condensation_coefficient = .001
-  interface_kinetic_coefficient = 5.5e5
-  capillary_length = 1.3e-9
   phase = phi
 []
 

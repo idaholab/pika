@@ -57,7 +57,7 @@
   nl_abs_tol = 1e-13
   [./TimeStepper]
     type = IterationAdaptiveDT
-    dt = 1
+    dt = 0.5
   [../]
 []
 
@@ -75,9 +75,9 @@
   [./Markers]
     [./phi_marker]
       type = ErrorToleranceMarker
-      coarsen = 1e-7
+      coarsen = 1e-6
       indicator = phi_grad_indicator
-      refine = 1e-5
+      refine = 1e-4
     [../]
   [../]
 []
