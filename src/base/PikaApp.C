@@ -20,6 +20,9 @@
 // UserObjects
 #include "PropertyUserObject.h"
 
+// Postprocessors
+#include "PikaPhaseTimestepPostprocessor.h"
+
 // Materials
 #include "PikaMaterial.h"
 #include "TensorMobilityMaterial.h"
@@ -94,6 +97,9 @@ PikaApp::registerObjects(Factory & factory)
 {
   // UserObjects
   registerUserObject(PropertyUserObject);
+
+  // Postprocessors
+  registerPostprocessor(PikaPhaseTimestepPostprocessor);
 
   // Materials
   registerMaterial(PikaMaterial);
