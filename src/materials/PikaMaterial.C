@@ -40,6 +40,7 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _dv(_property_uo.getParam<Real>("water_vapor_diffusion_coefficient")),
     _spatial_scale(_property_uo.getParam<Real>("spatial_scaling")),
     _input_mobility(_property_uo.getParam<Real>("mobility")),
+    _reference_temperature(_property_uo.getParam<Real>("reference_temperature")),
     _tau(declareProperty<Real>("relaxation_time")),
     _lambda(declareProperty<Real>("phase_field_coupling_constant")),
     _interface_thickness_squared(declareProperty<Real>("interface_thickness_squared")),
@@ -50,8 +51,6 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
     _latent_heat(declareProperty<Real>("latent_heat")),
     _mobility(declareProperty<Real>("mobility")),
     _rho_vs(NULL),
-    _capillary_length(NULL),
-    _interface_kinetic_coefficient(NULL),
     _specific_humidity_ratio(NULL),
     _saturation_pressure_of_water_vapor_over_ice(NULL),
     _capillary_length_prime(NULL),
@@ -61,8 +60,6 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
   if (_debug)
   {
     _rho_vs = &declareProperty<Real>("equilibrium_water_vapor_concentration_at_saturation");
-    _capillary_length = &declareProperty<Real>("capillary_length");
-    _interface_kinetic_coefficient = &declareProperty<Real>("interface_kinetic_coefficient");
     _specific_humidity_ratio = &declareProperty<Real>("specific_humidity_ratio");
     _saturation_pressure_of_water_vapor_over_ice = &declareProperty<Real>("saturation_pressure_of_water_vapor_over_ice");
     _capillary_length_prime = &declareProperty<Real>("capillary_length_prime");
@@ -71,31 +68,22 @@ PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters)
 }
 
 void
-PikaMaterial::initialSetup()
-{
-  const Real & T_0 = _property_uo.getParam<Real>("reference_temperature");
-  _rho_vs_T_0 = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(T_0);
-}
-
-
-void
 PikaMaterial::computeQpProperties()
 {
   // Compute \\rho_vs; Eq. (3)
   Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
+  const Real & rho_vs_T_0 = _property_uo.equilibriumWaterVaporConcentrationAtSaturationAtReferenceTemperature();
 
   // lambda; Eq. (37)
-  Real capillary_length = _property_uo.capillaryLength(_temperature[_qp]);
-  const Real _d_0_prime = (rho_vs / _density_ice) * capillary_length;
+  const Real _d_0_prime = _property_uo.capillaryLengthPrime(_temperature[_qp], rho_vs);
   _lambda[_qp] = _a_1 * _interface_thickness / _d_0_prime;
 
   // tau; Eq. (38)
-  Real interface_kinetic_coefficient = _property_uo.interfaceKineticCoefficient(_temperature[_qp]);
-  const Real _beta_0_prime = (rho_vs / _density_ice) * interface_kinetic_coefficient;
+  const Real _beta_0_prime = _property_uo.interfaceKineticCoefficientPrime(_temperature[_qp], rho_vs);
   _tau[_qp] = _beta_0_prime * _interface_thickness * _lambda[_qp] / _a_1;
 
   // u_eq; Eq. (33)
-  _equilibrium_chemical_potential[_qp] = (rho_vs- _rho_vs_T_0) / _density_ice;
+  _equilibrium_chemical_potential[_qp] = (rho_vs - rho_vs_T_0) / _density_ice;
 
   // Thermal conductivity
   _conductivity[_qp] = (_spatial_scale) * (_ki * (1. + _phase[_qp]) / 2. + _ka * (1. - _phase[_qp]) / 2.);
@@ -119,12 +107,9 @@ PikaMaterial::computeQpProperties()
   if (_debug)
   {
     (*_rho_vs)[_qp] = rho_vs;
-    (*_capillary_length)[_qp] = capillary_length;
-    (*_interface_kinetic_coefficient)[_qp] = interface_kinetic_coefficient;
     (*_specific_humidity_ratio)[_qp] = _property_uo.specificHumidityRatio(_temperature[_qp]);
     (*_saturation_pressure_of_water_vapor_over_ice)[_qp] = _property_uo.saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
     (*_capillary_length_prime)[_qp] = _d_0_prime;
     (*_interface_kinetic_coefficient_prime)[_qp] = _beta_0_prime;
-
   }
 }

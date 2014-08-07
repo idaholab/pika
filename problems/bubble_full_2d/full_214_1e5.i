@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = T_initial_214_0000_mesh.xdr
+  file = T_initial_214_1e5_0000_mesh.xdr
   dim = 2
 []
 
@@ -128,16 +128,16 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = T_initial_214_0000_mesh.xdr
+    mesh = T_initial_214_1e5_0000_mesh.xdr
     nodal_variables = phi
-    es = T_initial_214_0000.xdr
+    es = T_initial_214_1e5_0000.xdr
     system = aux0
   [../]
   [./T_initial]
     type = SolutionUserObject
-    mesh = T_initial_214_0000_mesh.xdr
+    mesh = T_initial_214_1e5_0000_mesh.xdr
     nodal_variables = T
-    es = T_initial_214_0000.xdr
+    es = T_initial_214_1e5_0000.xdr
   [../]
 []
 
@@ -150,7 +150,7 @@
   end_time = 20000
   reset_dt = true
   dtmax = 50
-  nl_abs_tol = 1e-12
+  nl_abs_tol = 1e-13
   nl_rel_tol = 1e-07
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
@@ -160,7 +160,7 @@
 []
 
 [Adaptivity]
-  max_h_level = 10
+  max_h_level = 8
   marker = phi_marker
   [./Indicators]
     active = 'phi_grad_indicator'

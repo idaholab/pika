@@ -189,9 +189,9 @@ PikaCriteriaAction::addPostprocessorAction(const std::string & name, const std::
 
   // Account for the differing types
   if (id == 0)
-    action_params.set<std::string>("value_type") = "min";
+    action->getObjectParams().set<MooseEnum>("value_type") = "min";
   else if (id == 1)
-    action_params.set<std::string>("value_type") = "max";
+    action->getObjectParams().set<MooseEnum>("value_type") = "max";
 
   // Add the action to the warehouse
   _awh.addActionBlock(action);

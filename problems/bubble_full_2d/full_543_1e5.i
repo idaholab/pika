@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = T_initial_214_0000_mesh.xdr
+  file = phi_initial_1e5_0003_mesh.xdr
   dim = 2
 []
 
@@ -83,7 +83,6 @@
     mob_name = mobility
     chemical_potential = u
     coefficient = 1.0
-    use_temporal_scaling = true
     lambda = phase_field_coupling_constant
   [../]
   [./phi_double_well]
@@ -112,13 +111,13 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 259.27 # -5
+    value = 267.515 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 258.2 # -20
+    value = 264.8 # -20
   [../]
 []
 
@@ -128,16 +127,15 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = T_initial_214_0000_mesh.xdr
+    mesh = phi_initial_1e5_0003_mesh.xdr
     nodal_variables = phi
-    es = T_initial_214_0000.xdr
-    system = aux0
+    es = phi_initial_1e5_0003.xdr
   [../]
   [./T_initial]
     type = SolutionUserObject
-    mesh = T_initial_214_0000_mesh.xdr
+    mesh = T_initial_543_1e5_0000_mesh.xdr
     nodal_variables = T
-    es = T_initial_214_0000.xdr
+    es = T_initial_543_1e5_0000.xdr
   [../]
 []
 
@@ -154,16 +152,17 @@
   nl_rel_tol = 1e-07
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 0.1
+    dt = 1
     percent_change = 0.5
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 10
-  marker = phi_marker
+  max_h_level = 8
+  marker = combo_marker
+  initial_steps = 8
+  initial_marker = phi_above_marker
   [./Indicators]
-    active = 'phi_grad_indicator'
     [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
@@ -174,22 +173,32 @@
     [../]
   [../]
   [./Markers]
-    active = 'phi_marker'
-    [./phi_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-8
-      indicator = phi_grad_indicator
-      refine = 1e-7
-    [../]
-    [./u_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-7
-      indicator = u_grad_indicator
-      refine = 1e-5
-    [../]
     [./combo_marker]
       type = ComboMarker
-      markers = 'phi_marker u_marker'
+      markers = 'phi_tol_marker u_tol_marker'
+    [../]
+    [./phi_tol_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-6
+      indicator = phi_grad_indicator
+      refine = 1e-4
+    [../]
+    [./u_tol_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-9
+      indicator = u_grad_indicator
+      refine = 1e-8
+    [../]
+    [./phi_above_marker]
+      type = ValueThresholdMarker
+      variable = phi
+      refine = 1.00000001
+    [../]
+    [./u_fraction_marker]
+      type = ErrorFractionMarker
+      coarsen = 0.05
+      indicator = u_grad_indicator
+      refine = 0.85
     [../]
   [../]
 []
@@ -199,6 +208,7 @@
   exodus = true
   checkpoint = true
   csv = true
+  file_base = full_543_1e5/out
   [./console]
     type = Console
     perf_log = true
@@ -229,12 +239,10 @@
 
 [PikaMaterials]
   temperature = T
-  interface_thickness = 1e-6
+  interface_thickness = 1e-5
   temporal_scaling = 1e-4
   outputs = all
   condensation_coefficient = .001
-  interface_kinetic_coefficient = 5.5e5
-  capillary_length = 1.3e-9
   phase = phi
 []
 

@@ -38,11 +38,6 @@ protected:
    */
   virtual void computeQpProperties();
 
-  /**
-   * Computes rho_vs(T_0) to avoid computing this more the needed
-   */
-  virtual void initialSetup();
-
 private:
 
   /// Debug flag, when true additional material properties are output
@@ -87,8 +82,8 @@ private:
   /// Phase-field mobility
   const Real & _input_mobility;
 
-  /// Equilibrium water vapor concentration at reference temperature
-  Real _rho_vs_T_0;
+  /// Reference temperature
+  const Real & _reference_temperature;
 
   /// Phase-field relaxation time
   MaterialProperty<Real> & _tau;
@@ -117,23 +112,15 @@ private:
   /// Phase-field mobility
   MaterialProperty<Real> & _mobility;
 
-  /* debugging */
 
-  /// Equilibrium water vapor concentration at saturation
+  ///@{
+  /// Material properties for debugging purposes
   MaterialProperty<Real> * _rho_vs;
-
-  MaterialProperty<Real> * _capillary_length;
-
-  MaterialProperty<Real> * _interface_kinetic_coefficient;
-
   MaterialProperty<Real> * _specific_humidity_ratio;
-
   MaterialProperty<Real> * _saturation_pressure_of_water_vapor_over_ice;
-
   MaterialProperty<Real> * _capillary_length_prime;
-
   MaterialProperty<Real> * _interface_kinetic_coefficient_prime;
-
+  ///@}
 };
 
 #endif // PIKAMATERIAL_H
