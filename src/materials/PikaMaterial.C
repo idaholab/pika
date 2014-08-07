@@ -125,6 +125,5 @@ PikaMaterial::computeQpProperties()
     (*_saturation_pressure_of_water_vapor_over_ice)[_qp] = _property_uo.saturationPressureOfWaterVaporOverIce(_temperature[_qp]);
     (*_capillary_length_prime)[_qp] = _d_0_prime;
     (*_interface_kinetic_coefficient_prime)[_qp] = _beta_0_prime;
-
   }
 }
