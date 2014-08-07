@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = T_initial_543_1e5_0000_mesh.xdr
+  file = phi_initial_1e5_0003_mesh.xdr
   dim = 2
 []
 
@@ -127,10 +127,9 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = T_initial_543_1e5_0000_mesh.xdr
+    mesh = phi_initial_1e5_0003_mesh.xdr
     nodal_variables = phi
-    es = T_initial_543_1e5_0000.xdr
-    system = aux0
+    es = phi_initial_1e5_0003.xdr
   [../]
   [./T_initial]
     type = SolutionUserObject
@@ -160,9 +159,10 @@
 
 [Adaptivity]
   max_h_level = 8
-  marker = phi_marker
+  marker = combo_marker
+  initial_steps = 8
+  initial_marker = phi_above_marker
   [./Indicators]
-    active = 'phi_grad_indicator'
     [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
@@ -173,22 +173,32 @@
     [../]
   [../]
   [./Markers]
-    active = 'phi_marker'
-    [./phi_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-8
-      indicator = phi_grad_indicator
-      refine = 1e-7
-    [../]
-    [./u_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-7
-      indicator = u_grad_indicator
-      refine = 1e-5
-    [../]
     [./combo_marker]
       type = ComboMarker
-      markers = 'phi_marker u_marker'
+      markers = 'phi_tol_marker u_tol_marker'
+    [../]
+    [./phi_tol_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-6
+      indicator = phi_grad_indicator
+      refine = 1e-4
+    [../]
+    [./u_tol_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-9
+      indicator = u_grad_indicator
+      refine = 1e-8
+    [../]
+    [./phi_above_marker]
+      type = ValueThresholdMarker
+      variable = phi
+      refine = 1.00000001
+    [../]
+    [./u_fraction_marker]
+      type = ErrorFractionMarker
+      coarsen = 0.05
+      indicator = u_grad_indicator
+      refine = 0.85
     [../]
   [../]
 []

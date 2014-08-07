@@ -75,11 +75,11 @@ PikaMaterial::computeQpProperties()
   const Real & rho_vs_T_0 = _property_uo.equilibriumWaterVaporConcentrationAtSaturationAtReferenceTemperature();
 
   // lambda; Eq. (37)
-  const Real _d_0_prime = _property_uo.capillaryLengthPrime(_reference_temperature, rho_vs);
+  const Real _d_0_prime = _property_uo.capillaryLengthPrime(_temperature[_qp], rho_vs);
   _lambda[_qp] = _a_1 * _interface_thickness / _d_0_prime;
 
   // tau; Eq. (38)
-  const Real _beta_0_prime = _property_uo.interfaceKineticCoefficientPrime(_reference_temperature, rho_vs);
+  const Real _beta_0_prime = _property_uo.interfaceKineticCoefficientPrime(_temperature[_qp], rho_vs);
   _tau[_qp] = _beta_0_prime * _interface_thickness * _lambda[_qp] / _a_1;
 
   // u_eq; Eq. (33)
