@@ -1,0 +1,191 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Journal Article
+% LaTeX Template
+% Version 1.3 (9/9/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[twoside]{article}
+
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+\usepackage{mathtools} %For equations
+\usepackage{amsmath} %For equations Ref
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec} % Allows customization of titles
+\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{Computational Science Internship $\bullet$ May-August, 2014} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{PIKA: A MOOSE Based Application for Modeling Snow Microstructure}} % Article title
+
+\author{
+\large
+\textsc{Micah Johnson}\thanks{Article content was completed at the Idaho National Laboratory}\\[2mm] % Your name
+\normalsize  Boise State Unversity \\ % Your institution
+\normalsize \href{mailto:micahjohnson1@u.boisestate.edu}{micahjohnson1@u.boisestate.edu} % Your email address
+\vspace{-5mm}
+\and
+\large
+\textsc{Andrew Slaughter, PhD}\thanks{Assigned Mentor}\\[2mm] % Your name
+\normalsize  Idaho National Laboratory \\ % Your institution
+\normalsize \href{mailto:andrewslaughter@inl.gov}{andrewslaughter@inl.gov} % Your email address
+\vspace{-5mm}
+}
+\date{}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert title
+
+\thispagestyle{fancy} % All pages have headers and footers
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+
+\noindent
+
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{2} % Two-column layout throughout the main article text
+
+\section{Introduction}
+
+\lettrine[nindent=0em,lines=3]{M}odeling an entire cryosphere requires coupling together several length scales to avoid making isotropic assumptions. This is made clear when considering how dynamic the microstructure of snow can be under typical environmental conditions. This makes the microstructure is integral to understanding larger scale problems like snow pack longevity, global temperature feeback, and avalanche potential.  Building such models often require more resources and in-depth knowledge of computer science to build which is often what justifies the aformentioned assumptions. The Multi-Physics Object Oriented Simulation Environment (MOOSE), developed at the Idaho National Laboratory, provides a framework in which applications built on it can easily couple together. This allows researchers to build applications separately and at different scales, but couple together solutions to build advanced multi-scale models with minimal knowledge of computer science topics like parallelization. Such models have already been demonstrated at the Idaho National Laboratory using MOOSE in other applications. Thus we propose an entire cryosphere can be modeled using applications built on MOOSE. The first initiative of this proposal is an application called PIKA which models the microstructure evolution of snow.
+
+%------------------------------------------------
+
+\section{Method}
+PIKA is a phase-field model for solidification. In brief, the phase-field method is a common treatment for multiphase problems where properties are phase dependent. The method introduces an extra variable that represents the phase $\phi$ of the medium. This technique is useful because material properties can defined as continuous functions of where phi ranges from -1 (water vapor) to 1 (ice). The two phases are separated by a diffuse interface of some assumed thickness (W). Our model follows the work of \cite{Plapp_2009} expcept PIKA takes advantage of the finite element method. 
+PIKA currently incorporates a single mode of mass transport through sublimation and thus only models dry snow. The microstructure evolution can be modeled through three equations governing the phase evolution \eqref{eq:phase}, heat \eqref{eq:heat}, and mass transport \eqref{eq:mass}. The unknown variables are the phase which varies from 1 (ice) to -1 (vapor),temperature, and a dimensionless water vapor concentration term.
+ \begin{equation} \label{eq:phase}
+	\tau \frac{\partial \phi}{\partial t} = W^2 \nabla^2 \phi +(\phi-\phi^3)+\lambda[u-u_{eq}](1-\phi^2)^2 
+\end{equation}
+\begin{equation}\label{eq:heat}
+	C(\phi)\frac{\partial T}{\partial t} = \nabla \cdot [K(\phi) \nabla T] + \frac{L_{sg}}{2}\frac{\partial \phi}{\partial t}
+\end{equation} 
+\begin{equation} \label{eq:mass}
+	\frac{\partial u}{\partial t} = \nabla \cdot[ D(\phi) \nabla u] - \frac{1}{2}\frac{\partial \phi}{\partial t}
+\end{equation}
+Equation \eqref{eq:phase} is a classic phase-field equation that represents the bulk phase with the first two terms. The third term drives the phase change based on the availability of vapor. $\tau$ is a relaxation time and $\lambda$ is a coupling constant. Both coefficients are fomulated in terms of the capillarly length and the interface kinetic coeffiicent, which are common phase-field terms. For brevity, the derivation of these terms can be seen in \cite{Plapp_2009}. The other two equations are transport equations with phase dependent source terms. In accordance with phase-field techniques the material properties in  \eqref{eq:heat}, \eqref{eq:mass} are linearly interpolated in \eqref{eq:heat_capacity}, \eqref{eq:conductivity} and \eqref{eq:dif. Notice that \eqref{eq:diffusion_coefficient} tends towards zero as $\phi$ $\rightarrow$ 0, thus the water vapor does not diffuse through ice.
+\begin{equation} \label{eq:heat_capacity}
+	C(\phi) = C_{ice} \frac{1+\phi}{2} + C_{air} \frac{1-\phi}{2}\end{equation} 
+\begin{equation} \label{eq:conductivity}
+	K(\phi) = K_{ice} \frac{1+\phi}{2} + K_{air} \frac{1-\phi}{2}
+\end{equation} 
+\begin{equation} \label{eq:diffusion_coefficient}
+	D(\phi) = D_{v} \frac{1-\phi}{2}
+\end{equation} 
+\subsection{Temporal Scaling}
+In modeling ice and water vapor, large disparities are present (e.g. water vapor diffusion and microstructure evolution), \cite{Plapp_2009} recommend treating it as a quasi-steady problem. This assumption allows for the scaling of ice density, diffusion terms, and latent heat. The velocity of the phase interface is an importmant metric for modeling in phase-field method, thus the scaling is applied to preserve the interface velocity. This is accomplished by applying the scaling only to the equations \eqref{eq:phase}, \eqref{eq:heat}, and \eqref{vapor} and not the property definitions. The scaling is  
+\subsection{Implementation in MOOSE}
+Since MOOSE is a finite element framework, all equations must be in their weak form to be used effectivley. The weak form for finite element is started by gathering all terms on one side, multipy by a test function and integrating.  By using Gauss's Divergence theorem and integration by parts, diffusion terms can be reduced to a single derivative.  
+
+
+%--------------
+
+%------------------------------------------------
+
+\section{Results}
+
+\begin{table}[H]
+\caption{Example table}
+\centering
+\begin{tabular}{llr}
+\toprule
+\multicolumn{2}{c}{Name} \\
+\cmidrule(r){1-2}
+First name & Last Name & Grade \\
+\midrule
+John & Doe & $7.5$ \\
+Richard & Miles & $2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+\begin{equation}
+\label{eq:emc}
+e = mc^2
+\end{equation}
+
+
+
+%------------------------------------------------
+
+\section{Discussion}
+
+\subsection{Subsection One}
+
+\subsection{Subsection Two}
+
+
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+\begin{thebibliography}{99} % Bibliography
+
+\bibitem[Kaempfer and Plapp, 2009]{Plapp_2009}
+Kaempfer, T.~U. and Plapp, M. (2009).
+\newblock Phase-field modeling of dry snow metamorhism
+\newblock {\em Physical Review}, 79:031502-1:17.
+ 
+\end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+
+\end{multicols}
+
+\end{document}
