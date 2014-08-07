@@ -56,12 +56,20 @@ public:
   virtual void finalize(){}
   ///@}
 
-  /// Returns the capillary length (d_0) using the given value or computed (Eq. (25))
-  Real capillaryLength(const Real & T) const;
+  /**
+   * Returns the capillary length (d_0') using the given value or computed (Eq. (25))
+   * @param T The Current temperature
+   * @param rho_vs Equilibrium water vapor concentration at saturation for the current temperature, this is
+   *               passed in to save computing the value more than once
+   */
+  Real capillaryLengthPrime(const Real & T, const Real & rho_vs) const;
 
-  /// Returns the interface kinetic coefficient (beta_0)  using the given value or computed (Eq. (26))
-  Real interfaceKineticCoefficient(const Real & T) const;
-
+  /** Returns the interface kinetic coefficient (beta_0')  using the given value or computed (Eq. (26))
+   * @param T The Current temperature
+   * @param rho_vs Equilibrium water vapor concentration at saturation for the current temperature, this is
+   *               passed in to save computing the value more than once
+   */
+  Real interfaceKineticCoefficientPrime(const Real & T, const Real & rho_vs) const;
 
   /**
    * Computes the specific humidity ratio (x_s; [kg/kg]; Eq. (1))
@@ -78,6 +86,13 @@ public:
   Real saturationPressureOfWaterVaporOverIce(const Real & T) const;
 
   Real equilibriumWaterVaporConcentrationAtSaturation(const Real & T) const;
+
+  /**
+   * Returns a reference to the pre-computed value of rho_vs at the reference temperature,
+   * this is for performance purposes
+   **/
+  const Real & equilibriumWaterVaporConcentrationAtSaturationAtReferenceTemperature() const;
+
 
   Real equilibriumChemicalPotential(const Real & T) const;
 
@@ -114,8 +129,11 @@ private:
 
   const Real _rho_i;
 
-   const Real _T_0;
-  // const Real _mobility;
+  const Real _T_0;
+
+  /// Storage for pre-computing rho_vs at the reference temperature
+  Real _rho_vs_T_0;
+
   const Real _xi;
 
   /// Fitting coefficients for saturation vapor pressure, Wexler, 2007, Table 2

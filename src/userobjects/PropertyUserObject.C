@@ -37,13 +37,18 @@ PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters
     _T_0(getParam<Real>("reference_temperature")),
     _xi(getParam<Real>("temporal_scaling"))
 {
-    // Define K coefficients (Wexler, 1977, Table 2)
+
+  // Define K coefficients (Wexler, 1977, Table 2)
   _K.push_back(-0.58653696e4);
   _K.push_back(0.2224103300e2);
   _K.push_back(0.13749042e-1);
   _K.push_back(-0.34031775e-4);
   _K.push_back(0.26967687e-7);
   _K.push_back(0.6918651);
+
+  // Pre-compute rho_vs at T_0, this only needs to be done once.
+  // The value should be used vi `equilibriumWaterVaporConcentrationAtSaturationAtRefereneTemperature`;
+  _rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
 }
 
 InputParameters
@@ -90,24 +95,24 @@ PropertyUserObject::objectParams()
 }
 
 Real
-PropertyUserObject::capillaryLength(const Real & T) const
+PropertyUserObject::capillaryLengthPrime(const Real & T, const Real & rho_vs) const
 {
   Real d0;
   if (_has_capillary_length)
-    d0 = _input_capillary_length;
+    d0 = (rho_vs / _rho_i) * _input_capillary_length;
   else
-    d0 = _gamma * std::pow(_a, 3) / (_boltzmann * T);
+    d0 = (rho_vs / _rho_i) * _gamma * std::pow(_a, 3) / (_boltzmann * T); // Eq. (25)
   return d0;
 }
 
 Real
-PropertyUserObject::interfaceKineticCoefficient(const Real & T) const
+PropertyUserObject::interfaceKineticCoefficientPrime(const Real & T, const Real & rho_vs) const
 {
   Real beta0;
   if (_has_kinetic_coefficient)
-    beta0 = _input_kinetic_coefficieint;
+    beta0 = (rho_vs / _rho_i) * _input_kinetic_coefficieint;
   else
-    beta0 = 1./_alpha * std::sqrt((2.*libMesh::pi*_mass_water_molecule)/(_boltzmann * T));
+    beta0 = 1./_alpha * std::sqrt((2.*libMesh::pi*_mass_water_molecule)/(_boltzmann * T)); // Eq. (26)
   return beta0;
 }
 
@@ -123,11 +128,11 @@ Real
 PropertyUserObject::saturationPressureOfWaterVaporOverIce(const Real & T) const
 {
   // Eq. (2)
-  Real f =  std::exp(_K[0]*std::pow(T,-1.)
-                     + _K[1]*std::pow(T,0.)
-                     + _K[2]*std::pow(T,1.)
-                     + _K[3]*std::pow(T,2.)
-                     + _K[4]*std::pow(T,3.)
+  Real f =  std::exp(_K[0]*std::pow(T, -1.)
+                     + _K[1]*std::pow(T, 0.)
+                     + _K[2]*std::pow(T, 1.)
+                     + _K[3]*std::pow(T, 2.)
+                     + _K[4]*std::pow(T, 3.)
                      + _K[5]*log(T));
   return f;
 }
@@ -135,7 +140,14 @@ PropertyUserObject::saturationPressureOfWaterVaporOverIce(const Real & T) const
 Real
 PropertyUserObject::equilibriumWaterVaporConcentrationAtSaturation(const Real & T) const
 {
-  return  _rho_a * specificHumidityRatio(T);
+  return  _rho_a * specificHumidityRatio(T); // Eq. (3)
+}
+
+
+const Real &
+PropertyUserObject::equilibriumWaterVaporConcentrationAtSaturationAtReferenceTemperature() const
+{
+  return _rho_vs_T_0;
 }
 
 const Real &
@@ -147,7 +159,6 @@ PropertyUserObject::temporalScale() const
 Real
 PropertyUserObject::equilibriumChemicalPotential(const Real & T) const
 {
-  Real rho_vs_T = equilibriumWaterVaporConcentrationAtSaturation(T);
-  Real rho_vs_T_0 = equilibriumWaterVaporConcentrationAtSaturation(_T_0);
-  return (rho_vs_T - rho_vs_T_0) / _rho_i;
+  Real rho_vs_T = equilibriumWaterVaporConcentrationAtSaturation(T); // defined just after Eq. (32) in text
+  return (rho_vs_T - _rho_vs_T_0) / _rho_i;
 }
