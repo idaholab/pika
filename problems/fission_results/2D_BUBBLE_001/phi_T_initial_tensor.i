@@ -1,16 +1,16 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 25
-  ny = 25
-  xmax = .005
-  ymax = .005
-  uniform_refine = 2
+  nx = 8
+  ny = 20
+  xmin = .001
+  xmax = .0025 # mm
+  ymax = .005 # mm
   elem_type = QUAD4
 []
 
 [Variables]
-  active = 'phi'
+  active = 'phi T'
   [./T]
   [../]
   [./u]
@@ -32,7 +32,7 @@
 []
 
 [Kernels]
-  active = 'phi_double_well phi_time phi_square_gradient'
+  active = 'heat_diffusion phi_double_well heat_phi_time heat_time phi_time phi_square_gradient'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -95,13 +95,22 @@
   [../]
 []
 
-[Postprocessors]
+[BCs]
+  [./T_hot]
+    type = DirichletBC
+    variable = T
+    boundary = bottom
+    value = 267.515
+  [../]
+  [./T_cold]
+    type = DirichletBC
+    variable = T
+    boundary = top
+    value = 264.8
+  [../]
 []
 
-[UserObjects]
-  [./property_uo]
-    type = PropertyUserObject
-  [../]
+[Postprocessors]
 []
 
 [Executioner]
@@ -115,8 +124,8 @@
 []
 
 [Adaptivity]
-  max_h_level = 5
-  initial_steps = 5
+  max_h_level = 8
+  initial_steps = 8
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -134,9 +143,9 @@
     active = 'phi_marker'
     [./phi_marker]
       type = ErrorFractionMarker
-      coarsen = .02
+      coarsen = .01
       indicator = phi_grad_indicator
-      refine = .5
+      refine = .8
     [../]
     [./T_marker]
       type = ErrorFractionMarker
@@ -162,6 +171,8 @@
 [Outputs]
   output_initial = true
   exodus = true
+  file_base = phi_temp_diffusion
+  xdr = true
   [./console]
     type = Console
     perf_log = true
@@ -171,21 +182,21 @@
 []
 
 [ICs]
-  active = 'phase_ic'
+  active = 'phase_ic temperature_ic'
   [./phase_ic]
     x1 = .0025
     y1 = .0025
-    radius = 0.0005
+    radius = .0005
     outvalue = 1
     variable = phi
     invalue = -1
     type = SmoothCircleIC
-    int_width = 1e-5
+    int_width = 5e-6
   [../]
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = -543.0*y+267.515
+    function = -543*y+267.515
   [../]
   [./vapor_ic]
     variable = u
@@ -203,7 +214,7 @@
 [PikaMaterials]
   phi = phi
   temperature = 263.15
-  interface_thickness = 1e-5
+  interface_thickness = 5e-6
   temporal_scaling = 1e-4
 []
 

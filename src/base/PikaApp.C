@@ -51,13 +51,16 @@
 #include "PikaPhaseInitializeAux.h"
 
 // InitialConditions
-#include "ChemicalPotentialIC.h"
 #include "KaempferAnalyticPhaseIC.h"
 #include "PikaCriteria.h"
+#include "ChemicalPotentialIC.h"
 
 // Actions
 #include "PikaMaterialAction.h"
 #include "PikaCriteriaAction.h"
+
+//BCS
+#include "ChemicalPotentialBC.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -119,8 +122,8 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(DoubleWellPotentialMMS);
 
   // InitialConditions
-  registerInitialCondition(ChemicalPotentialIC);
   registerInitialCondition(KaempferAnalyticPhaseIC);
+  registerBoundaryCondition(ChemicalPotentialIC);
 
   // AuxKernels
   registerAux(ErrorFunctionAux);
@@ -132,6 +135,9 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(SharpInterfaceCheckVapor);
   registerAux(PikaCriteria);
   registerAux(PikaPhaseInitializeAux);
+
+  //BCS
+  registerBoundaryCondition(ChemicalPotentialBC);
 
 }
 

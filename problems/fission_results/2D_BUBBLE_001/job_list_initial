@@ -1,0 +1,12 @@
+[Jobs]
+  [./INITIALIZE]
+    type = PBSJob
+    chunks = 1
+    mpi_procs =20 
+    moose_application = ~/Projects/pika/pika-opt
+    input_file = phi_T_initial_tensor.i
+    walltime = 1:00:00
+    cli_args = '-log_summary'
+    [../]
+[]
+

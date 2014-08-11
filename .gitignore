@@ -67,6 +67,7 @@ traceout*.txt
 *.bak
 *.png
 .depend
+*.tar
 .ipynb_checkpoints/
 doc/doxygen/html/
 *.#*
