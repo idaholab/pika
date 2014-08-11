@@ -8,29 +8,29 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef CHEMFunctionALPOTENTIALFUNCTION_H
-#define CHEMFunctionALPOTENTIALFUNCTION_H
+#ifndef CHEMICALPOTENTIALBC_H
+#define CHEMICALPOTENTIALBC_H
 
 // MOOSE includes
-#include "Function.h"
+#include "NodalBC.h"
 
 // PIKA includes
 #include "PropertyUserObjectInterface.h"
 
 //Forward Declarations
-class ChemicalPotentialFunction;
+class ChemicalPotentialBC;
 
 template<>
-InputParameters validParams<ChemicalPotentialFunction>();
+InputParameters validParams<ChemicalPotentialBC>();
 
-class ChemicalPotentialFunction :
-  public Function,
+class ChemicalPotentialBC :
+  public NodalBC,
   public PropertyUserObjectInterface
 {
 public:
-  ChemicalPotentialFunction(const std::string & name, InputParameters parameters);
+  ChemicalPotentialBC(const std::string & name, InputParameters parameters);
 
-  virtual ~ChemicalPotentialFunction(){};
+  virtual ~ChemicalPotentialBC(){};
 
 protected:
 
@@ -39,7 +39,12 @@ protected:
    *
    * This must be overridden by derived classes.
    */
-  virtual Real value( const Real & phi, const Real & T);
+  virtual Real computeQpResidual();
+
+private:
+
+  VariableValue & _temperature;
+  VariableValue & _phase;
 };
 
-#endif // CHEMFunctionALPOTENTIALFUNCTION_H
+#endif // CHEMICALPOTENTIALBC_H
