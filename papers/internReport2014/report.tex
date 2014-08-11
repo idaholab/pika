@@ -30,6 +30,8 @@
 \usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
 \usepackage{booktabs} % Horizontal rules in tables
 \usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{graphicx}
+
 \usepackage{hyperref} % For hyperlinks in the PDF
 
 \usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
@@ -174,7 +176,8 @@ Equations \eqref{eq:phase} and \eqref{eq:scaled_transport} are the strong forms 
 %----------------------------------------------------------------------------------------
 \section{Results}
 
-PIKA has been validated by using the same experiment referenced in \cite{Plapp_2009} which was used to validate their code. The experiment in brief was a cube of single crystal ice with a 1 mm hole drilled through the center. The cube had copper plates attached on the top and bottom which were used to induce a temperature gradient. The gradient allows the hole to migrate and the velocity of the bubble was recorded. The experiment was replicated in PIKA taking advantage of half symmetry to reduce computational time. The problem is solved using three simulations used in series. The first is to allow the problem to relax to a steady state in which the equations decoupled. Otherwise the phase interface would relax and the solution would treat this as an actual phase change. Then the relaxed phase solution is used to initilize the temperature distibution, whiile still being decoupled. The two previous simulations provide the initial conditions fo $\phi$ and $T$ . Some key parameters used in the simulations are provided in table \ref{table:bubble_stats}.
+PIKA has been validated by using the same experiment referenced in \cite{Plapp_2009} which was used to validate their code. The experiment in brief was a cube of single crystal ice with a 1 mm hole drilled through the center. The cube had copper plates attached on the top and bottom which were used to induce a temperature gradient. The gradient allows the hole to migrate and the velocity of the bubble was recorded. The experiment was replicated in PIKA taking advantage of half symmetry to reduce computational time. The problem is solved using three simulations used in series. The first is to allow the problem to relax to a steady state in which the equations decoupled. Otherwise the phase interface would relax and the solution would treat this as an actual phase change. Then the relaxed phase solution is used to initilize the temperature distribution, while still decoupled from $\phi$ and $u$. The two previous simulations provide the initial conditions fo $\phi$ and $T$ . Some key parameters used in the simulations are provided in table \ref{table:bubble_stats} . Figure \ref{fig:bubble} shows the initial position of the bubble interface and the magenta shows the bubble's interface after simulating migration for 7200 seconds with the temperature shown in kelvin. The interface between the phases was calculated to be 3.89e-9 $m/s$. This is the same order of magnitude of the experiment and \cite{ref:Plapp_2009} calculated the velocity for the same experiment to be ~4e-9.
+Additionally PIKA is capable of taking a $\mu$-CT scan of snow microstructure as an intial condition. Figure \ref{fig:snow} demonstration of simulated evolution of snow microstructure where a $\mu$-CT scan was used as an intital condition for the phase.
 
 \begin{table}[H] 
 \caption{PIKA bubble simulation parameters}
@@ -186,13 +189,22 @@ Parameter & Symbol & Value \\
 \midrule
 Half Width & $x_{max}$ & $0.0025 m$ \\
 Height & $y_{max}$ & $0.005 m$ \\
-Top Temp. & $T_{cold}$ & $258.2 K$ \\
-Bottom Temp. & $T_{hot}$ & $259.27 K$ \\
+Top Temp. & $T_{cold}$ & $264.8 K$ \\
+Bottom Temp. & $T_{hot}$ & $267.515 K$ \\
 Interface Thickness & $w$ & $1e-5 m$ \\
 Temporal Scale & $\xi$ & $1e-4$ \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\begin{figure}[H] 
+  \centering
+    \includegraphics[width=0.5\textwidth]{2D_bubble_7200s_543dT.png}
+  \caption{Simulated bubble migration after 7200 seconds with an applied temperature gradient of 543 K/m. The black ring shows the initial condition of the bubble and the magenta shows the interface of the bubble post migration.}
+\label{fig:bubble}
+\end{figure}
+
+
 
 
 %----------------------------------------------------------------------------------------
