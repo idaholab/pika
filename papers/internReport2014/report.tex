@@ -87,7 +87,7 @@
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-The Multi-physics Object Oriented Simulation Environment (MOOSE) offers an oppurtunity to build fully coupled models that span several length scales \cite{Gaston_2009}. As a part of an initiative to  model an entire cryosphere, PIKA is presented for the first time as a capable snow microstructure evolution simulator. PIKA is a phase-field model solving for pore space evolution in dry snow. The code is validated using an experiment in which an air bubble was migrating through ice. The application's capacity is demonstrated by importing a $\mu$-CT scan of microstructure and applying a temperature gradient inducing evolution. 
+The Multi-physics Object Oriented Simulation Environment (MOOSE) offers an oppurtunity to build fully coupled models that span several length scales \cite{Gaston_2009}. As a part of an initiative to  model an entire cryosphere, PIKA is presented for the first time as a capable snow microstructure evolution simulator. PIKA is a phase-field model solving for pore space evolution in dry snow. The code is validated using an experiment in which an air bubble was migrating through ice. The application's capacity is demonstrated by importing a $\mu$-CT scan of microstructure and applying a temperature gradient to induce phase evolution. 
 
 \end{abstract}
 
@@ -96,16 +96,20 @@ The Multi-physics Object Oriented Simulation Environment (MOOSE) offers an oppur
 %----------------------------------------------------------------------------------------
 
 \begin{multicols}{2} % Two-column layout throughout the main article text
-
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
 \section{Introduction}
 
-\lettrine[nindent=0em,lines=2]{M}odeling an entire cryosphere requires coupling together several length scales to avoid making isotropic assumptions. This is made clear when considering how dynamic the microstructure of snow can be under typical environmental conditions. This makes the microstructure is integral to understanding larger scale problems like snow pack longevity, global temperature feeback, and avalanche potential.  Building such models often require more resources and in-depth knowledge of computer science to build which is often what justifies the aformentioned assumptions. The Multi-Physics Object Oriented Simulation Environment (MOOSE), developed at the Idaho National Laboratory, provides a framework in which applications built on it can easily couple together  \cite{Gaston_2009}. This allows researchers to build applications separately and at different scales, but couple together solutions to build advanced multi-scale models with minimal knowledge of computer science topics like parallelization. Such models have already been successfully demonstrated at the Idaho National Laboratory using MOOSE in other applications. Thus we propose an entire cryosphere can be modeled using applications built on MOOSE. The first initiative of this proposal is an application called PIKA which models the microstructure evolution of snow.
+\lettrine[nindent=0em,lines=2]{A}ccurately modeling an entire cryosphere requires coupling together several length scales. The smallest of these, the microstructure of snow, is integral to understanding larger scale problems like snow pack longevity, global temperature feeback, and avalanche potential. However, solving mutliscale problems is not only numerically challenging, but requires more computational resources. These difficulties often delay the original science being studied. The Multi-Physics Object Oriented Simulation Environment (MOOSE), developed at the Idaho National Laboratory, provides a framework in which applications can solve partial differential equations with advanced numerical methods, provide fully coupled solutions across multiple length scales, and is parallel agnostic \cite{Gaston_2009}. This allows researchers to build advanced multi-scale models without benig detracted by other sciences required to solve their problem. Such models have already been successfully demonstrated at the Idaho National Laboratory using MOOSE in other applications. Thus we propose an entire cryosphere can be modeled using applications built on MOOSE. The first initiative of this proposal is an application called PIKA which models the microstructural evolution of snow.
 
-%------------------------------------------------
-
+%----------------------------------------------------------------------------------------
+%	METHOD
+%----------------------------------------------------------------------------------------
 \section{Method}
-PIKA is a phase-field model for solidification. In brief, the phase-field method is a common treatment for multiphase problems where properties are phase dependent. The method introduces an extra variable that represents the phase $\phi$ of the medium. This technique is useful because material properties can defined as continuous functions of where phi ranges from -1 (water vapor) to 1 (ice). The two phases are separated by a diffuse interface of some assumed thickness (W). Our model follows the work of \cite{Plapp_2009} expcept PIKA takes advantage of the finite element method. 
-PIKA currently incorporates a single mode of mass transport through sublimation and thus only models dry snow. The microstructure evolution can be modeled through three equations governing the phase evolution \eqref{eq:phase}, heat \eqref{eq:heat} and mass transport \eqref{eq:mass}. The unknown variables are the phase which varies from 1 (ice) to -1 (vapor), temperature, and a dimensionless water vapor concentration $u$.
+
+PIKA is a phase-field model for solidification. In brief, the phase-field method is a common treatment for multiphase problems where properties are phase dependent. The method introduces an extra variable that represents the phase of the medium. This technique is useful because material properties can defined as continuous functions of where phi ranges from -1 (water vapor) to 1 (ice). The two phases are separated by a diffuse interface of some assumed thickness (W). Our model follows the work of \cite{Plapp_2009} expcept PIKA takes advantage of the finite element method. 
+PIKA currently incorporates a single mode of mass transport through sublimation and thus only models dry snow. The microstructural evolution can be modeled through three equations governing the phase evolution \eqref{eq:phase}, heat transport \eqref{eq:heat} and mass transport \eqref{eq:mass}. The unknown variables are the phase ($\phi$), temperature ($T$), and a dimensionless water vapor concentration ($u$).
  \begin{equation} \label{eq:phase}
 	\tau \frac{\partial \phi}{\partial t} = W^2 \nabla^2 \phi +(\phi-\phi^3)+\lambda[u-u_{eq}](1-\phi^2)^2 
 \end{equation}
@@ -115,22 +119,22 @@ PIKA currently incorporates a single mode of mass transport through sublimation 
 \begin{equation} \label{eq:mass}
 	\frac{\partial u}{\partial t} = \nabla \cdot[ D(\phi) \nabla u] - \frac{1}{2}\frac{\partial \phi}{\partial t}
 \end{equation}
-Where u is defined as the difference between vapor density and a reference saturated vapor density normalized by the density of ice as shown in \eqref{eq:u}
+Where u is defined as the difference between vapor density and the saturated vapor density normalized by the density of ice as shown in \eqref{eq:u}
 \begin{equation} \label{eq:u}
 	u = \frac{ \rho_{vapor}-\rho_{v.s.} (T_{ref})}{\rho_{ice}}
 \end{equation}
-Equation \eqref{eq:phase} is a classic phase-field equation that represents the bulk phase with the first two terms. The third term drives the phase change based on the availability of vapor. $\tau$ is a relaxation time and $\lambda$ is a coupling constant. Both coefficients are fomulated in terms of the capillarly length and the interface kinetic coeffiicent, which are common phase-field terms. For brevity, the derivation of these terms can be seen in \cite{Plapp_2009}. The other two equations are transport equations with phase dependent source terms. In accordance with phase-field techniques the material properties in  \eqref{eq:heat}, \eqref{eq:mass} are linearly interpolated in \eqref{eq:coefficients}. Notice that \ref{eq:diffusion_coefficient} tends towards zero as $\phi$ $\rightarrow$ 0, thus the water vapor does not diffuse through ice.
+Equation \eqref{eq:phase} is a classic phase-field equation that represents the bulk phase with the first two terms. The third term drives the phase change based on the availability of vapor. $\tau$ is a relaxation time and $\lambda$ is a coupling constant. Both coefficients are fomulated in terms of the capillarly length and the interface kinetic coeffiicent, which are common phase-field terms. For brevity, the derivation of these terms can be seen in \cite{Plapp_2009}. The other two equations are transport equations with phase dependent source terms. In accordance with phase-field techniques the material properties in  \eqref{eq:heat}, \eqref{eq:mass} are linearly interpolated in \eqref{eq:coefficients}. Notice that \ref{eq:diffusion_coefficient} tends towards zero as $\phi$ $\rightarrow$ 0, thus the water vapor does not diffuse through ice. Which is known as a one-sided model in phase-field methods.
 \begin{subequations} \label{eq:coefficients}
 \begin{align}
 	C(\phi) = C_{ice} \frac{1+\phi}{2} + C_{air} \frac{1-\phi}{2} \\
 	K(\phi) = K_{ice} \frac{1+\phi}{2} + K_{air} \frac{1-\phi}{2} \\
-	D(\phi) = D_{v} \frac{1-\phi}{2} \label{diffusion_coefficient}
+	D(\phi) = D_{v} \frac{1-\phi}{2} \label{eq:diffusion_coefficient}
 \end{align}
 \end{subequations}
 
 %--------------
 \subsection{Temporal Scaling}
-In modeling ice and water vapor, large disparities are present (e.g. water vapor diffusion and microstructure evolution time scales), \cite{Plapp_2009} recommend treating the evolution as a quasi-steady problem. This assumption allows ice density, diffusion terms, and latent heat to be scaled. The velocity of the phase interface is an importmant metric for modeling in phase-field method, thus the scaling is applied to preserve the interface velocity. This is accomplished by applying the scaling only to the equations \eqref{eq:phase}, \eqref{eq:heat}, and \eqref{vapor} and not the property definitions. The scaling can be seen in \eqref{eq:scaling}.
+In modeling ice and water vapor, large disparities are present (e.g. water vapor diffusion and microstructure evolution time scales). \cite{Plapp_2009} recommend treating the evolution as a quasi-steady problem. This assumption allows ice density, diffusion terms, and latent heat to be scaled with little impact on the final solution. The velocity of the phase interface is an important metric in the phase-field method, thus the scaling is applied to preserve the interface velocity. This is accomplished by applying the scaling only to the equations \eqref{eq:phase}, \eqref{eq:heat}, and \eqref{vapor} and not the property definitions. The scaling process can be seen in \eqref{eq:scaling}.
 \begin{subequations} \label{eq:scaling}
 \begin{align}
 	D(\phi) \rightarrow D(\phi) \xi \\ 
@@ -141,7 +145,7 @@ In modeling ice and water vapor, large disparities are present (e.g. water vapor
 	\lambda \rightarrow \lambda \xi
 \end{align}
 \end{subequations}
-Note that \eqref{eq:phase} is unaffected by the scaling since it was applied to $u$ and $\lambda$ in the term that drives the phase in which they cancel each other out.  The mass transport equation scaling is algebraically manipulated to resemble the scaling on the heat transport equation. Initiallly the scaling applied to \eqref{eq:mass} is shown in equation \eqref{eq:scaled_mass}. 
+Note that \eqref{eq:phase} is unaffected by the scaling since it was applied to $u$ and $\lambda$ in the term that drives the phase in which they cancel each other out. The mass transport equation scaling is algebraically manipulated to resemble the scaling on the heat transport equation. Initiallly the scaling applied to \eqref{eq:mass} is shown in equation \eqref{eq:scaled_mass}. 
 
 \begin{equation}
 \frac{\partial \frac{u}{\xi}}{\partial t} = \nabla \cdot[ \xi D(\phi) \nabla \frac{1}{\xi}u] - \frac{ 1}{2}\frac{\partial \phi}{\partial t}
@@ -165,10 +169,12 @@ Equations \eqref{eq:phase} and \eqref{eq:scaled_transport} are the strong forms 
 %	\int_\omega \! \frac{\partial u}{\partial t} \xi \ - \xi\nabla \cdot [D(\phi) \nabla u] \xi + \xi \frac{ 1}{2}\frac{\partial \phi}{\partial t} \xi \\
 %\end{align}
 
-%------------------------------------------------
-
+%----------------------------------------------------------------------------------------
+%	RESULTS
+%----------------------------------------------------------------------------------------
 \section{Results}
-PIKA has been validated by using the same experiment referenced in \cite{Plapp_2009} which was used to validate their code. The experiment in brief was a cube of single crystal ice with a 1 mm hole drilled through the center. The cube had copper plates attached on the top and bottom to induce a temperature gradient. The gradient allows the hole to migrate and the velocity of the bubble was recorded. The experiment was replicated in PIKA taking advantage of half symmetry to reduce computational time.  Some key parameters used in the simulation are provided in table \ref{table:bubble_stats}.
+
+PIKA has been validated by using the same experiment referenced in \cite{Plapp_2009} which was used to validate their code. The experiment in brief was a cube of single crystal ice with a 1 mm hole drilled through the center. The cube had copper plates attached on the top and bottom which were used to induce a temperature gradient. The gradient allows the hole to migrate and the velocity of the bubble was recorded. The experiment was replicated in PIKA taking advantage of half symmetry to reduce computational time. The problem is solved using three simulations used in series. The first is to allow the problem to relax to a steady state in which the equations decoupled. Otherwise the phase interface would relax and the solution would treat this as an actual phase change. Then the relaxed phase solution is used to initilize the temperature distibution, whiile still being decoupled. The two previous simulations provide the initial conditions fo $\phi$ and $T$ . Some key parameters used in the simulations are provided in table \ref{table:bubble_stats}.
 
 \begin{table}[H] 
 \caption{PIKA bubble simulation parameters}
@@ -188,18 +194,21 @@ Temporal Scale & $\xi$ & $1e-4$ \\
 \end{tabular}
 \end{table}
 
-%------------------------------------------------
 
+%----------------------------------------------------------------------------------------
+%	DISCUSSION
+%----------------------------------------------------------------------------------------
 \section{Discussion}
 
+%----------------------------------------------------------------------------------------
+%	CONCLUSION
+%----------------------------------------------------------------------------------------
 \section{Conclusion}
-The first step towards modeling an entire cryosphere is the MOOSE based application presented in this paper called PIKA. Follwing \cite{Plapp_2009} uses the finite element method to solve a phase-field evolution, a heat and a mass transport equations. To reduce computational time, a temporal scaling was applied to bridge the gap in time scales. Using these techniques we were able to accurately model bubble migration in ice. 
-Additionally, we showed that is possible to use x-ray microtomographic images of real snow microstructure and apply temperature gradients to induce pore space evolution. PIKA is soon to be open-source code and will be available at www.github.com/idaholab/pika.git.    
+The first step towards modeling an entire cryosphere is the MOOSE based application presented in this paper named PIKA. Following the work done by \cite{Plapp_2009}, PIKA solves three partial differential equations, which represent the phase evolution, the heat distribution, and the mass transport. To reduce computational time, a temporal scaling was applied to bridge the gap in time scales. Using these techniques we were able to accurately model bubble migration in ice. Additionally, we showed that is possible to use x-ray microtomographic images of real snow microstructure and apply temperature gradients to induce pore space evolution. PIKA is soon to be open-source code and will be available at www.github.com/idaholab/pika.git.    
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
-
 \begin{thebibliography}{50} % Bibliography
 
 
