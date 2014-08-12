@@ -15,8 +15,8 @@ InputParameters validParams<TensorMobilityMaterial>()
 {
   InputParameters params = validParams<Material>();
   params.addRequiredCoupledVar("phi", "The phase-field variable to couple");
-  params.addRequiredParam<std::string>("M_1_value", "Name of material property for first mobility coefficient");
-  params.addRequiredParam<std::string>("M_2_value", "Name of material property for second econd mobility coefficient");
+  params.addRequiredParam<Real>("M_1_value", "Name of material property for first mobility coefficient");
+  params.addRequiredParam<Real>("M_2_value", "Name of material property for second econd mobility coefficient");
   params.addParam<std::string>("coefficient_name","M_tensor", "The name of the tensor mobility material property");
   return params;
 }
