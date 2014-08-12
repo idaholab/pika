@@ -33,12 +33,11 @@
 
 [Kernels]
   [./heat_diffusion]
-    type = TensorDiffusion
+    type = PikaDiffusion
     variable = T
     use_temporal_scaling = true
-    coefficient = 1.0
-    mobility_tensor = conductivity_tensor
     block = 0
+    property = conductivity
   [../]
   [./heat_time]
     type = PikaTimeDerivative
@@ -61,11 +60,10 @@
     scale = 1.0
   [../]
   [./vapor_diffusion]
-    type = TensorDiffusion
+    type = PikaDiffusion
     variable = u
     use_temporal_scaling = true
-    coefficient = 1.0
-    mobility_tensor = diffusion_tensor
+    property = diffusion_coefficient
   [../]
   [./vapor_phi_time]
     type = PikaCoupledTimeDerivative
@@ -114,14 +112,14 @@
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 267.515 # -5
+    boundary = left
+    value = 261 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = top
-    value = 264.8 # -20
+    boundary = right
+    value = 260 # -20
   [../]
   [./vapor_bc]
     type = ChemicalPotentialBC
@@ -163,83 +161,33 @@
   [../]
   [./T_initial]
     type = SolutionUserObject
-    mesh = T_initial_543_1e5_0000_mesh.xdr
+    mesh = T_initial_200_0000_mesh.xdr
     nodal_variables = T
-    es = T_initial_543_1e5_0000.xdr
+    es = T_initial_200_0000.xdr
   [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  dt = 10
   nl_max_its = 15
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 20000
+  end_time = 8000
   reset_dt = true
   dtmax = 30
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
   dtmin = .001
-  [./TimeStepper]
-    type = SolutionTimeAdaptiveDT
-    dt = 1
-    percent_change = .2
-  [../]
-[]
-
-[Adaptivity]
-  max_h_level = 6
-  marker = combo_marker
-  initial_steps = 8
-  initial_marker = u_fraction_marker
-  [./Indicators]
-    [./phi_grad_indicator]
-      type = GradientJumpIndicator
-      variable = phi
-    [../]
-    [./u_grad_indicator]
-      type = GradientJumpIndicator
-      variable = u
-    [../]
-  [../]
-  [./Markers]
-    [./combo_marker]
-      type = ComboMarker
-      markers = 'phi_tol_marker u_tol_marker'
-    [../]
-    [./phi_tol_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-6
-      indicator = phi_grad_indicator
-      refine = 1e-4
-    [../]
-    [./u_tol_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-9
-      indicator = u_grad_indicator
-      refine = 1e-8
-    [../]
-    [./phi_above_marker]
-      type = ValueThresholdMarker
-      variable = phi
-      refine = 1.00000001
-    [../]
-    [./u_fraction_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      indicator = u_grad_indicator
-      refine = 0.85
-    [../]
-  [../]
 []
 
 [Outputs]
   output_initial = true
   exodus = true
   csv = true
-  file_base = full_543_1e5_out
+  file_base = full_200
   [./console]
     type = Console
     perf_log = true
@@ -274,9 +222,9 @@
 
 [PikaMaterials]
   temperature = T
-  interface_thickness = 1e-5
-  temporal_scaling = 1e-4
-  condensation_coefficient = .001
+  interface_thickness = 8e-6
+  temporal_scaling = 1e-5
+  condensation_coefficient = .1
   phase = phi
 []
 
