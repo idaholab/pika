@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = phi_initial_0000_mesh.xdr
+  file = phi_initial_0001_mesh.xdr
   dim = 2
 []
 
@@ -85,8 +85,8 @@
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = 263.15
   interface_thickness = 5e-6
+  phase = phi
 []
 

@@ -50,7 +50,7 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    property = tau
+    property = relaxation_time
     scale = 1.0
   [../]
   [./phi_double_well]
@@ -93,12 +93,17 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 10
+  num_steps = 20
   dt = 200
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   nl_rel_tol = 1e-07
+  dtmax = 1000
+  [./TimeStepper]
+    type = IterationAdaptiveDT
+    dt = 200
+  [../]
 []
 
 [Adaptivity]
@@ -148,8 +153,8 @@
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = 263.15
   interface_thickness = 2e-5
+  phase = phi
 []
 
