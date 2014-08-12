@@ -71,7 +71,7 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    property = tau
+    property = relaxation_time
     scale = 1.0
   [../]
   [./phi_transition]
@@ -80,6 +80,7 @@
     mob_name = mobility
     chemical_potential = u
     coefficient = 1.0
+    lambda = phase_field_coupling_constant
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
@@ -140,16 +141,16 @@
   end_time = 20000
   reset_dt = true
   nl_rel_tol = 1e-07
+  dtmax = 100
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    percent_change = 0.05
     dt = 1
   [../]
 []
 
 [Adaptivity]
   max_h_level = 4
-  initial_marker = u_marker
+  initial_marker = combo_mark
   marker = combo_mark
   initial_steps = 8
   [./Indicators]
@@ -157,26 +158,19 @@
       type = GradientJumpIndicator
       variable = phi
     [../]
-    [./u_jump_indicator]
+    [./u_grad_indicator]
       type = GradientJumpIndicator
       variable = u
       block = 0
     [../]
   [../]
   [./Markers]
-    active = 'combo_mark u_marker phi_grad_marker'
+    active = 'combo_mark phi_above u_grad_marker phi_grad_marker'
     [./phi_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = .05
+      type = ErrorToleranceMarker
+      coarsen = 1e-6
       indicator = phi_grad_indicator
-      refine = .8
-    [../]
-    [./u_marker]
-      type = ErrorFractionMarker
-      indicator = u_jump_indicator
-      refine = .8
-      block = 0
-      coarsen = 0.05
+      refine = 1e-4
     [../]
     [./phi_above]
       type = ValueThresholdMarker
@@ -192,7 +186,14 @@
     [./combo_mark]
       type = ComboMarker
       block = 0
-      markers = 'u_marker phi_grad_marker'
+      markers = 'phi_above phi_grad_marker u_grad_marker'
+    [../]
+    [./u_grad_marker]
+      type = ErrorToleranceMarker
+      indicator = u_grad_indicator
+      coarsen = 1e-6
+      refine = 1e-5
+      block = 0
     [../]
   [../]
 []
@@ -231,13 +232,13 @@
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = T
   interface_thickness = 2e-5
-  temporal_scaling = 1e-3
+  temporal_scaling = 1e-4
   output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
   outputs = all
   condensation_coefficient = .001
+  phase = phi
 []
 
 [PikaCriteriaOutput]
