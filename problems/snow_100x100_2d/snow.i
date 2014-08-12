@@ -5,11 +5,14 @@
 []
 
 [Variables]
+  active = 'phi u T'
   [./T]
   [../]
   [./u]
   [../]
   [./phi]
+  [../]
+  [./T_eff_y]
   [../]
 []
 
@@ -29,6 +32,7 @@
 []
 
 [Kernels]
+  active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time heat_time vapor_phi_time vapor_diffusion phi_time phi_square_gradient'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -93,9 +97,16 @@
     mob_name = mobility
     kappa_name = interface_thickness_squared
   [../]
+  [./T_eff_y_diffusion]
+    type = PikaDiffusion
+    variable = T_eff_y
+    use_temporal_scaling = true
+    property = conductivity
+  [../]
 []
 
 [BCs]
+  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -108,9 +119,36 @@
     boundary = bottom
     value = 269 # -20
   [../]
+  [./T_eff_y_dirichlet]
+    type = DirichletBC
+    variable = T_eff_y
+    boundary = bottom
+    value = 263.15
+  [../]
+  [./T_eff_y_flux]
+    type = NeumannBC
+    variable = T_eff_y
+    boundary = top
+    value = 100
+  [../]
 []
 
 [Postprocessors]
+  active = ''
+  [./T_eff_x_top]
+    type = SideAverageValue
+    variable = T_eff_y
+    boundary = top
+  [../]
+  [./k_eff]
+    type = ThermalCond
+    variable = T_eff_y
+    flux = 100
+    length_scale = 1
+    T_hot = 263.15
+    dx = 0.005
+    boundary = top
+  [../]
 []
 
 [UserObjects]
@@ -141,9 +179,10 @@
   end_time = 20000
   reset_dt = true
   nl_rel_tol = 1e-07
-  dtmax = 100
+  dtmax = 60
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
+    percent_change = 0.25
     dt = 1
   [../]
 []
@@ -165,12 +204,12 @@
     [../]
   [../]
   [./Markers]
-    active = 'combo_mark phi_above u_grad_marker phi_grad_marker'
+    active = 'combo_mark u_grad_marker phi_grad_marker'
     [./phi_grad_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-6
+      type = ErrorFractionMarker
+      coarsen = 0.2
       indicator = phi_grad_indicator
-      refine = 1e-4
+      refine = 0.7
     [../]
     [./phi_above]
       type = ValueThresholdMarker
@@ -186,13 +225,13 @@
     [./combo_mark]
       type = ComboMarker
       block = 0
-      markers = 'phi_above phi_grad_marker u_grad_marker'
+      markers = 'phi_grad_marker u_grad_marker'
     [../]
     [./u_grad_marker]
       type = ErrorToleranceMarker
       indicator = u_grad_indicator
-      coarsen = 1e-6
-      refine = 1e-5
+      coarsen = 1e-9
+      refine = 1e-7
       block = 0
     [../]
   [../]
