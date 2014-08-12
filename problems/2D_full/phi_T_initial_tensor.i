@@ -213,8 +213,13 @@
 
 [PikaMaterials]
   phi = phi
+<<<<<<< HEAD
   temperature = 263.15
   interface_thickness = 5e-6
+=======
+  temperature = T
+  interface_thickness = 5e-5
+>>>>>>>  working on input files and adding anti-trapping
   temporal_scaling = 1e-4
 []
 
