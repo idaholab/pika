@@ -5,7 +5,6 @@
 []
 
 [Variables]
-  active = 'phi u T'
   [./T]
   [../]
   [./u]
@@ -32,7 +31,6 @@
 []
 
 [Kernels]
-  active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time heat_time vapor_phi_time vapor_diffusion phi_time phi_square_gradient'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -106,7 +104,6 @@
 []
 
 [BCs]
-  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -134,13 +131,7 @@
 []
 
 [Postprocessors]
-  active = ''
-  [./T_eff_x_top]
-    type = SideAverageValue
-    variable = T_eff_y
-    boundary = top
-  [../]
-  [./k_eff]
+  [./k_eff_y]
     type = ThermalCond
     variable = T_eff_y
     flux = 100
@@ -191,7 +182,7 @@
   max_h_level = 4
   initial_marker = combo_mark
   marker = combo_mark
-  initial_steps = 8
+  initial_steps = 4
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -242,6 +233,7 @@
   exodus = true
   checkpoint = true
   csv = true
+  file_base = snow_out
   [./console]
     type = Console
     perf_log = true
