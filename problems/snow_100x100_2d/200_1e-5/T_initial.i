@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = phi_initial_1e5_0003_mesh.xdr
+  file = phi_initial_0003_mesh.xdr
   dim = 2
 []
 
@@ -18,11 +18,10 @@
 
 [Kernels]
   [./heat_diffusion]
-    type = TensorDiffusion
+    type = PikaDiffusion
     variable = T
     use_temporal_scaling = true
-    coefficient = 1.0
-    mobility_tensor = conductivity_tensor
+    property = conductivity
   [../]
 []
 
@@ -65,9 +64,9 @@
   [./phi_initial]
     type = SolutionUserObject
     system = aux0
-    mesh = phi_initial_1e5_0003_mesh.xdr
+    mesh = phi_initial_0003_mesh.xdr
     nodal_variables = phi_aux
-    es = phi_initial_1e5_0003.xdr
+    es = phi_initial_0003.xdr
   [../]
 []
 
