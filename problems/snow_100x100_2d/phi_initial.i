@@ -24,7 +24,7 @@
     type = ImageFunction
     upper_value = -1
     lower_value = 1
-    file = ../input.png
+    file = input.png
     threshold = 128
   [../]
 []
