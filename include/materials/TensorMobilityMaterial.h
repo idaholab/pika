@@ -52,8 +52,8 @@ private:
   VariableGradient & _grad_phase;
 
   //
-  MaterialProperty<Real> & _M_1;
-  MaterialProperty<Real> & _M_2;
+  const Real & _M_1;
+  const Real & _M_2;
 
   MaterialProperty<Real> & _M_parallel;
   MaterialProperty<Real> & _M_perpendicular;

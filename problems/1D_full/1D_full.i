@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = phi_diffusion_0021_mesh.xdr
+  file = phi_initial_1e5_0003_mesh.xdr
   dim = 2
 []
 
@@ -13,16 +13,21 @@
   [../]
 []
 
+[AuxVariables]
+  [./phi_aux]
+  [../]
+[]
+
 [Functions]
   [./T_func]
     type = SolutionFunction
     from_variable = T
-    solution = intial_T
+    solution = T_initial
   [../]
   [./phi_func]
     type = SolutionFunction
     from_variable = phi
-    solution = initial_phi
+    solution = phi_initial
   [../]
 []
 
@@ -31,6 +36,7 @@
     type = PikaDiffusion
     variable = T
     use_temporal_scaling = true
+    block = 0
     property = conductivity
   [../]
   [./heat_time]
@@ -63,14 +69,13 @@
     type = PikaCoupledTimeDerivative
     variable = u
     coefficient = 0.5
-    differentiated_variable = phi
-    use_temporal_scaling = true
     coupled_variable = phi
+    use_temporal_scaling = true
   [../]
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    property = tau
+    property = relaxation_time
     scale = 1.0
   [../]
   [./phi_transition]
@@ -78,6 +83,8 @@
     variable = phi
     mob_name = mobility
     chemical_potential = u
+    coefficient = 1.0
+    lambda = phase_field_coupling_constant
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
@@ -92,8 +99,16 @@
   [../]
 []
 
+[AuxKernels]
+  [./phi_aux_kernel]
+    type = PikaPhaseInitializeAux
+    variable = phi_aux
+    phase = phi
+  [../]
+[]
+
 [BCs]
-  active = 'T_hot T_cold phi_bc'
+  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -106,16 +121,31 @@
     boundary = right
     value = 260 # -20
   [../]
-  [./insulated_sides]
-    type = NeumannBC
-    variable = T
-    boundary = 'top bottom'
+  [./vapor_bc]
+    type = ChemicalPotentialBC
+    variable = u
+    boundary = '0 1 2 3'
+    phase_variable = phi
+    temperature = T
   [../]
-  [./phi_bc]
-    type = DirichletBC
-    variable = phi
-    boundary = 'left right'
-    value = 1
+[]
+
+[Materials]
+  [./conductivity_tensor]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 2.29
+    M_2_value = 0.02
+    coefficient_name = conductivity_tensor
+  [../]
+  [./diffusion_tensor]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 1e-30
+    M_2_value = 2.178e-5
+    coefficient_name = diffusion_tensor
   [../]
 []
 
@@ -123,92 +153,50 @@
 []
 
 [UserObjects]
-  [./intial_T]
+  [./phi_initial]
     type = SolutionUserObject
-    system = nl0
-    mesh = temp_diffusion_0003_mesh.xdr
-    nodal_variables = T
-    es = temp_diffusion_0003.xdr
-  [../]
-  [./initial_phi]
-    type = SolutionUserObject
-    system = nl0
-    mesh = phi_diffusion_0021_mesh.xdr
+    mesh = phi_initial_1e5_0003_mesh.xdr
     nodal_variables = phi
-    es = phi_diffusion_0021.xdr
+    es = phi_initial_1e5_0003.xdr
   [../]
-[]
-
-[Preconditioning]
-  [./smp_precond]
-    type = SMP
-    full = true
+  [./T_initial]
+    type = SolutionUserObject
+    mesh = T_initial_200_0000_mesh.xdr
+    nodal_variables = T
+    es = T_initial_200_0000.xdr
   [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  dt = 10
+  nl_max_its = 15
   solve_type = PJFNK
-  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '100 hypre boomeramg'
-  end_time = 1300
-[]
-
-[Adaptivity]
-  max_h_level = 5
-  initial_steps = 2
-  marker = combo
-  initial_marker = phi_marker
-  [./Indicators]
-    [./phi_grad_jump]
-      type = GradientJumpIndicator
-      variable = phi
-    [../]
-    [./u_grad_jump]
-      type = GradientJumpIndicator
-      variable = u
-    [../]
-    [./T_grad_jump]
-      type = GradientJumpIndicator
-      variable = T
-    [../]
-  [../]
-  [./Markers]
-    [./phi_marker]
-      type = ErrorFractionMarker
-      coarsen = .01
-      indicator = phi_grad_jump
-      refine = .6
-    [../]
-    [./u_marker]
-      type = ErrorFractionMarker
-      coarsen = .01
-      indicator = u_grad_jump
-      refine = 0.6
-    [../]
-    [./combo]
-      type = ComboMarker
-      markers = 'phi_marker u_marker t_marker'
-    [../]
-    [./t_marker]
-      type = ErrorFractionMarker
-      coarsen = .01
-      indicator = T_grad_jump
-      refine = .5
-    [../]
-  [../]
+  petsc_options_iname = '-pc_type -pc_hypre_type'
+  petsc_options_value = 'hypre boomeramg'
+  end_time = 8000
+  reset_dt = true
+  dtmax = 30
+  nl_abs_tol = 1e-12
+  nl_rel_tol = 1e-07
+  dtmin = .001
 []
 
 [Outputs]
   output_initial = true
   exodus = true
-  file_base = phi_diffusion
+  csv = true
+  file_base = full_200
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
+  [../]
+  [./cp]
+    interval = 10
+    type = Checkpoint
   [../]
 []
 
@@ -233,11 +221,22 @@
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = T
-  interface_thickness = 8e-5
-  output_properties = 'tau equilibrium_concentration heat_capacity conductivity diffusion_coefficient latent_heat lambda'
-  outputs = all
-  temporal_scaling = 1e-4
+  interface_thickness = 8e-6
+  temporal_scaling = 1e-5
+  condensation_coefficient = .1
+  phase = phi
+[]
+
+[PikaCriteriaOutput]
+  air_criteria = false
+  velocity_criteria = false
+  time_criteria = false
+  vapor_criteria = false
+  chemical_potential = u
+  phase = phi
+  use_temporal_scaling = true
+  ice_criteria = false
+  interface_velocity_postprocessors = 'average max min'
 []
 
