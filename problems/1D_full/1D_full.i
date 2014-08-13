@@ -164,7 +164,7 @@
     mesh = T_initial_0000_mesh.xdr
     nodal_variables = T
     es = T_initial_0000.xdr
-  [../]
+ [../]
 []
 
 [Executioner]
@@ -222,6 +222,7 @@
 
 [PikaMaterials]
   temperature = T
+<<<<<<< HEAD
   interface_thickness = 1e-5
   temporal_scaling = 1e-5
   condensation_coefficient = .001

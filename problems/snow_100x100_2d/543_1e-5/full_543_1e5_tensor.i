@@ -33,10 +33,12 @@
 
 [Kernels]
   [./heat_diffusion]
-    type = PikaDiffusion
+    type = TensorDiffusion
     variable = T
     use_temporal_scaling = true
-    property = conductivity
+    coefficient = 1.0
+    mobility_tensor = conductivity_tensor
+    block = 0
   [../]
   [./heat_time]
     type = PikaTimeDerivative
@@ -59,10 +61,11 @@
     scale = 1.0
   [../]
   [./vapor_diffusion]
-    type = PikaDiffusion
+    type = TensorDiffusion
     variable = u
     use_temporal_scaling = true
-    property = diffusion_coefficient
+    coefficient = 1.0
+    mobility_tensor = diffusion_tensor
   [../]
   [./vapor_phi_time]
     type = PikaCoupledTimeDerivative
@@ -129,6 +132,25 @@
   [../]
 []
 
+[Materials]
+  [./conductivity_tensor]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 2.29
+    M_2_value = 0.02
+    coefficient_name = conductivity_tensor
+  [../]
+  [./diffusion_tensor]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 1e-20
+    M_2_value = 2.178e-5
+    coefficient_name = diffusion_tensor
+  [../]
+[]
+
 [Postprocessors]
 []
 
@@ -150,26 +172,28 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  nl_max_its = 15
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   end_time = 20000
   reset_dt = true
-  dtmax = 100
+  dtmax = 30
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
+  dtmin = .001
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
     dt = 1
-    percent_change = 1
+    percent_change = .2
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 8
+  max_h_level = 6
   marker = combo_marker
   initial_steps = 8
-  initial_marker = phi_above_marker
+  initial_marker = u_fraction_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
