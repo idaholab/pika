@@ -16,6 +16,7 @@
 // Modules
 #include "PhaseFieldApp.h"
 #include "HeatConductionApp.h"
+#include "SolidMechanicsApp.h"
 
 // UserObjects
 #include "PropertyUserObject.h"
@@ -26,6 +27,7 @@
 // Materials
 #include "PikaMaterial.h"
 #include "TensorMobilityMaterial.h"
+#include "IbexSnowMaterial.h"
 
 // Kernels
 #include "PikaTimeDerivative.h"
@@ -40,6 +42,7 @@
 #include "DoubleWellPotential.h"
 #include "DoubleWellPotentialMMS.h"
 #include "AntiTrapping.h"
+#include "IbexShortwaveForcingFunction.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -55,6 +58,9 @@
 #include "KaempferAnalyticPhaseIC.h"
 #include "PikaCriteria.h"
 #include "ChemicalPotentialIC.h"
+
+// BoundaryConditions
+#include "IbexSurfaceFluxBC.h"
 
 // Actions
 #include "PikaMaterialAction.h"
@@ -78,11 +84,13 @@ PikaApp::PikaApp(const std::string & name, InputParameters parameters) :
   Moose::registerObjects(_factory);
   PhaseFieldApp::registerObjects(_factory);
   HeatConductionApp::registerObjects(_factory);
+  SolidMechanicsApp::registerObjects(_factory);
   PikaApp::registerObjects(_factory);
 
   Moose::associateSyntax(_syntax, _action_factory);
   PhaseFieldApp::associateSyntax(_syntax, _action_factory);
   HeatConductionApp::associateSyntax(_syntax, _action_factory);
+  SolidMechanicsApp::associateSyntax(_syntax, _action_factory);
   PikaApp::associateSyntax(_syntax, _action_factory);
 }
 
@@ -108,6 +116,7 @@ PikaApp::registerObjects(Factory & factory)
   // Materials
   registerMaterial(PikaMaterial);
   registerMaterial(TensorMobilityMaterial);
+  registerMaterial(IbexSnowMaterial);
 
   // Kernels
   registerKernel(PikaTimeDerivative);
@@ -122,6 +131,8 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(DoubleWellPotential);
   registerKernel(DoubleWellPotentialMMS);
   registerKernel(AntiTrapping);
+  registerKernel(IbexShortwaveForcingFunction);
+
   // InitialConditions
   registerInitialCondition(KaempferAnalyticPhaseIC);
   registerBoundaryCondition(ChemicalPotentialIC);
@@ -137,9 +148,9 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(PikaCriteria);
   registerAux(PikaPhaseInitializeAux);
 
-  //BCS
+  // BoundaryConditions
+  registerBoundaryCondition(IbexSurfaceFluxBC);
   registerBoundaryCondition(ChemicalPotentialBC);
-
 }
 
 void

@@ -6,6 +6,7 @@
 
 [Variables]
   [./T]
+    initial_condition = 268
   [../]
 []
 
@@ -45,7 +46,7 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 269
+    value = 268
   [../]
 []
 
@@ -85,8 +86,7 @@
 []
 
 [PikaMaterials]
-  temperature = 263.15
+  temperature = 268
   interface_thickness = 5e-6
   phase = phi
 []
-

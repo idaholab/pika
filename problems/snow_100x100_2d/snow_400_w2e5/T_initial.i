@@ -6,6 +6,7 @@
 
 [Variables]
   [./T]
+    initial_condition = 268
   [../]
 []
 
@@ -45,7 +46,7 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 269
+    value = 268
   [../]
 []
 

@@ -188,7 +188,7 @@
 []
 
 [Adaptivity]
-  max_h_level = 4
+  max_h_level = 6
   initial_marker = combo_mark
   marker = combo_mark
   initial_steps = 8

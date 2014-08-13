@@ -5,14 +5,16 @@
   ny = 12
   xmax = .002 # m
   ymax = .002 # m
-  elem_type = QUAD4
+  elem_type = QUAD8
 []
 
 [Variables]
   active = 'phi'
   [./T]
+    order = SECOND
   [../]
   [./phi]
+    order = SECOND
   [../]
 []
 
@@ -75,18 +77,11 @@
 []
 
 [BCs]
-  active = ''
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.515
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.8
+  [./Periodic]
+    [./phi_bc]
+      variable = phi
+      auto_direction = y
+    [../]
   [../]
 []
 
@@ -99,16 +94,16 @@
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   nl_rel_tol = 1e-07
-  dtmax = 1000
+  dtmax = 2000
   [./TimeStepper]
     type = IterationAdaptiveDT
-    dt = 200
+    dt = 2
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 4
-  initial_steps = 10
+  max_h_level = 5
+  initial_steps = 5
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -120,9 +115,9 @@
   [./Markers]
     [./phi_marker]
       type = ErrorFractionMarker
-      coarsen = .1
+      coarsen = .05
       indicator = phi_grad_indicator
-      refine = .8
+      refine = .85
     [../]
   [../]
 []
@@ -154,7 +149,8 @@
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 2e-5
+  interface_thickness = 5e-6
   phase = phi
+  condensation_coefficient = 0.05
+  temporal_scaling = 1e-04
 []
-

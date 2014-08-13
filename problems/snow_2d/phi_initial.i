@@ -1,10 +1,10 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 12
-  ny = 12
-  xmax = .002 # m
-  ymax = .002 # m
+  nx = 10
+  ny = 10
+  xmax = .005 # m
+  ymax = .005 # m
   elem_type = QUAD4
 []
 
@@ -94,12 +94,13 @@
   # Preconditioned JFNK (default)
   type = Transient
   num_steps = 20
-  dt = 200
+  dt = 100
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   nl_rel_tol = 1e-07
   dtmax = 1000
+  nl_abs_tol = 1e-12
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 200
@@ -107,8 +108,8 @@
 []
 
 [Adaptivity]
-  max_h_level = 4
-  initial_steps = 10
+  max_h_level = 10
+  initial_steps = 12
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -154,7 +155,7 @@
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 2e-5
+  interface_thickness = 1e-6
   phase = phi
 []
 

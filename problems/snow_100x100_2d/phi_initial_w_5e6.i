@@ -93,7 +93,7 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 20
+  num_steps = 5
   dt = 200
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
@@ -107,7 +107,7 @@
 []
 
 [Adaptivity]
-  max_h_level = 4
+  max_h_level = 6
   initial_steps = 10
   initial_marker = phi_marker
   marker = phi_marker
@@ -154,7 +154,7 @@
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 2e-5
+  interface_thickness = 5e-6
   phase = phi
 []
 

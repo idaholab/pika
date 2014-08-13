@@ -14,6 +14,8 @@
   [../]
   [./T_eff_y]
   [../]
+  [./T_eff_x]
+  [../]
 []
 
 [AuxVariables]
@@ -34,10 +36,11 @@
 [Kernels]
   active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time heat_time vapor_phi_time vapor_diffusion phi_time phi_square_gradient'
   [./heat_diffusion]
-    type = PikaDiffusion
+    type = TensorDiffusion
     variable = T
     use_temporal_scaling = true
-    property = conductivity
+    coefficient = 1
+    mobility_tensor = tensor_conductivity
   [../]
   [./heat_time]
     type = PikaTimeDerivative
@@ -97,57 +100,58 @@
     mob_name = mobility
     kappa_name = interface_thickness_squared
   [../]
-  [./T_eff_y_diffusion]
-    type = PikaDiffusion
-    variable = T_eff_y
-    use_temporal_scaling = true
-    property = conductivity
+  [./T_eff_y]
+    type = HomogenizationHeatConduction
+    variable = T
+    component = 1
+  [../]
+  [./T_eff_x]
+    type = HomogenizationHeatConduction
+    variable = T
+    component = 0
   [../]
 []
 
 [BCs]
-  active = 'T_hot T_cold'
   [./T_hot]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 270 # -5
+    value = 270
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 269 # -20
+    value = 268
   [../]
-  [./T_eff_y_dirichlet]
-    type = DirichletBC
-    variable = T_eff_y
-    boundary = bottom
-    value = 263.15
+  [./Periodic]
+    [./phi_y]
+      variable = phi
+      auto_direction = y
+    [../]
   [../]
-  [./T_eff_y_flux]
-    type = NeumannBC
-    variable = T_eff_y
-    boundary = top
-    value = 100
+[]
+
+[Materials]
+  [./tensor_conductivity]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 2.29
+    M_2_value = 0.02
+    coefficient_name = tensor_conductivity
   [../]
 []
 
 [Postprocessors]
   active = ''
-  [./T_eff_x_top]
-    type = SideAverageValue
+  [./k_eff_y]
+    type = HomogenizedThermalConductivity
     variable = T_eff_y
-    boundary = top
-  [../]
-  [./k_eff]
-    type = ThermalCond
-    variable = T_eff_y
-    flux = 100
-    length_scale = 1
-    T_hot = 263.15
-    dx = 0.005
-    boundary = top
+    component = 1
+    temp_y = T_eff_y
+    temp_x = T_eff_x
   [../]
 []
 
@@ -173,6 +177,8 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  l_max_its = 50
+  nl_max_its = 12
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
@@ -180,18 +186,19 @@
   reset_dt = true
   nl_rel_tol = 1e-07
   dtmax = 60
+  nl_abs_tol = 1e-12
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
     percent_change = 0.25
-    dt = 1
+    dt = 0.2
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 4
+  max_h_level = 5
   initial_marker = combo_mark
   marker = combo_mark
-  initial_steps = 8
+  initial_steps = 5
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -207,9 +214,9 @@
     active = 'combo_mark u_grad_marker phi_grad_marker'
     [./phi_grad_marker]
       type = ErrorFractionMarker
-      coarsen = 0.2
+      coarsen = 0.1
       indicator = phi_grad_indicator
-      refine = 0.7
+      refine = 0.8
     [../]
     [./phi_above]
       type = ValueThresholdMarker
@@ -231,7 +238,7 @@
       type = ErrorToleranceMarker
       indicator = u_grad_indicator
       coarsen = 1e-9
-      refine = 1e-7
+      refine = 1e-8
       block = 0
     [../]
   [../]
@@ -272,11 +279,9 @@
 
 [PikaMaterials]
   temperature = T
-  interface_thickness = 2e-5
+  interface_thickness = 5e-6
   temporal_scaling = 1e-4
-  output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
-  outputs = all
-  condensation_coefficient = .001
+  condensation_coefficient = .01
   phase = phi
 []
 

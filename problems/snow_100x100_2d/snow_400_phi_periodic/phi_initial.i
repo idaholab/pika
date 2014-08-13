@@ -3,15 +3,12 @@
   dim = 2
   nx = 12
   ny = 12
-  xmax = .002 # m
-  ymax = .002 # m
+  xmax = .005
+  ymax = .005
   elem_type = QUAD4
 []
 
 [Variables]
-  active = 'phi'
-  [./T]
-  [../]
   [./phi]
   [../]
 []
@@ -34,19 +31,6 @@
 []
 
 [Kernels]
-  active = 'phi_double_well phi_square_gradient phi_time'
-  [./heat_diffusion]
-    type = PikaDiffusion
-    variable = T
-    use_temporal_scaling = true
-    property = conductivity
-  [../]
-  [./heat_time]
-    type = PikaTimeDerivative
-    variable = T
-    property = heat_capacity
-    scale = 1.0
-  [../]
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
@@ -75,40 +59,33 @@
 []
 
 [BCs]
-  active = ''
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.515
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.8
+  [./Periodic]
+    [./phi_bc]
+      variable = phi
+      auto_direction = y
+    [../]
   [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 20
+  num_steps = 15
   dt = 200
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   nl_rel_tol = 1e-07
-  dtmax = 1000
+  dtmax = 2000
   [./TimeStepper]
     type = IterationAdaptiveDT
-    dt = 200
+    dt = 1
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 4
-  initial_steps = 10
+  max_h_level = 7
+  initial_steps = 7
   initial_marker = phi_marker
   marker = phi_marker
   [./Indicators]
@@ -122,7 +99,7 @@
       type = ErrorFractionMarker
       coarsen = .1
       indicator = phi_grad_indicator
-      refine = .8
+      refine = .85
     [../]
   [../]
 []
@@ -154,7 +131,8 @@
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 2e-5
+  interface_thickness = 5e-6
   phase = phi
+  condensation_coefficient = 0.05
+  temporal_scaling = 1e-04
 []
-
