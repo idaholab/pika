@@ -1,4 +1,6 @@
 .libs
+*.gz
+*.tar
 *.la
 *.lo
 *.d
