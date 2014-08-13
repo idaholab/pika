@@ -113,7 +113,7 @@
     type = DirichletBC
     variable = T
     boundary = top
-    value = 260.4 # -5
+    value = 260.8 # -5
   [../]
   [./T_cold]
     type = DirichletBC
@@ -172,7 +172,7 @@
   output_initial = true
   exodus = true
   csv = true
-  file_base = 200_1e-5
+  file_base = 400_1e-5
   [./console]
     type = Console
     perf_log = true
