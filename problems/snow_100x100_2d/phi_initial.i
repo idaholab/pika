@@ -1,17 +1,13 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 12
-  ny = 12
-  xmax = .002 # m
-  ymax = .002 # m
-  elem_type = QUAD4
+  nx = 200
+  ny = 200
+  xmax = .002
+  ymax = .002
 []
 
 [Variables]
-  active = 'phi'
-  [./T]
-  [../]
   [./phi]
   [../]
 []
@@ -24,7 +20,7 @@
 []
 
 [Functions]
-  [./image]
+  [./snow_ct]
     type = ImageFunction
     upper_value = -1
     lower_value = 1
@@ -34,40 +30,25 @@
 []
 
 [Kernels]
-  active = 'phi_double_well phi_square_gradient phi_time'
-  [./heat_diffusion]
-    type = PikaDiffusion
-    variable = T
-    use_temporal_scaling = true
-    property = conductivity
-  [../]
-  [./heat_time]
-    type = PikaTimeDerivative
-    variable = T
-    property = heat_capacity
-    scale = 1.0
-  [../]
-  [./phi_time]
+  [./phase_time]
     type = PikaTimeDerivative
     variable = phi
     property = relaxation_time
-    scale = 1.0
   [../]
-  [./phi_double_well]
+  [./phase_diffusion]
+    type = PikaDiffusion
+    variable = phi
+    property = interface_thickness_squared
+  [../]
+  [./phase_double_well]
     type = DoubleWellPotential
     variable = phi
     mob_name = mobility
   [../]
-  [./phi_square_gradient]
-    type = ACInterface
-    variable = phi
-    mob_name = mobility
-    kappa_name = interface_thickness_squared
-  [../]
 []
 
 [AuxKernels]
-  [./phi_initial_aux]
+  [./phi_aux]
     type = PikaPhaseInitializeAux
     variable = phi_aux
     phase = phi
@@ -75,18 +56,11 @@
 []
 
 [BCs]
-  active = ''
-  [./T_hot]
+  [./phi_bc]
     type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.515
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.8
+    variable = phi
+    boundary = '0 1 2 3 '
+    value = 1
   [../]
 []
 
@@ -96,8 +70,8 @@
   num_steps = 20
   dt = 200
   solve_type = PJFNK
-  petsc_options_iname = '-pc_type -pc_hypre_type'
-  petsc_options_value = 'hypre boomeramg'
+  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
+  petsc_options_value = '500 hypre boomeramg'
   nl_rel_tol = 1e-07
   dtmax = 1000
   [./TimeStepper]
@@ -124,12 +98,17 @@
       indicator = phi_grad_indicator
       refine = .8
     [../]
+  nl_abs_tol = 1e-13
+  [./TimeStepper]
+    type = IterationAdaptiveDT
+    dt = 0.5
   [../]
 []
 
 [Outputs]
   output_initial = true
   exodus = true
+  console = false
   [./console]
     type = Console
     perf_log = true
@@ -137,10 +116,10 @@
     linear_residuals = true
   [../]
   [./xdr]
-    file_base = phi_initial
-    output_intermediate = false
+    file_base = phi_initial_1e5
     output_final = true
     type = XDR
+    interval = 10
   [../]
 []
 
@@ -148,13 +127,15 @@
   [./phase_ic]
     variable = phi
     type = FunctionIC
-    function = image
+    function = snow_ct
   [../]
 []
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 2e-5
+  interface_thickness = 1e-5
   phase = phi
+  temporal_scaling = 1e-04
+  condensation_coefficient = .001
 []
 

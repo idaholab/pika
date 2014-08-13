@@ -155,17 +155,6 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-<<<<<<< HEAD
-    mesh = phi_initial_1e5_0003_mesh.xdr
-    nodal_variables = phi
-    es = phi_initial_1e5_0003.xdr
-  [../]
-  [./T_initial]
-    type = SolutionUserObject
-    mesh = T_initial_200_0000_mesh.xdr
-    nodal_variables = T
-    es = T_initial_200_0000.xdr
-=======
     mesh = phi_initial_0003_mesh.xdr
     nodal_variables = phi
     es = phi_initial_0003.xdr
@@ -175,7 +164,6 @@
     mesh = T_initial_0000_mesh.xdr
     nodal_variables = T
     es = T_initial_0000.xdr
->>>>>>>  accidentally did this work in master
   [../]
 []
 
@@ -187,11 +175,7 @@
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
-<<<<<<< HEAD
-  end_time = 8000
-=======
   end_time = 86400
->>>>>>>  accidentally did this work in master
   reset_dt = true
   dtmax = 30
   nl_abs_tol = 1e-12

@@ -73,7 +73,7 @@
     linear_residuals = true
   [../]
   [./xdr]
-    file_base = phi_initial_1e5
+    file_base = phi_initial
     output_final = true
     type = XDR
     interval = 10

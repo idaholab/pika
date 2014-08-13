@@ -1,10 +1,11 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 250
-  ny = 250
-  xmax = .001
-  ymax = .001
+  nx = 25
+  ny = 25
+  xmax = .002
+  ymax = .002
+  uniform_refine = 3
 []
 
 [Variables]
@@ -24,7 +25,7 @@
     type = ImageFunction
     upper_value = -1
     lower_value = 1
-    file = ../input.png
+    file = input.png
     threshold = 128
   [../]
 []
@@ -91,7 +92,7 @@
     linear_residuals = true
   [../]
   [./xdr]
-    file_base = phi_initial_1e5
+    file_base = phi_initial
     output_final = true
     type = XDR
     interval = 10
@@ -107,7 +108,7 @@
 []
 
 [PikaMaterials]
-  temperature = 258.2
+  temperature = 263.15
   interface_thickness = 1e-5
   phase = phi
   temporal_scaling = 1e-04
