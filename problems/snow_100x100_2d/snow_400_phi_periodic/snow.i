@@ -36,10 +36,11 @@
 [Kernels]
   active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time heat_time vapor_phi_time vapor_diffusion phi_time phi_square_gradient'
   [./heat_diffusion]
-    type = PikaDiffusion
+    type = TensorDiffusion
     variable = T
     use_temporal_scaling = true
-    property = conductivity
+    coefficient = 1
+    mobility_tensor = tensor_conductivity
   [../]
   [./heat_time]
     type = PikaTimeDerivative
@@ -129,6 +130,17 @@
       variable = phi
       auto_direction = y
     [../]
+  [../]
+[]
+
+[Materials]
+  [./tensor_conductivity]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 2.29
+    M_2_value = 0.02
+    coefficient_name = tensor_conductivity
   [../]
 []
 
@@ -226,7 +238,7 @@
       type = ErrorToleranceMarker
       indicator = u_grad_indicator
       coarsen = 1e-9
-      refine = 5e-8
+      refine = 1e-8
       block = 0
     [../]
   [../]
@@ -284,3 +296,4 @@
   use_temporal_scaling = true
   ice_criteria = false
 []
+
