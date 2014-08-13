@@ -29,7 +29,7 @@
     upper_value = -1
     lower_value = 1
     file = input.png
-    threshold = 100
+    threshold = 128
   [../]
 []
 
