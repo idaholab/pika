@@ -1,0 +1,75 @@
+\documentclass[letterpaper,10pt,twocolumn]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{balance}
+\usepackage[round]{natbib}
+\usepackage[margin=1in]{geometry}
+%\usepackage[scaled]{helvet}
+\usepackage[original,runin]{abstract}
+\usepackage[english]{babel}
+\usepackage{float}
+\usepackage{hyperref}
+%\usepackage[vertfit]{breakurl}
+\usepackage{titlesec,ulem}
+%\usepackage{sfmath}
+%\usepackage{placeins}
+%\usepackage[none]{hyphenat}
+\usepackage[scaled]{helvet}
+ \usepackage{caption}
+% \renewcommand\thefootnote{\fnsymbol{footnote}}
+ \captionsetup{aboveskip=0pt,belowskip=0pt,justification=justified,font=normalsize,labelsep=colon}
+
+\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+\usepackage[T1]{fontenc}
+
+\pagestyle{empty}
+\setlength\columnsep{0.25in}
+
+\titleformat{name=\section}{\normalfont}{\thesection.}{0.5ex}{\normalsize\MakeUppercase}
+% \titleformat{name=\subsection}{\itshape}{\thesubsection}{0.5ex}{\emph}
+\titlespacing{name=\section}{0pt}{10pt}{8pt}
+% \titlespacing{name=\subsection}{0pt}{15pt}{10pt}
+
+\floatstyle{plain}
+\newfloat{correspond}{!b}{sla}
+\newcommand{\authorcorrespond}{
+  \begin{correspond}
+    \textsl{$^*$Corresponding author address:}
+    Andrew E. Slaughter, Modeling and Simulation, Idaho National Laboratory, Idaho Falls, ID
+    tel: 208-526-6888; email: andrew.slaughter@inl.gov
+  \end{correspond}
+}
+
+\begin{document}
+\renewcommand{\abstractname}{\normalsize{\normalfont{ABSTRACT:}}}
+\setlength{\abstitleskip}{0.5ex}
+\twocolumn[
+  \begin{center}
+    {MOOSE: A FRAMEWORK TO ENABLE RAPID ADVANCES AND COLLABORATION IN MODELING SNOW AND AVALANCHES}\\
+    \bigskip
+    \normalsize{Andrew E. Slaughter$^1*$, Micah J. Johnson$^1$, Michael R. Tonks$^1$, Derek R. Gaston$^1$, Cody J. Permann$^1$,\\John W. Peterson$^1$, David Andr\v{s}$^1$, Jason M. Miller$^1$, Edward E. Adams$^2$, and David J. Walters$^2$}\\
+    \bigskip
+    \normalsize{$^1$Idaho National Laboratory, Idaho Falls, ID}\\
+    \normalsize{$^2$Montana State University, Bozeman, MT}
+    \medskip
+  \end{center}
+  \begin{onecolabstract}
+    \input{abstract}\bigskip
+  \end{onecolabstract}
+]
+
+%\raggedright
+\balance
+\authorcorrespond
+\setcitestyle{round}
+
+\input{body}
+
+\addtocounter{section}{1}
+\renewcommand\refname{\thesection.\hspace{0.5ex}REFERENCES}
+
+\bibliographystyle{ametsoc}
+\bibliography{references}{}
+
+%\end{hyphenrules}
+\end{document}

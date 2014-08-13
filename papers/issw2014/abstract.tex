@@ -1,17 +1,3 @@
-\documentclass{article}
+Using the open-source Multiphysics Object Oriented Simulation Environment (MOOSE; \url{www.mooseframework.org}) from Idaho National Laboratory (INL) the genesis of a modular, collaborative model for snow was developed. Generally, snow metamorphoses via one of two processes: kinetic or equilibrium metamorphism. Efforts to simulate this behavior use a range of approaches from purely statistical to complete numerical 3D constructs. The research presented here stems from the latter to create the basis for a multi-scale model for snow metamorphosis. Following the work of \citet{kaempfer2009phase} a general, fully-coupled 3D finite element, phase field model capable of tracking the phase transition and capturing the heat and mass transfer at the micro-structure scale in the ice matrix and pore space was developed.
 
-\title{MOOSE: A framework to enable rapid advances and collaboration in modeling snow}
-\author{
-  Slaughter, Andrew E.\\
-  \and
-  Johnson, Micah J.\\
-  \and
-  Tonks, Michael R.\\
-  \and
-  , FirstName2\\
-}
-\begin{document}
-\maketitle
-
-
-\end{document}
+The key feature of this micro-structure model, named PIKA, is that it was developed using MOOSE and therefore is inherently parallel and expandable, allowing for model expansion including coupling of additional physics (e.g., solid mechanics) and development of multi-scale simulations. Any application developed with MOOSE supports running, in parallel, any other MOOSE-based application. Each can be developed independently, but still easily communicate with one another (e.g., conductivity in a slope-scale model could be a constant input just as easily as a complete micro-structure PIKA model evaluation) without additional code being written. This method of development has proven effective at INL, and PIKA aims to be the beginning of a truly collaborative snow modeling effort that greatly increases our current ability to develop sophisticated and sustainable simulation tools.
