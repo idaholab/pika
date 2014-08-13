@@ -75,7 +75,7 @@
     linear_residuals = true
   [../]
   [./xdr]
-    file_base = T_initial_214
+    file_base = T_initial
     output_final = true
     type = XDR
   [../]

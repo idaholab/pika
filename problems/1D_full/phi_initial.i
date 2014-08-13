@@ -95,10 +95,9 @@
 
 [PikaMaterials]
   temperature = 263
-  interface_thickness = 8e-6
+  interface_thickness = 1e-5
   phase = phi
-  interface_kinetic_coefficient = 5.5e5
-  capillary_length = 1.3e-9
   temporal_scaling = 1e-04
+  condensation_coefficient = .001
 []
 
