@@ -25,7 +25,7 @@ xe = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30, 35, 40]
 print Tm
 
 # Create the figure and plot the data
-figure(figsize=(3.125,3.125))
+figure(figsize=(3.125,2.5))
 plot(Te, xe, 'o-', markersize=5, lw=2, label='Morstad 2007')
 plot(Tm, xm, '-k', lw=2, label='Ibex')
 
@@ -36,6 +36,8 @@ xlabel('Temperature [C]', fontsize=10)
 ylabel('Depth [cm]', fontsize=10)
 
 ylim(0,30)
+xlim(-12,0)
+
 gca().invert_yaxis()
 
 # Adjust tick mark fonts

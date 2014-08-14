@@ -22,9 +22,9 @@
 [Functions]
   [./shortwave]
     type = ParsedFunction
-    value = 650
-    vals = '0.7 650'
-    vars = 'w SW'
+    value = SW*sin(w*2*pi*x)*sin(w*2*pi*z)*sin(1/(h*60*60)*pi*t)
+    vals = '0.7 650 8'
+    vars = 'w SW h'
   [../]
 []
 
