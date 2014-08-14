@@ -49,6 +49,7 @@ private:
 
   Real longwave();
 
+  /// returns missing swir component
   Real shortwave();
 
   Real latent();
@@ -73,7 +74,7 @@ private:
 
   const Real _air_velocity;
 
-  const Real _albedo;
+  const Real _swir_albedo;
 
   Function & _long_wave;
 

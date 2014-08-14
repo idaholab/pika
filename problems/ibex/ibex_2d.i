@@ -1,6 +1,6 @@
 [Mesh]
   type = GeneratedMesh
-  dim = 3
+  dim = 2
   nx = 7
   ny = 8
   nz = 7
@@ -14,17 +14,12 @@
   [../]
 []
 
-[AuxVariables]
-  [./sw_in]
-  [../]
-[]
-
 [Functions]
   [./shortwave]
     type = ParsedFunction
-    value = SW*sin(w*2*pi*x)*sin(w*2*pi*z)*sin(1/(h*60*60)*pi*t)
-    vals = '0.7 650 8'
-    vars = 'w SW h'
+    value = SW*sin(w*2*pi*x)
+    vals = '650 0.7'
+    vars = 'SW w'
   [../]
 []
 
@@ -43,17 +38,8 @@
     type = IbexShortwaveForcingFunction
     variable = T
     short_wave = shortwave
-    nir_albedo = 0.81
+    nir_albedo = 0.82
     vis_albedo = 0.96
-  [../]
-[]
-
-[AuxKernels]
-  [./sw_in_aux]
-    type = FunctionAux
-    variable = sw_in
-    function = shortwave
-    boundary = top
   [../]
 []
 

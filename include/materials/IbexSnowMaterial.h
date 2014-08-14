@@ -44,6 +44,12 @@ private:
 
   const VariableValue & _temperature;
   const Real _input_density;
+
+  bool _compute_conductivity;
+
+  const Real _input_conductivity;
+  bool _compute_specific_heat;
+  const Real _input_specific_heat;
   MaterialProperty<Real> & _density;
   MaterialProperty<Real> & _conductivity;
   MaterialProperty<Real> & _specific_heat;

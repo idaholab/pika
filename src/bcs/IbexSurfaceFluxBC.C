@@ -26,7 +26,7 @@ InputParameters validParams<IbexSurfaceFluxBC>()
   params.addParam<Real>("relative_humidity", 50, "Relative humidity of air above snow [%]");
   params.addParam<Real>("atmospheric_pressure", 101.325, "Atmospheric pressure [kPa]");
   params.addParam<Real>("air_velocity", 1, "Air velocity over the snow surface [m/s]");
-  params.addParam<Real>("albedo", 0.95, "Short-wave radiation albedo");
+  params.addParam<Real>("swir_albedo", 0.59, "Short-wave radiation albedo");
   params.addRequiredParam<FunctionName>("long_wave", "Name of the function computing the incoming long-wave radiation function [W/m^2]");
   params.addRequiredParam<FunctionName>("short_wave", "Name of the function computing the incoming short-wave radiation function [W/m^2]");
 
@@ -36,10 +36,11 @@ InputParameters validParams<IbexSurfaceFluxBC>()
   params.addParam<Real>("ratio_of_molecular_weights", 0.622, "Ratio of dry-air to water-vapor molecular weights");
   params.addParam<Real>("latent_heat", 2833, "Latent heat of sublimation [kJ/kg]");
   params.addParam<Real>("water_vapor_transport", 0.0023, "Transport coefficient for water vapor");
-  params.addParam<Real>("transport_coefficient", 0.0023, "Transport coefficient for sensible heat calclulation");
+  params.addParam<Real>("transport_coefficient", 0.0023, "Transport coefficient for sensible heat calculation");
   params.addParam<Real>("reference_temperature", 268.15, "Reference temperature [K]");
   params.addParam<Real>("reference_vapor_pressure", 0.402, "Reference vapor pressure at reference temperature [kPa]");
   params.addParam<Real>("specific_heat_air", 1.012, "Specific heat capacity of air [kJ/(kg K)]");
+
   params.addParamNamesToGroup("emissivity ratio_of_molecular_weights latent_heat water_vapor_transport transport_coefficient reference_temperature reference_vapor_pressure specific_heat_air", "Advanced");
 
 
@@ -55,7 +56,7 @@ IbexSurfaceFluxBC::IbexSurfaceFluxBC(const std::string & name, InputParameters p
     _relative_humidity(getParam<Real>("relative_humidity")),
     _atmospheric_pressure(getParam<Real>("atmospheric_pressure")),
     _air_velocity(getParam<Real>("air_velocity")),
-    _albedo(getParam<Real>("albedo")),
+    _swir_albedo(getParam<Real>("swir_albedo")),
     _long_wave(getFunction("long_wave")),
     _short_wave(getFunction("short_wave")),
     _emissivity(getParam<Real>("emissivity")),
@@ -84,7 +85,10 @@ IbexSurfaceFluxBC::longwave()
 Real
 IbexSurfaceFluxBC::shortwave()
 {
-  return _short_wave.value(_t, _q_point[_qp]) * (1 - _albedo);
+  Real sw = _short_wave.value(_t, _q_point[_qp]) * (1 - _swir_albedo);
+
+  // SWIR + "missing" SWIR, see Slaughter 2010
+  return 0.094 * sw;// + 0.032/0.913 * sw;
 }
 
 Real

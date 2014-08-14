@@ -1,12 +1,10 @@
 [Mesh]
   type = GeneratedMesh
-  dim = 3
-  nx = 7
-  ny = 8
-  nz = 7
-  xmax = 0.35
-  ymax = 0.4
-  zmax = 0.35
+  dim = 1
+  nx = 100
+  xmax = 0.4
+  ymax = 0
+  zmax = 0
 []
 
 [Variables]
@@ -14,17 +12,10 @@
   [../]
 []
 
-[AuxVariables]
-  [./sw_in]
-  [../]
-[]
-
 [Functions]
   [./shortwave]
     type = ParsedFunction
-    value = SW*sin(w*2*pi*x)*sin(w*2*pi*z)*sin(1/(h*60*60)*pi*t)
-    vals = '0.7 650 8'
-    vars = 'w SW h'
+    value = 650
   [../]
 []
 
@@ -43,17 +34,9 @@
     type = IbexShortwaveForcingFunction
     variable = T
     short_wave = shortwave
-    nir_albedo = 0.81
+    nir_albedo = 0.80
+    direction = x
     vis_albedo = 0.96
-  [../]
-[]
-
-[AuxKernels]
-  [./sw_in_aux]
-    type = FunctionAux
-    variable = sw_in
-    function = shortwave
-    boundary = top
   [../]
 []
 
@@ -61,15 +44,18 @@
   [./top]
     type = IbexSurfaceFluxBC
     variable = T
-    boundary = top
+    boundary = right
     long_wave = 235
     short_wave = shortwave
+    air_velocity = 1.3
+    relative_humidity = 15
+    air_temperature = 263.15
   [../]
   [./bottom]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 264.15
+    boundary = left
+    value = 262.65
   [../]
 []
 
@@ -79,6 +65,18 @@
     block = 0
     temperature = T
     snow_density = 174
+    thermal_conductivity = 0.1
+  [../]
+[]
+
+[VectorPostprocessors]
+  [./line]
+    type = LineValueSampler
+    variable = T
+    num_points = 100
+    start_point = '0 0 0'
+    end_point = '0.4 0 0'
+    sort_by = x
   [../]
 []
 
@@ -90,26 +88,11 @@
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   scheme = crank-nicolson
-  end_time = 14400
+  end_time = 28800
   dtmax = 300
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 30
-  [../]
-[]
-
-[Adaptivity]
-  max_h_level = 3
-  initial_steps = 3
-  initial_marker = T_marker
-  [./Markers]
-    [./T_marker]
-      type = BoxMarker
-      bottom_left = '0 0.3 0'
-      top_right = '0.35 .4 0.35'
-      inside = refine
-      outside = do_nothing
-    [../]
   [../]
 []
 
@@ -128,7 +111,7 @@
   [./T_initial]
     variable = T
     type = ConstantIC
-    value = 264.15
+    value = 262.65
   [../]
 []
 
