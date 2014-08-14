@@ -2,6 +2,7 @@
   type = FileMesh
   file = phi_initial_0003_mesh.xdr
   dim = 2
+  uniform_refine = 1
 []
 
 [Variables]
@@ -36,7 +37,6 @@
     type = PikaDiffusion
     variable = T
     use_temporal_scaling = true
-    block = 0
     property = conductivity
   [../]
   [./heat_time]
@@ -108,17 +108,17 @@
 []
 
 [BCs]
-  active = 'T_hot T_cold'
+  active = 'T_hot T_cold phi_bc'
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = left
-    value = 261 # -5
+    boundary = top
+    value = 260.4 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = right
+    boundary = bottom
     value = 260 # -20
   [../]
   [./vapor_bc]
@@ -128,24 +128,11 @@
     phase_variable = phi
     temperature = T
   [../]
-[]
-
-[Materials]
-  [./conductivity_tensor]
-    type = TensorMobilityMaterial
-    block = 0
-    phi = phi
-    M_1_value = 2.29
-    M_2_value = 0.02
-    coefficient_name = conductivity_tensor
-  [../]
-  [./diffusion_tensor]
-    type = TensorMobilityMaterial
-    block = 0
-    phi = phi
-    M_1_value = 1e-30
-    M_2_value = 2.178e-5
-    coefficient_name = diffusion_tensor
+  [./phi_bc]
+    type = DirichletBC
+    variable = phi
+    boundary = '0 1 2 3 '
+    value = 1
   [../]
 []
 
@@ -170,24 +157,22 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 10
-  nl_max_its = 15
+  dt = 50
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 86400
+  end_time = 20000
   reset_dt = true
-  dtmax = 30
+  dtmax = 100
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
-  dtmin = .001
 []
 
 [Outputs]
   output_initial = true
   exodus = true
   csv = true
-  file_base = full_200
+  file_base = 200_1e-5
   [./console]
     type = Console
     perf_log = true
@@ -195,7 +180,7 @@
     linear_residuals = true
   [../]
   [./cp]
-    interval = 10
+    interval = 20
     type = Checkpoint
   [../]
 []
@@ -225,8 +210,9 @@
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
   condensation_coefficient = .001
-  phase = phi
-  output_properties = 'interface_kinetic_coefficient beta'
+  phase = phi_aux
+  output_properties = 'capillary_length beta diffusion_coefficient'
+  outputs = all
 []
 
 [PikaCriteriaOutput]

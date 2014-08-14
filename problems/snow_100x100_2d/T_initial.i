@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = phi_initial_0001_mesh.xdr
+  file = phi_initial_1e5_0003_mesh.xdr
   dim = 2
 []
 
@@ -18,10 +18,11 @@
 
 [Kernels]
   [./heat_diffusion]
-    type = PikaDiffusion
+    type = TensorDiffusion
     variable = T
     use_temporal_scaling = true
-    property = conductivity
+    coefficient = 1.0
+    mobility_tensor = conductivity_tensor
   [../]
 []
 
@@ -39,13 +40,24 @@
     type = DirichletBC
     variable = T
     boundary = top
-    value = 270
+    value = 260.4
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 269
+    value = 260
+  [../]
+[]
+
+[Materials]
+  [./conductivity_tensor]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 2.29
+    M_2_value = 0.02
+    coefficient_name = conductivity_tensor
   [../]
 []
 
@@ -53,10 +65,9 @@
   [./phi_initial]
     type = SolutionUserObject
     system = aux0
-    mesh = phi_initial_0001_mesh.xdr
+    mesh = phi_initial_1e5_0003_mesh.xdr
     nodal_variables = phi_aux
-    es = phi_initial_0001.xdr
-    system_variables = phi_aux
+    es = phi_initial_1e5_0003.xdr
   [../]
 []
 
@@ -85,8 +96,9 @@
 []
 
 [PikaMaterials]
-  temperature = 263.15
-  interface_thickness = 5e-6
+  temperature = T
+  interface_thickness = 1e-5
+  condensation_coefficient = .001
   phase = phi
 []
 

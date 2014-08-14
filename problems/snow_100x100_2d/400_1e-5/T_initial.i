@@ -26,9 +26,10 @@
 []
 
 [AuxKernels]
-  [./phi_aux]
+  [./phi_aux_kernel]
     type = SolutionAux
     variable = phi
+    execute_on = initial
     solution = phi_initial
   [../]
 []
@@ -37,23 +38,35 @@
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = left
-    value = 261
+    boundary = top
+    value = 260.8
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = right
+    boundary = bottom
     value = 260
+  [../]
+[]
+
+[Materials]
+  [./conductivity_tensor]
+    type = TensorMobilityMaterial
+    block = 0
+    phi = phi
+    M_1_value = 2.29
+    M_2_value = 0.02
+    coefficient_name = conductivity_tensor
   [../]
 []
 
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
+    system = aux0
     mesh = phi_initial_0003_mesh.xdr
+    nodal_variables = phi_aux
     es = phi_initial_0003.xdr
-    nodal_variables = phi
   [../]
 []
 
@@ -81,17 +94,10 @@
   [../]
 []
 
-[ICs]
-  [./temperature_ic]
-    variable = T
-    type = FunctionIC
-    function = -214*y+258.2
-  [../]
-[]
-
 [PikaMaterials]
   temperature = T
-  interface_thickness = 1e-6
+  interface_thickness = 1e-5
+  condensation_coefficient = .001
   phase = phi
 []
 
