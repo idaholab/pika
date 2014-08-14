@@ -36,10 +36,12 @@ InputParameters validParams<IbexSurfaceFluxBC>()
   params.addParam<Real>("ratio_of_molecular_weights", 0.622, "Ratio of dry-air to water-vapor molecular weights");
   params.addParam<Real>("latent_heat", 2833, "Latent heat of sublimation [kJ/kg]");
   params.addParam<Real>("water_vapor_transport", 0.0023, "Transport coefficient for water vapor");
-  params.addParam<Real>("transport_coefficient", 0.0023, "Transport coefficient for sensible heat calclulation");
+  params.addParam<Real>("transport_coefficient", 0.0023, "Transport coefficient for sensible heat calculation");
   params.addParam<Real>("reference_temperature", 268.15, "Reference temperature [K]");
   params.addParam<Real>("reference_vapor_pressure", 0.402, "Reference vapor pressure at reference temperature [kPa]");
   params.addParam<Real>("specific_heat_air", 1.012, "Specific heat capacity of air [kJ/(kg K)]");
+  params.addParam<bool>("include_swir", true, "Include the SWIR irradiance acting at surface (>2800 nm wavelents, see Slaughter 2010)");
+
   params.addParamNamesToGroup("emissivity ratio_of_molecular_weights latent_heat water_vapor_transport transport_coefficient reference_temperature reference_vapor_pressure specific_heat_air", "Advanced");
 
 
@@ -65,7 +67,8 @@ IbexSurfaceFluxBC::IbexSurfaceFluxBC(const std::string & name, InputParameters p
     _transport_coefficient(getParam<Real>("transport_coefficient")),
     _reference_temperature(getParam<Real>("reference_temperature")),
     _reference_vapor_pressure(getParam<Real>("reference_vapor_pressure")),
-    _specific_heat_air(getParam<Real>("specific_heat_air"))
+    _specific_heat_air(getParam<Real>("specific_heat_air")),
+    _include_swir(getParam<bool>("include_swir"))
 {
 }
 
@@ -84,7 +87,15 @@ IbexSurfaceFluxBC::longwave()
 Real
 IbexSurfaceFluxBC::shortwave()
 {
-  return _short_wave.value(_t, _q_point[_qp]) * (1 - _albedo);
+  if (_include_swir)
+  {
+    Real sw = _short_wave.value(_t, _q_point[_qp]) * (1 - _albedo);
+
+    // SWIR + "missing" SWIR, see Slaughter 2010
+    return 0.094 * sw + 0.032/0.913 * sw;
+  }
+  else
+    return 0;
 }
 
 Real

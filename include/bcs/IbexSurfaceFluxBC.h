@@ -49,6 +49,7 @@ private:
 
   Real longwave();
 
+  /// returns missing swir component
   Real shortwave();
 
   Real latent();
@@ -94,6 +95,8 @@ private:
   Real _reference_vapor_pressure;
 
   Real _specific_heat_air;
+
+  bool _include_swir;
 };
 
 #endif //IBEXSURFACEFLUXBC_H

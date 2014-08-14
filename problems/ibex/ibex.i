@@ -1,12 +1,12 @@
 [Mesh]
   type = GeneratedMesh
-  dim = 3
+  dim = 2
   nx = 7
-  ny = 4
+  ny = 8
   nz = 7
-  xmax = 0.7
+  xmax = 0.35
   ymax = 0.4
-  zmax = 0.7
+  zmax = 0.35
 []
 
 [Variables]
@@ -14,21 +14,12 @@
   [../]
 []
 
-[AuxVariables]
-  [./sw]
-  [../]
-[]
-
 [Functions]
   [./shortwave]
     type = ParsedFunction
-    value = SW*sin(w*pi*x)*sin(w*pi*y)
-    vals = '0.7 700'
+    value = SW*sin(w*2*pi*x)
+    vals = '0.7 650'
     vars = 'w SW'
-  [../]
-  [./longwave]
-    type = ParsedFunction
-    value = 235
   [../]
 []
 
@@ -48,16 +39,10 @@
     variable = T
     short_wave = shortwave
     extinction = 75
-    albedo = 0.78
   [../]
 []
 
 [AuxKernels]
-  [./sw_aux]
-    type = FunctionAux
-    variable = sw
-    function = shortwave
-  [../]
 []
 
 [BCs]
@@ -65,11 +50,8 @@
     type = IbexSurfaceFluxBC
     variable = T
     boundary = top
-    atmospheric_pressure = 100
-    air_velocity = 1.3
     long_wave = 235
-    relative_humidity = 10
-    air_temperature = 263.15
+    short_wave = 0
   [../]
   [./bottom]
     type = DirichletBC
@@ -84,42 +66,37 @@
     type = IbexSnowMaterial
     block = 0
     temperature = T
+    outputs = all
+    snow_density = 174
   [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 20
   dt = 60
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   scheme = crank-nicolson
+  end_time = 36000
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    percent_change = 0.5
+    dt = 60
+  [../]
 []
 
 [Adaptivity]
   max_h_level = 2
   initial_steps = 2
   marker = T_marker
-  initial_marker = uniform
-  [./Indicators]
-    [./T_grad_indicator]
-      type = GradientJumpIndicator
-      variable = T
-    [../]
-  [../]
+  initial_marker = T_marker
   [./Markers]
     [./T_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.1
-      indicator = T_grad_indicator
-      refine = 0.8
-    [../]
-    [./uniform]
       type = BoxMarker
-      bottom_left = '0 0.3 0.0'
-      top_right = '0.7 0.4 0.7'
+      bottom_left = '0 0.3 0'
+      top_right = '0.35 .4 0.35'
       inside = refine
       outside = do_nothing
     [../]

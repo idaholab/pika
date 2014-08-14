@@ -15,7 +15,7 @@
 #ifndef IBEXSHORTWAVEFORCINGFUNCTION_H
 #define IBEXSHORTWAVEFORCINGFUNCTION_H
 
-#include "AuxKernel.h"
+#include "Kernel.h"
 
 //Forward Declarations
 class IbexShortwaveForcingFunction;
@@ -29,7 +29,7 @@ InputParameters validParams<IbexShortwaveForcingFunction>();
  *
  * test function * forcing function
  */
-class IbexShortwaveForcingFunction : public AuxKernel
+class IbexShortwaveForcingFunction : public Kernel
 {
 public:
 
@@ -42,14 +42,17 @@ protected:
   /**
    * Computes test function * forcing function.
    */
-  virtual Real computeValue();
+  virtual Real computeQpResidual();
 
 private:
 
   Function & _short_wave;
   const Real _extinction;
-  const Real _albedo;
-  const int _direction;
+  const Real _vis_albedo;
+  const Real _nir_albedo;
+  const Real _swir_albedo;
+  const MooseEnum & _direction;
+  RealVectorValue _direction_vector;
   Real _surface;
 };
 
