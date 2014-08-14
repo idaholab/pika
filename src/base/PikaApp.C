@@ -43,6 +43,7 @@
 #include "DoubleWellPotentialMMS.h"
 #include "AntiTrapping.h"
 #include "IbexShortwaveForcingFunction.h"
+#include "PikaHomogenizedKernel.h"
 
 // AuxKernels
 #include "ErrorFunctionAux.h"
@@ -132,6 +133,7 @@ PikaApp::registerObjects(Factory & factory)
   registerKernel(DoubleWellPotentialMMS);
   registerKernel(AntiTrapping);
   registerKernel(IbexShortwaveForcingFunction);
+  registerKernel(PikaHomogenizedKernel);
 
   // InitialConditions
   registerInitialCondition(KaempferAnalyticPhaseIC);
