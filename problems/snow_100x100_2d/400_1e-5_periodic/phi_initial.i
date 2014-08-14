@@ -25,7 +25,7 @@
     type = ImageFunction
     upper_value = -1
     lower_value = 1
-    file = input.png
+    file = ../input.png
     threshold = 128
   [../]
 []
@@ -57,11 +57,11 @@
 []
 
 [BCs]
-  [./phi_bc]
-    type = DirichletBC
-    variable = phi
-    boundary = '0 1 2 3 '
-    value = 1
+  [./Periodic]
+    [./phi_periodic]
+      variable = phi
+      auto_direction = y
+    [../]
   [../]
 []
 
