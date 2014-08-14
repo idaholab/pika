@@ -47,10 +47,10 @@ protected:
 private:
 
   Function & _short_wave;
-  const Real _extinction;
+  const Real _vis_extinction;
+  const Real _nir_extinction;
   const Real _vis_albedo;
   const Real _nir_albedo;
-  const Real _swir_albedo;
   const MooseEnum & _direction;
   RealVectorValue _direction_vector;
   Real _surface;

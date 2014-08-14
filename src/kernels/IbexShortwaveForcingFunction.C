@@ -22,8 +22,8 @@ InputParameters validParams<IbexShortwaveForcingFunction>()
   params.addRequiredParam<FunctionName>("short_wave", "The function computing the incoming short-wave radiation [W/m^2]");
   params.addParam<Real>("vis_albedo", 0.94, "Short-wave radiation albedo in visible (VIS) wavelengths (300-800 nm)");
   params.addParam<Real>("nir_albedo", 0.80, "Short-wave radiation albedo in near-infrared (NIR) wavelengths (800-1500 nm)");
-  params.addParam<Real>("swir_albedo", 0.59, "Short-wave radiation albedo in short-wave infrared (SWIR) wavelengths (1500-2800 nm)");
-  params.addParam<Real>("extinction", 100, "Extinction coefficient [1/m]");
+  params.addParam<Real>("vis_extinction", 40, "Extinction coefficient in visible (VIS) wavelengths (300-800 nm) [1/m]");
+  params.addParam<Real>("nir_extinction", 110, "Extinction coefficient in near-infrared (NIR) wavelenghts (800-1500 nm) [1/m]");
 
   MooseEnum direction("x=0, y=1, z=2", "y");
   params.addParam<MooseEnum>("direction", direction, "Direction to apply the extinction function");
@@ -33,10 +33,10 @@ InputParameters validParams<IbexShortwaveForcingFunction>()
 IbexShortwaveForcingFunction::IbexShortwaveForcingFunction(const std::string & name, InputParameters parameters) :
     Kernel(name, parameters),
     _short_wave(getFunction("short_wave")),
-    _extinction(getParam<Real>("extinction")),
+    _vis_extinction(getParam<Real>("vis_extinction")),
+    _nir_extinction(getParam<Real>("nir_extinction")),
     _vis_albedo(getParam<Real>("vis_albedo")),
     _nir_albedo(getParam<Real>("nir_albedo")),
-    _swir_albedo(getParam<Real>("swir_albedo")),
     _direction(getParam<MooseEnum>("direction"))
 {
   _direction_vector(_direction) = 1;
@@ -60,9 +60,7 @@ Real
 IbexShortwaveForcingFunction::computeQpResidual()
 {
   Real sw_in = _short_wave.value(_t, _q_point[_qp]);
-  Real sw_vis = 0.545 * sw_in * (1 - _vis_albedo);
-  Real sw_nir = 0.274 * sw_in * (1 - _nir_albedo);
-  Real sw_swir = 0.087 * sw_in * (1 - _swir_albedo);
-  Real q_sw = (sw_vis + sw_nir + sw_swir) * (1 - std::exp(-_extinction * (_surface - _q_point[_qp](_direction))));
-  return -_grad_test[_i][_qp] * q_sw * _direction_vector;
+  Real q_vis = 0.545 * sw_in * (1 - _vis_albedo) * (1 - std::exp(-_vis_extinction * (_surface - _q_point[_qp](_direction))));
+  Real q_nir = 0.274 * sw_in * (1 - _nir_albedo) * (1 - std::exp(-_nir_extinction * (_surface - _q_point[_qp](_direction))));
+  return -_grad_test[_i][_qp] * (q_vis + q_nir) * _direction_vector;
 }

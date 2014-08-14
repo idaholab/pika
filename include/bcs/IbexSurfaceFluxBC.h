@@ -74,7 +74,7 @@ private:
 
   const Real _air_velocity;
 
-  const Real _albedo;
+  const Real _swir_albedo;
 
   Function & _long_wave;
 
@@ -95,8 +95,6 @@ private:
   Real _reference_vapor_pressure;
 
   Real _specific_heat_air;
-
-  bool _include_swir;
 };
 
 #endif //IBEXSURFACEFLUXBC_H
