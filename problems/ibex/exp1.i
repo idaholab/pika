@@ -1,30 +1,12 @@
 [Mesh]
   type = GeneratedMesh
-  dim = 3
-  nx = 7
-  ny = 8
-  nz = 7
-  xmax = 0.35
-  ymax = 0.4
-  zmax = 0.35
+  dim = 1
+  nx = 100
+  xmax = 0.4
 []
 
 [Variables]
   [./T]
-  [../]
-[]
-
-[AuxVariables]
-  [./sw_in]
-  [../]
-[]
-
-[Functions]
-  [./shortwave]
-    type = ParsedFunction
-    value = 650
-    vals = '0.7 650'
-    vars = 'w SW'
   [../]
 []
 
@@ -43,8 +25,7 @@
     type = IbexShortwaveForcingFunction
     variable = T
     short_wave = shortwave
-    nir_albedo = 0.81
-    vis_albedo = 0.96
+    extinction = 75
   [../]
 []
 
@@ -69,7 +50,7 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 264.15
+    value = 263.15
   [../]
 []
 
@@ -78,6 +59,7 @@
     type = IbexSnowMaterial
     block = 0
     temperature = T
+    outputs = all
     snow_density = 174
   [../]
 []
@@ -90,17 +72,13 @@
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   scheme = crank-nicolson
-  end_time = 14400
-  dtmax = 300
-  [./TimeStepper]
-    type = IterationAdaptiveDT
-    dt = 30
-  [../]
+  end_time = 28800
 []
 
 [Adaptivity]
-  max_h_level = 3
-  initial_steps = 3
+  max_h_level = 2
+  initial_steps = 2
+  marker = T_marker
   initial_marker = T_marker
   [./Markers]
     [./T_marker]
@@ -128,7 +106,6 @@
   [./T_initial]
     variable = T
     type = ConstantIC
-    value = 264.15
+    value = 263.15
   [../]
 []
-

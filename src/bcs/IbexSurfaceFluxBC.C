@@ -88,7 +88,7 @@ IbexSurfaceFluxBC::shortwave()
   Real sw = _short_wave.value(_t, _q_point[_qp]) * (1 - _swir_albedo);
 
   // SWIR + "missing" SWIR, see Slaughter 2010
-  return 0.094 * sw + 0.032/0.913 * sw;
+  return 0.094 * sw;// + 0.032/0.913 * sw;
 }
 
 Real

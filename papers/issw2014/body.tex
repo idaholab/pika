@@ -18,8 +18,14 @@ The purpose of the work is not to provide a new model for snow, but to provided 
 Methods and results here ...
 
 \section{IBEX: MESO-SCALE MODEL}\label{sec:ibex}
+The meso-scale model presented here is comprised of a single relationship, the heat-equation:
 
+\begin{equation}\label{eq:meso}
+\rho c_p \frac{\partial{T}}{\partial t} = \nabla \cdot k_{eff} \nabla T + s,
+\end{equation}
+where $T$ is temperature, $s$ a heat source term, and the material properties $\rho$, $c_p$, and $k_{eff}$ are the bulk density, specific heat, and thermal conductivity for snow. The model developed includes incoming shortwave radiation that is absorbed within the snow (i.e., the $s$ source term in Eq. \eqref{eq:meso}), including absorption that differs with wavelength as detailed by \citet[][Ch. 4]{slaughter2010numerical}. On the surface the effects of incoming and out going long-wave radiation as well as sensible and latent heat are included as detailed in \citet{morstad2007experimental}.
 
+To demonstrate the accuracy of the model Exp. \#2 of \citet{morstad2007experimental} was reproduced using Ibex, in similar fashion as detailed in \citet[][Ch. 4]{slaughter2010numerical}. For the simulation, incoming short- and long-wave radiation was set to \unit[650]{Wm$\textrm{^{-2}}$} and 235, respectively. The albedo in the visible, near-infrared, and short-wave infrared where defined as 0.94, 0.80, and 0.59, respectively. \ref{fig:ibex} includes the simulation results
 
 
 

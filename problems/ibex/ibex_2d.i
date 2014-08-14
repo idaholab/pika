@@ -14,17 +14,12 @@
   [../]
 []
 
-[AuxVariables]
-  [./sw_in]
-  [../]
-[]
-
 [Functions]
   [./shortwave]
     type = ParsedFunction
-    value = SW*sin(w*2*pi*x)*sin(w*2*pi*z)*sin(1/(h*60*60)*pi*t)
-    vals = '0.7 650 8'
-    vars = 'w SW h'
+    value = SW*sin(w*2*pi*x)
+    vals = '650 0.7'
+    vars = 'SW w'
   [../]
 []
 
@@ -43,16 +38,8 @@
     type = IbexShortwaveForcingFunction
     variable = T
     short_wave = shortwave
-    extinction = 75
-  [../]
-[]
-
-[AuxKernels]
-  [./sw_in_aux]
-    type = FunctionAux
-    variable = sw_in
-    function = shortwave
-    boundary = top
+    nir_albedo = 0.82
+    vis_albedo = 0.96
   [../]
 []
 
@@ -68,7 +55,7 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 263.15
+    value = 264.15
   [../]
 []
 
@@ -77,7 +64,6 @@
     type = IbexSnowMaterial
     block = 0
     temperature = T
-    outputs = all
     snow_density = 174
   [../]
 []
@@ -90,13 +76,17 @@
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   scheme = crank-nicolson
-  end_time = 28800
+  end_time = 14400
+  dtmax = 300
+  [./TimeStepper]
+    type = IterationAdaptiveDT
+    dt = 30
+  [../]
 []
 
 [Adaptivity]
-  max_h_level = 2
-  initial_steps = 2
-  marker = T_marker
+  max_h_level = 3
+  initial_steps = 3
   initial_marker = T_marker
   [./Markers]
     [./T_marker]
@@ -124,7 +114,7 @@
   [./T_initial]
     variable = T
     type = ConstantIC
-    value = 263.15
+    value = 264.15
   [../]
 []
 

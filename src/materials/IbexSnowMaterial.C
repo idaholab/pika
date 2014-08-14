@@ -51,7 +51,7 @@ IbexSnowMaterial::computeQpProperties()
     _conductivity[_qp] = _input_conductivity;
 
   if (_compute_specific_heat)
-    _specific_heat[_qp] = 1000 * (2.115 + 0.00779 * _temperature[_qp]);
+    _specific_heat[_qp] = 1000 * (2.115 + 0.00779 * (273.15 - _temperature[_qp]));
   else
     _specific_heat[_qp] = _input_specific_heat;
 }

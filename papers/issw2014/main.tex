@@ -15,7 +15,8 @@
 %\usepackage{placeins}
 %\usepackage[none]{hyphenat}
 \usepackage[scaled]{helvet}
- \usepackage{caption}
+\usepackage{caption}
+\usepackage{unit}
 % \renewcommand\thefootnote{\fnsymbol{footnote}}
  \captionsetup{aboveskip=0pt,belowskip=0pt,justification=justified,font=normalsize,labelsep=colon}
 
@@ -34,33 +35,7 @@
 \newfloat{correspond}{!b}{sla}
 \newcommand{\authorcorrespond}{
   \begin{correspond}
-    \textsl{$^*$Corresponding author address:}
-    Andrew E. Slaughter, Modeling and Simulation, Idaho National Laboratory, Idaho Falls, ID
-    tel: 208-526-6888; email: andrew.slaughter@inl.gov
-  \end{correspond}
-}
-
-\begin{document}
-\renewcommand{\abstractname}{\normalsize{\normalfont{ABSTRACT:}}}
-\setlength{\abstitleskip}{0.5ex}
-\twocolumn[
-  \begin{center}
-    {MOOSE: A FRAMEWORK TO ENABLE RAPID ADVANCES AND COLLABORATION IN MODELING SNOW AND AVALANCHES}\\
-    \bigskip
-    \normalsize{Andrew E. Slaughter$^1*$, Micah J. Johnson$^1$, Michael R. Tonks$^1$, Derek R. Gaston$^1$, Cody J. Permann$^1$,\\John W. Peterson$^1$, David Andr\v{s}$^1$, Jason M. Miller$^1$, Edward E. Adams$^2$, and David J. Walters$^2$}\\
-    \bigskip
-    \normalsize{$^1$Idaho National Laboratory, Idaho Falls, ID}\\
-    \normalsize{$^2$Montana State University, Bozeman, MT}
-    \medskip
-  \end{center}
-  \begin{onecolabstract}
-    \input{abstract}\bigskip
-  \end{onecolabstract}
-]
-
-%\raggedright
-\balance
-\authorcorrespond
+    \hrule\smallskipb\authorcorrespond
 \setcitestyle{round}
 
 \input{body}
