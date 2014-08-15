@@ -54,6 +54,7 @@
 #include "SharpInterfaceCheckAir.h"
 #include "SharpInterfaceCheckVapor.h"
 #include "PikaPhaseInitializeAux.h"
+#include "VariableGradientComponent.h"
 
 // InitialConditions
 #include "KaempferAnalyticPhaseIC.h"
@@ -149,6 +150,7 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(SharpInterfaceCheckVapor);
   registerAux(PikaCriteria);
   registerAux(PikaPhaseInitializeAux);
+  registerAux(VariableGradientComponent);
 
   // BoundaryConditions
   registerBoundaryCondition(IbexSurfaceFluxBC);
