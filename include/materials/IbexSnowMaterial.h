@@ -43,6 +43,9 @@ protected:
 private:
 
   const VariableValue & _temperature;
+
+
+
   const Real _input_density;
 
   bool _compute_conductivity;
@@ -53,6 +56,9 @@ private:
   MaterialProperty<Real> & _density;
   MaterialProperty<Real> & _conductivity;
   MaterialProperty<Real> & _specific_heat;
+
+  bool _use_conductivity_variable;
+  const VariableValue & _conductivity_variable;
 
 };
 
