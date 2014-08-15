@@ -270,6 +270,11 @@
   [../]
 []
 
+[Problem]
+  type = FEProblem
+  solve = false
+[]
+
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
