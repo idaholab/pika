@@ -1,11 +1,15 @@
 [Mesh]
-  type = FileMesh
-  file = phi_initial_0003_mesh.xdr
+  type = GeneratedMesh
   dim = 2
+  nx = 6
+  ny = 6
+  xmax = 0.005
+  ymax = 0.005
+  uniform_refine = 7
 []
 
 [Variables]
-  active = 'phi u T T_y T_x'
+  active = 'phi T_x T_y u T'
   [./T]
   [../]
   [./u]
@@ -37,14 +41,14 @@
   [../]
   [./T_initial]
     type = ParsedFunction
-    value = DT*y+(T-DT*0.001)
+    value = DT*y+(T-DT*0.0025)
     vals = 'temperature grad_T_y'
     vars = 'T DT'
   [../]
 []
 
 [Kernels]
-  active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time heat_time vapor_phi_time vapor_diffusion phi_time K_eff_y_diffusion phi_square_gradient K_eff_x_diffusion'
+  active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time K_eff_y_diffusion heat_time vapor_phi_time vapor_diffusion phi_time phi_square_gradient K_eff_x_diffusion'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -144,7 +148,7 @@
 []
 
 [BCs]
-  active = 'Periodic T_hot T_cold T_y_hot T_y_flux T_x_hot T_x_flux'
+  active = 'Periodic T_y_flux T_x_flux T_x_hot T_y_hot T_hot T_cold'
   [./T_hot]
     type = FunctionDirichletBC
     variable = T
@@ -214,14 +218,14 @@
 []
 
 [Postprocessors]
-  active = 'k_y_eff temperature grad_T_y k_x_eff'
+  active = 'temperature grad_T_y k_y_eff k_x_eff'
   [./temperature]
     type = Receiver
-    default = 268.15
+    default = 263.15
   [../]
   [./grad_T_y]
     type = Receiver
-    default = 100
+    default = 250
   [../]
   [./k_y_eff]
     type = ThermalCond
@@ -229,7 +233,7 @@
     flux = 0.5
     length_scale = 1e-4
     T_hot = 268
-    dx = 0.002
+    dx = 0.005
     boundary = bottom
   [../]
   [./k_x_eff]
@@ -238,7 +242,7 @@
     flux = 0.5
     length_scale = 1e-4
     T_hot = 268
-    dx = 0.002
+    dx = 0.005
     boundary = right
   [../]
   [./D_y_eff]
@@ -264,15 +268,10 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial_0003_mesh.xdr
+    mesh = phi_initial.e
     nodal_variables = phi
-    es = phi_initial_0003.xdr
+    timestep = 40
   [../]
-[]
-
-[Problem]
-  type = FEProblem
-  solve = false
 []
 
 [Executioner]
@@ -289,51 +288,6 @@
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
   l_tol = 1e-04
-[]
-
-[Adaptivity]
-  max_h_level = 5
-  marker = combo_marker
-  initial_marker = phi_above_marker
-  [./Indicators]
-    [./phi_grad_indicator]
-      type = GradientJumpIndicator
-      variable = phi
-    [../]
-    [./u_grad_indicator]
-      type = GradientJumpIndicator
-      variable = u
-    [../]
-  [../]
-  [./Markers]
-    [./combo_marker]
-      type = ComboMarker
-      markers = ' u_tol_marker  phi_error_marker'
-    [../]
-    [./u_tol_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-7
-      indicator = u_grad_indicator
-      refine = 1e-6
-    [../]
-    [./phi_above_marker]
-      type = ValueThresholdMarker
-      variable = phi
-      refine = 1.00000001
-    [../]
-    [./u_fraction_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      indicator = u_grad_indicator
-      refine = 0.85
-    [../]
-    [./phi_error_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-3
-      indicator = phi_grad_indicator
-      refine = 1e-2
-    [../]
-  [../]
 []
 
 [Outputs]
@@ -373,10 +327,9 @@
   temperature = T
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .001
+  condensation_coefficient = .01
   phase = phi_aux
   output_properties = 'capillary_length beta diffusion_coefficient'
-  outputs = all
 []
 
 [PikaCriteriaOutput]
@@ -386,7 +339,6 @@
   vapor_criteria = false
   chemical_potential = u
   phase = phi
-  use_temporal_scaling = true
   ice_criteria = false
-  interface_velocity_postprocessors = 'average max min'
+  interface_velocity_postprocessors = 'max min'
 []

@@ -71,22 +71,23 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 30
+  num_steps = 100
   dt = 10
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
   nl_rel_tol = 1e-07
   nl_abs_tol = 1e-13
+  dtmax = 15000
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 0.5
+    growth_factor = 1.75
   [../]
 []
 
 [Outputs]
   output_initial = true
-  exodus = true
   console = false
   [./console]
     type = Console
@@ -94,11 +95,10 @@
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./xdr]
-    file_base = phi_initial
+  [./out]
     output_final = true
-    type = XDR
-    interval = 10
+    file_base = phi_initial
+    type = Exodus
   [../]
 []
 
