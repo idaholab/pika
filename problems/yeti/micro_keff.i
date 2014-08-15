@@ -1,11 +1,14 @@
 [Mesh]
-  type = FileMesh
-  file = phi_initial_0003_mesh.xdr
+  type = GeneratedMesh
   dim = 2
+  nx = 6
+  ny = 6
+  xmax = .002
+  ymax = .002
+  uniform_refine = 6
 []
 
 [Variables]
-  active = 'phi u T T_y T_x'
   [./T]
   [../]
   [./u]
@@ -16,11 +19,7 @@
     initial_condition = 268
   [../]
   [./T_x]
-  [../]
-  [./u_y]
-    initial_condition = 0.1
-  [../]
-  [./u_x]
+    initial_condition = 268
   [../]
 []
 
@@ -44,7 +43,6 @@
 []
 
 [Kernels]
-  active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time heat_time vapor_phi_time vapor_diffusion phi_time K_eff_y_diffusion phi_square_gradient K_eff_x_diffusion'
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -121,18 +119,6 @@
     use_temporal_scaling = true
     property = conductivity
   [../]
-  [./D_eff_y_diffusion]
-    type = PikaDiffusion
-    variable = u_y
-    property = diffusion_coefficient
-    scale = 1000
-  [../]
-  [./D_eff_x_diffusion]
-    type = PikaDiffusion
-    variable = u_x
-    use_temporal_scaling = true
-    property = diffusion_coefficient
-  [../]
 []
 
 [AuxKernels]
@@ -144,7 +130,6 @@
 []
 
 [BCs]
-  active = 'Periodic T_hot T_cold T_y_hot T_y_flux T_x_hot T_x_flux'
   [./T_hot]
     type = FunctionDirichletBC
     variable = T
@@ -187,41 +172,16 @@
     boundary = right
     value = 0.5
   [../]
-  [./u_y_hot]
-    type = DirichletBC
-    variable = u_y
-    boundary = top
-    value = 100
-  [../]
-  [./u_y_flux]
-    type = NeumannBC
-    variable = u_y
-    boundary = bottom
-    value = 10
-  [../]
-  [./u_x_hot]
-    type = DirichletBC
-    variable = u_x
-    boundary = left
-    value = 0.1
-  [../]
-  [./u_x_flux]
-    type = NeumannBC
-    variable = u_x
-    boundary = right
-    value = 0.1
-  [../]
 []
 
 [Postprocessors]
-  active = 'k_y_eff temperature grad_T_y k_x_eff'
   [./temperature]
     type = Receiver
-    default = 268.15
+    default = 268
   [../]
   [./grad_T_y]
     type = Receiver
-    default = 100
+    default = 300
   [../]
   [./k_y_eff]
     type = ThermalCond
@@ -241,24 +201,6 @@
     dx = 0.002
     boundary = right
   [../]
-  [./D_y_eff]
-    type = ThermalCond
-    variable = u_y
-    flux = 0.1
-    length_scale = 1e-04
-    T_hot = 0.1
-    dx = 0.002
-    boundary = bottom
-  [../]
-  [./D_x_eff]
-    type = ThermalCond
-    variable = u_x
-    flux = 0.1
-    length_scale = 1e-04
-    T_hot = 0.1
-    dx = 0.002
-    boundary = right
-  [../]
 []
 
 [UserObjects]
@@ -268,11 +210,6 @@
     nodal_variables = phi
     es = phi_initial_0003.xdr
   [../]
-[]
-
-[Problem]
-  type = FEProblem
-  solve = false
 []
 
 [Executioner]
@@ -289,51 +226,6 @@
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
   l_tol = 1e-04
-[]
-
-[Adaptivity]
-  max_h_level = 5
-  marker = combo_marker
-  initial_marker = phi_above_marker
-  [./Indicators]
-    [./phi_grad_indicator]
-      type = GradientJumpIndicator
-      variable = phi
-    [../]
-    [./u_grad_indicator]
-      type = GradientJumpIndicator
-      variable = u
-    [../]
-  [../]
-  [./Markers]
-    [./combo_marker]
-      type = ComboMarker
-      markers = ' u_tol_marker  phi_error_marker'
-    [../]
-    [./u_tol_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-7
-      indicator = u_grad_indicator
-      refine = 1e-6
-    [../]
-    [./phi_above_marker]
-      type = ValueThresholdMarker
-      variable = phi
-      refine = 1.00000001
-    [../]
-    [./u_fraction_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.05
-      indicator = u_grad_indicator
-      refine = 0.85
-    [../]
-    [./phi_error_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-3
-      indicator = phi_grad_indicator
-      refine = 1e-2
-    [../]
-  [../]
 []
 
 [Outputs]
@@ -371,12 +263,10 @@
 
 [PikaMaterials]
   temperature = T
-  interface_thickness = 1e-5
+  interface_thickness = 4e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .001
+  condensation_coefficient = .005
   phase = phi_aux
-  output_properties = 'capillary_length beta diffusion_coefficient'
-  outputs = all
 []
 
 [PikaCriteriaOutput]
@@ -388,5 +278,6 @@
   phase = phi
   use_temporal_scaling = true
   ice_criteria = false
-  interface_velocity_postprocessors = 'average max min'
+  interface_velocity_postprocessors = 'max min'
 []
+

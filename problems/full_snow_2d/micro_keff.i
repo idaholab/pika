@@ -5,7 +5,7 @@
   ny = 6
   xmax = 0.005
   ymax = 0.005
-  uniform_refine = 7
+  uniform_refine = 5
 []
 
 [Variables]
@@ -327,7 +327,7 @@
   temperature = T
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .01
+  condensation_coefficient = .005
   phase = phi_aux
   output_properties = 'capillary_length beta diffusion_coefficient'
 []

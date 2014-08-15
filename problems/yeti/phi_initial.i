@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
+  nx = 6
+  ny = 6
   xmax = .002
   ymax = .002
   uniform_refine = 5
@@ -112,9 +112,8 @@
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 1e-5
   phase = phi
-  temporal_scaling = 1e-04
-  condensation_coefficient = .001
+  interface_thickness = 4e-5
+  temporal_scaling = 1e-4
+  condensation_coefficient = .005
 []
-
