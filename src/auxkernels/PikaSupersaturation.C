@@ -15,6 +15,7 @@ InputParameters validParams<PikaSupersaturation>()
 {
   InputParameters params = validParams<AuxKernel>();
   params.addRequiredCoupledVar("phase", "Phase-field variable");
+  params.addRequiredCoupledVar("temperature", "The temperature variable");
   params.addParam<bool>("use_temporal_scaling", true, "Apply the temporal scaling parameter");
   return params;
 }
@@ -23,6 +24,7 @@ PikaSupersaturation::PikaSupersaturation(const std::string & name, InputParamete
     AuxKernel(name, parameters),
     PropertyUserObjectInterface(name, parameters),
     _s(coupledValue("chemical_potential")),
+    _temperature(coupledValue("temperature")),
     _rho_i(_property_uo.getParam<Real>("density_ice")),
     _xi(getParam<bool>("use_temporal_scaling") ? _property_uo.temporalScale() : 1.0)
 {
@@ -35,5 +37,6 @@ PikaSupersaturation::~PikaSupersaturation()
 Real
 PikaSupersaturation::computeValue()
 {
-  return -_s[_qp] * _rho_i * _xi;
+  Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
+  return _s[_qp] * _rho_i * _xi;
 }

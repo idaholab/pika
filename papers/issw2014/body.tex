@@ -7,7 +7,7 @@ Given this broad range modeling approaches a new paradigm is needed for modeling
 
 This paper briefly demonstrates the capabilities of MOOSE by:
 \begin{enumerate}
-\item Developing a snow micro-structure model, named Pika, based on the work \citep{kaempfer2009phase},
+\item Developing a snow micro-structure model, named Pika, based on the work of \citet{kaempfer2009phase},
 \item Developing a meso-scale continuum model for heat-condition, named Ibex, and
 \item Coupling the two models together into a single, multi-scale simulation.
 \end{enumerate}
@@ -15,7 +15,27 @@ This paper briefly demonstrates the capabilities of MOOSE by:
 The purpose of the work is not to provide a new model for snow, but to provided the basis for a completely new approach to modeling snow, an approach that will bring groups together to build a myriad of modeling tools that utilize a common framework.
 
 \section{PIKA: MICRO-STRUCTURE MODEL}\label{sec:pika}
-Methods and results here ...
+A phase-field micro-structure model based on the work of \citet{kaemfer2009phase} was developed that tracks heat and mass transfer and includes sublimation and deposition of water-vapor. The phase-field method has heavily developed using the MOOSE framework \citep{tonks2012object}, making the work of \citet{kaempfer2009phase} a natural choice.
+
+The model is comprised of three relationships: the phase-field, heat, and mass transport equations. The phase-field equation, as defined in Eq. \eqref{eq:phase}, allows the phase transition from ice to pore space to be modeled as a continuous, smooth variable allowing for complex geometries to be captured with a arbitrary finite element grid.
+\begin{equation}\label{eq:phase}
+\tau \frac{\partial \phi}{\partial t} = W^2 \nabla^2 \phi +(\phi-\phi^3)+\lambda[u-u_{eq}](1-phi^2)^2,
+\end{equation}
+where $phi$ is the phase-field variable (1 for ice; -1 for pore), $t$ is time, $\tau$ is the phase-field relaxation time, $W$ is the interface thickness, $\lambda$ is the phase-field coupling constant, $u$ is the dimensionless vapor concentration, and $u_{eq}$ is the dimensionless vapor concentration at equilibrium. The $\tau$ and $\lambda$ terms dictate kinetics of the micro-structure evolution and are detailed by \citet{kaempfer2009phase}.
+
+The heat equation is given in Eq. \eqref{eq:heat}, which includes a forcing term that accounts for the gain or loss of heat due to phase change.
+\begin{equation}\label{eq:heat}
+C(\phi)\frac{\partial T}{\partial t} = \nabla \cdot [K(\phi) \nabla T] + \frac{L_{sg}}{2}\frac{\partial \phi}{\partial t},
+\end{equation}
+where $T$ is temperature, $C$ and $K$ are the phase-field adjusted heat capacity and thermal conductivity, respectively, and $L_{sg}$ is the latent heat of sublimation.
+
+Equation \ref{eq:vapor} is the mass-transport equation that models the diffusion of vapor in the pore space.
+\begin{equation}\label{eq:vapor}
+\frac{\partial u}{\partial t} = \nabla \cdot[ D(\phi) \nabla u] - \frac{1}{2}\frac{\partial \phi}{\partial t},
+\end{equation}
+where $D$ is the phase-field adjusted vapor diffusion coefficient.
+
+The model developed here---Pika---generally follows the formulation presented by \citet{kaempfer2009phase} with a few notable exception: (1) Pika utilizes a finite element solution as opposed to a finite difference and (2) Pika allows the interface kinetic coefficient ($\beta$) and capillary length ($d_0$), which dictate the $\tau$ and $\lambda$ terms of Eq. \eqref{eq:phase}, to vary with temperature whereas \citet{kaempfer2009phase} held these terms constant.
 
 \section{IBEX: MESO-SCALE MODEL}\label{sec:ibex}
 The meso-scale model presented here is comprised of a single relationship, the heat-equation:

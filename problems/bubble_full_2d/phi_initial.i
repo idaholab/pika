@@ -51,7 +51,7 @@
   dt = 10
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '500 hypre boomeramg'
+  petsc_options_value = '50 hypre boomeramg'
   nl_rel_tol = 1e-07
   [./TimeStepper]
     type = IterationAdaptiveDT
@@ -83,7 +83,6 @@
 
 [Outputs]
   output_initial = true
-  exodus = true
   console = false
   [./console]
     type = Console
@@ -91,11 +90,11 @@
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./xdr]
+  [./exodus]
     file_base = phi_initial
     output_final = true
-    type = XDR
-    interval = 10
+    type = Exodus
+    interval = 1
   [../]
 []
 
@@ -116,8 +115,5 @@
   temperature = 258.2
   interface_thickness = 1e-6
   phase = phi
-  interface_kinetic_coefficient = 5.5e5
-  capillary_length = 1.3e-9
   temporal_scaling = 1e-04
 []
-

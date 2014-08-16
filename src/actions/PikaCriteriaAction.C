@@ -31,6 +31,8 @@ InputParameters validParams<PikaCriteriaAction>()
   // Coupled variables needed
   params.addRequiredCoupledVar("phase", "Phase-field variable");
   params.addRequiredCoupledVar("chemical_potential", "Chemical potential variable");
+  params.addRequiredCoupledVar("temperature", "Temperature variable");
+
 
   MooseEnum pps_types("min=0, max=1, average=2");
   std::vector<MooseEnum> vec_types(1, pps_types);
@@ -120,6 +122,9 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   action->getObjectParams().set<Real>("coefficient") = 1.0;
   applyCoupledVar("phase", action->getObjectParams());
   applyCoupledVar("chemical_potential", action->getObjectParams());
+
+  if (name == "super_saturation")
+    applyCoupledVar("temperature", action->getObjectParams());
 
   // Add the variable
   FEType fe_type(CONSTANT, MONOMIAL);

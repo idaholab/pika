@@ -53,6 +53,7 @@ protected:
 private:
 
   VariableValue & _s;
+  VariableValue & _temperature;
   const Real & _rho_i;
   Real _xi;
 };
