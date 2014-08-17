@@ -19,9 +19,9 @@ A phase-field micro-structure model based on the work of \citet{kaemfer2009phase
 
 The model is comprised of three relationships: the phase-field, heat, and mass transport equations. The phase-field equation, as defined in Eq. \eqref{eq:phase}, allows the phase transition from ice to pore space to be modeled as a continuous, smooth variable allowing for complex geometries to be captured with a arbitrary finite element grid.
 \begin{equation}\label{eq:phase}
-\tau \frac{\partial \phi}{\partial t} = W^2 \nabla^2 \phi +(\phi-\phi^3)+\lambda[u-u_{eq}](1-phi^2)^2,
+\tau \frac{\partial \phi}{\partial t} = W^2 \nabla^2 \phi +(\phi-\phi^3)+\lambda[u-u_{eq}](1-\phi^2)^2,
 \end{equation}
-where $phi$ is the phase-field variable (1 for ice; -1 for pore), $t$ is time, $\tau$ is the phase-field relaxation time, $W$ is the interface thickness, $\lambda$ is the phase-field coupling constant, $u$ is the dimensionless vapor concentration, and $u_{eq}$ is the dimensionless vapor concentration at equilibrium. The $\tau$ and $\lambda$ terms dictate kinetics of the micro-structure evolution and are detailed by \citet{kaempfer2009phase}.
+where $\phi$ is the phase-field variable (1 for ice; -1 for pore), $t$ is time, $\tau$ is the phase-field relaxation time, $W$ is the interface thickness, $\lambda$ is the phase-field coupling constant, $u$ is the dimensionless vapor concentration, and $u_{eq}$ is the dimensionless vapor concentration at equilibrium. The $\tau$ and $\lambda$ terms dictate kinetics of the micro-structure evolution and are detailed by \citet{kaempfer2009phase}.
 
 The heat equation is given in Eq. \eqref{eq:heat}, which includes a forcing term that accounts for the gain or loss of heat due to phase change.
 \begin{equation}\label{eq:heat}
@@ -37,8 +37,30 @@ where $D$ is the phase-field adjusted vapor diffusion coefficient.
 
 The model developed here---Pika---generally follows the formulation presented by \citet{kaempfer2009phase} with a few notable exception: (1) Pika utilizes a finite element solution as opposed to a finite difference and (2) Pika allows the interface kinetic coefficient ($\beta$) and capillary length ($d_0$), which dictate the $\tau$ and $\lambda$ terms of Eq. \eqref{eq:phase}, to vary with temperature whereas \citet{kaempfer2009phase} held these terms constant.
 
+Fig. \ref{fig:bubble} shows the results of a benchmark problem modeled by \citet{kaempfer2009phase} and reproduced here for comparison. The problem is based on experiments of a bubble inside a block of ice having a \unit[5]{mm} square cross section that is subjected to to various temperature gradients \citep{nakaya1956technical, stehle1965technical}. The results shown here are for a gradient of \unitfrac[543]{K}{m} and match well with those reported by \citet{kaempfer2009phase}. The Pika model exhibited an average interface velocity of \unitfrac[XXXXXXX]{m}{s}, which is similar to those reported \citet{kaempfer2009phase}.
+
+\begin{figure}\label{fig:bubble}
+\includegraphics[width=\linewidth]{figures/bubble.pdf}
+\caption{Benchmark problem of bubble within \unit[5]{mm} cross section of ice; temperature (T) reported in \unit[]{K} and supersaturation (S.S.) in \unitfrac[]{kg}{m$^3$}.}
+\end{figure}
+
+Utilizing the simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was subjected to a temperature gradient of \unitfrac[400]{K}{m} over four hours. Fig. \ref{fig:snow2d} includes the snow image overlaid with the areas that observed sublimation (hot colors) and deposition (cold colors).
+
+\setlength{\unitlength}{1in}
+\begin{figure}\label{fig:snow2d}
+\includegraphics[width=\linewidth]{figures/snow2d_raw.png}
+\put(-3.25,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
+\caption{}
+\end{figure}
+
+Add Keff plots...
+
+Note: simple kinetics, boundary conditions (no flux) not conducive to large changes
+
+
 \section{IBEX: MESO-SCALE MODEL}\label{sec:ibex}
 The meso-scale model presented here is comprised of a single relationship, the heat-equation:
+add ref to MOOSE nuclear paper
 
 \begin{equation}\label{eq:meso}
 \rho c_p \frac{\partial{T}}{\partial t} = \nabla \cdot k_{eff} \nabla T + s,
