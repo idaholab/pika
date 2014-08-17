@@ -56,6 +56,7 @@ private:
   VariableValue & _temperature;
   const Real & _rho_i;
   Real _xi;
+  bool _normalize;
 };
 
 #endif //PIKASUPERSATURATION_H

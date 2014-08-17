@@ -39,19 +39,29 @@ The model developed here---Pika---generally follows the formulation presented by
 
 Fig. \ref{fig:bubble} shows the results of a benchmark problem modeled by \citet{kaempfer2009phase} and reproduced here for comparison. The problem is based on experiments of a bubble inside a block of ice having a \unit[5]{mm} square cross section that is subjected to to various temperature gradients \citep{nakaya1956technical, stehle1965technical}. The results shown here are for a gradient of \unitfrac[543]{K}{m} and match well with those reported by \citet{kaempfer2009phase}. The Pika model exhibited an average interface velocity of \unitfrac[XXXXXXX]{m}{s}, which is similar to those reported \citet{kaempfer2009phase}.
 
-\begin{figure}\label{fig:bubble}
+\begin{figure}
 \includegraphics[width=\linewidth]{figures/bubble.pdf}
 \caption{Benchmark problem of bubble within \unit[5]{mm} cross section of ice; temperature (T) reported in \unit[]{K} and supersaturation (S.S.) in \unitfrac[]{kg}{m$^3$}.}
+\label{fig:bubble}
 \end{figure}
 
 Utilizing the simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was subjected to a temperature gradient of \unitfrac[400]{K}{m} over four hours. Fig. \ref{fig:snow2d} includes the snow image overlaid with the areas that observed sublimation (hot colors) and deposition (cold colors).
 
 \setlength{\unitlength}{1in}
-\begin{figure}\label{fig:snow2d}
-\includegraphics[width=\linewidth]{figures/snow2d_raw.png}
-\put(-3.25,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
-\caption{}
-\end{figure}
+\begin{figure*}[ht!]\label{fig:snow2d}
+  \begin{subfigure}[c]{0.453\textwidth}
+    \includegraphics[width=\textwidth]{figures/snow2d_raw.png}
+    \put(-2.9445 ,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
+    \caption{Phase-change}
+    \label{fig:snow2d:a}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[c]{0.547\textwidth}
+    \includegraphics[width=\textwidth]{figures/snow2d_temp.pdf}
+    \caption{Grains before and after}
+    \label{fig:snow2d:b}
+  \end{subfigure}
+\end{figure*}
 
 Add Keff plots...
 
