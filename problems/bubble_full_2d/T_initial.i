@@ -67,16 +67,12 @@
 [Outputs]
   exodus = true
   console = false
+  file_base = T_initial
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
-  [../]
-  [./xdr]
-    file_base = T_initial_543_1e5
-    output_final = true
-    type = XDR
   [../]
 []
 

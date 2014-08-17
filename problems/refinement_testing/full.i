@@ -1,9 +1,9 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 5
+  nx = 10
   ny = 10
-  xmax = 0.0025
+  xmax = 0.005
   ymax = 0.005
 []
 
@@ -24,8 +24,7 @@
 [Functions]
   [./T_func]
     type = ParsedFunction
-    from_variable = T
-    function = -543*y+264.8
+    value = 500*y+268
   [../]
   [./phi_func]
     type = SolutionFunction
@@ -113,14 +112,14 @@
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 267.515
+    boundary = top
+    value = 270.5 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = top
-    value = 264.8
+    boundary = bottom
+    value = 268 # -20
   [../]
 []
 
@@ -130,7 +129,7 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial.e-s008
+    mesh = phi_initial.e-s009
     nodal_variables = phi
   [../]
 []
@@ -155,33 +154,18 @@
 
 [Adaptivity]
   max_h_level = 10
-  marker = combo_marker
   initial_steps = 10
-  initial_marker = combo_marker
+  initial_marker = phi_grad_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
     [../]
-    [./u_grad_indicator]
-      type = GradientJumpIndicator
-      variable = u
-    [../]
   [../]
   [./Markers]
-    [./combo_marker]
-      type = ComboMarker
-      markers = 'phi_grad_marker u_grad_marker'
-    [../]
-    [./u_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.02
-      indicator = u_grad_indicator
-      refine = 0.8
-    [../]
     [./phi_grad_marker]
       type = ErrorFractionMarker
-      coarsen = 0.02
+      coarsen = 0.1
       indicator = phi_grad_indicator
       refine = 0.8
     [../]
@@ -192,7 +176,7 @@
   output_initial = true
   exodus = true
   csv = true
-  file_base = full_543_1e6/out
+  file_base = full_out
   [./console]
     type = Console
     perf_log = true
@@ -210,7 +194,7 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = T_initial
+    function = T_func
   [../]
   [./vapor_ic]
     variable = u
@@ -225,7 +209,8 @@
   temperature = T
   interface_thickness = 1e-6
   temporal_scaling = 1e-4
-  condensation_coefficient = .01
+  outputs = all
+  condensation_coefficient = .001
   phase = phi
 []
 
@@ -239,4 +224,6 @@
   use_temporal_scaling = true
   ice_criteria = false
   interface_velocity_postprocessors = 'average max min'
+  super_saturation = false
 []
+

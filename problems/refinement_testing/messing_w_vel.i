@@ -1,9 +1,9 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 5
+  nx = 10
   ny = 10
-  xmax = 0.0025
+  xmax = 0.005
   ymax = 0.005
 []
 
@@ -17,15 +17,16 @@
 []
 
 [AuxVariables]
-  [./phi_aux]
+  [./vel]
+    order = CONSTANT
+    family = MONOMIAL
   [../]
 []
 
 [Functions]
   [./T_func]
     type = ParsedFunction
-    from_variable = T
-    function = -543*y+264.8
+    value = 500*y+268
   [../]
   [./phi_func]
     type = SolutionFunction
@@ -102,10 +103,12 @@
 []
 
 [AuxKernels]
-  [./phi_aux_kernel]
-    type = PikaPhaseInitializeAux
-    variable = phi_aux
+  [./vel_aux]
+    type = PikaInterfaceVelocity
+    variable = vel
+    chemical_potential = u
     phase = phi
+    execute_on = 'initial timestep_begin'
   [../]
 []
 
@@ -113,14 +116,14 @@
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 267.515
+    boundary = top
+    value = 270.5 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = top
-    value = 264.8
+    boundary = bottom
+    value = 268 # -20
   [../]
 []
 
@@ -130,7 +133,7 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial.e-s008
+    mesh = phi_initial.e-s009
     nodal_variables = phi
   [../]
 []
@@ -155,7 +158,7 @@
 
 [Adaptivity]
   max_h_level = 10
-  marker = combo_marker
+  marker = vel_combo_marker
   initial_steps = 10
   initial_marker = combo_marker
   [./Indicators]
@@ -163,27 +166,33 @@
       type = GradientJumpIndicator
       variable = phi
     [../]
-    [./u_grad_indicator]
-      type = GradientJumpIndicator
-      variable = u
-    [../]
   [../]
   [./Markers]
     [./combo_marker]
       type = ComboMarker
-      markers = 'phi_grad_marker u_grad_marker'
-    [../]
-    [./u_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.02
-      indicator = u_grad_indicator
-      refine = 0.8
+      markers = 'pos_vel_marker neg_vel_marker phi_grad_marker'
     [../]
     [./phi_grad_marker]
       type = ErrorFractionMarker
-      coarsen = 0.02
+      coarsen = 0.1
       indicator = phi_grad_indicator
       refine = 0.8
+    [../]
+    [./neg_vel_marker]
+      type = ValueThresholdMarker
+      invert = true
+      refine = -1e-8
+      third_state = DO_NOTHING
+      variable = vel
+    [../]
+    [./vel_combo_marker]
+      type = ComboMarker
+      markers = 'neg_vel_marker pos_vel_marker'
+    [../]
+    [./pos_vel_marker]
+      type = ValueThresholdMarker
+      variable = vel
+      refine = 1e-8
     [../]
   [../]
 []
@@ -192,7 +201,7 @@
   output_initial = true
   exodus = true
   csv = true
-  file_base = full_543_1e6/out
+  file_base = full_out
   [./console]
     type = Console
     perf_log = true
@@ -210,7 +219,7 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = T_initial
+    function = T_func
   [../]
   [./vapor_ic]
     variable = u
@@ -225,18 +234,8 @@
   temperature = T
   interface_thickness = 1e-6
   temporal_scaling = 1e-4
-  condensation_coefficient = .01
+  outputs = all
+  condensation_coefficient = .001
   phase = phi
 []
 
-[PikaCriteriaOutput]
-  air_criteria = false
-  velocity_criteria = false
-  time_criteria = false
-  vapor_criteria = false
-  chemical_potential = u
-  phase = phi
-  use_temporal_scaling = true
-  ice_criteria = false
-  interface_velocity_postprocessors = 'average max min'
-[]

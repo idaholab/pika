@@ -38,5 +38,5 @@ Real
 PikaSupersaturation::computeValue()
 {
   Real rho_vs = _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_temperature[_qp]);
-  return _s[_qp] * _rho_i * _xi;
+  return (_s[_qp] * _rho_i) / rho_vs * _xi;
 }

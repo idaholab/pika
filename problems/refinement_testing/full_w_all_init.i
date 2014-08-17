@@ -1,9 +1,9 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 5
+  nx = 10
   ny = 10
-  xmax = 0.0025
+  xmax = 0.005
   ymax = 0.005
 []
 
@@ -17,20 +17,27 @@
 []
 
 [AuxVariables]
-  [./phi_aux]
+  [./vel]
+    order = CONSTANT
+    family = MONOMIAL
   [../]
 []
 
 [Functions]
   [./T_func]
-    type = ParsedFunction
+    type = SolutionFunction
     from_variable = T
-    function = -543*y+264.8
+    solution = u_T_initial
   [../]
   [./phi_func]
     type = SolutionFunction
     from_variable = phi
     solution = phi_initial
+  [../]
+  [./u_func]
+    type = SolutionFunction
+    from_variable = u
+    solution = u_T_initial
   [../]
 []
 
@@ -102,10 +109,12 @@
 []
 
 [AuxKernels]
-  [./phi_aux_kernel]
-    type = PikaPhaseInitializeAux
-    variable = phi_aux
+  [./vel_aux]
+    type = PikaInterfaceVelocity
+    variable = vel
+    chemical_potential = u
     phase = phi
+    execute_on = 'initial timestep_begin'
   [../]
 []
 
@@ -113,14 +122,14 @@
   [./T_hot]
     type = DirichletBC
     variable = T
-    boundary = bottom
-    value = 267.515
+    boundary = top
+    value = 270.5 # -5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
-    boundary = top
-    value = 264.8
+    boundary = bottom
+    value = 268 # -20
   [../]
 []
 
@@ -130,26 +139,30 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial.e-s008
+    mesh = phi_initial.e-s009
     nodal_variables = phi
+  [../]
+  [./u_T_initial]
+    type = SolutionUserObject
+    mesh = u_T_initial.e-s010
+    nodal_variables = 'u T'
   [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  dt = 5
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 20000
   reset_dt = true
-  dtmax = 50
+  dtmax = 20
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 1
-    percent_change = 0.5
+    dt = 5
   [../]
 []
 
@@ -192,7 +205,7 @@
   output_initial = true
   exodus = true
   csv = true
-  file_base = full_543_1e6/out
+  file_base = u_T_initial
   [./console]
     type = Console
     perf_log = true
@@ -210,33 +223,22 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = T_initial
+    function = T_func
   [../]
   [./vapor_ic]
     variable = u
-    type = ChemicalPotentialIC
+    type = FunctionIC
     block = 0
-    phase_variable = phi
-    temperature = T
+    function = u_func
   [../]
 []
 
 [PikaMaterials]
-  temperature = T
+  temperature = 268
   interface_thickness = 1e-6
   temporal_scaling = 1e-4
+  outputs = all
   condensation_coefficient = .01
   phase = phi
 []
 
-[PikaCriteriaOutput]
-  air_criteria = false
-  velocity_criteria = false
-  time_criteria = false
-  vapor_criteria = false
-  chemical_potential = u
-  phase = phi
-  use_temporal_scaling = true
-  ice_criteria = false
-  interface_velocity_postprocessors = 'average max min'
-[]

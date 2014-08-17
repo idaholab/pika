@@ -239,4 +239,6 @@
   use_temporal_scaling = true
   ice_criteria = false
   interface_velocity_postprocessors = 'average max min'
+  temperature = T
 []
+
