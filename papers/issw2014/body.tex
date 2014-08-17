@@ -12,7 +12,7 @@ This paper briefly demonstrates the capabilities of MOOSE by:
 \item Coupling the two models together into a single, multi-scale simulation.
 \end{enumerate}
 
-The purpose of the work is not to provide a new model for snow, but to provided the basis for a completely new approach to modeling snow, an approach that will bring groups together to build a myriad of modeling tools that utilize a common framework.
+The purpose of the work is not to provide a new model for snow, but to take existing models and tools to provided the basis for a completely new approach to modeling snow, an approach that aims to bring groups together to build a myriad of different, open-source simulation tools that utilize a common framework.
 
 \section{PIKA: MICRO-STRUCTURE MODEL}\label{sec:pika}
 A phase-field micro-structure model based on the work of \citet{kaemfer2009phase} was developed that tracks heat and mass transfer and includes sublimation and deposition of water-vapor. The phase-field method has heavily developed using the MOOSE framework \citep{tonks2012object}, making the work of \citet{kaempfer2009phase} a natural choice.
@@ -37,40 +37,48 @@ where $D$ is the phase-field adjusted vapor diffusion coefficient.
 
 The model developed here---Pika---generally follows the formulation presented by \citet{kaempfer2009phase} with a few notable exception: (1) Pika utilizes a finite element solution as opposed to a finite difference and (2) Pika allows the interface kinetic coefficient ($\beta$) and capillary length ($d_0$), which dictate the $\tau$ and $\lambda$ terms of Eq. \eqref{eq:phase}, to vary with temperature whereas \citet{kaempfer2009phase} held these terms constant.
 
-Fig. \ref{fig:bubble} shows the results of a benchmark problem modeled by \citet{kaempfer2009phase} and reproduced here for comparison. The problem is based on experiments of a bubble inside a block of ice having a \unit[5]{mm} square cross section that is subjected to to various temperature gradients \citep{nakaya1956technical, stehle1965technical}. The results shown here are for a gradient of \unitfrac[543]{K}{m} and match well with those reported by \citet{kaempfer2009phase}. The Pika model exhibited an average interface velocity of \unitfrac[XXXXXXX]{m}{s}, which is similar to those reported \citet{kaempfer2009phase}.
+Fig. \ref{fig:bubble} shows the results of a benchmark problem modeled by \citet{kaempfer2009phase} and reproduced here for comparison. The problem is based on experiments of a bubble inside a block of ice having a \unit[5]{mm} square cross section that is subjected to to various temperature gradients \citep{nakaya1956technical, stehle1965technical}. The results shown here are for a gradient of \unitfrac[543]{K}{m} and match well with those reported by \citet{kaempfer2009phase}. The Pika model exhibited an average interface velocity of \unitfrac[3.73e-9]{m}{s} at \unit[7200]{s}, which is similar to those reported \citet{kaempfer2009phase}.
 
 \begin{figure}
-\includegraphics[width=\linewidth]{figures/bubble.pdf}
-\caption{Benchmark problem of bubble within \unit[5]{mm} cross section of ice; temperature (T) reported in \unit[]{K} and supersaturation (S.S.) in \unitfrac[]{kg}{m$^3$}.}
-\label{fig:bubble}
+  \includegraphics[width=\linewidth]{figures/bubble.pdf}
+  \caption{Benchmark problem of bubble within \unit[5]{mm} cross section of ice; temperature (T) reported in \unit[]{K} and supersaturation (S.S.) in \unitfrac[]{kg}{m$^3$}.}
+  \label{fig:bubble}
 \end{figure}
 
-Utilizing the simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was subjected to a temperature gradient of \unitfrac[400]{K}{m} over four hours. Fig. \ref{fig:snow2d} includes the snow image overlaid with the areas that observed sublimation (hot colors) and deposition (cold colors).
+Utilizing the simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was subjected to a temperature gradient of \unitfrac[250]{K}{m} for approximately eight hours.
+
+As shown if Fig. \ref{fig:keff}, during the simulation the effective thermal conductivity ($k_{eff}$) was computed in the vertical (y) and horizontal directions (x), which were on the order of \unitfrac[1.2]{W}{mK}, which is on the upper limit of what is expected for snow \citep{sturm1997thermal}.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/pika_keff.pdf}
+  \caption{Percent change in effective thermal conductivity in the vertical (y) and horizontal directions (x) during the simulations.}
+  \label{fig:keff}
+\end{figure}
+
+
+Fig. \ref{fig:snow2d:diff} includes the raw snow image overlaid with the areas that observed sublimation (hot colors) and deposition (cold colors) and Fig. \ref{fig:snow2d:grains} snow the temperature field at the end of the simulation as well as the ice grain locations at the beginning and end of the simulations.
+
+The $k_{eff}$ results are of particular interest, during the first few hours of the simulation both values increase, with the vertical direction increase at a greater rate. Then both begin to decrease at a similar rate after about four hours. There may be man explanations for this behavior, but considering the simplicity of the phae-change kinetics in the model such analysis is beyond the scope of this paper.
+
+The results presented here serve as demonstration of the capabilities and potential to model micro-structure evolution of snow using MOOSE. Pika is intended as a starting point for further research that includes convection in the pore space, more realistic vapor flux boundary conditions, and enhanced phase-change kinetics including accounting for ice grain orientation.
+
 
 \setlength{\unitlength}{1in}
-\begin{figure*}[ht!]\label{fig:snow2d}
-  \begin{subfigure}[c]{0.453\textwidth}
-    \includegraphics[width=\textwidth]{figures/snow2d_raw.png}
-    \put(-2.9445 ,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
-    \caption{Phase-change}
-    \label{fig:snow2d:a}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[c]{0.547\textwidth}
-    \includegraphics[width=\textwidth]{figures/snow2d_temp.pdf}
-    \caption{Grains before and after}
-    \label{fig:snow2d:b}
-  \end{subfigure}
-\end{figure*}
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/snow2d_raw.png}
+  \put(-3.125 ,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
+  \caption{The difference between the phase-field variable between initial and final simulations steps demonstrating where mass was gained (blue) and lost (orange).}
+  \label{fig:snow2d:diff}
+\end{figure}
 
-Add Keff plots...
-
-Note: simple kinetics, boundary conditions (no flux) not conducive to large changes
-
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/snow2d_temp.pdf}
+  \caption{The difference in the ice grains initially (black) and after (white) 8 hours subjected to a \unitfrac[250]{K}{m} temperature gradient.}
+  \label{fig:snow2d:grains}
+\end{figure}
 
 \section{IBEX: MESO-SCALE MODEL}\label{sec:ibex}
-The meso-scale model presented here is comprised of a single relationship, the heat-equation:
-add ref to MOOSE nuclear paper
+The meso-scale model presented here is comprised of a single relationship, the heat-equation:3
 
 \begin{equation}\label{eq:meso}
 \rho c_p \frac{\partial{T}}{\partial t} = \nabla \cdot k_{eff} \nabla T + s,
@@ -97,6 +105,6 @@ Since, Ibex was built using MOOSE, it is dimension agnostic, thus the same code 
 
 
 \section{MULTI-SCALE MODEL}\label{sec:yeti}
-
+add ref to MOOSE nuclear paper
 
 \section{CLOSING REMARKS}
