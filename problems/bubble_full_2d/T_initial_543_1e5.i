@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-  file = phi_initial_1e5_0003_mesh.xdr
+  file = phi_initial.e-s008
   dim = 2
 []
 
@@ -51,8 +51,7 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial_1e5_0003_mesh.xdr
-    es = phi_initial_1e5_0003.xdr
+    mesh = phi_initial.e-s008
     nodal_variables = phi
   [../]
 []
@@ -91,9 +90,6 @@
 
 [PikaMaterials]
   temperature = T
-  interface_thickness = 1e-5
+  interface_thickness = 1e-6
   phase = phi
-  interface_kinetic_coefficient = 5.5e5
-  capillary_length = 1.3e-9
 []
-

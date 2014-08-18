@@ -7,7 +7,9 @@
 %\usepackage[scaled]{helvet}
 \usepackage[original,runin]{abstract}
 \usepackage[english]{babel}
-\usepackage{float}
+\usepackage[figurename=Fig.]{caption}
+\usepackage{subcaption}
+\usepackage{float, flafter, afterpage}
 \usepackage{hyperref}
 %\usepackage[vertfit]{breakurl}
 \usepackage{titlesec,ulem}
@@ -18,7 +20,7 @@
 \usepackage[scaled]{helvet}
  \usepackage{caption}
 % \renewcommand\thefootnote{\fnsymbol{footnote}}
- \captionsetup{aboveskip=0pt,belowskip=0pt,justification=justified,font=normalsize,labelsep=colon}
+ \captionsetup{aboveskip=0pt,belowskip=5pt,justification=justified,font=normalsize,labelsep=colon}
 
 \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
 \usepackage[T1]{fontenc}
@@ -30,6 +32,9 @@
 % \titleformat{name=\subsection}{\itshape}{\thesubsection}{0.5ex}{\emph}
 \titlespacing{name=\section}{0pt}{10pt}{8pt}
 % \titlespacing{name=\subsection}{0pt}{15pt}{10pt}
+
+\renewcommand{\figurename}{Fig.}
+
 
 \floatstyle{plain}
 \newfloat{correspond}{!b}{sla}

@@ -1,7 +1,10 @@
 [Mesh]
-  type = FileMesh
-  file = phi_initial_1e5_0003_mesh.xdr
+  type = GeneratedMesh
   dim = 2
+  nx = 5
+  ny = 10
+  xmax = 0.0025
+  ymax = 0.005
 []
 
 [Variables]
@@ -20,9 +23,9 @@
 
 [Functions]
   [./T_func]
-    type = SolutionFunction
+    type = ParsedFunction
     from_variable = T
-    solution = T_initial
+    function = -543*y+264.8
   [../]
   [./phi_func]
     type = SolutionFunction
@@ -111,13 +114,13 @@
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 267.515 # -5
+    value = 267.515
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 264.8 # -20
+    value = 264.8
   [../]
 []
 
@@ -127,15 +130,8 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial_1e5_0003_mesh.xdr
+    mesh = phi_initial.e-s008
     nodal_variables = phi
-    es = phi_initial_1e5_0003.xdr
-  [../]
-  [./T_initial]
-    type = SolutionUserObject
-    mesh = T_initial_543_1e5_0000_mesh.xdr
-    nodal_variables = T
-    es = T_initial_543_1e5_0000.xdr
   [../]
 []
 
@@ -158,10 +154,10 @@
 []
 
 [Adaptivity]
-  max_h_level = 8
+  max_h_level = 10
   marker = combo_marker
-  initial_steps = 8
-  initial_marker = phi_above_marker
+  initial_steps = 10
+  initial_marker = combo_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -175,30 +171,19 @@
   [./Markers]
     [./combo_marker]
       type = ComboMarker
-      markers = 'phi_tol_marker u_tol_marker'
+      markers = 'phi_grad_marker u_grad_marker'
     [../]
-    [./phi_tol_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-6
-      indicator = phi_grad_indicator
-      refine = 1e-4
-    [../]
-    [./u_tol_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-9
-      indicator = u_grad_indicator
-      refine = 1e-8
-    [../]
-    [./phi_above_marker]
-      type = ValueThresholdMarker
-      variable = phi
-      refine = 1.00000001
-    [../]
-    [./u_fraction_marker]
+    [./u_grad_marker]
       type = ErrorFractionMarker
-      coarsen = 0.05
+      coarsen = 0.02
       indicator = u_grad_indicator
-      refine = 0.85
+      refine = 0.8
+    [../]
+    [./phi_grad_marker]
+      type = ErrorFractionMarker
+      coarsen = 0.02
+      indicator = phi_grad_indicator
+      refine = 0.8
     [../]
   [../]
 []
@@ -206,9 +191,8 @@
 [Outputs]
   output_initial = true
   exodus = true
-  checkpoint = true
   csv = true
-  file_base = full_543_1e5/out
+  file_base = full_543_1e6/out
   [./console]
     type = Console
     perf_log = true
@@ -226,7 +210,7 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = T_func
+    function = T_initial
   [../]
   [./vapor_ic]
     variable = u
@@ -239,10 +223,9 @@
 
 [PikaMaterials]
   temperature = T
-  interface_thickness = 1e-5
+  interface_thickness = 1e-6
   temporal_scaling = 1e-4
-  outputs = all
-  condensation_coefficient = .001
+  condensation_coefficient = .01
   phase = phi
 []
 
@@ -257,4 +240,3 @@
   ice_criteria = false
   interface_velocity_postprocessors = 'average max min'
 []
-
