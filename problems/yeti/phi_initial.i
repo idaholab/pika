@@ -3,9 +3,9 @@
   dim = 2
   nx = 6
   ny = 6
-  xmax = .002
-  ymax = .002
-  uniform_refine = 5
+  xmax = .005
+  ymax = .005
+  uniform_refine = 6
 []
 
 [MeshModifiers]
@@ -74,10 +74,11 @@
   num_steps = 20
   dt = 10
   solve_type = PJFNK
-  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '500 hypre boomeramg'
-  nl_rel_tol = 1e-07
-  nl_abs_tol = 1e-13
+  petsc_options_iname = '-pc_type -pc_hypre_type'
+  petsc_options_value = 'hypre boomeramg'
+  nl_rel_tol = 1e-04
+  nl_abs_tol = 1e-12
+  l_tol = 1e-4
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 0.5
@@ -87,18 +88,12 @@
 [Outputs]
   output_initial = true
   exodus = true
-  console = false
+  file_base = phi_initial_out
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
-  [../]
-  [./xdr]
-    file_base = phi_initial
-    output_final = true
-    type = XDR
-    interval = 10
   [../]
 []
 
@@ -113,7 +108,7 @@
 [PikaMaterials]
   temperature = 263.15
   phase = phi
-  interface_thickness = 4e-5
+  interface_thickness = 1e-5
   temporal_scaling = 1e-4
   condensation_coefficient = .005
 []

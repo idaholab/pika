@@ -3,9 +3,9 @@
   dim = 2
   nx = 6
   ny = 6
-  xmax = .002
-  ymax = .002
-  uniform_refine = 5
+  xmax = .005
+  ymax = .005
+  uniform_refine = 6
 []
 
 [Variables]
@@ -26,8 +26,6 @@
 [AuxVariables]
   [./phi_aux]
   [../]
-  [./T_aux]
-  [../]
 []
 
 [Functions]
@@ -47,6 +45,12 @@
     value = T
     vals = temperature
     vars = T
+  [../]
+  [./T_top]
+    type = ParsedFunction
+    value = k*DT
+    vals = 'grad_T_y 2.29'
+    vars = 'DT k'
   [../]
 []
 
@@ -135,32 +139,21 @@
     variable = phi_aux
     phase = phi
   [../]
-  [./func_aux]
-    type = FunctionAux
-    variable = T_aux
-    function = T_initial
-  [../]
 []
 
 [BCs]
-  [./T_hot]
-    type = FunctionDirichletBC
-    variable = T
-    boundary = top
-    function = T_initial
-  [../]
-  [./T_cold]
+  [./T_bottom]
     type = FunctionDirichletBC
     variable = T
     boundary = bottom
     function = T_initial
   [../]
-  [./Periodic]
-    [./phi]
-      variable = phi
-      auto_direction = y
-    [../]
-  [../]
+#  [./Periodic]
+#    [./phi]
+#      variable = phi
+#      auto_direction = y
+#    [../]
+#  [../]
   [./T_y_hot]
     type = DirichletBC
     variable = T_y
@@ -184,6 +177,12 @@
     variable = T_x
     boundary = right
     value = 0.5
+  [../]
+  [./T_top_flux]
+    type = FunctionNeumannBC
+    variable = T
+    boundary = top
+    function = T_top
   [../]
 []
 
@@ -219,9 +218,8 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial_0003_mesh.xdr
+    mesh = phi_initial_out.e
     nodal_variables = phi
-    es = phi_initial_0003.xdr
   [../]
 []
 
