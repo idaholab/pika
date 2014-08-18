@@ -15,7 +15,7 @@ This paper briefly demonstrates the capabilities of MOOSE by:
 The purpose of the work is not to provide a new model for snow, but to take existing models and tools to provided the basis for a completely new approach to modeling snow, an approach that aims to bring groups together to build a myriad of different, open-source simulation tools that utilize a common framework.
 
 \section{PIKA: MICRO-STRUCTURE MODEL}\label{sec:pika}
-A phase-field micro-structure model based on the work of \citet{kaemfer2009phase} was developed that tracks heat and mass transfer and includes sublimation and deposition of water-vapor. The phase-field method has heavily developed using the MOOSE framework \citep{tonks2012object}, making the work of \citet{kaempfer2009phase} a natural choice.
+A phase-field micro-structure model based on the work of \citet{kaempfer2009phase} was developed that tracks heat and mass transfer and includes sublimation and deposition of water-vapor. The phase-field method has heavily developed using the MOOSE framework \citep{tonks2012object}, making the work of \citet{kaempfer2009phase} a natural choice.
 
 The model is comprised of three relationships: the phase-field, heat, and mass transport equations. The phase-field equation, as defined in Eq. \eqref{eq:phase}, allows the phase transition from ice to pore space to be modeled as a continuous, smooth variable allowing for complex geometries to be captured with a arbitrary finite element grid.
 \begin{equation}\label{eq:phase}
