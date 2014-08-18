@@ -59,14 +59,14 @@
   [../]
 []
 
-[BCs]
-  [./Periodic]
-    [./phi_periodic]
-      variable = phi
-      auto_direction = y
-    [../]
-  [../]
-[]
+#[BCs]
+#  [./Periodic]
+#    [./phi_periodic]
+#      variable = phi
+#      auto_direction = y
+#    [../]
+#  [../]
+#[]
 
 [Executioner]
   # Preconditioned JFNK (default)
@@ -108,7 +108,7 @@
 [PikaMaterials]
   temperature = 263.15
   phase = phi
-  interface_thickness = 1e-5
+  interface_thickness = 5e-5
   temporal_scaling = 1e-4
   condensation_coefficient = .005
 []

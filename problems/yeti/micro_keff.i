@@ -29,6 +29,7 @@
 []
 
 [Functions]
+  active = 'T_constant T_initial phi_func'
   [./phi_func]
     type = SolutionFunction
     from_variable = phi
@@ -37,7 +38,7 @@
   [./T_initial]
     type = ParsedFunction
     value = DT*y+T
-    vals = 'temperature grad_T_y'
+    vals = '268 grad_T_y'
     vars = 'T DT'
   [../]
   [./T_constant]
@@ -142,18 +143,18 @@
 []
 
 [BCs]
+  # [./Periodic]
+  # [./phi]
+  # variable = phi
+  # auto_direction = y
+  # [../]
+  # [../]
   [./T_bottom]
     type = FunctionDirichletBC
     variable = T
     boundary = bottom
     function = T_initial
   [../]
-#  [./Periodic]
-#    [./phi]
-#      variable = phi
-#      auto_direction = y
-#    [../]
-#  [../]
   [./T_y_hot]
     type = DirichletBC
     variable = T_y
@@ -178,11 +179,11 @@
     boundary = right
     value = 0.5
   [../]
-  [./T_top_flux]
-    type = FunctionNeumannBC
+  [./T_top]
+    type = FunctionDirichletBC
     variable = T
     boundary = top
-    function = T_top
+    function = T_initial
   [../]
 []
 
@@ -220,6 +221,7 @@
     type = SolutionUserObject
     mesh = phi_initial_out.e
     nodal_variables = phi
+    timestep = 20
   [../]
 []
 
@@ -261,7 +263,7 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = T_constant
+    function = T_initial
   [../]
   [./vapor_ic]
     variable = u
@@ -276,7 +278,7 @@
   temperature = T
   interface_thickness = 4e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .005
+  condensation_coefficient = .01
   phase = phi_aux
 []
 
@@ -291,3 +293,4 @@
   ice_criteria = false
   interface_velocity_postprocessors = 'max min'
 []
+
