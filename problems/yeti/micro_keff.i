@@ -228,7 +228,7 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 30
+  dt = 20
   l_max_its = 100
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
@@ -278,7 +278,7 @@
   temperature = T
   interface_thickness = 4e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .01
+  condensation_coefficient = .004
   phase = phi_aux
 []
 
@@ -293,4 +293,3 @@
   ice_criteria = false
   interface_velocity_postprocessors = 'max min'
 []
-

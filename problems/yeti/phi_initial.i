@@ -110,5 +110,5 @@
   phase = phi
   interface_thickness = 5e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .005
+  condensation_coefficient = .004
 []
