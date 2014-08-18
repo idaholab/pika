@@ -5,7 +5,7 @@
   ny = 6
   xmax = .002
   ymax = .002
-  uniform_refine = 6
+  uniform_refine = 5
 []
 
 [Variables]
@@ -26,6 +26,8 @@
 [AuxVariables]
   [./phi_aux]
   [../]
+  [./T_aux]
+  [../]
 []
 
 [Functions]
@@ -36,9 +38,15 @@
   [../]
   [./T_initial]
     type = ParsedFunction
-    value = DT*y+(T-DT*0.001)
+    value = DT*y+T
     vals = 'temperature grad_T_y'
     vars = 'T DT'
+  [../]
+  [./T_constant]
+    type = ParsedFunction
+    value = T
+    vals = temperature
+    vars = T
   [../]
 []
 
@@ -127,6 +135,11 @@
     variable = phi_aux
     phase = phi
   [../]
+  [./func_aux]
+    type = FunctionAux
+    variable = T_aux
+    function = T_initial
+  [../]
 []
 
 [BCs]
@@ -181,7 +194,7 @@
   [../]
   [./grad_T_y]
     type = Receiver
-    default = 300
+    default = 5
   [../]
   [./k_y_eff]
     type = ThermalCond
@@ -229,7 +242,7 @@
 []
 
 [Outputs]
-  output_initial = false
+  output_initial = true
   exodus = true
   csv = true
   [./console]
@@ -250,7 +263,7 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = T_initial
+    function = T_constant
   [../]
   [./vapor_ic]
     variable = u
@@ -280,4 +293,3 @@
   ice_criteria = false
   interface_velocity_postprocessors = 'max min'
 []
-
