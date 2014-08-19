@@ -11,6 +11,8 @@ import csv
 with open('micro_keff_out.csv', 'rb') as csvfile:
   reader = csv.reader(csvfile)
   next(reader, None)  # skip the headers
+  next(reader, None)  # skip initial data
+
   t = []
   kx = []
   ky = []
