@@ -1,21 +1,24 @@
-\section{INTRODUCTION}
-Modeling the thermal behavior of snow is not a new endeavor; \citet{lachapelle1960critique} cites a paper from 1892 that examined temperature profiles of snow. A significant amount of work has examined snow using a continuum mechanics theory of mixtures (e.g., \citet{adams1989constitutive, brown1999mixture}.  Using a thermal non-equilibrium approach, \citet{bartelt2004} indicated that temperature differences between the pore air and ice particles and inter-facial heat exchange between snow crystals played a significant role in determining the temperature profile. Perhaps the most comprehensive model developed to date is the SNOWPACK model \citep{bartelt2002physical, lehning2002physical, lehning2002physicalb}, that accounts for heat transfer, water transport, vapor diffusion, and mechanical deformation.  Research conducted in an attempt to validate the SNOWPACK model yielded reasonable results, yet \citet{fierz2001assessment} encouraged additional work regarding the initial stage of snow metamorphism, specifically the processes involving particles changing to small faceted or rounded crystals. \citet{miller2009microstructural} provided a unique approach for modeling this transition. They were able to develop a model capable of faceted growth, but the model is limited in a number of ways, including an assumed spherical geometry.
+\section{Motivation}\label{sec:motivation}
+A wide spectrum of snow and avalanche models exist; however, currently there is no unified modeling effort to allow true collaboration across model as scales. Given the broad range modeling approaches that exist for snow and avalanche research (see Section \ref{sec:background}) a new paradigm is needed for modeling and simulation that fosters rapid development and collaboration. This paper aims to demonstrate the capabilities of the open-source Multiphysics Object Oriented Simulation Environment (MOOSE; \url{www.moooseframework.org}) as a framework for future snow and avalanche model development.
 
-Recent approaches to modeling the snowpack are based on the 3-D images of the snow micro-structure.  One notable article by \citet{kaempfer2005microstructural} utilized X-ray micro-tomography ($\mu$-CT) to build a 3-D image of a snow sample to which a finite element model was applied for modeling the heat transfer through the sample. \citet{kaempfer2009phase} demonstrated that phase-field methods may be applied to snow metamorphism and concludes that with the model ``snow metamorphism can be studied in details not possible heretofore.''
-
-Given this broad range modeling approaches a new paradigm is needed for modeling and simulation that fosters rapid development and collaboration. The open-source Multiphysics Object Oriented Simulation Environment (MOOSE; \url{www.moooseframework.org}) is a framework specifically designed for such tasks. MOOSE is a finite-element framework that aids in application development by harnessing state-of-the-art fully-coupled, fully-implicit multiphysics solvers while providing automatic parallelization, mesh adaptivity, and an ever expanding set of physics modules including solid mechanics, phase-field, Navier-Stokes, and heat conduction. MOOSE natively supports multi-scale models allowing to couple MOOSE-based applications, thus fostering collaborations \citep{gaston2014physics}. Finally, MOOSE follows a rigorous and development strategy that ensures software quality at both the framework and application level \citep{gaston2014continous}.
+MOOSE is a finite-element framework that aids in application development by harnessing state-of-the-art fully-coupled, fully-implicit multiphysics solvers while providing automatic parallelization, mesh adaptivity, and an ever expanding set of physics modules including solid mechanics, phase-field, Navier-Stokes, and heat conduction. MOOSE natively supports multi-scale models allowing to couple MOOSE-based applications, thus fostering collaborations \citep{gaston2014physics}. Finally, MOOSE follows a rigorous and development strategy that ensures software quality at both the framework and application level \citep{gaston2014continous}.
 
 This paper briefly demonstrates the capabilities of MOOSE by:
-\begin{enumerate}
-\item Developing a snow micro-structure model, named Pika, based on the work of \citet{kaempfer2009phase},
-\item Developing a meso-scale continuum model for heat-condition, named Ibex, and
-\item Coupling the two models together into a single, multi-scale simulation.
+\begin{enumerate}\setlength{\itemsep}{0pt}
+\item developing a snow micro-structure model, named Pika, based on the work of \citet{kaempfer2009phase},
+\item developing a meso-scale continuum model for heat-condition, named Ibex, following the methods of \citet{slaughter2010numerical} and
+\item coupling the two models together into a single, multi-scale simulation.
 \end{enumerate}
 
-The purpose of the work is not to provide a new model for snow, but to take existing models and tools to provided the basis for a completely new approach to modeling snow, an approach that aims to bring groups together to build a myriad of different, open-source simulation tools that utilize a common framework.
+The purpose of the work is not to provide a validated, fully-operational model for snow, but to take existing modeling approaches and re-implement them using a single framework to demonstrate the capabilities of MOOSE. The tools developed here are the basis for a completely new approach to modeling snow, an approach that aims to bring groups together to build a myriad of different, open-source simulation tools utilizing a common framework to allow for coupling and co-development.
 
-\section{PIKA: MICRO-STRUCTURE MODEL}\label{sec:pika}
-A phase-field micro-structure model based on the work of \citet{kaempfer2009phase} was developed that tracks heat and mass transfer and includes sublimation and deposition of water-vapor. The phase-field method has heavily developed using the MOOSE framework \citep{tonks2012object}, making the work of \citet{kaempfer2009phase} a natural choice.
+\section{Background}\label{sec:background}
+Modeling the thermal behavior of snow is not a new endeavor; \citet{lachapelle1960critique} cites a paper from 1892 that examined temperature profiles of snow. A significant amount of work has examined snow using a continuum mechanics theory of mixtures (e.g., \citet{adams1989constitutive, brown1999mixture}.  Using a thermal non-equilibrium approach, \citet{bartelt2004} indicated that temperature differences between the pore air and ice particles and inter-facial heat exchange between snow crystals played a significant role in determining the temperature profile. Perhaps the most comprehensive model developed to date is the SNOWPACK model \citep{bartelt2002physical, lehning2002physical, lehning2002physicalb}, that accounts for heat transfer, water transport, vapor diffusion, and mechanical deformation.  Research conducted in an attempt to validate the SNOWPACK model yielded reasonable results, yet \citet{fierz2001assessment} encouraged additional work regarding the initial stage of snow metamorphism, specifically the processes involving particles changing to small faceted or rounded crystals. \citet{miller2009microstructural} provided a unique approach for modeling this transition. They were able to develop a model capable of faceted growth, but the model is limited in a number of ways, including an assumed spherical geometry.
+
+Recent approaches to modeling the snowpack are based on the 3-D images of the snow micro-structure.  One notable article by \citet{kaempfer2005microstructural} utilized X-ray micro-tomography ($\mu$-CT) to build a 3-D image of a snow sample to which a finite element model was applied for modeling the heat transfer through the sample. \citet{kaempfer2009phase} demonstrated that phase-field methods may be applied to snow metamorphism and concludes that with the model ``snow metamorphism can be studied in details not possible heretofore.'' This approached is used as the staring point for the work presented in this paper.
+
+\section{Pika: Micro-structure Model}\label{sec:pika}
+A phase-field micro-structure model based on the work of \citet{kaempfer2009phase} was developed that tracks heat and mass transfer and includes sublimation and deposition of water-vapor. The MOOSE framework includes a phase-field module \citep{tonks2012object}, thus making the this approach a natural choice.
 
 The model is comprised of three relationships: the phase-field, heat, and mass transport equations. The phase-field equation, as defined in Eq. \eqref{eq:phase}, allows the phase transition from ice to pore space to be modeled as a continuous, smooth variable allowing for complex geometries to be captured with a arbitrary finite element grid.
 \begin{equation}\label{eq:phase}
@@ -39,57 +42,53 @@ The model developed here---Pika---generally follows the formulation presented by
 
 Fig. \ref{fig:bubble} shows the results of a benchmark problem modeled by \citet{kaempfer2009phase} and reproduced here for comparison. The problem is based on experiments of a bubble inside a block of ice having a \unit[5]{mm} square cross section that is subjected to to various temperature gradients \citep{nakaya1956technical, stehle1965technical}. The results shown here are for a gradient of \unitfrac[543]{K}{m} and match well with those reported by \citet{kaempfer2009phase}. The Pika model exhibited an average interface velocity of \unitfrac[3.73e-9]{m}{s} at \unit[7200]{s}, which is similar to those reported \citet{kaempfer2009phase}.
 
-\begin{figure}
+\begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/bubble.pdf}
   \caption{Benchmark problem of bubble within \unit[5]{mm} cross section of ice; temperature (T) reported in \unit[]{K} and supersaturation (S.S.) in \unitfrac[]{kg}{m$^3$}.}
   \label{fig:bubble}
 \end{figure}
 
-Utilizing the simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was subjected to a temperature gradient of \unitfrac[250]{K}{m} for approximately eight hours.
-
-As shown if Fig. \ref{fig:keff}, during the simulation the effective thermal conductivity ($k_{eff}$) was computed in the vertical (y) and horizontal directions (x), which were on the order of \unitfrac[1.2]{W}{mK}, which is on the upper limit of what is expected for snow \citep{sturm1997thermal}.
-
-\begin{figure}
+\begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/pika_keff.pdf}
   \caption{Percent change in effective thermal conductivity in the vertical (y) and horizontal directions (x) during the simulations.}
   \label{fig:keff}
 \end{figure}
 
+Utilizing the simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was obtained at the Subzero Science and Engineering Research Facility at Montana State University. The simulation was subjected to a temperature gradient of \unitfrac[250]{K}{m} for approximately eight hours.
+
+As shown if Fig. \ref{fig:keff}, during the simulation the effective thermal conductivity ($k_{eff}$) was computed in the vertical (y) and horizontal directions (x), which were on the order of \unitfrac[1.2]{W}{mK}, which is on the upper limit of what is expected for snow \citep{sturm1997thermal}.
 
 Fig. \ref{fig:snow2d:diff} includes the raw snow image overlaid with the areas that observed sublimation (hot colors) and deposition (cold colors) and Fig. \ref{fig:snow2d:grains} snow the temperature field at the end of the simulation as well as the ice grain locations at the beginning and end of the simulations.
 
-The $k_{eff}$ results are of particular interest, during the first few hours of the simulation both values increase, with the vertical direction increase at a greater rate. Then both begin to decrease at a similar rate after about four hours. There may be man explanations for this behavior, but considering the simplicity of the phae-change kinetics in the model such analysis is beyond the scope of this paper.
-
-The results presented here serve as demonstration of the capabilities and potential to model micro-structure evolution of snow using MOOSE. Pika is intended as a starting point for further research that includes convection in the pore space, more realistic vapor flux boundary conditions, and enhanced phase-change kinetics including accounting for ice grain orientation.
-
-
 \setlength{\unitlength}{1in}
-\begin{figure}
+\begin{figure}[b]
   \includegraphics[width=\linewidth]{figures/snow2d_raw.png}
   \put(-3.125 ,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
   \caption{The difference between the phase-field variable between initial and final simulations steps demonstrating where mass was gained (blue) and lost (orange).}
   \label{fig:snow2d:diff}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
   \includegraphics[width=\linewidth]{figures/snow2d_temp.pdf}
   \caption{The difference in the ice grains initially (black) and after (white) 8 hours subjected to a \unitfrac[250]{K}{m} temperature gradient.}
   \label{fig:snow2d:grains}
 \end{figure}
 
-\section{IBEX: MESO-SCALE MODEL}\label{sec:ibex}
-The meso-scale model presented here is comprised of a single relationship, the heat-equation:3
+The $k_{eff}$ results are of particular interest, during the first few hours of the simulation both values increase, with the vertical direction increase at a greater rate. Then both begin to decrease at a similar rate after about four hours. There may be many explanations for this behavior, but considering the simplicity of the phae-change kinetics as well as the method used to compute $k_{eff}$, which is know to be inaccurate when pores are near the boundaries, such analysis is not appropriate. This plot serves to demonstrate the capabilities and potential to model micro-structure evolution of snow using MOOSE. Pika is intended as a starting point for further research that includes convection in the pore space, more realistic vapor flux boundary conditions, and enhanced phase-change kinetics including accounting for ice grain orientation.
 
+
+\section{Ibex: Meso-scale model}\label{sec:ibex}
+The meso-scale model presented here is comprised of a single relationship, the heat-equation:
 \begin{equation}\label{eq:meso}
 \rho c_p \frac{\partial{T}}{\partial t} = \nabla \cdot k_{eff} \nabla T + s,
 \end{equation}
-where $T$ is temperature, $s$ a heat source term, and the material properties $\rho$, $c_p$, and $k_{eff}$ are the bulk density, specific heat, and thermal conductivity for snow. The model developed includes incoming shortwave radiation that is absorbed within the snow (i.e., the $s$ source term in Eq. \eqref{eq:meso}), including absorption that differs with wavelength as detailed by \citet[][Ch. 4]{slaughter2010numerical}. On the surface the effects of incoming and out going long-wave radiation as well as sensible and latent heat are included as detailed in \citet{morstad2007experimental}.
+where $T$ is temperature, $s$ a heat source term, and the material properties $\rho$, $c_p$, and $k_{eff}$ are the bulk density, specific heat, and thermal conductivity for snow. The model developed includes incoming shortwave radiation that is absorbed within the snow (i.e., the $s$ source term in Eq. \eqref{eq:meso}), including absorption that differs with wavelength as detailed by \citet[][Ch. 4]{slaughter2010numerical}. On the surface the effects of incoming and out going long-wave radiation as well as sensible and latent heat are included as detailed in \citet{slaughter2010numerical}.
 
 To demonstrate the accuracy of the model, Exp. \#2 of \citet{morstad2007experimental} was reproduced using a 1D Ibex simulation. The simulation was similar fashion as detailed in \citet[][Ch. 4]{slaughter2010numerical}. For the simulation, all input parameters were set to the value discussed in detail in \citet{slaughter2010numerical}, including incoming short- and long-wave radiation set to \unitfrac[650]{W}{m\textsuperscript{2}} and \unitfrac[235]{W}{m\textsuperscript{2}}, respectively and the albedo in the visible, near-infrared, and short-wave infrared defined as 0.94, 0.80, and 0.59, respectively.
 
 Fig. \ref{fig:ibex_1d} includes the simulation results and a comparison with the experimental data of \citet{morstad2007experimental} after 8 hours; qualitatively the 1D Ibex model is capable capturing the general trend of experimental data. Fine tuning the parameters for Ibex is beyond the scope of this paper.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics[width=3.125in]{figures/ibex.pdf}
   \caption{Comparison of experimental data and 1D Ibex simulation.}
   \label{fig:ibex_1d}
@@ -103,8 +102,16 @@ Since, Ibex was built using MOOSE, it is dimension agnostic, thus the same code 
   \label{fig:ibex_3d}
 \end{figure}
 
+\section{Yeti: Multi-scale Model}\label{sec:yeti}
+The ability to develop a multi-scale model from existing MOOSE-based applications is a key feature for the framework that will allow for collaboration across scales and developers \citet{gaston2014physics}. Consider the two applications presented above---Pika and Ibex---that could easily be two modeling efforts underway at different institutions. This section demonstrates how the two models may be coupled together in a single application.
 
-\section{MULTI-SCALE MODEL}\label{sec:yeti}
-add ref to MOOSE nuclear paper
+For this demonstration, a 2D Ibex simulation serves as the master application. This simulation is a 2D version of the solution presented in Section \ref{sec:ibex}. In this case rather than assuming a value of thermal conductivity it is computed at various locations using Pika. As illustrated in Fig. \ref{fig:yeti_flow}, Ibex computes the temperature and temperature gradient across the entire domain, then feeds these values to Pika application embedded at various locations. Pika then evaluates and computes the effective thermal conductivity and returns that value back to Ibex for use for the next timestep.
 
-\section{CLOSING REMARKS}
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{figures/flow.pdf}
+  \caption{Flow chart showing information passing that occurs across scales.}
+  \label{fig:yeti_flow}
+\end{figure}
+
+
+\section{Closing Remarks}
