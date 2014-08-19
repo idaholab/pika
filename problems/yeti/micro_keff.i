@@ -165,7 +165,7 @@
     type = NeumannBC
     variable = T_y
     boundary = bottom
-    value = 0.5
+    value = 5
   [../]
   [./T_x_hot]
     type = DirichletBC
@@ -177,7 +177,7 @@
     type = NeumannBC
     variable = T_x
     boundary = right
-    value = 0.5
+    value = 5
   [../]
   [./T_top]
     type = FunctionDirichletBC
@@ -194,7 +194,7 @@
   [../]
   [./grad_T_y]
     type = Receiver
-    default = 5
+    default = -180
   [../]
   [./k_y_eff]
     type = ThermalCond
@@ -235,10 +235,14 @@
   petsc_options_value = 'hypre boomeramg'
   end_time = 86400
   reset_dt = true
-  dtmax = 100
-  nl_abs_tol = 1e-12
+  dtmax = 60
+  nl_abs_tol = 1e-11
   nl_rel_tol = 1e-07
   l_tol = 1e-04
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    dt = 5
+  [../]
 []
 
 [Outputs]
@@ -278,7 +282,7 @@
   temperature = T
   interface_thickness = 4e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .004
+  condensation_coefficient = .01
   phase = phi_aux
 []
 
@@ -292,4 +296,5 @@
   use_temporal_scaling = true
   ice_criteria = false
   interface_velocity_postprocessors = 'max min'
+  temperature = T
 []

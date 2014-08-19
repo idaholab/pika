@@ -105,7 +105,11 @@
   petsc_options_value = 'hypre boomeramg'
   scheme = crank-nicolson
   end_time = 86400
-  dtmax = 300
+  dtmax = 60
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    dt = 5
+  [../]
 []
 
 [Adaptivity]
@@ -154,9 +158,9 @@
     positions = '0.1 0.1 0
     	      	 0.35 0.1 0
 		 0.35 0.35 0
-		 0.35 0.39 0
+		 0.35 0.4 0
 		 0 0.39 0
-		 0.1725, 0.2 0'
+		 0.1725 0.2 0'
     input_files = micro_keff.i
   [../]
 []
