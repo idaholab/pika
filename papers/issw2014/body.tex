@@ -86,30 +86,35 @@ Fig. \ref{fig:snow2d:diff} includes the raw snow image overlaid with the areas t
   \caption{Benchmark problem of bubble within \unit[5]{mm} cross section of ice; temperature (T) reported in \unit[]{K} and supersaturation (S.S.) in \unitfrac[]{kg}{m$^3$}.}
   \label{fig:bubble}
 \end{figure}
+
+
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/pika_keff.pdf}
   \caption{Percent change in effective thermal conductivity in the vertical (y) and horizontal directions (x) during the simulations.}
   \label{fig:keff}
 \end{figure}
 
-\setlength{\unitlength}{1in}
-\begin{figure}[t]
-  \includegraphics[width=\linewidth]{figures/snow2d_raw.png}
-  \put(-3.125 ,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
-  \caption{The difference between the phase-field variable between initial and final simulations steps demonstrating where mass was gained (blue) and lost (orange).}
-  \label{fig:snow2d:diff}
-\end{figure}
 
 
 The $k_{eff}$ results are of particular interest, during the first few hours of the simulation both values increase, with the vertical direction increase at a greater rate. Then both begin to decrease at a similar rate after about four hours. There may be many explanations for this behavior. This decrease may be indiciative of the pore space beginning to align in the direction of the gradient, which is expected, thus reducing the ice connectivity. However, considering the simplicity of the phae-change kinetics as well as the method used to compute $k_{eff}$, which is know to be inaccurate when pores are near the boundaries, such analysis is not appropriate. This plot serves to demonstrate the capabilities and potential to model micro-structure evolution of snow using MOOSE. Pika is intended as a starting point for further research that includes convection in the pore space, more realistic vapor flux boundary conditions, enhanced phase-change kinetics including accounting for ice grain orientation, as well as more robust effective property algorithims.
 
+\begin{figure*}
 
-
-\begin{figure}[!ht]
+\setlength{\unitlength}{1in}
+\begin{subfigure}{0.44\linewidth}
+  \includegraphics[width=\linewidth]{figures/snow2d_raw.png}
+  \put(-2.86 ,0){\includegraphics[width=\linewidth]{figures/diff_overlay.png}}
+  \caption{}
+  \label{fig:snow2d:diff}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.53\linewidth}
   \includegraphics[width=\linewidth]{figures/snow2d_temp.pdf}
-  \caption{The difference in the ice grains initially (black) and after (white) 8 hours subjected to a \unitfrac[250]{K}{m} temperature gradient.}
+  \caption{}
   \label{fig:snow2d:grains}
-\end{figure}
+\end{subfigure}
+\caption{(a) The difference between the phase-field variable between initial and final simulations steps demonstrating where mass was gained (blue) and lost (orange) and (b) Tte difference in the ice grains initially (black) and after (white) 8 hours subjected to a \unitfrac[250]{K}{m} temperature gradient.}
+\end{figure*}
 
 
 \section{Yeti: Multi-scale Model}\label{sec:yeti}
@@ -117,7 +122,7 @@ The ability to develop a multi-scale model from existing MOOSE-based application
 
 For this demonstration, a 2D Ibex simulation serves as the master application. This simulation is a 2D version of the solution presented in Section \ref{sec:ibex} with increased short-wave irradiance and reduced albedos to drive large temperature gradients for demonstration purposes. In this case rather than assuming a value of thermal conductivity it is computed using Pika. As illustrated in Fig. \ref{fig:yeti_flow}, Ibex computes the temperature and temperature gradient across the entire domain, then feeds these values to Pika application embedded at six locations, as shown in Fig. \ref{fig:yeti_keff}. Pika then evaluates and computes the effective thermal conductivity and returns that value back to Ibex for use for the next timestep.
 
-\begin{figure}[H]
+\begin{figure}[b]
   \includegraphics[width=\linewidth]{figures/flow.pdf}
   \caption{Flow chart showing information passing that occurs across scales.}
   \label{fig:yeti_flow}
@@ -125,28 +130,33 @@ For this demonstration, a 2D Ibex simulation serves as the master application. T
 
 Each Pika simulation started from the same $\mu$-CT snow image and was fed temperature and temperature gradient information from Ibex and returned the effective thermal conductivity in the vertical direction, which was then linear interpolated accross the entire domain in the master Ibex application.  Fig. \ref{fig:yeti_keff} displays the change in temperature gradients that where passed to the Pika simulations and Fig. \ref{fig:yeti_keff} displays the change in thermal conductivity that is passed back to Ibex. Initially the $k_{eff}$ values were approximately \unitfrac[0.58]{W}{mK}. Note, this value differs from that values in Section \ref{sec:pika} due to using a larger interface thickness ($W$) to allow for a coarser finite element mesh to ease the computational requirements for the simulations.
 
-\begin{figure}[!b]
-  \includegraphics[width=\linewidth]{figures/yeti_TG.png}
-  \begin{picture}(0,0)
-    \put(0.1,0.3){\color{white}(a)}
-    \put(2.15,0.3){\color{white}(b)}
-    \put(2.15,2.49){\color{white}(c)}
-    \put(2.15,2.69){\color{white}(d)}
-    \put(0.1,2.69){\color{white}(e)}
-    \put(1.175,1.5){\color{white}(f)}
-  \end{picture}
-  \caption{Temperature gradient after four hours of simulation time and approximate locations of micro-structure Pika simulations.}
-  \label{fig:yeti_TG}
-\end{figure}
+\begin{figure*}
+
+  \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth]{figures/yeti_TG.png}
+    \begin{picture}(0,0)
+      \put(0.1,0.3){\color{white}(a)}
+      \put(2.15,0.3){\color{white}(b)}
+      \put(2.15,2.49){\color{white}(c)}
+      \put(2.15,2.69){\color{white}(d)}
+      \put(0.1,2.69){\color{white}(e)}
+      \put(1.175,1.5){\color{white}(f)}
+    \end{picture}
+    \caption{}
+    \label{fig:yeti_TG}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\linewidth}
+    \includegraphics[width=\linewidth]{figures/yeti_keff.pdf}
+    \caption{}
+    \label{fig:yeti_keff}
+  \end{subfigure}
+  \caption{(a) Temperature gradient after four hours of simulation time and approximate locations of micro-structure Pika simulations and (b) the change in thermal conductivity as computed by the six Pika simulations.}
+\end{figure*}
 
 Refering to Fig. \ref{fig:yeti_keff}, the initial drop in conductivity is a result of the micro-structure simulation initializing to the supplied temperature gradient, whereas the results in Section \ref{sec:pika} started with an initialized temperature field. The area subjected to negative gradients (e and d) undergo changes resulting in constant or slightly increasing $k_{eff}$ and the location with a postive gradient, c, showed a decrease in conductivity. The points subject to zero gradient---a, b, and f---all behaved nearly identically and demonstrated a slight decrease in the conductivity, which may be a function of the phase-field method itself which tends to form circular geometries if not influenced by additional driving forces.
 
-\begin{figure}[!ht]
-  \includegraphics[width=\linewidth]{figures/yeti_keff.pdf}
-  \caption{Change in thermal conductivity as computed by the six Pika simulations.}
-  \label{fig:yeti_keff}
-\end{figure}
-\begin{figure}[H]
+\begin{figure}[t]
   \includegraphics[width=\linewidth]{figures/yeti_micro_diff.pdf}
   \caption{Small sample of the changes in ice crystal shape from the initial condition (white) for the six Pika simulations: the colors match Fig. \ref{fig:yeti_keff} where simulations (a), (b), and (f) are red; (c) is blue; (d) is yellow; and (e) is green.}
   \label{fig:yeti_micro}
