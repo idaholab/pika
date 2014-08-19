@@ -228,7 +228,7 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 20
+  dt = 5
   l_max_its = 100
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
@@ -239,8 +239,9 @@
   nl_abs_tol = 1e-11
   nl_rel_tol = 1e-07
   l_tol = 1e-04
+  dtmax = 60
   [./TimeStepper]
-    type = SolutionTimeAdaptiveDT
+    type = IterationAdaptiveDT
     dt = 5
   [../]
 []
@@ -282,7 +283,7 @@
   temperature = T
   interface_thickness = 4e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .01
+  condensation_coefficient = .006
   phase = phi_aux
 []
 
