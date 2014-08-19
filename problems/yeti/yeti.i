@@ -99,12 +99,13 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
+  dt = 5
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   scheme = crank-nicolson
   end_time = 86400
-  dtmax = 60
+   dtmax = 60
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 5
@@ -154,7 +155,12 @@
   [./micro]
     type = TransientMultiApp
     app_type = PikaApp
-    positions = '0.1 0.1 0 0.35 0.1 0 0.35 0.35 0 0.35 0.4 0 0 0.39 0 0.1725 0.2 0'
+    positions = '0.1 0.1 0
+    	      	 0.35 0.1 0
+		 0.35 0.35 0
+		 0.35 0.39 0
+		 0 0.39 0
+		 0.1725, 0.2 0'
     input_files = micro_keff.i
   [../]
 []
@@ -183,4 +189,3 @@
     postprocessor = grad_T_y
   [../]
 []
-
