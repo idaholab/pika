@@ -17,6 +17,7 @@
 %\usepackage{sfmath}
 \usepackage{placeins}
 %\usepackage[none]{hyphenat}
+\usepackage[usenames,dvipsnames]{color}
 \usepackage[scaled]{helvet}
  \usepackage{caption}
 % \renewcommand\thefootnote{\fnsymbol{footnote}}
@@ -37,13 +38,13 @@
 
 
 \floatstyle{plain}
-\newfloat{correspond}{!b}{sla}
+\newfloat{correspond}{H}{sla}
 \newcommand{\authorcorrespond}{
   \begin{correspond}
     \hrule\smallskip
     \textsl{$^*$Corresponding author address:}
     Andrew E. Slaughter, Modeling and Simulation, Idaho National Laboratory, Idaho Falls, ID
-    tel: 208-526-6888; email: andrew.slaughter@inl.gov
+    tel: 208-526-6888; email: andrew.slaughter@inl.gov\clearpage
   \end{correspond}
 }
 
@@ -67,7 +68,6 @@
 
 %\raggedright
 \balance
-\authorcorrespond
 \setcitestyle{round}
 
 \input{body}
