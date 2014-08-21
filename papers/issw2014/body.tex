@@ -1,7 +1,7 @@
 \section{Motivation}\label{sec:motivation}
 Generally, snow metamorphoses via one of two processes: kinetic or equilibrium metamorphism. Efforts to simulate this behavior use a range of approaches and frameworks and include purely statistical models, continuum bulk property formulations, and complete numerical 3D constructs. Despite the wide spectrum of snow and avalanche models that exist, currently there is no unified modeling effort to allow true collaboration across models as scales. Given the broad range of approaches for snow and avalanche research (see Section \ref{sec:background}) a new paradigm is needed for simulations that fosters rapid development and collaboration. This paper aims to demonstrate the capabilities of the open-source Multiphysics\, Object\, Oriented Simulation\authorcorrespond \noindent Environment (MOOSE; \url{www.moooseframework.org})  as a framework for future snow and avalanche model development.
 
-MOOSE is a finite-element framework that aids in application development by harnessing state-of-the-art fully-coupled, fully-implicit multiphysics solvers while providing automatic parallelization, mesh adaptivity, and an ever-expanding set of physics modules including solid mechanics, phase-field, Navier-Stokes, and heat conduction. MOOSE natively supports multi-scale models allowing to couple MOOSE-based applications, thus fostering collaborations \citep{gaston2014physics}. Finally, MOOSE follows a rigorous development strategy that ensures software quality at both the framework and application level \citep{gaston2014continous}.
+MOOSE is a finite-element framework that aids in application development by harnessing state-of-the-art fully-coupled, fully-implicit multiphysics solvers while providing automatic parallelization, mesh adaptivity, and an ever-expanding set of physics modules including solid mechanics, phase-field, Navier-Stokes, and heat conduction. MOOSE natively supports multi-scale models allowing linking of MOOSE-based applications, thus fostering collaborations \citep{gaston2014physics}. Finally, MOOSE follows a rigorous development strategy that ensures software quality at both the framework and application level \citep{gaston2014continous}.
 
 This paper briefly demonstrates the capabilities of MOOSE by:
 \begin{enumerate}\setlength{\itemsep}{0pt}
@@ -67,11 +67,12 @@ Eq. \ref{eq:vapor} is the mass-transport equation that models the diffusion of v
 \end{equation}
 where $D$ is the phase-field adjusted vapor diffusion coefficient.
 
-The model developed here---Pika---generally follows the formulation presented by \citet{kaempfer2009phase} with a two notable exceptions: (1) Pika utilizes a finite element solution as opposed to a finite difference and (2) Pika allows the interface kinetic coefficient ($\beta$) and capillary length ($d_0$), which dictate the $\tau$ and $\lambda$ terms of Eq. \eqref{eq:phase}, to vary with temperature whereas \citet{kaempfer2009phase} held these terms constant.
+The model developed here---Pika---generally follows the formulation presented by \citet{kaempfer2009phase} with two notable exceptions: (1) Pika utilizes a finite element solution as opposed to a finite difference and (2) Pika allows the interface kinetic coefficient ($\beta$) and capillary length ($d_0$), which dictate the $\tau$ and $\lambda$ terms of Eq. \eqref{eq:phase}, to vary with temperature whereas \citet{kaempfer2009phase} held these terms constant.
 
 Fig. \ref{fig:bubble} shows the results of a benchmark problem modeled by \citet{kaempfer2009phase}, which is reproduced here for comparison. The problem is based on experiments of a bubble inside a block of ice having a \unit[5]{mm} square cross section that is subjected to to various temperature gradients \citep{nakaya1956technical, stehle1965technical}. The results shown here are for a gradient of \unitfrac[543]{K}{m} and match well with those reported by \citet{kaempfer2009phase}. The Pika model exhibited an average interface velocity of \unitfrac[3.73e-9]{m}{s} at \unit[7200]{s}, which is similar to those reported by \citet{kaempfer2009phase}.
 
-Utilizing the simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was obtained at the Subzero Science and Engineering Research Facility at Montana State University. Snow samples were extracted and contained within an x-ray translucent container allowing for $\mu$-CT imaging of the undisturbed snow micro-structure.  Once extracted, a series of x-ray images are taken at several positions around the sample utilizing a SkyScan 1173 Micro-CT Scanner. The simulation was subjected to a temperature gradient of \unitfrac[250]{K}{m} for approximately eight hours.
+Utilizing
+simulation settings similar to the benchmark problem a simulation was performed on a $\mu$-CT scanned cross-section of snow measuring \unit[5]{mm} square. This sample was obtained at the Subzero Science and Engineering Research Facility at Montana State University. Snow samples were extracted and contained within an x-ray translucent container allowing for $\mu$-CT imaging of the undisturbed snow micro-structure.  Once extracted, a series of x-ray images are taken at several positions around the sample utilizing a SkyScan 1173 Micro-CT Scanner. The simulation was subjected to a temperature gradient of \unitfrac[250]{K}{m} for approximately eight hours.
 
 As shown in Fig. \ref{fig:keff}, during the simulation the effective thermal conductivity ($k_{eff}$) was computed in the vertical (y) and horizontal directions (x), which were on the order of \unitfrac[1.2]{W}{mK}, the upper limit of what is expected for snow \citep{sturm1997thermal}. The $k_{eff}$ value accounts for heat transfer by diffusion only, thus in essence is an indicator of the conduction through the ice matrix.
 
@@ -89,7 +90,7 @@ Fig. \ref{fig:snow2d:diff} includes the raw snow image overlaid with the areas t
   \label{fig:keff}
 \end{figure}
 
-The $k_{eff}$ results are of particular interest; during the first few hours of the simulation both values increase, with the vertical direction increasing at a greater rate. Then both begin to decrease at a similar rate after about four hours. There may be many explanations for this behavior. This decrease may be indicative of the pore space beginning to align in the direction of the gradient, which is expected, thus reducing the ice connectivity. However, considering the simplicity of the phase-change kinetics as well as the method used to compute $k_{eff}$, which is know to be inaccurate when pores are near the boundaries, such analysis is not appropriate. This plot serves to demonstrate the capabilities and potential to model micro-structure evolution of snow using MOOSE. Pika is intended as a starting point for further research that includes convection in the pore space, more realistic vapor flux boundary conditions, enhanced phase-change kinetics including accounting for ice grain orientation, as well as more robust effective property algorithms.
+The $k_{eff}$ results are of particular interest; during the first few hours of the simulation both values increase, with the vertical direction increasing at a greater rate. Then both begin to decrease at a similar rate after about four hours. There may be many explanations for this behavior. This decrease may be indicative of the pore space beginning to align in the direction of the gradient, which is expected, thus reducing the ice connectivity. However, considering the simplicity of the phase-change kinetics as well as the method used to compute $k_{eff}$, which is known to be inaccurate when pores are near the boundaries, such analysis is not appropriate. This plot serves to demonstrate the capabilities and potential to model micro-structure evolution of snow using MOOSE. Pika is intended as a starting point for further research that includes convection in the pore space, more realistic vapor flux boundary conditions, enhanced phase-change kinetics including accounting for ice grain orientation, as well as more robust effective property algorithms.
 
 \begin{figure*}
 \setlength{\unitlength}{1in}
@@ -120,16 +121,17 @@ For this demonstration, a 2D Ibex simulation serves as the master application. T
   \label{fig:yeti_flow}
 \end{figure}
 
-Each Pika simulation started from the same $\mu$-CT snow image and was fed temperature and temperature gradient information from Ibex and returned the effective thermal conductivity in the vertical direction, which was then linear interpolated accross the entire domain in the master Ibex application.  Fig. \ref{fig:yeti_keff} displays the change in temperature gradients that were passed to the Pika simulations and Fig. \ref{fig:yeti_keff} displays the change in thermal conductivity that is passed back to Ibex. Initially the $k_{eff}$ values were approximately \unitfrac[0.58]{W}{mK}. Note, this value differs from the values in Section \ref{sec:pika} due to using a larger interface thickness ($W$) to allow for a coarser finite element mesh to ease the computational requirements for the simulations.
+Each Pika simulation started from the same $\mu$-CT snow image and was fed temperature and temperature gradient information from Ibex and returned the effective thermal conductivity in the vertical direction, which was then linearly interpolated across the entire domain in the master Ibex application.  Fig. \ref{fig:yeti_TG} displays the temperature gradients that were passed to the Pika simulations and Fig. \ref{fig:yeti_keff} displays the change in thermal conductivity that is passed back to Ibex. Initially the $k_{eff}$ values were approximately \unitfrac[0.58]{W}{mK}. Note, this value differs from the values in Section \ref{sec:pika} due to using a larger interface thickness ($W$) to allow for a coarser finite element mesh to ease the computational requirements for the simulations.
 
 \begin{figure*}
+  \setlength{\unitlength}{1in}
   \begin{subfigure}{0.49\linewidth}
     \includegraphics[width=\linewidth]{figures/yeti_TG.png}
     \begin{picture}(0,0)
       \put(0.1,0.3){\color{white}(a)}
       \put(2.15,0.3){\color{white}(b)}
       \put(2.15,2.49){\color{white}(c)}
-      \put(2.15,2.69){\color{white}(d)}
+      \put(2.15,2.71){\color{white}(d)}
       \put(0.1,2.69){\color{white}(e)}
       \put(1.175,1.5){\color{white}(f)}
     \end{picture}
@@ -145,7 +147,7 @@ Each Pika simulation started from the same $\mu$-CT snow image and was fed tempe
   \caption{(a) Temperature gradient (\unitfrac[]{K}{m} after four hours of simulation time and approximate locations of micro-structure Pika simulations and (b) the change in thermal conductivity as computed by the six Pika simulations.}
 \end{figure*}
 
-Referring to Fig. \ref{fig:yeti_keff}, the initial drop in conductivity is a result of the micro-structure simulation initializing to the supplied temperature gradient, whereas the results in Section \ref{sec:pika} started with an initialized temperature field. The area subjected to negative gradients (e and d) undergo changes resulting in constant or slightly increasing $k_{eff}$ and the location with a postive gradient, c, showed a decrease in conductivity. The points subjected to zero gradient---a, b, and f---all behaved almost identically and demonstrated a slight decrease in the conductivity, which may be a function of the phase-field method itself which tends to form circular geometries if not influenced by additional driving forces.
+Referring to Fig. \ref{fig:yeti_keff}, the initial drop in conductivity is a result of the micro-structure simulation initializing to the supplied temperature gradient, whereas the results in Section \ref{sec:pika} started with an initialized temperature field. The areas subjected to negative gradients (e and d) undergo changes resulting in constant or slightly increasing $k_{eff}$ and the location with a postive gradient, c, showed a decrease in conductivity. The points subjected to zero gradient---a, b, and f---all behaved almost identically and demonstrated a slight decrease in the conductivity, which may be a function of the phase-field method itself which tends to form circular geometries if not influenced by additional driving forces.
 
 \begin{figure}[t]
   \includegraphics[width=\linewidth]{figures/yeti_micro_diff.pdf}
@@ -160,7 +162,7 @@ Again, due to the simplistic kinetics and method for computation of thermal cond
 
 
 \section{Closing Remarks}
-The MOOSE framework is a powerful, finite element simulation framework capable of solving complex systems in a fully coupled manner as evidenced by the growing number of MOOSE-based applications under development. The work presented here demonstrates that using MOOSE to model snow at differing scales is possible. Two applications were created as a starting point for future research: a meso-scale model for simulating snow as a continuum and a micro-structure model capable of tracking phase-change and ice grain boundaries. Using these two models, a multi-scale simulation was performed to demonstrate the abilities to couple different applications together across scales.
+The MOOSE framework is a powerful, finite element simulation framework capable of solving complex systems in a fully coupled manner as evidenced by the growing number of MOOSE-based applications under development. The work presented here demonstrates that using MOOSE to model snow at differing scales is possible. Two applications were created as a starting point for future research: a meso-scale model for simulating snow as a continuum and a micro-structure model capable of tracking phase-change and ice grain boundaries. Using these two models, a multi-scale simulation was performed to demonstrate the ability to couple different applications together across scales.
 
 The work performed aims to establish a new paradigm in snow and avalanche modeling: building a spectrum of applications using a common, open-source framework to allow access and ease of cross-development for researchers and practioners.
 
