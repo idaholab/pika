@@ -107,6 +107,10 @@ if __name__ == '__main__':
   data = [1, 263.15, d_0.evalf(subs={T: 263.15}), d_0_prime.evalf(subs={T: 263.15}), lbda.evalf(subs={T: 263.15})]
   writeCSV(os.path.join('..', 'tests', 'materials', 'lambda', 'gold', 'lambda_data.csv'), header, data)
 
+  # Build *.csv for materials/lambda.lambda
+  header = ['time', 'T', 'beta_0', 'beta_0_prime', 'tau']
+  data = [1, 263.15, beta_0.evalf(subs={T: 263.15}), beta_0_prime.evalf(subs={T: 263.15}), tau.evalf(subs={T: 263.15})]
+  writeCSV(os.path.join('..', 'tests', 'materials', 'tau', 'gold', 'tau_data.csv'), header, data)
 
   print "P_vs(263.15) = ", P_vs.evalf(subs={T: 263.15})
   print "P_vs(268.15) = ", P_vs.evalf(subs={T: 268.15})
