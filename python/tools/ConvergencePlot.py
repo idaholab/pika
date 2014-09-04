@@ -61,6 +61,5 @@ class ConvergencePlot(object):
     text(self._x[0], self._y[-1],'slope: ' + str(coefficients[0]))
 
 
-
   def save(self, filename):
     savefig(filename)

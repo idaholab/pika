@@ -81,7 +81,7 @@
 []
 
 [PikaMaterials]
-  phi = -1
+  phase = -1
   temperature = 273.15
 []
 
@@ -108,6 +108,7 @@
   output_initial = true
   console = true
   csv = true
+  exodus = true
 []
 
 [ICs]

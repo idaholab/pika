@@ -107,6 +107,7 @@
 [Outputs]
   output_initial = true
   console = true
+  csv = true
   exodus = true
 []
 

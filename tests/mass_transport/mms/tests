@@ -18,10 +18,18 @@
 
   [./steady_convergence]
     # MMS test showing steady state convergence, see problems/convergence/steady.py
-    #  ./steady.py
+    #  ./steady.py --gold -p4
     type = 'Exodiff'
     input = 'mms_mass_transport_steady.i'
-    exodiff = 'mms_mass_transport_steady_out.e-s004'
+    exodiff = 'mms_mass_transport_steady_out.e-s003 mms_mass_transport_steady_out.e-s004'
+  [../]
+
+  [./steady_convergence_csv]
+    # MMS test showing steady state convergence, see problems/convergence/steady.py
+    #  ./steady.py --gold -p4
+    type = 'CSVDiff'
+    input = 'mms_mass_transport_steady.i'
+    csvdiff = 'mms_mass_transport_steady_out.csv'
   [../]
 
   [./trasient_first_convergence]
