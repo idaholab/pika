@@ -123,6 +123,7 @@
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   dt = 10000
+  nl_rel_tol = 1e-12
 []
 
 [Outputs]
@@ -145,7 +146,7 @@
 
 [PikaMaterials]
   reference_temperature = 263.15
-  phi = phi
+  phase = phi
   temperature = 268.15
   water_vapor_diffusion_coefficient = 0.00002178
 []
