@@ -142,8 +142,8 @@
   nl_rel_tol = 1e-07
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    percent_change = 0.05
-    dt = 1
+    percent_change = 0.01
+    dt = 0.05
   [../]
 []
 
@@ -251,4 +251,3 @@
   use_temporal_scaling = true
   ice_criteria = false
 []
-

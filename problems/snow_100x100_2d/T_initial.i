@@ -1,6 +1,10 @@
 [Mesh]
   type = FileMesh
+<<<<<<< HEAD
   file = phi_initial_1e5_0003_mesh.xdr
+=======
+  file = phi_initial_0000_mesh.xdr
+>>>>>>> snow_small
   dim = 2
 []
 
@@ -18,11 +22,18 @@
 
 [Kernels]
   [./heat_diffusion]
+<<<<<<< HEAD
     type = TensorDiffusion
     variable = T
     use_temporal_scaling = true
     coefficient = 1.0
     mobility_tensor = conductivity_tensor
+=======
+    type = PikaDiffusion
+    variable = T
+    use_temporal_scaling = true
+    property = conductivity
+>>>>>>> snow_small
   [../]
 []
 
@@ -40,12 +51,17 @@
     type = DirichletBC
     variable = T
     boundary = top
+<<<<<<< HEAD
     value = 260.4
+=======
+    value = 270
+>>>>>>> snow_small
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = bottom
+<<<<<<< HEAD
     value = 260
   [../]
 []
@@ -58,6 +74,9 @@
     M_1_value = 2.29
     M_2_value = 0.02
     coefficient_name = conductivity_tensor
+=======
+    value = 269
+>>>>>>> snow_small
   [../]
 []
 
@@ -65,9 +84,16 @@
   [./phi_initial]
     type = SolutionUserObject
     system = aux0
+<<<<<<< HEAD
     mesh = phi_initial_1e5_0003_mesh.xdr
     nodal_variables = phi_aux
     es = phi_initial_1e5_0003.xdr
+=======
+    mesh = phi_initial_0001_mesh.xdr
+    nodal_variables = phi_aux
+    es = phi_initial_0001.xdr
+    system_variables = phi_aux
+>>>>>>> snow_small
   [../]
 []
 
@@ -96,9 +122,15 @@
 []
 
 [PikaMaterials]
+<<<<<<< HEAD
   temperature = T
   interface_thickness = 1e-5
   condensation_coefficient = .001
   phase = phi
+=======
+  phi = phi
+  temperature = 263.15
+  interface_thickness = 5e-6
+>>>>>>> snow_small
 []
 

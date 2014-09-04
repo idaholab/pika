@@ -158,4 +158,3 @@
   interface_thickness = 1e-6
   phase = phi
 []
-
