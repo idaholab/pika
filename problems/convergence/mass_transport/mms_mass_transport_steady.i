@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 5
-  ny = 5
+  nx = 10
+  ny = 10
   elem_type = QUAD4
 []
 
@@ -81,7 +81,7 @@
 []
 
 [PikaMaterials]
-  phi = -1
+  phase = -1
   temperature = 273.15
 []
 
@@ -102,12 +102,14 @@
 
 [Executioner]
   type = Steady
+  nl_rel_tol = 1e-12
 []
 
 [Outputs]
   output_initial = true
   console = true
   csv = true
+  exodus = true
 []
 
 [ICs]

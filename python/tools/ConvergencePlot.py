@@ -1,12 +1,12 @@
-/****************************************************************/
-/*       PIKA - Phase field snow micro-structure model          */
-/*                                                              */
-/*          Prepared by Battelle Energy Alliance, LLC           */
-/*            Under Contract No. DE-AC07-05ID14517              */
-/*            With the U. S. Department of Energy               */
-/*                                                              */
-/*            See COPYRIGHT for full restrictions               */
-/****************************************************************/
+#**************************************************************#
+#       PIKA - Phase field snow micro-structure model          #
+#                                                              #
+#          Prepared by Battelle Energy Alliance, LLC           #
+#            Under Contract No. DE-AC07-05ID14517              #
+#            With the U. S. Department of Energy               #
+#                                                              #
+#            See COPYRIGHT for full restrictions               #
+#**************************************************************#
 
 import matplotlib.pyplot, numpy
 from pylab import *
@@ -59,7 +59,6 @@ class ConvergencePlot(object):
     plot(self._x, y_ideal, '-k', lw=1)
 
     text(self._x[0], self._y[-1],'slope: ' + str(coefficients[0]))
-
 
 
   def save(self, filename):

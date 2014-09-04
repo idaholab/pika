@@ -5,15 +5,21 @@
 []
 
 [Variables]
+<<<<<<< HEAD
   active = 'phi u T'
+=======
+>>>>>>> snow_small
   [./T]
   [../]
   [./u]
   [../]
   [./phi]
   [../]
+<<<<<<< HEAD
   [./T_eff_y]
   [../]
+=======
+>>>>>>> snow_small
 []
 
 [AuxVariables]
@@ -32,7 +38,10 @@
 []
 
 [Kernels]
+<<<<<<< HEAD
   active = 'vapor_time phi_transition heat_diffusion phi_double_well heat_phi_time heat_time vapor_phi_time vapor_diffusion phi_time phi_square_gradient'
+=======
+>>>>>>> snow_small
   [./heat_diffusion]
     type = PikaDiffusion
     variable = T
@@ -75,7 +84,11 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
+<<<<<<< HEAD
     property = relaxation_time
+=======
+    property = tau
+>>>>>>> snow_small
     scale = 1.0
   [../]
   [./phi_transition]
@@ -84,7 +97,10 @@
     mob_name = mobility
     chemical_potential = u
     coefficient = 1.0
+<<<<<<< HEAD
     lambda = phase_field_coupling_constant
+=======
+>>>>>>> snow_small
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
@@ -97,6 +113,7 @@
     mob_name = mobility
     kappa_name = interface_thickness_squared
   [../]
+<<<<<<< HEAD
   [./T_eff_y_diffusion]
     type = PikaDiffusion
     variable = T_eff_y
@@ -107,6 +124,11 @@
 
 [BCs]
   active = 'T_hot T_cold'
+=======
+[]
+
+[BCs]
+>>>>>>> snow_small
   [./T_hot]
     type = DirichletBC
     variable = T
@@ -119,6 +141,7 @@
     boundary = bottom
     value = 269 # -20
   [../]
+<<<<<<< HEAD
   [./T_eff_y_dirichlet]
     type = DirichletBC
     variable = T_eff_y
@@ -149,6 +172,11 @@
     dx = 0.005
     boundary = top
   [../]
+=======
+[]
+
+[Postprocessors]
+>>>>>>> snow_small
 []
 
 [UserObjects]
@@ -179,17 +207,27 @@
   end_time = 20000
   reset_dt = true
   nl_rel_tol = 1e-07
+<<<<<<< HEAD
   dtmax = 60
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
     percent_change = 0.25
+=======
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    percent_change = 0.05
+>>>>>>> snow_small
     dt = 1
   [../]
 []
 
 [Adaptivity]
   max_h_level = 4
+<<<<<<< HEAD
   initial_marker = combo_mark
+=======
+  initial_marker = u_marker
+>>>>>>> snow_small
   marker = combo_mark
   initial_steps = 8
   [./Indicators]
@@ -197,19 +235,39 @@
       type = GradientJumpIndicator
       variable = phi
     [../]
+<<<<<<< HEAD
     [./u_grad_indicator]
+=======
+    [./u_jump_indicator]
+>>>>>>> snow_small
       type = GradientJumpIndicator
       variable = u
       block = 0
     [../]
   [../]
   [./Markers]
+<<<<<<< HEAD
     active = 'combo_mark u_grad_marker phi_grad_marker'
     [./phi_grad_marker]
       type = ErrorFractionMarker
       coarsen = 0.2
       indicator = phi_grad_indicator
       refine = 0.7
+=======
+    active = 'combo_mark u_marker phi_grad_marker'
+    [./phi_grad_marker]
+      type = ErrorFractionMarker
+      coarsen = .05
+      indicator = phi_grad_indicator
+      refine = .8
+    [../]
+    [./u_marker]
+      type = ErrorFractionMarker
+      indicator = u_jump_indicator
+      refine = .8
+      block = 0
+      coarsen = 0.05
+>>>>>>> snow_small
     [../]
     [./phi_above]
       type = ValueThresholdMarker
@@ -225,6 +283,7 @@
     [./combo_mark]
       type = ComboMarker
       block = 0
+<<<<<<< HEAD
       markers = 'phi_grad_marker u_grad_marker'
     [../]
     [./u_grad_marker]
@@ -233,6 +292,9 @@
       coarsen = 1e-9
       refine = 1e-7
       block = 0
+=======
+      markers = 'u_marker phi_grad_marker'
+>>>>>>> snow_small
     [../]
   [../]
 []
@@ -271,6 +333,7 @@
 []
 
 [PikaMaterials]
+<<<<<<< HEAD
   temperature = T
   interface_thickness = 2e-5
   temporal_scaling = 1e-4
@@ -278,6 +341,15 @@
   outputs = all
   condensation_coefficient = .001
   phase = phi
+=======
+  phi = phi
+  temperature = T
+  interface_thickness = 2e-5
+  temporal_scaling = 1e-3
+  output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
+  outputs = all
+  condensation_coefficient = .001
+>>>>>>> snow_small
 []
 
 [PikaCriteriaOutput]

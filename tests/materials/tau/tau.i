@@ -15,7 +15,7 @@
   interface_thickness = 1e-6
   temperature = T
   output_properties = 'relaxation_time interface_kinetic_coefficient interface_kinetic_coefficient_prime'
-  outputs = all
+  outputs = 'all'
   debug = true
 []
 

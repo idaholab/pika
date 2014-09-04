@@ -12,7 +12,6 @@
 [PikaMaterials]
   conductivity_air = 0.1
   interface_thickness = 1e-6
-  d_0
   phase = -1
   temperature = T
   output_properties = 'capillary_length capillary_length_prime phase_field_coupling_constant'

@@ -3,19 +3,19 @@
   dim = 2
   nx = 10
   ny = 10
-  uniform_refine = 1
-  elem_type = QUAD8
+  uniform_refine = 2
+  elem_type = QUAD4
 []
 
 [Variables]
   [./u]
-    order = SECOND
+    order = FIRST
   [../]
 []
 
 [AuxVariables]
   [./phi]
-    order = SECOND
+    order = FIRST
   [../]
   [./abs_error]
   [../]
@@ -98,6 +98,8 @@
   type = Transient
   num_steps = 2
   dt = .25
+  nl_rel_tol = 1e-13
+  l_tol = 1e-10
 []
 
 [Adaptivity]

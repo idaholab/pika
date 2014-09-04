@@ -1,3 +1,15 @@
+#!/usr/bin/python
+
+#**************************************************************#
+#       PIKA - Phase field snow micro-structure model          #
+#                                                              #
+#          Prepared by Battelle Energy Alliance, LLC           #
+#            Under Contract No. DE-AC07-05ID14517              #
+#            With the U. S. Department of Energy               #
+#                                                              #
+#            See COPYRIGHT for full restrictions               #
+#**************************************************************#
+
 '''***************************************
    * Checking the dimensional scaling    *
    * Execute:                            *
@@ -5,8 +17,7 @@
    * SpatialScalingChecker.py            *
    *                                     *
    ***************************************'''
-#!/usr/bin/python
-                                 
+
 from sympy import *
 from math import *
 init_printing()
@@ -14,9 +25,9 @@ init_printing()
 
 #Given Values:
 
-gamma =1.09e-1 # J /( m^2 ) 
+gamma =1.09e-1 # J /( m^2 )
 a = 3.19e-10 # m
-K = 1.38e-23 # J / K 
+K = 1.38e-23 # J / K
 T = 263.15
 m = 2.99e-26 # kg
 alpha = 1e-3 #kg
@@ -121,8 +132,3 @@ scaled_names.append('density ratio')
 print 'Original Values', ' ' , 'Values in MM'
 for i in range(len(scaled_values)):
   print scaled_names[i], ' = ' , values[i], ' ', scaled_values[i] , '\n'
-
-
-
-
-

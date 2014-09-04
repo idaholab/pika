@@ -1,5 +1,5 @@
 [Tests]
-  [./tai]
+  [./tau]
     # Gold for this test comes python/KaempferPlapp2009.py
     type = 'CSVDiff'
     input = 'tau.i'

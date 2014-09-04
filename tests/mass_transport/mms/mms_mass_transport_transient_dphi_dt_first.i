@@ -5,7 +5,7 @@
   ny = 5
   xmax = 0.01
   ymax = 0.01
-  uniform_refine = 1
+  uniform_refine = 2
   elem_type = QUAD4
 []
 
@@ -109,11 +109,13 @@
   type = Transient
   num_steps = 5
   dt = 10000
+  nl_rel_tol = 1e-12
 []
 
 [Outputs]
   output_initial = true
   exodus = true
+  csv = true
 []
 
 [ICs]

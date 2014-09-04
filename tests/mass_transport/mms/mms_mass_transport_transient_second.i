@@ -6,7 +6,6 @@
   xmax = 0.01
   ymax = 0.01
   elem_type = QUAD8
-  uniform_refine = 1
 []
 
 [Variables]
@@ -97,11 +96,13 @@
   type = Transient
   num_steps = 5
   dt = 0.0001
+  nl_rel_tol = 1e-12
 []
 
 [Outputs]
   output_initial = true
   exodus = true
+  csv = true
 []
 
 [ICs]

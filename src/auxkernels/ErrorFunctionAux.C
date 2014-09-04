@@ -14,7 +14,7 @@ template<>
 InputParameters validParams<ErrorFunctionAux>()
 {
 
-  MooseEnum error_type("absolute=0, relative=1, percent=2", "absolute");
+  MooseEnum error_type("absolute=0 relative=1 percent=2", "absolute");
 
   InputParameters params = validParams<FunctionAux>();
   params.addRequiredCoupledVar("solution_variable", "The variable to compare the function against");

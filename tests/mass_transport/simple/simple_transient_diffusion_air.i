@@ -12,9 +12,9 @@
 
 [Kernels]
   [./diff]
-    type = MatDiffusion
+    type = PikaDiffusion
     variable = u
-    D_name = diffusion_coefficient
+    property = diffusion_coefficient
   [../]
   [./time]
     type = TimeDerivative
@@ -38,7 +38,7 @@
 []
 
 [PikaMaterials]
-  conductivity_air = 0.1
+  water_vapor_diffusion_coefficient = 0.1
   temperature = u
   phase = -1
 []
@@ -46,8 +46,8 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 25
-  dt = 600
+  num_steps = 20
+  dt = 0.1
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'

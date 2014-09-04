@@ -4,5 +4,6 @@
     type = 'Exodiff'
     input = 'simple_transient_diffusion_air.i'
     exodiff = 'simple_transient_diffusion_air_out.e'
+    rel_err = 9e-6
   [../]
 []
