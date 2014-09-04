@@ -94,11 +94,13 @@
   type = Transient
   num_steps = 5
   dt = 0.1
+  nl_rel_tol = 1e-12
 []
 
 [Outputs]
   output_initial = true
   csv = true
+  exodus = true
 []
 
 [ICs]
@@ -111,7 +113,7 @@
 
 [PikaMaterials]
   reference_temperature = 263.15
-  phi = phi
+  phase = phi
   temperature = 268.15
   water_vapor_diffusion_coefficient = 0.00002178
 []

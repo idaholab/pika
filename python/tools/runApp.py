@@ -37,6 +37,6 @@ def runApp(input_file, **kwargs):
     else:
       out_name = file_base
     cmd = ['mpiexec', '-n', str(mpi), program, '-i', input_file,
-           'Mesh/uniform_refine='+str(i)]
+           'Mesh/uniform_refine='+str(i), 'Outputs/file_base='+out_name]
     print ' '.join(cmd)
     subprocess.call(cmd)

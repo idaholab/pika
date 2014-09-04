@@ -18,7 +18,7 @@
 
   [./steady_convergence]
     # MMS test showing steady state convergence, see problems/convergence/steady.py
-    #  ./steady.py --gold -p4
+    #  ./steady.py -p4
     type = 'Exodiff'
     input = 'mms_mass_transport_steady.i'
     exodiff = 'mms_mass_transport_steady_out.e-s003 mms_mass_transport_steady_out.e-s004'
@@ -26,13 +26,13 @@
 
   [./steady_convergence_csv]
     # MMS test showing steady state convergence, see problems/convergence/steady.py
-    #  ./steady.py --gold -p4
+    #  ./steady.py -p4
     type = 'CSVDiff'
     input = 'mms_mass_transport_steady.i'
     csvdiff = 'mms_mass_transport_steady_out.csv'
   [../]
 
-  [./trasient_first_convergence]
+  [./transient_first_convergence]
     # MMS test showing transient convergence on first-order shape functions
     # This tests a single point on the convergence plot, see problems/convergence/transient.py for
     # the complete plots:
@@ -40,9 +40,10 @@
     type = 'Exodiff'
     input = 'mms_mass_transport_transient_first.i'
     exodiff = 'mms_mass_transport_transient_first_out.e'
+    cli_args = 'Mesh/uniform_refine=2'
   [../]
 
-  [./trasient_second_convergence]
+  [./transient_second_convergence]
     # MMS test showing transient convergence on second-order shape functions
     # This tests a single point on the convergence plot, see problems/convergence/transient.py for
     # the complete plots:
@@ -52,7 +53,7 @@
     exodiff = 'mms_mass_transport_transient_second_out.e'
   [../]
 
-  [./trasient_dphi_dt_first_convergence]
+  [./transient_dphi_dt_first_convergence]
     # MMS test showing transient convergence with dphi/dt term on first-order shape functions
     # This tests a single point on the convergence plot, see problems/convergence/transient.py for
     # the complete plots:
@@ -62,7 +63,7 @@
     exodiff = 'mms_mass_transport_transient_dphi_dt_first_out.e'
   [../]
 
-  [./trasient_dphi_dt_second_convergence]
+  [./transient_dphi_dt_second_convergence]
     # MMS test showing transient convergence with dphi/dt term on second-order shape functions
     # This tests a single point on the convergence plot, see problems/convergence/transient.py for
     # the complete plots:
@@ -81,3 +82,4 @@
     skip = 'see #41'
   [../]
 []
+q

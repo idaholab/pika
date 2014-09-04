@@ -22,7 +22,7 @@ from tools import *
 
 # Parse command-line options
 parser = argparse.ArgumentParser(description='Execute steady convergence test for mass transport.')
-parser.add_argument('--gold','-f', action='store_true', help='Perform first-order convergence')
+parser.add_argument('--gold', action='store_true', help='Write gold files')
 parser.add_argument('--parallel', '-p', default=4, help='Number of mpi processes to run')
 args = parser.parse_args()
 
