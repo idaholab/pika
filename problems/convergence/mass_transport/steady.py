@@ -36,14 +36,16 @@ plt.fit()
 
 # Update the gold
 if args.gold:
-  dest = os.path.join(os.getenv('PIKA_DIR'), 'tests', 'mass_transport', 'mms', 'gold')
+  dest = os.path.join(os.getenv('PIKA_DIR'), 'tests', 'mass_transport', 'mms')
 
   for i in range(3,4):
     src = 'mms_mass_transport_steady_out.e-s00' + str(i)
-    shutil.copyfile(src, os.path.join(dest, src))
+    shutil.copyfile(src, os.path.join(dest, 'gold', src))
 
   src = 'mms_mass_transport_steady_out.csv'
-  shutil.copyfile(src, os.path.join(dest, src))
+  shutil.copyfile(src, os.path.join(dest, 'gold', src))
 
+  src = 'mms_mass_transport_steady.i'
+  shutil.copyfile(src, os.path.join(dest, src))
 
 show()
