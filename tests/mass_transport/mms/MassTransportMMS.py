@@ -18,7 +18,7 @@
    *                                     *
    ***************************************'''
 #!/usr/bin/python
-                                 
+
 from sympy import *
 from sympy.utilities.codegen import codegen
 init_printing()
@@ -27,7 +27,7 @@ x = symbols('x')
 y = symbols('y')
 t = symbols('t')
 
-phi = t*x*y 
+phi = t*x*y
 u = t*sin(2.0*pi*x)*cos(2.0*pi*y)
 print '\n'
 print 'u =\n '
@@ -48,10 +48,10 @@ term1 = du_dt
 term2 = diffuse_D_grad_u
 term3 =-0.5*(dPhi_dt) #yes it is negative in the original eq.
 
-# Eq. (35) without dPhi_dt 
+# Eq. (35) without dPhi_dt
 f = term1-term2
 
-#Print out equation 
+#Print out equation
 print '\n'
 print '  F = \n'
 pprint(f)
@@ -75,4 +75,3 @@ print('-dPhi_dt term Code : \n')
          ("f", -term3), "C", "test", header=False, empty=False)
 print(c_code)
 print('\n')
-

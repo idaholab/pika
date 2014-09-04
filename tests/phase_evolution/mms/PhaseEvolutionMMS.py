@@ -19,7 +19,7 @@
    ***************************************'''
 
 #!/usr/bin/python
-                                 
+
 from sympy import *
 from sympy.utilities.codegen import codegen
 init_printing()
@@ -29,10 +29,10 @@ y = symbols('y')
 t = symbols('t')
 
 #auxVariables
-u = symbols('_u[_qp]') 
+u = symbols('_u[_qp]')
 T = symbols('_T[_qp]')
 #variables
-phi =t*((x-0.50)*(x-0.5)+(y-0.5)*(y-0.5) -.125)  
+phi =t*((x-0.50)*(x-0.5)+(y-0.5)*(y-0.5) -.125)
 
 print '\n'
 print 'T =\n '
@@ -92,7 +92,7 @@ term3 = phi-(phi**3.0)
 
 #Phase Potential
 term4 = lam*(u-u_eq)*(1.0-phi*phi)**2.0
- 
+
 phase_evol =term1-term2-term3
 
 #Generate the C/C++ version of the code.

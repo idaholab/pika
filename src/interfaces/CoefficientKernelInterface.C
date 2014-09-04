@@ -45,7 +45,7 @@ CoefficientKernelInterface::CoefficientKernelInterface(const std::string & name,
     mooseError("A material property and a coefficient were specified in a kernel using CoefficientKernelInterface. Specify only one of them.");
 
   // Produce an error if neither coefficient or material property are defined
-  else if( !_use_material && !parameters.isParamValid("coefficient"))
+  else if ( !_use_material && !parameters.isParamValid("coefficient"))
     mooseError(" Neither a material property or a coefficient were specified in a kernel using CoefficientKernelInterface. Specify only one of them.");
 
   /* Setup temporal scaling, this parameter is defined in PropertyUserObjectInterface, so produce an

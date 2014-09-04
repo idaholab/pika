@@ -19,7 +19,7 @@ from pylab import*
 sys.path.append(os.path.join(os.getenv('PIKA_DIR'), 'python'))
 from tools import *
 
-# Run the problem 
+# Run the problem
 #runApp('phase_diffusion.i', mpi=12)
 
 # Extract the data from the Postprocessor CSV output (.csv)
@@ -32,14 +32,14 @@ for time in range(time_steps):
   str_time=str(time)
   filename = 'out_bubble_line_'+str_time.zfill(4)
   header, data = readCSV(filename + '.csv')
-  
+
 #  pos, phi = extractPostprocessorData(filename,x='x', y='phi')
   idx1=0
   idx2=0
 
   for index in range(len(data)):
     phi=float(data[index][1])
-  
+
     if phi<1.0 and idx1 ==0:
       idx1 = index
     if phi<=-1.0 and idx2==0:
