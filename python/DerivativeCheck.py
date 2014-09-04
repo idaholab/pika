@@ -1,38 +1,30 @@
-/****************************************************************/
-/*       PIKA - Phase field snow micro-structure model          */
-/*                                                              */
-/*          Prepared by Battelle Energy Alliance, LLC           */
-/*            Under Contract No. DE-AC07-05ID14517              */
-/*            With the U. S. Department of Energy               */
-/*                                                              */
-/*            See COPYRIGHT for full restrictions               */
-/****************************************************************/
-
-'''***************************************
-   * Checking the jacobian of the        *
-   * phase transition term in eq (33)    *
-   * Compile:                            *
-   * python DerivativeCheck.py           *
-   *                                     *
-   ***************************************'''
 #!/usr/bin/python
-                                 
+
+#**************************************************************#
+#       PIKA - Phase field snow micro-structure model          #
+#                                                              #
+#          Prepared by Battelle Energy Alliance, LLC           #
+#            Under Contract No. DE-AC07-05ID14517              #
+#            With the U. S. Department of Energy               #
+#                                                              #
+#            See COPYRIGHT for full restrictions               #
+#**************************************************************#
+
 from sympy import *
 from sympy.utilities.codegen import codegen
 init_printing()
 
-phi =symbols('phi') 
+# This script checks the Jacobian of the phase transition term in Eq. (33)
+
+phi =symbols('phi')
 
 #constants
 lam= symbols('lambda')
-
 u = symbols('u')
-
-u_eq = symbols('u_eq') 
-
+u_eq = symbols('u_eq')
 term3 =-lam*(u-u_eq)*((1-phi**2)**2)
 
-#Print out equation 
+#Print out equation
 print 'Residual'
 pprint (term3)
 
