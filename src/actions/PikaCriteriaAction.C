@@ -45,7 +45,7 @@ InputParameters validParams<PikaCriteriaAction>()
   params.addParam<std::vector<MooseEnum> >("interface_velocity_postprocessors", vec_types, "Types of postprocessors for interface velocity.");
   params.addParam<std::vector<MooseEnum> >("super_saturation_postprocessors", vec_types, "Types of postprocessors for super saturation.");
 
-  params.addParamNamesToGroup("ice_postprocessors air_postprocessors vapor_postprocessors velocity_postprocessors interface_velocity_postprocessors super_saturation_postprocessors", "Postprocesors");
+  params.addParamNamesToGroup("ice_postprocessors air_postprocessors vapor_postprocessors time_postprocessors velocity_postprocessors interface_velocity_postprocessors super_saturation_postprocessors", "Postprocesors");
 
   return params;
 }
@@ -90,13 +90,12 @@ PikaCriteriaAction::addAction(const std::string & type, const std::string & name
   _awh.addActionBlock(action);
 }
 
-MooseObjectAction *
+void
 PikaCriteriaAction::addCriteriaAction(const std::string & name)
 {
   MooseObjectAction * action = createAction("PikaCriteria", name);
   action->getObjectParams().set<MooseEnum>("criteria") = name;
   _awh.addActionBlock(action);
-  return action;
 }
 
 MooseObjectAction *
