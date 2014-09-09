@@ -85,8 +85,6 @@ void
 PikaCriteriaAction::addAction(const std::string & type, const std::string & name)
 {
   MooseObjectAction * action = createAction(type, name);
-  applyCoupledVar("phase", action->getObjectParams());
-  applyCoupledVar("chemical_potential", action->getObjectParams());
   _awh.addActionBlock(action);
 }
 
@@ -120,11 +118,6 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   action->getObjectParams().set<std::vector<MooseEnum> >("execute_on")[0] = "timestep";
   action->getObjectParams().set<bool>("use_temporal_scaling") = getParam<bool>("use_temporal_scaling");
   action->getObjectParams().set<Real>("coefficient") = 1.0;
-  applyCoupledVar("phase", action->getObjectParams());
-  applyCoupledVar("chemical_potential", action->getObjectParams());
-
-  if (name == "super_saturation")
-    applyCoupledVar("temperature", action->getObjectParams());
 
   // Add the variable
   FEType fe_type(CONSTANT, MONOMIAL);
@@ -135,21 +128,6 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
 
   // Return the action
   return action;
-}
-
-
-void
-PikaCriteriaAction::applyCoupledVar(const std::string & coupled_name, InputParameters & object_params)
-{
-  if (getParams().hasDefaultCoupledValue(coupled_name))
-    object_params.addCoupledVar(coupled_name,
-                                getParams().defaultCoupledValue(coupled_name),
-                                getParams().getDocString(coupled_name));
-  else
-  {
-    object_params.addCoupledVar(coupled_name, getParams().getDocString(coupled_name));
-    object_params.set<std::vector<VariableName> >(coupled_name) = getParams().get<std::vector<VariableName> >(coupled_name);
-  }
 }
 
 void

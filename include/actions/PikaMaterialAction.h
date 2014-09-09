@@ -66,14 +66,7 @@ private:
    * @param type The type object that the action will build
    * @param object_name The longname of the object
    */
-  MooseObjectAction * create(std::string action_name, std::string type, std::string object_name);
-
-  /**
-   * A method for passing coupled variables from the action parameters to the object parameters
-   *
-   * This should be included in applyParameters, see  https://github.com/idaholab/moose/issues/3352
-   */
-  void applyCoupledVar(const std::string & coupled_name, InputParameters & object_params);
+  void create(std::string action_name, std::string type, std::string object_name);
 };
 
 #endif //PIKAMATERIALACTION_H

@@ -56,12 +56,6 @@ private:
   MooseObjectAction * createAction(const std::string & type, const std::string & name);
 
   /**
-   * to be removed (see #58)
-   */
-  void applyCoupledVar(const std::string & coupled_name, InputParameters & object_params);
-
-
-  /**
    * Create the actions necessary for the postprocessor min/max/average outputs
    * @param name The name of the Postprocessor to create
    * @maram variable The variable name that the Postprocessor is operating on
