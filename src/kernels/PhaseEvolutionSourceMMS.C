@@ -59,7 +59,7 @@ PhaseEvolutionSourceMMS::computeQpResidual()
 
   Real f = terms123;
 
-  if(_use_potential_transition)
+  if (_use_potential_transition)
     f+=term4;
 
   return -_test[_i][_qp] * f;

@@ -53,7 +53,7 @@ HeatEquationSourceMMS::computeQpResidual()
   term1 = c*sin(2.0*pi*x)*sin(2.0*pi*y);
   term2 = 8.0*pow(pi, 2)*k*t*sin(2.0*pi*x)*sin(2.0*pi*y);
   term3 = 0.5*L_sg*pow(x*y, 2.0);
-    
+
 
   if (_use_scale)
   {

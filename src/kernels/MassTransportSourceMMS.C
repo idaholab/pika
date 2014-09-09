@@ -55,7 +55,7 @@ MassTransportSourceMMS::computeQpResidual()
     term2=_xi*term2;
     term3=_xi*term3;
   }
-  
+
   f=term1+term2;
 
   if (_use_dphi_dt)

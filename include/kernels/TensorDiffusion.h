@@ -25,7 +25,7 @@ InputParameters validParams<TensorDiffusion>();
 /**
  *
  */
-class TensorDiffusion : 
+class TensorDiffusion :
   public Diffusion,
   public PropertyUserObjectInterface,
   public CoefficientKernelInterface

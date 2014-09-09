@@ -7,8 +7,8 @@
   [../]
   [./pp_to_master_single_sub_file]
     type = 'Exodiff'
-    input = 'master.i'
-    exodiff = 'master_out.e'
+    input = 'master2.i'
+    exodiff = 'master2_out.e'
     recover = false
   [../]
 []

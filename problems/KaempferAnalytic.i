@@ -34,13 +34,13 @@
     type = DirichletBC
     variable = T
     boundary = left
-    value = 261 
+    value = 261
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = right
-    value = 260 
+    value = 260
   [../]
 []
 
@@ -118,7 +118,7 @@
     linear_residuals = true
   [../]
 []
-  
+
 [ICs]
   [./pores]
     type = KaempferAnalyticPhaseIC
@@ -131,4 +131,3 @@
     x4 = 0.00429 # 6*L/7
   [../]
 []
-

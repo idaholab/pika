@@ -1,10 +1,16 @@
 [Mesh]
   type = GeneratedMesh
-  dim = 2
-  nx = 10
-  ny = 10
-  xmax = 0.005
-  ymax = 0.005
+  dim = 3
+  nx = 5
+  ny = 5
+  nz = 6
+  xmin= 0.001
+  ymin = 0.001
+  zmin = 0.001
+  xmax = 0.002
+  ymax = 0.002
+  zmax = 0.002
+  uniform_refine = 5
 []
 
 [Variables]
@@ -19,6 +25,16 @@
   [../]
 []
 
+[Functions]
+  [./image]
+    type = ImageFunction
+    file_base = /home/slauae/Documents/data/msu/0930/0930_rr_rec_tra_bin__Tra
+    file_type = png
+    threshold = 180
+    lower_value = -1
+    upper_value = 1
+    dimensions = '0.005 0.005 0.006'
+  [../]
 [Kernels]
   [./phase_time]
     type = PikaTimeDerivative
@@ -53,7 +69,7 @@
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
   petsc_options_value = '500 hypre boomeramg'
   nl_rel_tol = 1e-07
-  nl_abs_tol = 1e-12
+  nl_abs_tol = 5e-14
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 1
@@ -61,24 +77,9 @@
   [../]
 []
 
-[Adaptivity]
-  max_h_level = 10
-  initial_steps = 10
-  marker = phi_marker
-  initial_marker = phi_marker
-  [./Indicators]
-    [./phi_grad_indicator]
-      type = GradientJumpIndicator
-      variable = phi
-    [../]
-  [../]
-  [./Markers]
-    [./phi_marker]
-      type = ErrorToleranceMarker
-      coarsen = 1e-7
-      indicator = phi_grad_indicator
-      refine = 1e-5
-    [../]
+[Postprocessors]
+  [./num_elems]
+    type = NumElems
   [../]
 []
 
@@ -100,20 +101,15 @@
 
 [ICs]
   [./phase_ic]
-    x1 = 0.0025
-    y1 = 0.0025
-    radius = 0.0001
-    outvalue = 1
+    type = FunctionIC
+    function = image
     variable = phi
-    invalue = -1
-    type = SmoothCircleIC
   [../]
 []
 
 [PikaMaterials]
-  temperature = 258.2
-  interface_thickness = 1e-6
+  temperature = 268.15
+  interface_thickness = 1e-5
   phase = phi
   temporal_scaling = 1e-04
 []
-

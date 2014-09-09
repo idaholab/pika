@@ -24,8 +24,8 @@ AntiTrapping::AntiTrapping(const std::string & name, InputParameters parameters)
     Kernel(name,parameters),
     PropertyUserObjectInterface(name,parameters),
     CoefficientKernelInterface(name,parameters),
-    _phase_dot(coupledDot("phase")), 
-    _grad_phase(coupledGradient("phase")), 
+    _phase_dot(coupledDot("phase")),
+    _grad_phase(coupledGradient("phase")),
     _w(_property_uo.getParam<Real>("interface_thickness"))
 {
 }
