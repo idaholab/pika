@@ -22,7 +22,7 @@ template<>
 InputParameters validParams<ErrorFunctionAux>();
 
 /**
- *
+ * A class for computing the absolute error of a variable
  */
 class ErrorFunctionAux : public FunctionAux
 {
@@ -30,17 +30,24 @@ public:
 
   /**
    * Class constructor
-   * @param name
-   * @param parameters
+   * @param name Object name
+   * @param parameters Object input parameters
    */
   ErrorFunctionAux(const std::string & name, InputParameters parameters);
 
 protected:
+
+  /**
+   * Computes the error
+   */
   virtual Real computeValue();
 
 private:
+
+  /// A reference to the solution variable to compute the error from
   const VariableValue & _soln;
 
+  /// The type of error to compute
   MooseEnum _error_type;
 
 };
