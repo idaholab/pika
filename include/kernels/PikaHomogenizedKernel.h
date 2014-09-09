@@ -7,10 +7,10 @@
 #include "PropertyUserObjectInterface.h"
 #include "CoefficientKernelInterface.h"
 
-class PikaHomogenizedKernel : public 
-  HomogenizationHeatConduction, 
+class PikaHomogenizedKernel : public
+  HomogenizationHeatConduction,
   PropertyUserObjectInterface,
-  CoefficientKernelInterface 
+  CoefficientKernelInterface
 {
 public:
 
