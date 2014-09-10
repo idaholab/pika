@@ -5,4 +5,4 @@ This is Pika...
 
 ## Getteing Started
 
-## Contant
+## Contacts
