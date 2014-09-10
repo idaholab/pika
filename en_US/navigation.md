@@ -18,7 +18,7 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-[About](pages/getting_started.md)
+[Getting Started](pages/getting_started.md)
 [Docs]()
 
   * # Theory
