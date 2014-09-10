@@ -5,7 +5,6 @@
 
 # Pika
 
-
 <!--
   -- Default theme
   -- (Read: http://dynalon.github.io/mdwiki/#!customizing.md#Theme_chooser)
@@ -19,8 +18,11 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-[About](pages/about.md)
-[Download](pages/download.md)
+[About](pages/getting_started.md)
+[Docs]()
+
+  * # Theory
+  * [Governing Equations](pages/docs/theory/governing_equations.md)
 
 <!-- A more complex navigation example: ----------------------------------------
 
