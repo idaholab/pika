@@ -43,6 +43,4 @@ PikaPhaseInitializeAux::computeValue()
   // Do nothing
   else
     return _phase[_qp];
-
-
 }
