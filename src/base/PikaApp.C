@@ -51,9 +51,6 @@
 #include "PikaInterfaceVelocity.h"
 #include "PikaWaterVaporConcentration.h"
 #include "PikaSupersaturation.h"
-#include "SharpInterfaceCheckIce.h"
-#include "SharpInterfaceCheckAir.h"
-#include "SharpInterfaceCheckVapor.h"
 #include "PikaPhaseInitializeAux.h"
 #include "VariableGradientComponent.h"
 
@@ -146,9 +143,6 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(PikaInterfaceVelocity);
   registerAux(PikaWaterVaporConcentration);
   registerAux(PikaSupersaturation);
-  registerAux(SharpInterfaceCheckIce);
-  registerAux(SharpInterfaceCheckAir);
-  registerAux(SharpInterfaceCheckVapor);
   registerAux(PikaCriteria);
   registerAux(PikaPhaseInitializeAux);
   registerAux(VariableGradientComponent);
