@@ -52,7 +52,6 @@
 #include "PikaWaterVaporConcentration.h"
 #include "PikaSupersaturation.h"
 #include "PikaPhaseInitializeAux.h"
-#include "VariableGradientComponent.h"
 
 // InitialConditions
 #include "KaempferAnalyticPhaseIC.h"
@@ -145,7 +144,6 @@ PikaApp::registerObjects(Factory & factory)
   registerAux(PikaSupersaturation);
   registerAux(PikaCriteria);
   registerAux(PikaPhaseInitializeAux);
-  registerAux(VariableGradientComponent);
 
   // BoundaryConditions
   registerBoundaryCondition(IbexSurfaceFluxBC);
