@@ -36,5 +36,6 @@ PikaWaterVaporConcentration::~PikaWaterVaporConcentration()
 Real
 PikaWaterVaporConcentration::computeValue()
 {
+  // Eq. 21
   return _s[_qp] * _rho_i + _property_uo.equilibriumWaterVaporConcentrationAtSaturation(_T_0);
 }
