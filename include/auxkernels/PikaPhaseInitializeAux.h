@@ -22,7 +22,7 @@ template<>
 InputParameters validParams<PikaPhaseInitializeAux>();
 
 /**
- *
+ * An AuxKernel for computing a limited phase variable
  */
 class PikaPhaseInitializeAux : public AuxKernel
 {
@@ -30,17 +30,27 @@ public:
 
   /**
    * Class constructor
-   * @param name
-   * @param parameters
+   * @param name The name of the object
+   * @param parameters InputParameters for the object
    */
   PikaPhaseInitializeAux(const std::string & name, InputParameters parameters);
 
 protected:
+
+  /**
+   * Computes limited value of the supplied phase variable
+   */
   virtual Real computeValue();
 
 private:
+
+  /// The variable to range limit
   const VariableValue & _phase;
+
+  /// The upper range to limit the variable
   Real _upper;
+
+  /// The lower range to limit the variable
   Real _lower;
 
 };

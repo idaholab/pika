@@ -32,10 +32,15 @@ PikaPhaseInitializeAux::PikaPhaseInitializeAux(const std::string & name, InputPa
 Real
 PikaPhaseInitializeAux::computeValue()
 {
+  // Return the upper limit
   if (_phase[_qp] > _upper)
     return _upper;
+
+  // Return the lower limit
   else if (_phase[_qp] < _lower)
     return _lower;
+
+  // Do nothing
   else
     return _phase[_qp];
 
