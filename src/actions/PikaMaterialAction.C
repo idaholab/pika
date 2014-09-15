@@ -54,17 +54,11 @@ void
 PikaMaterialAction::act()
 {
   // Add the UserObject containing constants and property calculations
-  MooseObjectAction * uo = create("AddUserObjectAction", "PropertyUserObject", "UserObjects/_pika_property_user_object");
-
-  MooseObjectAction * action = create("AddMaterialAction", "PikaMaterial", "Materials/_pika_material");
-  applyCoupledVar("phase", action->getObjectParams());
-  applyCoupledVar("temperature", action->getObjectParams());
-
-  // Add the actions to the ActionWarehouse
-  _awh.addActionBlock(uo);
-  _awh.addActionBlock(action);
+  create("AddUserObjectAction", "PropertyUserObject", "UserObjects/_pika_property_user_object");
+  create("AddMaterialAction", "PikaMaterial", "Materials/_pika_material");
 }
-MooseObjectAction *
+
+void
 PikaMaterialAction::create(std::string action_name, std::string type, std::string object_name)
 {
   // Setup the action parameters
@@ -81,19 +75,5 @@ PikaMaterialAction::create(std::string action_name, std::string type, std::strin
   // This should be done by applyParameters, but for some reason it is not (see MOOSE #3851)
   action->getObjectParams().set<std::vector<OutputName> >("outputs") = getParam<std::vector<OutputName> >("outputs");
   action->getObjectParams().set<std::vector<std::string> >("output_properties") = getParam<std::vector<std::string> >("output_properties");
-  return action;
-}
-
-void
-PikaMaterialAction::applyCoupledVar(const std::string & coupled_name, InputParameters & object_params)
-{
-  if (getParams().hasDefaultCoupledValue(coupled_name))
-    object_params.addCoupledVar(coupled_name,
-                                getParams().defaultCoupledValue(coupled_name),
-                                getParams().getDocString(coupled_name));
-  else
-  {
-    object_params.addCoupledVar(coupled_name, getParams().getDocString(coupled_name));
-    object_params.set<std::vector<VariableName> >(coupled_name) = getParams().get<std::vector<VariableName> >(coupled_name);
-  }
+  _awh.addActionBlock(action);
 }

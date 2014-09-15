@@ -20,7 +20,7 @@ InputParameters validParams<PikaCriteria>()
 
   // Controls which type of AuxKernel calculation if performed
   MooseEnum criteria("ice=0, air=1, vapor=2, velocity=3, time=4");
-  params.addParam<MooseEnum>("criteria", criteria, "Select the type of criteria to compute, see Eq. (43)");
+  params.addParam<MooseEnum>("criteria", criteria, "Select the type of criteria to compute, see Eqs. (43), (45), and (47)");
   params.addParam<bool>("use_temporal_scaling", false, "Temporally scale this Kernel with a value specified in PikaMaterials");
 
   // Temporal scaling
@@ -57,20 +57,27 @@ PikaCriteria::PikaCriteria(const std::string & name, InputParameters parameters)
 Real
 PikaCriteria::computeValue()
 {
+
+  // The value to return
   Real output;
 
+  // Eq. 43(a)
   if (_criteria == 0)
     output = (_k_i[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_c_i[_qp] * _rho_i[_qp] * _xi);
 
+  // Eq. 43(b)
   else if (_criteria == 1)
     output = (_k_a[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_c_a[_qp] * _rho_i[_qp] * _xi);
 
+  // Eq. 43(c)
   else if (_criteria == 2)
     output = (_D_v[_qp] * _rho_vs[_qp] * _beta[_qp]) / (_rho_i[_qp] * _xi);
 
+  // Eq. 45
   else if (_criteria == 3)
     output = _d_0 / (_v_n[_qp] * _beta[_qp]);
 
+  // Eq. 47
   else if (_criteria == 4)
   {
     Real tn = _pore_size / _v_n[_qp];
