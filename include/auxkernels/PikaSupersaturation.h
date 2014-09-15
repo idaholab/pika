@@ -25,7 +25,7 @@ template<>
 InputParameters validParams<PikaSupersaturation>();
 
 /**
- *
+ * AuxKernel for computing the supersaturation
  */
 class PikaSupersaturation :
   public AuxKernel,
@@ -35,7 +35,8 @@ public:
 
   /**
    * Class constructor
-   * @param name
+   * @param name Name of the object
+   * @param parameters
    */
   PikaSupersaturation(const std::string & name, InputParameters parameters);
 
@@ -47,16 +48,25 @@ public:
 protected:
 
   /**
-   *
+   * Computes the value of supersaturation, Eq. 18 and Eq. 22
    */
   virtual Real computeValue();
 
 private:
 
+  /// Chemical potential variable
   VariableValue & _s;
+
+  /// Temperature variable
   VariableValue & _temperature;
+
+  /// Density of ice
   const Real & _rho_i;
+
+  /// Temporal scaling factor
   Real _xi;
+
+  /// If true, the supersaturation is normalized as in Eq. 18 by rho_vs
   bool _normalize;
 };
 

@@ -33,17 +33,21 @@ ErrorFunctionAux::ErrorFunctionAux(const std::string & name, InputParameters par
 Real
 ErrorFunctionAux::computeValue()
 {
-
+  // Get that exact solution
   Real exact = FunctionAux::computeValue();
 
+  // Compute the absolute difference of the solution and the exact value
   Real output = std::abs(exact - _soln[_qp]);
 
+  // Make the error relative
   if (_error_type >= 1)
+  {
     output /= _soln[_qp];
 
-  if (_error_type == 2)
-    output *= 100.0;
+    // Make it a percent of the exact
+    if (_error_type == 2)
+      output *= 100.0;
+  }
 
   return output;
-
 }

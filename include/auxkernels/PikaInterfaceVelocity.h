@@ -23,7 +23,7 @@ template<>
 InputParameters validParams<PikaInterfaceVelocity>();
 
 /**
- *
+ * Computes the interface velocity via Eq. 23
  */
 class PikaInterfaceVelocity :
   public AuxKernel,
@@ -33,7 +33,8 @@ public:
 
   /**
    * Class constructor
-   * @param name
+   * @param name Object name
+   * @param parameters Object InputParameters
    */
   PikaInterfaceVelocity(const std::string & name, InputParameters parameters);
 
@@ -45,13 +46,19 @@ public:
 protected:
 
   /**
-   *
+   * Computes the interface velocity at the current quadrature point
    */
   virtual Real computeValue();
 
 private:
+
+  /// Reference the the constant diffusivity coefficient for water vapor
   const Real & _D_v;
+
+  /// Gradient of the phase-field variable
   VariableGradient & _grad_phase;
+
+  /// Gradient of the chemical potential variable
   VariableGradient & _grad_s;
 
 };

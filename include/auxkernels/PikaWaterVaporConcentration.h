@@ -35,7 +35,8 @@ public:
 
   /**
    * Class constructor
-   * @param name
+   * @param name Name of the object
+   * @param parameters InputParameters for the object
    */
   PikaWaterVaporConcentration(const std::string & name, InputParameters parameters);
 
@@ -47,7 +48,7 @@ public:
 protected:
 
   /**
-   *  Computes the value of the water vapor concentration
+   *  Computes the value of the water vapor concentration using Eq. 21
    */
   virtual Real computeValue();
 
