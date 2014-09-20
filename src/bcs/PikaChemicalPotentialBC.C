@@ -9,10 +9,10 @@
 /*                      With the U. S. Department of Energy                       */
 /**********************************************************************************/
 
-#include "ChemicalPotentialBC.h"
+#include "PikaChemicalPotentialBC.h"
 #include "PropertyUserObject.h"
 template<>
-InputParameters validParams<ChemicalPotentialBC>()
+InputParameters validParams<PikaChemicalPotentialBC>()
 {
   InputParameters params = validParams<NodalBC>();
   params += validParams<PropertyUserObjectInterface>();
@@ -21,7 +21,7 @@ InputParameters validParams<ChemicalPotentialBC>()
   return params;
 }
 
-ChemicalPotentialBC::ChemicalPotentialBC(const std::string & name, InputParameters parameters) :
+PikaChemicalPotentialBC::PikaChemicalPotentialBC(const std::string & name, InputParameters parameters) :
     NodalBC(name, parameters),
     PropertyUserObjectInterface(name, parameters),
     _temperature(coupledValue("temperature")),
@@ -30,7 +30,7 @@ ChemicalPotentialBC::ChemicalPotentialBC(const std::string & name, InputParamete
 }
 
 Real
-ChemicalPotentialBC::computeQpResidual()
+PikaChemicalPotentialBC::computeQpResidual()
 {
   return _u[_qp] - _property_uo.equilibriumChemicalPotential(_temperature[_qp]) * ((1.0 - _phase[_qp]) / 2.0);
 }

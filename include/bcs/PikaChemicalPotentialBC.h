@@ -9,8 +9,8 @@
 /*                      With the U. S. Department of Energy                       */
 /**********************************************************************************/
 
-#ifndef CHEMICALPOTENTIALBC_H
-#define CHEMICALPOTENTIALBC_H
+#ifndef PIKACHEMICALPOTENTIALBC_H
+#define PIKACHEMICALPOTENTIALBC_H
 
 // MOOSE includes
 #include "NodalBC.h"
@@ -19,33 +19,37 @@
 #include "PropertyUserObjectInterface.h"
 
 //Forward Declarations
-class ChemicalPotentialBC;
+class PikaChemicalPotentialBC;
 
 template<>
-InputParameters validParams<ChemicalPotentialBC>();
+InputParameters validParams<PikaChemicalPotentialBC>();
 
-class ChemicalPotentialBC :
+/**
+ * Chemical potential equilibrium boundary condition
+ *   u - u_eq (1 - phi)/2
+ */
+class PikaChemicalPotentialBC :
   public NodalBC,
   public PropertyUserObjectInterface
 {
 public:
-  ChemicalPotentialBC(const std::string & name, InputParameters parameters);
-
-  virtual ~ChemicalPotentialBC(){};
+  PikaChemicalPotentialBC(const std::string & name, InputParameters parameters);
+  virtual ~PikaChemicalPotentialBC(){};
 
 protected:
 
   /**
-   * The value of the variable at a point.
-   *
-   * This must be overridden by derived classes.
+   * Computes the chemical potential boundary condition
    */
   virtual Real computeQpResidual();
 
 private:
 
+  /// Coupled temperature variable
   VariableValue & _temperature;
+
+  /// Coupled phase-field variable
   VariableValue & _phase;
 };
 
-#endif // CHEMICALPOTENTIALBC_H
+#endif // PIKACHEMICALPOTENTIALBC_H

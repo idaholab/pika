@@ -9,6 +9,7 @@
 /*                      With the U. S. Department of Energy                       */
 /**********************************************************************************/
 
+// Main application
 #include "PikaApp.h"
 #include "Moose.h"
 #include "AppFactory.h"
@@ -66,7 +67,7 @@
 #include "PikaCriteriaAction.h"
 
 //BCS
-#include "ChemicalPotentialBC.h"
+#include "PikaChemicalPotentialBC.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -147,7 +148,7 @@ PikaApp::registerObjects(Factory & factory)
 
   // BoundaryConditions
   registerBoundaryCondition(IbexSurfaceFluxBC);
-  registerBoundaryCondition(ChemicalPotentialBC);
+  registerBoundaryCondition(PikaChemicalPotentialBC);
 }
 
 void
