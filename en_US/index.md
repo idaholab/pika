@@ -9,9 +9,8 @@ Pika is a phase-field micro-structure model for dry snow that was developed usin
 
 The image shown are results generated with Pika, which depicts the difference between the phase-field variable between initial and final simulations steps demonstrating where mass was gained (blue) and lost (orange). The phase-chage in this example was driven by a strong temperature gradient over a 4 hours of simulated time. The colors are shown superimposed on the raw input, which is a 2D micro-CT scan of snow obtained at the [Subzero Science and Engineering Research Facilty](http://www.coe.montana.edu/ce/subzero) at [Montana State University](http://www.montana.edu).
 
-<img src="images/snow_2d_gain_loss.png" alt="Pika 2D Simulation" style="width: 200px;"/>
+<img src="images/snow_2d_gain_loss.png" alt="Pika 2D Simulation" align="right" style="width: 200px;"/>
 
-![Pika 2D Simulation](images/snow_2d_gain_loss.png)
 
 
 ## Contact
