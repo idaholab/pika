@@ -19,12 +19,14 @@ class PikaApp;
 template<>
 InputParameters validParams<PikaApp>();
 
+/**
+ * The main application for the Pika phase-field model
+ */
 class PikaApp : public MooseApp
 {
 public:
   PikaApp(const std::string & name, InputParameters parameters);
   virtual ~PikaApp();
-
   static void registerApps();
   static void registerObjects(Factory & factory);
   static void associateSyntax(Syntax & syntax, ActionFactory & action_factory);
