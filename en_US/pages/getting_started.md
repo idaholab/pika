@@ -1,7 +1,9 @@
-# Install MOOSE
+# Getting Started with Pika
+
+# 1. Install MOOSE
 Pika is a [MOOSE](https://www.mooseframework.org)-base application, see http://mooseframework.org/getting-started for detalied instructions.
 
-# Download Pika
+# 2. Download Pika
 There are two main method for retrieving the source code for Pika: Forks and Clones
 
 ## Fork Pika
@@ -16,14 +18,14 @@ If you only plan to use or just want to try-out Pika then simply cloning Pika is
     ```
     git clone git@github.com:idaholab/pika.git
     ```
-## Compile Pika
+# 3. Compile Pika
 The following commands should be executed to compile Pika. Note, the ```git checkout``` command is required to switch from the development branch (devel), which is the default to the fully-tested master branch. Again, if you plan on making changes to Pika refer to http://mooseframework.org/wiki/Contributing.
    ```
    cd ~/projects/pika
    git checkout master
    make -j8
    ```
-## Test Pika
+# 4. Test Pika
 
     ```
     ./run_tests -j8
