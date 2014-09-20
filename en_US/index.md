@@ -13,12 +13,14 @@ Pika is a phase-field micro-structure model for dry snow that was developed usin
     ```
     git clone git@github.com:idaholab/pika.git
     ```
-3. Build Pika
+3. Build Pika:
+
    ```
    cd ~/projects/pika
    make -j8
    ```
-4. Test Pika
+4. Test Pika:
+
     ```
     ./run_tests -j8
     ```
