@@ -2,7 +2,7 @@
 All equations number references refer to [Kaempfer and Plapp (2009)](http://journals.aps.org/pre/abstract/10.1103/PhysRevE.79.031502).
 
 ## Phase Field Evolution, Eq. (33)
-$$\tau \frac{\partial \phi}{\partial t} = W^2 \nabla^2 \phi +(\phi-\phi^3)+\lambda \lbrack u-u_{eq}\rbrack (1-phi^2)^2$$
+$$\tau \frac{\partial \phi}{\partial t} = W^2 \nabla^2 \phi +(\phi-\phi^3)+\lambda \lbrack u-u_{eq}\rbrack (1-\phi^2)^2$$
 
 ## Heat/Energy Transport, Eq. (34)
 $$ C(\phi)\frac{\partial T}{\partial t} = \nabla \cdot [K(\phi) \nabla T] + \frac{L_{sg}}{2}\frac{\partial \phi}{\partial t} $$
