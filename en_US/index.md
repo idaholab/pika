@@ -3,8 +3,10 @@
 [gimmick:ForkMeOnGitHub (position: 'right', color: 'darkblue') ](http://www.github.com/idaholab/pika)
 
 ## Overview
-This is Pika...
+Pika is a phase-field micro-structure model for dry snow that was developed using the [MOOSE](www.mooseframework.org) framework at the [Idaho National Laboratory](www.inl.gov) following the work of [Kaempfer and Plapp (2009)](http://journals.aps.org/pre/abstract/10.1103/PhysRevE.79.031502). It is a fully-coupled 3D finite element, phase field model capable of tracking the phase transition and capturing the heat and mass transfer at the micro-structure scale in the ice matrix and pore space.
 
 ## Getteing Started
+Pika is 
+
 
 ## Contacts
