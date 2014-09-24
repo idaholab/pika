@@ -153,7 +153,7 @@
 [Adaptivity]
   max_h_level = 7
   marker = combo_marker
-  initial_steps = 7
+  initial_steps = 12
   initial_marker = combo_marker
   [./Indicators]
     [./phi_grad_indicator]
@@ -172,15 +172,15 @@
     [../]
     [./u_grad_marker]
       type = ErrorToleranceMarker
-      coarsen = 1e-10
+      coarsen = 5e-7
       indicator = u_grad_indicator
-      refine = 1e-8
+      refine = 1e-7
     [../]
     [./phi_grad_marker]
       type = ErrorToleranceMarker
-      coarsen = 1e-7
+      coarsen = 1e-4
       indicator = phi_grad_indicator
-      refine = 1e-5
+      refine = 1e-3
     [../]
   [../]
 []

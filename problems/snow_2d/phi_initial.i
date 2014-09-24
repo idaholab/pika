@@ -118,7 +118,6 @@
   [../]
   [./out]
     output_final = true
-    file_base = phi_initial
     type = Exodus
   [../]
 []
@@ -138,4 +137,3 @@
   temporal_scaling = 1e-04
   condensation_coefficient = .01
 []
-
