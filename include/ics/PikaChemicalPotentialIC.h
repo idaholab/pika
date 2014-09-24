@@ -9,8 +9,8 @@
 /*                      With the U. S. Department of Energy                       */
 /**********************************************************************************/
 
-#ifndef CHEMICALPOTENTIALIC_H
-#define CHEMICALPOTENTIALIC_H
+#ifndef PIKACHEMICALPOTENTIALIC_H
+#define PIKACHEMICALPOTENTIALIC_H
 
 // MOOSE includes
 #include "InitialCondition.h"
@@ -24,28 +24,27 @@ class ChemicalPotentialIC;
 template<>
 InputParameters validParams<ChemicalPotentialIC>();
 
-class ChemicalPotentialIC :
+class PikaChemicalPotentialIC :
   public InitialCondition,
   public PropertyUserObjectInterface
 {
 public:
-  ChemicalPotentialIC(const std::string & name, InputParameters parameters);
-
-  virtual ~ChemicalPotentialIC(){};
+  PikaChemicalPotentialIC(const std::string & name, InputParameters parameters);
 
 protected:
 
   /**
-   * The value of the variable at a point.
-   *
-   * This must be overridden by derived classes.
+   * Returns the phase adjusted chemical potential at equilibrium
    */
   virtual Real value(const Point & /*p*/);
 
 private:
 
+  /// The coupled temperature variable
   VariableValue & _temperature;
+
+  /// The coupled phase-field variable
   VariableValue & _phase;
 };
 
-#endif // CHEMICALPOTENTIALIC_H
+#endif // PIKACHEMICALPOTENTIALIC_H
