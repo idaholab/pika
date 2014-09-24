@@ -1,17 +1,17 @@
 [Mesh]
+  # uniform_refine = 6
   type = GeneratedMesh
   dim = 2
-  nx = 10
-  ny = 10
-  xmax = .005 # m
-  ymax = .005 # m
-  elem_type = QUAD4
+  nx = 6
+  ny = 6
+  xmax = .005
+  ymax = .005
+[]
+
+[MeshModifiers]
 []
 
 [Variables]
-  active = 'phi'
-  [./T]
-  [../]
   [./phi]
   [../]
 []
@@ -24,50 +24,35 @@
 []
 
 [Functions]
-  [./image]
+  [./snow_ct]
     type = ImageFunction
     upper_value = -1
     lower_value = 1
-    file = input.png
-    threshold = 100
+    file = snow.png
+    threshold = 128
   [../]
 []
 
 [Kernels]
-  active = 'phi_double_well phi_square_gradient phi_time'
-  [./heat_diffusion]
-    type = PikaDiffusion
-    variable = T
-    use_temporal_scaling = true
-    property = conductivity
-  [../]
-  [./heat_time]
-    type = PikaTimeDerivative
-    variable = T
-    property = heat_capacity
-    scale = 1.0
-  [../]
-  [./phi_time]
+  [./phase_time]
     type = PikaTimeDerivative
     variable = phi
     property = relaxation_time
-    scale = 1.0
   [../]
-  [./phi_double_well]
+  [./phase_diffusion]
+    type = PikaDiffusion
+    variable = phi
+    property = interface_thickness_squared
+  [../]
+  [./phase_double_well]
     type = DoubleWellPotential
     variable = phi
     mob_name = mobility
   [../]
-  [./phi_square_gradient]
-    type = ACInterface
-    variable = phi
-    mob_name = mobility
-    kappa_name = interface_thickness_squared
-  [../]
 []
 
 [AuxKernels]
-  [./phi_initial_aux]
+  [./phi_aux]
     type = PikaPhaseInitializeAux
     variable = phi_aux
     phase = phi
@@ -75,43 +60,19 @@
 []
 
 [BCs]
-  active = ''
-  [./T_hot]
-    type = DirichletBC
-    variable = T
-    boundary = bottom
-    value = 267.515
-  [../]
-  [./T_cold]
-    type = DirichletBC
-    variable = T
-    boundary = top
-    value = 264.8
-  [../]
-[]
-
-[Executioner]
-  # Preconditioned JFNK (default)
-  type = Transient
-  num_steps = 20
-  dt = 100
-  solve_type = PJFNK
-  petsc_options_iname = '-pc_type -pc_hypre_type'
-  petsc_options_value = 'hypre boomeramg'
-  nl_rel_tol = 1e-07
-  dtmax = 1000
-  nl_abs_tol = 1e-12
-  [./TimeStepper]
-    type = IterationAdaptiveDT
-    dt = 200
+  [./Periodic]
+    [./phi_periodic]
+      variable = phi
+      auto_direction = y
+    [../]
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 10
+  max_h_level = 7
   initial_steps = 12
-  initial_marker = phi_marker
   marker = phi_marker
+  initial_marker = phi_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
@@ -120,28 +81,44 @@
   [../]
   [./Markers]
     [./phi_marker]
-      type = ErrorFractionMarker
-      coarsen = .1
+      type = ErrorToleranceMarker
+      coarsen = 1e-7
       indicator = phi_grad_indicator
-      refine = .8
+      refine = 1e-5
     [../]
+  [../]
+[]
+
+[Executioner]
+  # Preconditioned JFNK (default)
+  type = Transient
+  dt = 10
+  solve_type = PJFNK
+  petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
+  petsc_options_value = '50 hypre boomeramg'
+  nl_rel_tol = 1e-07
+  nl_abs_tol = 1e-12
+  l_tol = 1e-4
+  num_steps = 10
+  [./TimeStepper]
+    type = IterationAdaptiveDT
+    dt = 1
+    growth_factor = 3
   [../]
 []
 
 [Outputs]
   output_initial = true
-  exodus = true
+  console = false
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./xdr]
-    file_base = phi_initial
-    output_intermediate = false
+  [./out]
     output_final = true
-    type = XDR
+    type = Exodus
   [../]
 []
 
@@ -149,12 +126,14 @@
   [./phase_ic]
     variable = phi
     type = FunctionIC
-    function = image
+    function = snow_ct
   [../]
 []
 
 [PikaMaterials]
   temperature = 263.15
-  interface_thickness = 1e-6
+  interface_thickness = 1e-5
   phase = phi
+  temporal_scaling = 1e-04
+  condensation_coefficient = .01
 []
