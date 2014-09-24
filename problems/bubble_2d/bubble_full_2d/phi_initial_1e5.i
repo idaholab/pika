@@ -64,8 +64,8 @@
 []
 
 [Adaptivity]
-  max_h_level = 10
-  initial_steps = 10
+  max_h_level = 9
+  initial_steps = 9
   marker = phi_marker
   initial_marker = phi_marker
   [./Indicators]
@@ -86,15 +86,13 @@
 
 [Outputs]
   output_initial = true
-  console = false
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./exodus]
-    file_base = phi_initial
+  [./out]
     output_final = true
     type = Exodus
     interval = 1
@@ -103,7 +101,7 @@
 
 [ICs]
   [./phase_ic]
-    int_width = 1e-6
+    int_width = 1e-5
     x1 = 0.0025
     y1 = 0.0025
     radius = 0.0005

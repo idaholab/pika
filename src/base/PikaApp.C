@@ -57,7 +57,7 @@
 // InitialConditions
 #include "KaempferAnalyticPhaseIC.h"
 #include "PikaCriteria.h"
-#include "ChemicalPotentialIC.h"
+#include "PikaChemicalPotentialIC.h"
 
 // BoundaryConditions
 #include "IbexSurfaceFluxBC.h"
@@ -136,7 +136,7 @@ PikaApp::registerObjects(Factory & factory)
 
   // InitialConditions
   registerInitialCondition(KaempferAnalyticPhaseIC);
-  registerBoundaryCondition(ChemicalPotentialIC);
+  registerBoundaryCondition(PikaChemicalPotentialIC);
 
   // AuxKernels
   registerAux(ErrorFunctionAux);

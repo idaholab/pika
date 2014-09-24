@@ -9,10 +9,11 @@
 /*                      With the U. S. Department of Energy                       */
 /**********************************************************************************/
 
-#include "ChemicalPotentialIC.h"
+#include "PikaChemicalPotentialIC.h"
 #include "PropertyUserObject.h"
+
 template<>
-InputParameters validParams<ChemicalPotentialIC>()
+InputParameters validParams<PikaChemicalPotentialIC>()
 {
   InputParameters params = validParams<InitialCondition>();
   params += validParams<PropertyUserObjectInterface>();
@@ -21,7 +22,7 @@ InputParameters validParams<ChemicalPotentialIC>()
   return params;
 }
 
-ChemicalPotentialIC::ChemicalPotentialIC(const std::string & name, InputParameters parameters) :
+PikaChemicalPotentialIC::PikaChemicalPotentialIC(const std::string & name, InputParameters parameters) :
     InitialCondition(name, parameters),
     PropertyUserObjectInterface(name, parameters),
     _temperature(coupledValue("temperature")),
@@ -30,7 +31,7 @@ ChemicalPotentialIC::ChemicalPotentialIC(const std::string & name, InputParamete
 }
 
 Real
-ChemicalPotentialIC::value(const Point & /*p*/)
+PikaChemicalPotentialIC::value(const Point & /*p*/)
 {
   return _property_uo.equilibriumChemicalPotential(_temperature[_qp]) * ((1.0 - _phase[_qp]) / 2.0);
 }
