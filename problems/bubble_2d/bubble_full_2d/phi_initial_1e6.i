@@ -1,9 +1,9 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 10
+  nx = 5
   ny = 10
-  xmax = 0.005
+  xmax = 0.0025
   ymax = 0.005
 []
 
@@ -51,14 +51,16 @@
   dt = 10
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '500 hypre boomeramg'
+  petsc_options_value = '50 hypre boomeramg'
   nl_rel_tol = 1e-07
   nl_abs_tol = 1e-12
+  l_tol = 1e-4
   [./TimeStepper]
     type = IterationAdaptiveDT
     dt = 1
     growth_factor = 3
   [../]
+  num_steps = 10
 []
 
 [Adaptivity]
@@ -84,7 +86,6 @@
 
 [Outputs]
   output_initial = true
-  console = false
   [./console]
     type = Console
     perf_log = true
@@ -92,17 +93,19 @@
     linear_residuals = true
   [../]
   [./exodus]
-    output_final = true
     file_base = phi_initial
+    output_final = true
     type = Exodus
+    interval = 1
   [../]
 []
 
 [ICs]
   [./phase_ic]
+    int_width = 1e-6
     x1 = 0.0025
     y1 = 0.0025
-    radius = 0.0001
+    radius = 0.0005
     outvalue = 1
     variable = phi
     invalue = -1
@@ -116,4 +119,3 @@
   phase = phi
   temporal_scaling = 1e-04
 []
-
