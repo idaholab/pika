@@ -1,8 +1,10 @@
 [Mesh]
-  type = FileMesh
-  file = phi_initial_0003_mesh.xdr
+  type = GeneratedMesh
   dim = 2
-  uniform_refine = 1
+  nx = 6
+  ny = 6
+  xmax = .005
+  ymax = .005
 []
 
 [Variables]
@@ -21,9 +23,8 @@
 
 [Functions]
   [./T_func]
-    type = SolutionFunction
-    from_variable = T
-    solution = T_initial
+    type = ParsedFunction
+    value = 500*y+265
   [../]
   [./phi_func]
     type = SolutionFunction
@@ -108,80 +109,91 @@
 []
 
 [BCs]
-  active = 'T_hot T_cold phi_bc'
   [./T_hot]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 260.4 # -5
+    value = 267.5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 260 # -20
+    value = 265
   [../]
-  [./vapor_bc]
-    type = ChemicalPotentialBC
-    variable = u
-    boundary = '0 1 2 3'
-    phase_variable = phi
-    temperature = T
-  [../]
-  [./phi_bc]
-    type = DirichletBC
-    variable = phi
-    boundary = '0 1 2 3 '
-    value = 1
-  [../]
-[]
-
-[Postprocessors]
 []
 
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial_0003_mesh.xdr
-    nodal_variables = phi
-    es = phi_initial_0003.xdr
-  [../]
-  [./T_initial]
-    type = SolutionUserObject
-    mesh = T_initial_0000_mesh.xdr
-    nodal_variables = T
-    es = T_initial_0000.xdr
+    mesh = phi_initial_small_out.e-s010
+    system_variables = phi
   [../]
 []
 
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  dt = 50
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   end_time = 20000
   reset_dt = true
-  dtmax = 100
+  dtmax = 10
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
+  dtmin = 0.1
+  [./TimeStepper]
+    type = SolutionTimeAdaptiveDT
+    dt = 0.1
+    percent_change = 1
+  [../]
+[]
+
+[Adaptivity]
+  max_h_level = 7
+  marker = combo_marker
+  initial_steps = 12
+  initial_marker = combo_marker
+  [./Indicators]
+    [./phi_grad_indicator]
+      type = GradientJumpIndicator
+      variable = phi
+    [../]
+    [./u_grad_indicator]
+      type = GradientJumpIndicator
+      variable = u
+    [../]
+  [../]
+  [./Markers]
+    [./combo_marker]
+      type = ComboMarker
+      markers = 'phi_grad_marker u_grad_marker'
+    [../]
+    [./u_grad_marker]
+      type = ErrorToleranceMarker
+      coarsen = 5e-7
+      indicator = u_grad_indicator
+      refine = 1e-7
+    [../]
+    [./phi_grad_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-4
+      indicator = phi_grad_indicator
+      refine = 1e-3
+    [../]
+  [../]
 []
 
 [Outputs]
   output_initial = true
   exodus = true
   csv = true
-  file_base = 200_1e-5
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
-  [../]
-  [./cp]
-    interval = 20
-    type = Checkpoint
   [../]
 []
 
@@ -198,7 +210,7 @@
   [../]
   [./vapor_ic]
     variable = u
-    type = ChemicalPotentialIC
+    type = PikaChemicalPotentialIC
     block = 0
     phase_variable = phi
     temperature = T
@@ -209,10 +221,8 @@
   temperature = T
   interface_thickness = 1e-5
   temporal_scaling = 1e-4
-  condensation_coefficient = .001
-  phase = phi_aux
-  output_properties = 'capillary_length beta diffusion_coefficient'
-  outputs = all
+  condensation_coefficient = .01
+  phase = phi
 []
 
 [PikaCriteriaOutput]
@@ -224,6 +234,8 @@
   phase = phi
   use_temporal_scaling = true
   ice_criteria = false
-  interface_velocity_postprocessors = 'average max min'
+  super_saturation = false
+  interface_velocity_postprocessors = max
+  temperature = T
 []
 

@@ -30,6 +30,7 @@
     type = 'CSVDiff'
     input = 'mms_mass_transport_steady.i'
     csvdiff = 'mms_mass_transport_steady_out.csv'
+    prereq = steady_convergence
   [../]
 
   [./transient_first_convergence]
