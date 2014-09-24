@@ -48,22 +48,24 @@
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 20
   dt = 10
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '500 hypre boomeramg'
+  petsc_options_value = '50 hypre boomeramg'
   nl_rel_tol = 1e-07
-  nl_abs_tol = 1e-13
+  nl_abs_tol = 1e-12
+  l_tol = 1e-4
   [./TimeStepper]
     type = IterationAdaptiveDT
-    dt = 0.5
+    dt = 1
+    growth_factor = 3
   [../]
+  num_steps = 10
 []
 
 [Adaptivity]
-  max_h_level = 8
-  initial_steps = 12
+  max_h_level = 9
+  initial_steps = 9
   marker = phi_marker
   initial_marker = phi_marker
   [./Indicators]
@@ -75,34 +77,31 @@
   [./Markers]
     [./phi_marker]
       type = ErrorToleranceMarker
-      coarsen = 1e-6
+      coarsen = 1e-7
       indicator = phi_grad_indicator
-      refine = 1e-4
+      refine = 1e-5
     [../]
   [../]
 []
 
 [Outputs]
   output_initial = true
-  exodus = true
-  console = false
   [./console]
     type = Console
     perf_log = true
     nonlinear_residuals = true
     linear_residuals = true
   [../]
-  [./xdr]
-    file_base = phi_initial_1e5
+  [./out]
     output_final = true
-    type = XDR
-    interval = 10
+    type = Exodus
+    interval = 1
   [../]
 []
 
 [ICs]
   [./phase_ic]
-    int_width = 1e-6
+    int_width = 1e-5
     x1 = 0.0025
     y1 = 0.0025
     radius = 0.0005
@@ -115,10 +114,7 @@
 
 [PikaMaterials]
   temperature = 258.2
-  interface_thickness = 1e-5
+  interface_thickness = 1e-6
   phase = phi
-  interface_kinetic_coefficient = 5.5e5
-  capillary_length = 1.3e-9
   temporal_scaling = 1e-04
 []
-

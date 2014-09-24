@@ -24,8 +24,7 @@
 [Functions]
   [./T_func]
     type = ParsedFunction
-    from_variable = T
-    function = -543*y+264.8
+    value = -543*y+267.515
   [../]
   [./phi_func]
     type = SolutionFunction
@@ -130,8 +129,8 @@
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    mesh = phi_initial.e-s008
-    nodal_variables = phi
+    mesh = phi_initial_1e6_out.e-s007
+    system_variables = phi
   [../]
 []
 
@@ -143,13 +142,14 @@
   petsc_options_value = 'hypre boomeramg'
   end_time = 20000
   reset_dt = true
-  dtmax = 50
+  dtmax = 1
+  dtmin = 0.1
   nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    dt = 1
-    percent_change = 0.5
+    dt = 0.1
+    percent_change = 1
   [../]
 []
 
@@ -174,25 +174,27 @@
       markers = 'phi_grad_marker u_grad_marker'
     [../]
     [./u_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.02
+      type = ErrorToleranceMarker
+      coarsen = 1e-10
       indicator = u_grad_indicator
-      refine = 0.8
+      refine = 1e-8
     [../]
     [./phi_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = 0.02
+      type = ErrorToleranceMarker
+      coarsen = 1e-7
       indicator = phi_grad_indicator
-      refine = 0.8
+      refine = 1e-5
     [../]
   [../]
 []
 
 [Outputs]
   output_initial = true
-  exodus = true
   csv = true
-  file_base = full_543_1e6/out
+  [./out]
+    type = Exodus
+    interval = 10
+  [../]
   [./console]
     type = Console
     perf_log = true
@@ -210,11 +212,11 @@
   [./temperature_ic]
     variable = T
     type = FunctionIC
-    function = T_initial
+    function = T_func
   [../]
   [./vapor_ic]
     variable = u
-    type = ChemicalPotentialIC
+    type = PikaChemicalPotentialIC
     block = 0
     phase_variable = phi
     temperature = T
@@ -238,7 +240,7 @@
   phase = phi
   use_temporal_scaling = true
   ice_criteria = false
-  interface_velocity_postprocessors = 'average max min'
+  super_saturation = false
+  interface_velocity_postprocessors = max
   temperature = T
 []
-

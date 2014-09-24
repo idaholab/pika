@@ -34,8 +34,7 @@ InputParameters validParams<PikaCriteriaAction>()
   params.addRequiredCoupledVar("chemical_potential", "Chemical potential variable");
   params.addRequiredCoupledVar("temperature", "Temperature variable");
 
-
-  MooseEnum pps_types("min=0, max=1, average=2");
+  MooseEnum pps_types("min=0 max=1 average=2");
   std::vector<MooseEnum> vec_types(1, pps_types);
   params.addParam<std::vector<MooseEnum> >("ice_postprocessors", vec_types, "Types of postprocessors for ice criteria.");
   params.addParam<std::vector<MooseEnum> >("air_postprocessors", vec_types, "Types of postprocessors for air criteria.");
@@ -103,6 +102,7 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   std::ostringstream long_name;
   long_name << "AuxKernels/_pika_" << name << "_aux_kernel";
   InputParameters action_params = _action_factory.getValidParams("AddKernelAction");
+
   action_params.set<std::string>("type") = type;
   action_params.set<ActionWarehouse *>("awh") = &_awh;
   action_params.set<std::string>("registered_identifier") = "(AutoBuilt)";
@@ -111,13 +111,15 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   // Create the action
   MooseObjectAction * action = static_cast<MooseObjectAction *>(_action_factory.create("AddKernelAction", long_name.str(), action_params));
 
-  // Set the variable name
+  // Set the variable name other object parameters
   std::ostringstream var_name;
   var_name << "_pika_" << name << "_aux";
-  action->getObjectParams().set<AuxVariableName>("variable") = var_name.str();
-  action->getObjectParams().set<std::vector<MooseEnum> >("execute_on")[0] = "timestep";
-  action->getObjectParams().set<bool>("use_temporal_scaling") = getParam<bool>("use_temporal_scaling");
-  action->getObjectParams().set<Real>("coefficient") = 1.0;
+  InputParameters & object_params = action->getObjectParams();
+  object_params.set<AuxVariableName>("variable") = var_name.str();
+  object_params.set<std::vector<MooseEnum> >("execute_on")[0] = "timestep";
+//  object_params.set<bool>("use_temporal_scaling") = getParam<bool>("use_temporal_scaling");
+  object_params.set<Real>("coefficient") = 1.0;
+  object_params.applyParameters(_pars);
 
   // Add the variable
   FEType fe_type(CONSTANT, MONOMIAL);
