@@ -1,7 +1,10 @@
 [Mesh]
-  type = FileMesh
-  file = T_initial_0000_mesh.xdr
+  type = GeneratedMesh
   dim = 2
+  nx = 6
+  ny = 6
+  xmax = .005
+  ymax = .005
 []
 
 [Variables]
@@ -14,16 +17,18 @@
 []
 
 [AuxVariables]
+  [./phi_aux]
+  [../]
 []
 
 [Functions]
   [./T_func]
-    type = SolutionFunction
-    from_variable = T
-    solution = T_initial
+    type = ParsedFunction
+    value = 500*y+265
   [../]
   [./phi_func]
     type = SolutionFunction
+    from_variable = phi
     solution = phi_initial
   [../]
 []
@@ -71,7 +76,7 @@
   [./phi_time]
     type = PikaTimeDerivative
     variable = phi
-    property = tau
+    property = relaxation_time
     scale = 1.0
   [../]
   [./phi_transition]
@@ -80,6 +85,7 @@
     mob_name = mobility
     chemical_potential = u
     coefficient = 1.0
+    lambda = phase_field_coupling_constant
   [../]
   [./phi_double_well]
     type = DoubleWellPotential
@@ -94,40 +100,34 @@
   [../]
 []
 
+[AuxKernels]
+  [./phi_aux_kernel]
+    type = PikaPhaseInitializeAux
+    variable = phi_aux
+    phase = phi
+  [../]
+[]
+
 [BCs]
   [./T_hot]
     type = DirichletBC
     variable = T
     boundary = top
-    value = 270 # -5
+    value = 267.5
   [../]
   [./T_cold]
     type = DirichletBC
     variable = T
     boundary = bottom
-    value = 269 # -20
+    value = 265
   [../]
-[]
-
-[Postprocessors]
 []
 
 [UserObjects]
   [./phi_initial]
     type = SolutionUserObject
-    system = aux0
-    mesh = phi_initial_0001_mesh.xdr
-    nodal_variables = phi_aux
-    execute_on = initial
-    es = phi_initial_0001.xdr
-    system_variables = phi_aux
-  [../]
-  [./T_initial]
-    type = SolutionUserObject
-    mesh = T_initial_0000_mesh.xdr
-    nodal_variables = T
-    es = T_initial_0000.xdr
-    system_variables = T
+    mesh = phi_initial_out.e-s010
+    system_variables = phi
   [../]
 []
 
@@ -139,60 +139,48 @@
   petsc_options_value = 'hypre boomeramg'
   end_time = 20000
   reset_dt = true
+  dtmax = 10
+  nl_abs_tol = 1e-12
   nl_rel_tol = 1e-07
+  dtmin = 0.1
   [./TimeStepper]
     type = SolutionTimeAdaptiveDT
-    percent_change = 0.01
-    dt = 0.05
+    dt = 0.1
+    percent_change = 1
   [../]
 []
 
 [Adaptivity]
-  max_h_level = 4
-  initial_marker = u_marker
-  marker = combo_mark
-  initial_steps = 8
+  max_h_level = 7
+  marker = combo_marker
+  initial_steps = 7
+  initial_marker = combo_marker
   [./Indicators]
     [./phi_grad_indicator]
       type = GradientJumpIndicator
       variable = phi
     [../]
-    [./u_jump_indicator]
+    [./u_grad_indicator]
       type = GradientJumpIndicator
       variable = u
-      block = 0
     [../]
   [../]
   [./Markers]
-    active = 'combo_mark u_marker phi_grad_marker'
-    [./phi_grad_marker]
-      type = ErrorFractionMarker
-      coarsen = .05
-      indicator = phi_grad_indicator
-      refine = .8
-    [../]
-    [./u_marker]
-      type = ErrorFractionMarker
-      indicator = u_jump_indicator
-      refine = .8
-      block = 0
-      coarsen = 0.05
-    [../]
-    [./phi_above]
-      type = ValueThresholdMarker
-      variable = phi
-      refine = 1.0000001
-    [../]
-    [./phi_below]
-      type = ValueThresholdMarker
-      variable = phi
-      invert = true
-      refine = -1.0000001
-    [../]
-    [./combo_mark]
+    [./combo_marker]
       type = ComboMarker
-      block = 0
-      markers = 'u_marker phi_grad_marker'
+      markers = 'phi_grad_marker u_grad_marker'
+    [../]
+    [./u_grad_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-10
+      indicator = u_grad_indicator
+      refine = 1e-8
+    [../]
+    [./phi_grad_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-7
+      indicator = phi_grad_indicator
+      refine = 1e-5
     [../]
   [../]
 []
@@ -200,13 +188,12 @@
 [Outputs]
   output_initial = true
   exodus = true
-  checkpoint = true
   csv = true
   [./console]
     type = Console
     perf_log = true
+    nonlinear_residuals = true
     linear_residuals = true
-    output_file = true
   [../]
 []
 
@@ -223,7 +210,7 @@
   [../]
   [./vapor_ic]
     variable = u
-    type = ChemicalPotentialIC
+    type = PikaChemicalPotentialIC
     block = 0
     phase_variable = phi
     temperature = T
@@ -231,23 +218,23 @@
 []
 
 [PikaMaterials]
-  phi = phi
   temperature = T
-  interface_thickness = 2e-5
-  temporal_scaling = 1e-3
-  output_properties = 'diffusion_coefficient conductivity latent_heat tau lambda'
-  outputs = all
-  condensation_coefficient = .001
+  interface_thickness = 1e-5
+  temporal_scaling = 1e-4
+  condensation_coefficient = .01
+  phase = phi
 []
 
 [PikaCriteriaOutput]
-  phase = phi
-  interface_velocity_postprocessors = 'average max min'
-  chemical_potential = u
   air_criteria = false
   velocity_criteria = false
   time_criteria = false
   vapor_criteria = false
+  chemical_potential = u
+  phase = phi
   use_temporal_scaling = true
   ice_criteria = false
+  super_saturation = false
+  interface_velocity_postprocessors = max
+  temperature = T
 []

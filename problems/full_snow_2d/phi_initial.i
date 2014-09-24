@@ -1,11 +1,11 @@
 [Mesh]
+  # uniform_refine = 6
   type = GeneratedMesh
   dim = 2
   nx = 6
   ny = 6
   xmax = .005
   ymax = .005
-  uniform_refine = 6
 []
 
 [MeshModifiers]
@@ -28,7 +28,7 @@
     type = ImageFunction
     upper_value = -1
     lower_value = 1
-    file = input.png
+    file = snow.png
     threshold = 128
   [../]
 []
@@ -68,21 +68,42 @@
   [../]
 []
 
+[Adaptivity]
+  max_h_level = 7
+  initial_steps = 12
+  marker = phi_marker
+  initial_marker = phi_marker
+  [./Indicators]
+    [./phi_grad_indicator]
+      type = GradientJumpIndicator
+      variable = phi
+    [../]
+  [../]
+  [./Markers]
+    [./phi_marker]
+      type = ErrorToleranceMarker
+      coarsen = 1e-7
+      indicator = phi_grad_indicator
+      refine = 1e-5
+    [../]
+  [../]
+[]
+
 [Executioner]
   # Preconditioned JFNK (default)
   type = Transient
-  num_steps = 100
   dt = 10
   solve_type = PJFNK
   petsc_options_iname = '-ksp_gmres_restart -pc_type -pc_hypre_type'
-  petsc_options_value = '500 hypre boomeramg'
+  petsc_options_value = '50 hypre boomeramg'
   nl_rel_tol = 1e-07
-  nl_abs_tol = 1e-13
-  dtmax = 15000
+  nl_abs_tol = 1e-12
+  l_tol = 1e-4
+  num_steps = 10
   [./TimeStepper]
     type = IterationAdaptiveDT
-    dt = 0.5
-    growth_factor = 1.75
+    dt = 1
+    growth_factor = 3
   [../]
 []
 
@@ -115,6 +136,6 @@
   interface_thickness = 1e-5
   phase = phi
   temporal_scaling = 1e-04
-  condensation_coefficient = .001
+  condensation_coefficient = .01
 []
 
