@@ -67,7 +67,8 @@ PikaMaterialAction::create(std::string action_name, std::string type, std::strin
   params.set<std::string>("type") = type;
 
   // Create the actions
-  MooseObjectAction * action = static_cast<MooseObjectAction *>(_action_factory.create(action_name, object_name, params));
+  MooseSharedPointer<MooseObjectAction> action = MooseSharedNamespace::static_pointer_cast<MooseObjectAction>
+    (_action_factory.create(action_name, object_name, params));
 
   // Apply the parameters from this action
   action->getObjectParams().applyParameters(getParams());
