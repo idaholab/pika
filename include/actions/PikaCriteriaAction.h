@@ -53,7 +53,7 @@ private:
    * @param type The type of object to create
    * @param name The name of the object to create
    */
-  MooseObjectAction * createAction(const std::string & type, const std::string & name);
+  MooseSharedPointer<MooseObjectAction> createAction(const std::string & type, const std::string & name);
 
   /**
    * Create the actions necessary for the postprocessor min/max/average outputs

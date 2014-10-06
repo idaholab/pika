@@ -83,19 +83,18 @@ PikaCriteriaAction::act()
 void
 PikaCriteriaAction::addAction(const std::string & type, const std::string & name)
 {
-  MooseObjectAction * action = createAction(type, name);
-  _awh.addActionBlock(action);
+  _awh.addActionBlock(createAction(type, name));
 }
 
 void
 PikaCriteriaAction::addCriteriaAction(const std::string & name)
 {
-  MooseObjectAction * action = createAction("PikaCriteria", name);
+  MooseSharedPointer<MooseObjectAction> action = createAction("PikaCriteria", name);
   action->getObjectParams().set<MooseEnum>("criteria") = name;
   _awh.addActionBlock(action);
 }
 
-MooseObjectAction *
+MooseSharedPointer<MooseObjectAction>
 PikaCriteriaAction::createAction(const std::string & type, const std::string & name)
 {
   // Set the AuxKernel action properties
@@ -109,7 +108,8 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   action_params.set<std::string>("task") = "add_aux_kernel";
 
   // Create the action
-  MooseObjectAction * action = static_cast<MooseObjectAction *>(_action_factory.create("AddKernelAction", long_name.str(), action_params));
+  MooseSharedPointer<MooseObjectAction> action = MooseSharedNamespace::static_pointer_cast<MooseObjectAction>
+    (_action_factory.create("AddKernelAction", long_name.str(), action_params));
 
   // Set the variable name other object parameters
   std::ostringstream var_name;
@@ -168,7 +168,8 @@ PikaCriteriaAction::addPostprocessorAction(const std::string & name, const std::
     action_params.set<std::string>("type") = "ElementAverageValue";
 
   // Create the action
-  MooseObjectAction * action = static_cast<MooseObjectAction *>(_action_factory.create("AddPostprocessorAction", long_name.str(), action_params));
+  MooseSharedPointer<MooseObjectAction> action = MooseSharedNamespace::static_pointer_cast<MooseObjectAction>
+    (_action_factory.create("AddPostprocessorAction", long_name.str(), action_params));
   action->getObjectParams().set<VariableName>("variable") = var_name;
   action->getObjectParams().set<std::vector<MooseEnum> >("execute_on")[0] = "timestep";
 
