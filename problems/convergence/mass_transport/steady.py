@@ -1,3 +1,4 @@
+#! /usr/bin/python
 ##################################################################################
 #                  Pika: Phase field snow micro-structure model                  #
 #                                                                                #
@@ -8,7 +9,6 @@
 #                      Under Contract No. DE-AC07-05ID14517                      #
 #                      With the U. S. Department of Energy                       #
 ##################################################################################
-#! /usr/bin/python
 
 import sys, os, subprocess, csv, argparse, shutil
 import matplotlib.pyplot, numpy
@@ -39,8 +39,9 @@ plt.fit()
 if args.gold:
   dest = os.path.join(os.getenv('PIKA_DIR'), 'tests', 'mass_transport', 'mms')
 
-  for i in range(3,4):
+  for i in range(3,5):
     src = 'mms_mass_transport_steady_out.e-s00' + str(i)
+    print src
     shutil.copyfile(src, os.path.join(dest, 'gold', src))
 
   src = 'mms_mass_transport_steady_out.csv'
