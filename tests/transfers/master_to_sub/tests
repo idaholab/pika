@@ -4,5 +4,6 @@
     input = 'master.i'
     exodiff = 'master_out.e master_out_quad0.e master_out_quad1.e master_out_quad2.e master_out_quad3.e'
     recover = false
+    skip = see #107
   [../]
 []
