@@ -104,7 +104,6 @@
 []
 
 [Outputs]
-  active = ''
   output_initial = true
   exodus = true
   [./oversample]

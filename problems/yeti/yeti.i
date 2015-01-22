@@ -61,7 +61,7 @@
     type = VariableGradientComponent
     variable = grad_T_y
     component = y
-    execute_on = 'initial timestep'
+    execute_on = 'initial timestep_end'
     gradient_variable = T
   [../]
   [./proc_id_aux]
@@ -135,12 +135,8 @@
   output_initial = true
   exodus = true
   csv = true
-  [./console]
-    type = Console
-    perf_log = true
-    nonlinear_residuals = true
-    linear_residuals = true
-  [../]
+  print_linear_residuals = true
+  print_perf_log = true
 []
 
 [ICs]

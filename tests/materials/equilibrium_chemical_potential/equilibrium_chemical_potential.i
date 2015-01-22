@@ -51,8 +51,8 @@
   [./console]
     type = Console
     perf_log = true
-    nonlinear_residuals = true
-    linear_residuals = true
+    output_nonlinear = true
+    output_linear = true
   [../]
   [./data]
     type = CSV

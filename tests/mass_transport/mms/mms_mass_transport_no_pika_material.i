@@ -120,10 +120,7 @@
 []
 
 [Outputs]
-  active = ''
   output_initial = true
-  exodus = true
-  console = true
   [./oversample]
     refinements = 2
     oversample = true

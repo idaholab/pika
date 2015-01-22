@@ -212,12 +212,8 @@
   exodus = true
   checkpoint = true
   csv = true
-  [./console]
-    type = Console
-    perf_log = true
-    nonlinear_residuals = true
-    linear_residuals = true
-  [../]
+  print_linear_residuals = true
+  print_perf_log = true
   [./xdr]
     output_initial = true
     file_base = u_initial_out
