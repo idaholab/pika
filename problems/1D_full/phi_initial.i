@@ -66,12 +66,8 @@
   output_initial = true
   exodus = true
   console = false
-  [./console]
-    type = Console
-    perf_log = true
-    nonlinear_residuals = true
-    linear_residuals = true
-  [../]
+  print_linear_residuals = true
+  print_perf_log = true
   [./xdr]
     file_base = phi_initial
     output_final = true

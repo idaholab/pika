@@ -128,7 +128,7 @@
   file_base = mms_double_well_potential_out
   [./console]
     type = Console
-    linear_residuals = true
+    output_linear = true
   [../]
 []
 

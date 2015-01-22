@@ -129,7 +129,7 @@
   file_base = mms_scaled_phase_evolution_out
   [./console]
     type = Console
-    linear_residuals = true
+    output_linear = true
   [../]
 []
 

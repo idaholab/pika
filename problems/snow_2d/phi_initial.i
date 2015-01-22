@@ -110,12 +110,8 @@
 [Outputs]
   output_initial = true
   console = false
-  [./console]
-    type = Console
-    perf_log = true
-    nonlinear_residuals = true
-    linear_residuals = true
-  [../]
+  print_linear_residuals = true
+  print_perf_log = true
   [./out]
     output_final = true
     type = Exodus
