@@ -16,7 +16,7 @@ InputParameters validParams<PropertyUserObject>()
 {
   InputParameters params = validParams<GeneralUserObject>();
   params += PropertyUserObject::objectParams();
-  params.suppressParameter<std::vector<MooseEnum> >("execute_on");
+  params.suppressParameter<MultiMooseEnum>("execute_on");
   return params;
 }
 
