@@ -122,8 +122,7 @@
 [Outputs]
   output_initial = true
   [./oversample]
-    refinements = 2
-    oversample = true
+    refinements = 0
     type = Exodus
   [../]
 []
