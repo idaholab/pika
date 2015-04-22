@@ -116,6 +116,7 @@
   num_steps = 10
   dt = .1
   l_max_its = 100
+  nl_rel_tol = 1.e-10
   solve_type = PJFNK
   petsc_options_iname = '-pc_type -pc_hypre'
   petsc_options_value = 'hypre boomeramg'
