@@ -71,7 +71,7 @@ PikaMaterialAction::create(std::string action_name, std::string type, std::strin
     (_action_factory.create(action_name, object_name, params));
 
   // Apply the parameters from this action
-  action->getObjectParams().applyParameters(getParams());
+  action->getObjectParams().applyParameters(parameters());
 
   // This should be done by applyParameters, but for some reason it is not (see MOOSE #3851)
   action->getObjectParams().set<std::vector<OutputName> >("outputs") = getParam<std::vector<OutputName> >("outputs");
