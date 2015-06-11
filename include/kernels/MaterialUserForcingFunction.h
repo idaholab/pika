@@ -38,7 +38,7 @@ protected:
   virtual Real computeQpResidual();
 
   /// Material Property being used to multiply with the function of this kernel
-  MaterialProperty<Real> & _material_coefficient;
+  const MaterialProperty<Real> & _material_coefficient;
   Real _scale;
 };
 

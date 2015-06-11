@@ -42,7 +42,7 @@ protected:
   virtual Real computeQpResidual();
 
 private:
-   MaterialProperty<Real> & _tau;
+  const MaterialProperty<Real> & _tau;
   const MaterialProperty<Real> & _w;
   const MaterialProperty<Real> & _lambda;
   const bool  & _use_potential_transition;
