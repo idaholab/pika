@@ -39,9 +39,9 @@ protected:
 private:
   VariableValue & _s;
 
-  MaterialProperty<Real> & _lambda;
+  const MaterialProperty<Real> & _lambda;
 
-  MaterialProperty<Real> & _s_eq;
+  const MaterialProperty<Real> & _s_eq;
 
 };
 #endif // PHASETRANSITION_H

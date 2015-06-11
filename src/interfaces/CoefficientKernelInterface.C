@@ -66,7 +66,7 @@ CoefficientKernelInterface::useMaterial()
 }
 
 void
-CoefficientKernelInterface::setMaterialPropertyPointer(MaterialProperty<libMesh::Real> * ptr)
+CoefficientKernelInterface::setMaterialPropertyPointer(const MaterialProperty<libMesh::Real> * ptr)
 {
   _material_coefficient = ptr;
 }

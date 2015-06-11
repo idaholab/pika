@@ -51,9 +51,7 @@ protected:
   Real computeQpJacobian();
 
 private:
-  MaterialProperty<RealTensorValue> & _coef;
-
-
+  const MaterialProperty<RealTensorValue> & _coef;
 };
 
 #endif //TENSORDIFFUSION_H

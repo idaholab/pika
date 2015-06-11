@@ -49,7 +49,7 @@ protected:
    *   if (useMaterial())
    *      setMaterialPropertyPointer(&getMaterialProperty<Real>("property"));
    */
-  void setMaterialPropertyPointer(MaterialProperty<libMesh::Real> * ptr);
+  void setMaterialPropertyPointer(const MaterialProperty<libMesh::Real> * ptr);
 
   /**
    * Returns the proper, scaled coefficient
@@ -64,7 +64,7 @@ protected:
   /// Pointer to material property to utilize as a coefficient
   /* This must be a pointer because getMaterialProperty returns a const reference and
    * this member is optional, so NULL is a valid value */
-  MaterialProperty<libMesh::Real> * _material_coefficient;
+  const MaterialProperty<libMesh::Real> * _material_coefficient;
 
   /// Scalar coefficient
   const libMesh::Real _coefficient;
