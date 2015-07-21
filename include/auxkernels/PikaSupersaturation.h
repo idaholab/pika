@@ -38,7 +38,7 @@ public:
    * @param name Name of the object
    * @param parameters
    */
-  PikaSupersaturation(const std::string & name, InputParameters parameters);
+  PikaSupersaturation(const InputParameters & parameters);
 
   /**
    * Class destructor

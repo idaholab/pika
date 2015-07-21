@@ -28,7 +28,6 @@ InputParameters validParams<TensorDiffusion>();
  */
 class TensorDiffusion :
   public Diffusion,
-  public PropertyUserObjectInterface,
   public CoefficientKernelInterface
 
 {
@@ -39,7 +38,7 @@ public:
    * @param name
    * @param parameters
    */
-  TensorDiffusion(const std::string & name, InputParameters parameters);
+  TensorDiffusion(const InputParameters & parameters);
 
   /**
    * Class destructor

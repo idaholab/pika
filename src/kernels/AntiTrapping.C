@@ -15,16 +15,14 @@ template<>
 InputParameters validParams<AntiTrapping>()
 {
   InputParameters params = validParams<Kernel>();
-  params+=validParams<PropertyUserObjectInterface>();
   params+=validParams<CoefficientKernelInterface>();
   params.addRequiredCoupledVar("phase", "Phase-field variable");
   return params;
 }
 
-AntiTrapping::AntiTrapping(const std::string & name, InputParameters parameters) :
-    Kernel(name,parameters),
-    PropertyUserObjectInterface(name,parameters),
-    CoefficientKernelInterface(name,parameters),
+AntiTrapping::AntiTrapping(const InputParameters & parameters) :
+    Kernel(parameters),
+    CoefficientKernelInterface(parameters),
     _phase_dot(coupledDot("phase")),
     _grad_phase(coupledGradient("phase")),
     _w(_property_uo.getParam<Real>("interface_thickness"))

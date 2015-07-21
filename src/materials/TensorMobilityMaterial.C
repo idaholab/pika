@@ -22,8 +22,8 @@ InputParameters validParams<TensorMobilityMaterial>()
   return params;
 }
 
-TensorMobilityMaterial::TensorMobilityMaterial(const std::string & name, InputParameters parameters) :
-    Material(name, parameters),
+TensorMobilityMaterial::TensorMobilityMaterial(const InputParameters & parameters) :
+    Material(parameters),
     _identity(1,0,0, 0,1,0, 0,0,1),
     _phase(coupledValue("phi")),
     _grad_phase(coupledGradient("phi")),

@@ -36,7 +36,7 @@ public:
    * @param name
    * @param parameters
    */
-  PropertyUserObject(const std::string & name, InputParameters parameters);
+  PropertyUserObject(const InputParameters & parameters);
 
   /**
    * Class destructor

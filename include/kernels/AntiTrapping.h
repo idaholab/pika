@@ -37,7 +37,6 @@ InputParameters validParams<AntiTrapping>();
 
 class AntiTrapping :
   public Kernel,
-  public PropertyUserObjectInterface,
   public CoefficientKernelInterface
 {
 public:
@@ -45,7 +44,7 @@ public:
   /**
    * Class constructor
    */
-  AntiTrapping(const std::string & name, InputParameters parameters);
+  AntiTrapping(const InputParameters & parameters);
 
 protected:
 

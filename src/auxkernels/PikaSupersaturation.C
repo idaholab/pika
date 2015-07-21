@@ -22,9 +22,9 @@ InputParameters validParams<PikaSupersaturation>()
   return params;
 }
 
-PikaSupersaturation::PikaSupersaturation(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
+PikaSupersaturation::PikaSupersaturation(const InputParameters & parameters) :
+    AuxKernel(parameters),
+    PropertyUserObjectInterface(parameters),
     _s(coupledValue("chemical_potential")),
     _temperature(coupledValue("temperature")),
     _rho_i(_property_uo.getParam<Real>("density_ice")),

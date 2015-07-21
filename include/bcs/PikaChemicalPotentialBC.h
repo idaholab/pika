@@ -33,7 +33,7 @@ class PikaChemicalPotentialBC :
   public PropertyUserObjectInterface
 {
 public:
-  PikaChemicalPotentialBC(const std::string & name, InputParameters parameters);
+  PikaChemicalPotentialBC(const InputParameters & parameters);
   virtual ~PikaChemicalPotentialBC(){};
 
 protected:

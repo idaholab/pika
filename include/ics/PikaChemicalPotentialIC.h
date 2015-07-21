@@ -29,7 +29,7 @@ class PikaChemicalPotentialIC :
   public PropertyUserObjectInterface
 {
 public:
-  PikaChemicalPotentialIC(const std::string & name, InputParameters parameters);
+  PikaChemicalPotentialIC(const InputParameters & parameters);
 
 protected:
 

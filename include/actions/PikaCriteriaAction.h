@@ -25,7 +25,7 @@ InputParameters validParams<PikaCriteriaAction>();
 class PikaCriteriaAction : public Action
 {
 public:
-  PikaCriteriaAction(const std::string & name, InputParameters parameters);
+  PikaCriteriaAction(InputParameters parameters);
   virtual ~PikaCriteriaAction(){}
 
   /**

@@ -24,8 +24,8 @@ InputParameters validParams<IbexSnowMaterial>()
   return params;
 }
 
-IbexSnowMaterial::IbexSnowMaterial(const std::string & name, InputParameters parameters) :
-    Material(name, parameters),
+IbexSnowMaterial::IbexSnowMaterial(const InputParameters & parameters) :
+    Material(parameters),
     _temperature(coupledValue("temperature")),
     _input_density(getParam<Real>("snow_density")),
     _compute_conductivity(!isParamValid("thermal_conductivity")),

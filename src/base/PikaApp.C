@@ -76,8 +76,8 @@ InputParameters validParams<PikaApp>()
   return params;
 }
 
-PikaApp::PikaApp(const std::string & name, InputParameters parameters) :
-    MooseApp(name, parameters)
+PikaApp::PikaApp(InputParameters parameters) :
+    MooseApp(parameters)
 {
   srand(processor_id());
 
@@ -101,12 +101,21 @@ PikaApp::~PikaApp()
 void
 PikaApp::registerApps()
 {
+#undef  registerApp
+#define registerApp(name) AppFactory::instance().reg<name>(#name)
+
   registerApp(PikaApp);
+
+#undef  registerApp
+#define registerApp(name) AppFactory::instance().regLegacy<name>(#name)
 }
 
 void
 PikaApp::registerObjects(Factory & factory)
 {
+#undef registerObject
+#define registerObject(name) factory.reg<name>(stringifyName(name))
+
   // UserObjects
   registerUserObject(PropertyUserObject);
 
@@ -149,11 +158,17 @@ PikaApp::registerObjects(Factory & factory)
   // BoundaryConditions
   registerBoundaryCondition(IbexSurfaceFluxBC);
   registerBoundaryCondition(PikaChemicalPotentialBC);
+
+#undef registerObject
+#define registerObject(name) factory.regLegacy<name>(stringifyName(name))
 }
 
 void
 PikaApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
 {
+#undef registerAction
+#define registerAction(tplt, action) action_factory.reg<tplt>(stringifyName(tplt), action)
+
   // Actions
   registerTask("setup_pika_material", false);
   registerAction(PikaMaterialAction, "setup_pika_material");
@@ -170,4 +185,7 @@ PikaApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
   // Add the action syntax
   syntax.registerActionSyntax("PikaMaterialAction", "PikaMaterials");
   syntax.registerActionSyntax("PikaCriteriaAction", "PikaCriteriaOutput");
+
+#undef registerAction
+#define registerAction(tplt, action) action_factory.reg<tplt>(stringifyName(tplt), action)
 }

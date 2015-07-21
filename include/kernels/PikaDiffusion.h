@@ -42,7 +42,6 @@ InputParameters validParams<PikaDiffusion>();
  */
 class PikaDiffusion :
   public Diffusion,
-  public PropertyUserObjectInterface,
   public CoefficientKernelInterface
 {
 public:
@@ -50,7 +49,7 @@ public:
   /**
    * Class constructor
    */
-  PikaDiffusion(const std::string & name, InputParameters parameters);
+  PikaDiffusion(const InputParameters & parameters);
 
 protected:
 

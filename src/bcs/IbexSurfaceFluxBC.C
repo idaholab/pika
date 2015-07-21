@@ -44,8 +44,8 @@ InputParameters validParams<IbexSurfaceFluxBC>()
   return params;
 }
 
-IbexSurfaceFluxBC::IbexSurfaceFluxBC(const std::string & name, InputParameters parameters) :
-    IntegratedBC(name, parameters),
+IbexSurfaceFluxBC::IbexSurfaceFluxBC(const InputParameters & parameters) :
+    IntegratedBC(parameters),
     _boltzmann(5.670e-8),
     _gas_constant_air(0.622),
     _gas_constant_water_vapor(0.287),

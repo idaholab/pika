@@ -27,8 +27,8 @@ InputParameters validParams<IbexShortwaveForcingFunction>()
   return params;
 }
 
-IbexShortwaveForcingFunction::IbexShortwaveForcingFunction(const std::string & name, InputParameters parameters) :
-    Kernel(name, parameters),
+IbexShortwaveForcingFunction::IbexShortwaveForcingFunction(const InputParameters & parameters) :
+    Kernel(parameters),
     _short_wave(getFunction("short_wave")),
     _vis_extinction(getParam<Real>("vis_extinction")),
     _nir_extinction(getParam<Real>("nir_extinction")),

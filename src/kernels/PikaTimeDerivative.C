@@ -15,15 +15,13 @@ template<>
 InputParameters validParams<PikaTimeDerivative>()
 {
   InputParameters params = validParams<TimeDerivative>();
-  params += validParams<PropertyUserObjectInterface>();
   params += validParams<CoefficientKernelInterface>();
   return params;
 }
 
-PikaTimeDerivative::PikaTimeDerivative(const std::string & name, InputParameters parameters) :
-    TimeDerivative(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
-    CoefficientKernelInterface(name, parameters)
+PikaTimeDerivative::PikaTimeDerivative(const InputParameters & parameters) :
+    TimeDerivative(parameters),
+    CoefficientKernelInterface(parameters)
 {
   // The getMaterialProperty method cannot be replicated in interface
   if (useMaterial())

@@ -35,9 +35,9 @@ InputParameters validParams<PikaCriteria>()
   return params;
 }
 
-PikaCriteria::PikaCriteria(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
-    PropertyUserObjectInterface(name,parameters),
+PikaCriteria::PikaCriteria(const InputParameters & parameters) :
+    AuxKernel(parameters),
+    PropertyUserObjectInterface(parameters),
     _v_n(coupledValue("interface_velocity")),
     _k_i(getMaterialProperty<Real>("conductivity_ice")),
     _k_a(getMaterialProperty<Real>("conductivity_air")),

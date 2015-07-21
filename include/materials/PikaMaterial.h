@@ -31,7 +31,7 @@ class PikaMaterial :
   public PropertyUserObjectInterface
 {
 public:
-  PikaMaterial(const std::string & name, InputParameters parameters);
+  PikaMaterial(const InputParameters & parameters);
 
 protected:
   /**

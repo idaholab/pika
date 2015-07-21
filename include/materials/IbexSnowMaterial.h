@@ -32,7 +32,7 @@ public:
    * Class constructor
    * @param prop_name
    */
-  IbexSnowMaterial(const std::string & name, InputParameters parameters);
+  IbexSnowMaterial(const InputParameters & parameters);
 
 protected:
   void computeQpProperties();

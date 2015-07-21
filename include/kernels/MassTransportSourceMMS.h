@@ -39,7 +39,7 @@ public:
    * @param name
    * @param parameters
    */
-  MassTransportSourceMMS(const std::string & name, InputParameters parameters);
+  MassTransportSourceMMS(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

@@ -32,7 +32,7 @@ public:
    * Class constructor
    * @param prop_name
    */
-  TensorMobilityMaterial(const std::string & name, InputParameters parameters);
+  TensorMobilityMaterial(const InputParameters & parameters);
 
   /**
    * Class destructor

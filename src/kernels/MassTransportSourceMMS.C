@@ -23,9 +23,9 @@ InputParameters validParams<MassTransportSourceMMS>()
   return params;
 }
 
-MassTransportSourceMMS::MassTransportSourceMMS(const std::string & name, InputParameters parameters) :
-    Kernel(name, parameters),
-    PropertyUserObjectInterface(name,parameters),
+MassTransportSourceMMS::MassTransportSourceMMS(const InputParameters & parameters) :
+    Kernel(parameters),
+    PropertyUserObjectInterface(parameters),
     _D_v(getMaterialProperty<Real>(getParam<std::string>("diffusion_coefficient_name"))),
     _phi(coupledValue("phi")),
     _use_dphi_dt(getParam<bool>("use_dphi_dt")),

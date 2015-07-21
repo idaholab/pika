@@ -21,9 +21,9 @@ InputParameters validParams<PikaChemicalPotentialBC>()
   return params;
 }
 
-PikaChemicalPotentialBC::PikaChemicalPotentialBC(const std::string & name, InputParameters parameters) :
-    NodalBC(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
+PikaChemicalPotentialBC::PikaChemicalPotentialBC(const InputParameters & parameters) :
+    NodalBC(parameters),
+    PropertyUserObjectInterface(parameters),
     _temperature(coupledValue("temperature")),
     _phase(coupledValue("phase_variable"))
 {

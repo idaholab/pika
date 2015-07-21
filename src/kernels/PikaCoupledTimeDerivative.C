@@ -19,8 +19,8 @@ InputParameters validParams<PikaCoupledTimeDerivative>()
   return params;
 }
 
-PikaCoupledTimeDerivative::PikaCoupledTimeDerivative(const std::string & name, InputParameters parameters) :
-    PikaTimeDerivative(name,parameters),
+PikaCoupledTimeDerivative::PikaCoupledTimeDerivative(const InputParameters & parameters) :
+    PikaTimeDerivative(parameters),
     _var_dot(coupledDot("coupled_variable")),
     _dvar_dot_dvar(coupledDotDu("coupled_variable")),
     _v_var(coupled("coupled_variable"))

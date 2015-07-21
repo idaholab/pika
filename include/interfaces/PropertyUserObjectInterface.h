@@ -32,13 +32,15 @@ InputParameters validParams<PropertyUserObjectInterface>();
 class PropertyUserObjectInterface
 {
 public:
-  PropertyUserObjectInterface(const std::string & name, InputParameters & parameters);
+  PropertyUserObjectInterface(const InputParameters & parameters);
 
 private:
   FEProblem * _problem_ptr;
 
 protected:
   const PropertyUserObject & _property_uo;
+
+  bool _temporal_scaling;
 
 };
 

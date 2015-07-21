@@ -31,7 +31,7 @@ public:
    * @param name The name of the postprocessor
    * @param parameters The input parameters
    */
-  PikaPhaseTimestepPostprocessor(const std::string & name, InputParameters parameters);
+  PikaPhaseTimestepPostprocessor(const InputParameters & parameters);
   virtual void initialize();
   virtual void execute();
   virtual Real getValue();

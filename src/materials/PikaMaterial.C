@@ -24,9 +24,9 @@ InputParameters validParams<PikaMaterial>()
   return params;
 }
 
-PikaMaterial::PikaMaterial(const std::string & name, InputParameters parameters) :
-    Material(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
+PikaMaterial::PikaMaterial(const InputParameters & parameters) :
+    Material(parameters),
+    PropertyUserObjectInterface(parameters),
     _debug(getParam<bool>("debug")),
     _temperature(coupledValue("temperature")),
     _phase(coupledValue("phase")),

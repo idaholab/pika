@@ -23,10 +23,9 @@ InputParameters validParams<PhaseTransition>()
   return params;
 }
 
-PhaseTransition::PhaseTransition(const std::string & name, InputParameters parameters) :
-    ACBulk(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
-    CoefficientKernelInterface(name, parameters),
+PhaseTransition::PhaseTransition(const InputParameters & parameters) :
+    ACBulk(parameters),
+    CoefficientKernelInterface(parameters),
     _s(coupledValue("chemical_potential")),
     _lambda(getMaterialProperty<Real>(getParam<std::string>("lambda"))),
     _s_eq(getMaterialProperty<Real>(getParam<std::string>("equilibrium_chemical_potential")))

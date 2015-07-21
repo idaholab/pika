@@ -26,18 +26,13 @@ InputParameters validParams<PropertyUserObjectInterface>()
      object if you know what you are doing */
   params.addParamNamesToGroup("property_user_object", "Advanced");
 
-  /* The CoefficientKernelInterface requires the temporal scaling from the property user object, this
-   * is passed down via a private parameter */
-   params.addPrivateParam<Real>("_temporal_scaling");
-
   return params;
 }
 
-PropertyUserObjectInterface::PropertyUserObjectInterface(const std::string & name, InputParameters & parameters) :
+PropertyUserObjectInterface::PropertyUserObjectInterface(const InputParameters & parameters) :
     _problem_ptr(parameters.getCheckedPointerParam<FEProblem *>("_fe_problem")),
     _property_uo(parameters.isParamValid("property_user_object") ?
                  _problem_ptr->getUserObject<PropertyUserObject>(parameters.get<UserObjectName>("property_user_object")) :
                  _problem_ptr->getUserObject<PropertyUserObject>("_pika_property_user_object"))
 {
-  parameters.set<Real>("_temporal_scaling") = _property_uo.getParam<Real>("temporal_scaling");
 }

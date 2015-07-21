@@ -38,7 +38,7 @@ public:
    * @param name
    * @param parameters
    */
-  HeatEquationSourceMMS(const std::string & name, InputParameters parameters);
+  HeatEquationSourceMMS(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

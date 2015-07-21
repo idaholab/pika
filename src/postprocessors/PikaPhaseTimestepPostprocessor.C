@@ -31,8 +31,8 @@ InputParameters validParams<PikaPhaseTimestepPostprocessor>()
   return params;
 }
 
-PikaPhaseTimestepPostprocessor::PikaPhaseTimestepPostprocessor(const std::string & name, InputParameters parameters) :
-  NodalVariablePostprocessor(name, parameters),
+PikaPhaseTimestepPostprocessor::PikaPhaseTimestepPostprocessor(const InputParameters & parameters) :
+  NodalVariablePostprocessor(parameters),
   _range(getParam<std::vector<Real> >("range")),
   _decrease_limit(getParam<Real>("decrease_limit")),
   _increase_limit(getParam<Real>("increase_limit")),

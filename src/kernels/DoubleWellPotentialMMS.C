@@ -18,8 +18,8 @@ InputParameters validParams<DoubleWellPotentialMMS>()
   return params;
 }
 
-DoubleWellPotentialMMS::DoubleWellPotentialMMS(const std::string & name, InputParameters parameters) :
-    Kernel(name, parameters)
+DoubleWellPotentialMMS::DoubleWellPotentialMMS(const InputParameters & parameters) :
+    Kernel(parameters)
 {
 }
 

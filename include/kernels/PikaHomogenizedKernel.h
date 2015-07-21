@@ -19,12 +19,11 @@
 
 class PikaHomogenizedKernel : public
   HomogenizationHeatConduction,
-  PropertyUserObjectInterface,
   CoefficientKernelInterface
 {
 public:
 
-  PikaHomogenizedKernel(const std::string & name, InputParameters parameters);
+  PikaHomogenizedKernel(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

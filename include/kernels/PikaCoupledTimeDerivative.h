@@ -38,7 +38,7 @@ public:
   /**
    * Class constructor
    */
-  PikaCoupledTimeDerivative(const std::string & name, InputParameters parameters);
+  PikaCoupledTimeDerivative(const InputParameters & parameters);
 
 protected:
 

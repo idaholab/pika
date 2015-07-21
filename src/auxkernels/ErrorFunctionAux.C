@@ -23,8 +23,8 @@ InputParameters validParams<ErrorFunctionAux>()
   return params;
 }
 
-ErrorFunctionAux::ErrorFunctionAux(const std::string & name, InputParameters parameters) :
-    FunctionAux(name, parameters),
+ErrorFunctionAux::ErrorFunctionAux(const InputParameters & parameters) :
+    FunctionAux(parameters),
     _soln(coupledValue("solution_variable")),
     _error_type(getParam<MooseEnum>("error_type"))
 {
