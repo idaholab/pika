@@ -15,6 +15,9 @@
 // libMesh includes
 #include "libmesh/libmesh_common.h"
 
+// PIKA includes
+#include "PropertyUserObjectInterface.h"
+
 // Forward declarations
 class CoefficientKernelInterface;
 class InputParameters;
@@ -26,10 +29,10 @@ InputParameters validParams<CoefficientKernelInterface>();
 /**
  * A class providing common functionality for coefficient Kernels.
  */
-class CoefficientKernelInterface
+class CoefficientKernelInterface : public PropertyUserObjectInterface
 {
 public:
-  CoefficientKernelInterface(const std::string & name, InputParameters & parameters);
+  CoefficientKernelInterface(const InputParameters & parameters);
 
 protected:
 

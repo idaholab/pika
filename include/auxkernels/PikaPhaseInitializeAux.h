@@ -33,7 +33,7 @@ public:
    * @param name The name of the object
    * @param parameters InputParameters for the object
    */
-  PikaPhaseInitializeAux(const std::string & name, InputParameters parameters);
+  PikaPhaseInitializeAux(const InputParameters & parameters);
 
 protected:
 

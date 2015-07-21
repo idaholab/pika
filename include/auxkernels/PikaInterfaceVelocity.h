@@ -36,7 +36,7 @@ public:
    * @param name Object name
    * @param parameters Object InputParameters
    */
-  PikaInterfaceVelocity(const std::string & name, InputParameters parameters);
+  PikaInterfaceVelocity(const InputParameters & parameters);
 
   /**
    * Class destructor

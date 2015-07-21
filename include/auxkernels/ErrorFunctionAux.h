@@ -33,7 +33,7 @@ public:
    * @param name Object name
    * @param parameters Object input parameters
    */
-  ErrorFunctionAux(const std::string & name, InputParameters parameters);
+  ErrorFunctionAux(const InputParameters & parameters);
 
 protected:
 

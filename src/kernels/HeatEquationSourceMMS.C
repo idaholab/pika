@@ -24,9 +24,9 @@ InputParameters validParams<HeatEquationSourceMMS>()
   return params;
 }
 
-HeatEquationSourceMMS::HeatEquationSourceMMS(const std::string & name, InputParameters parameters) :
-    Kernel(name, parameters),
-    PropertyUserObjectInterface(name,parameters),
+HeatEquationSourceMMS::HeatEquationSourceMMS(const InputParameters & parameters) :
+    Kernel(parameters),
+    PropertyUserObjectInterface(parameters),
     _k(getMaterialProperty<Real>(getParam<std::string>("conductivity_name"))),
     _c(getMaterialProperty<Real>(getParam<std::string>("heat_capacity_name"))),
     _L_sg(getMaterialProperty<Real>(getParam<std::string>("latent_heat_name"))),

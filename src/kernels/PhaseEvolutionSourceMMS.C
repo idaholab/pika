@@ -23,9 +23,9 @@ InputParameters validParams<PhaseEvolutionSourceMMS>()
   return params;
 }
 
-PhaseEvolutionSourceMMS::PhaseEvolutionSourceMMS(const std::string & name, InputParameters parameters) :
-    Kernel(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
+PhaseEvolutionSourceMMS::PhaseEvolutionSourceMMS(const InputParameters & parameters) :
+    Kernel(parameters),
+    PropertyUserObjectInterface(parameters),
     _tau(getMaterialProperty<Real>("tau")),
     _w(getMaterialProperty<Real>("interface_thickness")),
     _lambda(getMaterialProperty<Real>("lambda")),

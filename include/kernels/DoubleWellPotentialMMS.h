@@ -32,7 +32,7 @@ public:
    * @param name
    * @param parameters
    */
-  DoubleWellPotentialMMS(const std::string & name, InputParameters parameters);
+  DoubleWellPotentialMMS(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

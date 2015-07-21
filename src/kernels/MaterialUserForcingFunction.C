@@ -20,8 +20,8 @@ InputParameters validParams<MaterialUserForcingFunction>()
   return params;
 }
 
-MaterialUserForcingFunction::MaterialUserForcingFunction(const std::string & name, InputParameters parameters) :
-    UserForcingFunction(name, parameters),
+MaterialUserForcingFunction::MaterialUserForcingFunction(const InputParameters & parameters) :
+    UserForcingFunction(parameters),
     _material_coefficient(getMaterialProperty<Real>(getParam<std::string>("material_coefficient"))),
     _scale(getParam<Real>("scale"))
 {

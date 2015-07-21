@@ -42,7 +42,6 @@ InputParameters validParams<PikaTimeDerivative>();
  */
 class PikaTimeDerivative :
   public TimeDerivative,
-  public PropertyUserObjectInterface,
   public CoefficientKernelInterface
 {
 public:
@@ -50,7 +49,7 @@ public:
   /**
    * Class constructor.
    */
-  PikaTimeDerivative(const std::string & name, InputParameters parameters);
+  PikaTimeDerivative(const InputParameters & parameters);
 
 protected:
 

@@ -33,7 +33,7 @@ class PikaCriteria : public AuxKernel,
                      public PropertyUserObjectInterface
 {
 public:
-  PikaCriteria(const std::string & name, InputParameters parameters);
+  PikaCriteria(const InputParameters & parameters);
   virtual ~PikaCriteria(){}
 
 protected:

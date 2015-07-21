@@ -36,7 +36,7 @@ public:
    * @param name
    * @param parameters
    */
-  PhaseEvolutionSourceMMS(const std::string & name, InputParameters parameters);
+  PhaseEvolutionSourceMMS(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

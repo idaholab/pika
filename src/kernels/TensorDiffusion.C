@@ -15,16 +15,14 @@ template<>
 InputParameters validParams<TensorDiffusion>()
 {
   InputParameters params = validParams<Diffusion>();
-  params += validParams<PropertyUserObjectInterface>();
   params += validParams<CoefficientKernelInterface>();
   params.addParam<std::string>("mobility_tensor", "The tensor form of mobility (Nicoli, 2011)");
   return params;
 }
 
-TensorDiffusion::TensorDiffusion(const std::string & name, InputParameters parameters) :
-    Diffusion(name, parameters),
-    PropertyUserObjectInterface(name,parameters),
-    CoefficientKernelInterface(name, parameters),
+TensorDiffusion::TensorDiffusion(const InputParameters & parameters) :
+    Diffusion(parameters),
+    CoefficientKernelInterface(parameters),
     _coef(getMaterialProperty<RealTensorValue>(getParam<std::string>("mobility_tensor")))
 {
 }

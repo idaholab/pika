@@ -46,7 +46,7 @@ public:
    * @param name Name of the action
    * @param params Input parameters associated with this actions
    */
-  PikaMaterialAction(const std::string & name, InputParameters params);
+  PikaMaterialAction(InputParameters params);
 
   /**
    * Class destructor

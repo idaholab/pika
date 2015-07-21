@@ -25,7 +25,7 @@ InputParameters validParams<PikaApp>();
 class PikaApp : public MooseApp
 {
 public:
-  PikaApp(const std::string & name, InputParameters parameters);
+  PikaApp(InputParameters parameters);
   virtual ~PikaApp();
   static void registerApps();
   static void registerObjects(Factory & factory);

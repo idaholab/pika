@@ -49,8 +49,8 @@ InputParameters validParams<PikaCriteriaAction>()
   return params;
 }
 
-PikaCriteriaAction::PikaCriteriaAction(const std::string & name, InputParameters parameters) :
-    Action(name, parameters)
+PikaCriteriaAction::PikaCriteriaAction(InputParameters parameters) :
+    Action(parameters)
 {
 }
 

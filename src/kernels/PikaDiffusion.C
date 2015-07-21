@@ -17,15 +17,13 @@ template<>
 InputParameters validParams<PikaDiffusion>()
 {
   InputParameters params = validParams<Diffusion>();
-  params += validParams<PropertyUserObjectInterface>();
   params += validParams<CoefficientKernelInterface>();
   return params;
 }
 
-PikaDiffusion::PikaDiffusion(const std::string & name, InputParameters parameters) :
-    Diffusion(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
-    CoefficientKernelInterface(name, parameters)
+PikaDiffusion::PikaDiffusion(const InputParameters & parameters) :
+    Diffusion(parameters),
+    CoefficientKernelInterface(parameters)
 {
   // The getMaterialProperty method cannot be replicated in interface
   if (useMaterial())

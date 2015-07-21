@@ -24,8 +24,8 @@ InputParameters validParams<KaempferAnalyticPhaseIC>()
   return params;
 }
 
-KaempferAnalyticPhaseIC::KaempferAnalyticPhaseIC(const std::string & name, InputParameters parameters) :
-    InitialCondition(name, parameters),
+KaempferAnalyticPhaseIC::KaempferAnalyticPhaseIC(const InputParameters & parameters) :
+    InitialCondition(parameters),
     _x1(getParam<Real>("x1")),
     _x2(getParam<Real>("x2")),
     _x3(getParam<Real>("x3")),

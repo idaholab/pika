@@ -41,8 +41,8 @@ InputParameters validParams<PikaMaterialAction>()
   return params;
 }
 
-PikaMaterialAction::PikaMaterialAction(const std::string & name, InputParameters params) :
-  Action(name, params)
+PikaMaterialAction::PikaMaterialAction(InputParameters params) :
+  Action(params)
 {
 }
 

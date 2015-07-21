@@ -30,7 +30,7 @@ public:
    * Factory constructor, takes parameters so that all derived classes can be built using the same
    * constructor.
    */
-  MaterialUserForcingFunction(const std::string & name, InputParameters parameters);
+  MaterialUserForcingFunction(const InputParameters & parameters);
 
   virtual ~MaterialUserForcingFunction() {}
 

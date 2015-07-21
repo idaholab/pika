@@ -22,9 +22,9 @@ InputParameters validParams<PikaChemicalPotentialIC>()
   return params;
 }
 
-PikaChemicalPotentialIC::PikaChemicalPotentialIC(const std::string & name, InputParameters parameters) :
-    InitialCondition(name, parameters),
-    PropertyUserObjectInterface(name, parameters),
+PikaChemicalPotentialIC::PikaChemicalPotentialIC(const InputParameters & parameters) :
+    InitialCondition(parameters),
+    PropertyUserObjectInterface(parameters),
     _temperature(coupledValue("temperature")),
     _phase(coupledValue("phase_variable"))
 {

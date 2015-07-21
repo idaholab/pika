@@ -30,7 +30,7 @@ class IbexShortwaveForcingFunction : public Kernel
 {
 public:
 
-  IbexShortwaveForcingFunction(const std::string & name, InputParameters parameters);
+  IbexShortwaveForcingFunction(const InputParameters & parameters);
 
   void initialSetup();
 

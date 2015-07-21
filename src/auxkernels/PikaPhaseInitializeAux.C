@@ -21,8 +21,8 @@ InputParameters validParams<PikaPhaseInitializeAux>()
   return params;
 }
 
-PikaPhaseInitializeAux::PikaPhaseInitializeAux(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
+PikaPhaseInitializeAux::PikaPhaseInitializeAux(const InputParameters & parameters) :
+    AuxKernel(parameters),
     _phase(coupledValue("phase")),
     _upper(getParam<Real>("upper_limit")),
     _lower(getParam<Real>("lower_limit"))

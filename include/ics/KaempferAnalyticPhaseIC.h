@@ -22,7 +22,7 @@ InputParameters validParams<KaempferAnalyticPhaseIC>();
 class KaempferAnalyticPhaseIC : public InitialCondition
 {
 public:
-  KaempferAnalyticPhaseIC(const std::string & name, InputParameters parameters);
+  KaempferAnalyticPhaseIC(const InputParameters & parameters);
 
   virtual Real value(const Point & p);
 

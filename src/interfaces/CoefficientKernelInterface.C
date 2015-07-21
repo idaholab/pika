@@ -24,7 +24,7 @@
 template<>
 InputParameters validParams<CoefficientKernelInterface>()
 {
-  InputParameters params = emptyInputParameters();
+  InputParameters params = validParams<PropertyUserObjectInterface>();
   params.addParam<std::string>("property", "The name of the material property to be a coefficient for this Kernel. Cannot be specified simultaneously with a coefficient");
   params.addParam<Real>("offset", 0.0, "Offset added to the coefficient (material and scalar");
   params.addParam<Real>("scale", 1.0, "Multiplier applied to the coefficient (material and scalar");
@@ -33,7 +33,8 @@ InputParameters validParams<CoefficientKernelInterface>()
   return params;
 }
 
-CoefficientKernelInterface::CoefficientKernelInterface(const std::string & name, InputParameters & parameters) :
+CoefficientKernelInterface::CoefficientKernelInterface(const InputParameters & parameters) :
+    PropertyUserObjectInterface(parameters),
     _use_material(parameters.isParamValid("property")),
     _material_coefficient(NULL),
     _coefficient(parameters.isParamValid("coefficient") ? parameters.get<Real>("coefficient") : 0.0),
@@ -49,14 +50,9 @@ CoefficientKernelInterface::CoefficientKernelInterface(const std::string & name,
   else if ( !_use_material && !parameters.isParamValid("coefficient"))
     mooseError(" Neither a material property or a coefficient were specified in a kernel using CoefficientKernelInterface. Specify only one of them.");
 
-  /* Setup temporal scaling, this parameter is defined in PropertyUserObjectInterface, so produce an
-     error if this parameter is not defined */
-  if (!parameters.isParamValid("_temporal_scaling"))
-    mooseError("CoefficientKernelInterface requires previous inheritance of PropertyUserObjectInterface");
-
   // If time scaling is used, get the scaling parameter from the user object
   if (parameters.get<bool>("use_temporal_scaling"))
-    _time_scale = parameters.get<Real>("_temporal_scaling");
+    _time_scale = _property_uo.temporalScale();
 }
 
 bool

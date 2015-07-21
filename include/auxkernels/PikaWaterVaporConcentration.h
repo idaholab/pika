@@ -38,7 +38,7 @@ public:
    * @param name Name of the object
    * @param parameters InputParameters for the object
    */
-  PikaWaterVaporConcentration(const std::string & name, InputParameters parameters);
+  PikaWaterVaporConcentration(const InputParameters & parameters);
 
   /**
    * Class destructor

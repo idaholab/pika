@@ -33,7 +33,7 @@ public:
    * @param name
    * @param parameters
    */
-  IbexSurfaceFluxBC(const std::string & name, InputParameters parameters);
+  IbexSurfaceFluxBC(const InputParameters & parameters);
 
 protected:
 

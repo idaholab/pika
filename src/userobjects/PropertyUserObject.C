@@ -20,8 +20,8 @@ InputParameters validParams<PropertyUserObject>()
   return params;
 }
 
-PropertyUserObject::PropertyUserObject(const std::string & name, InputParameters parameters) :
-    GeneralUserObject(name, parameters),
+PropertyUserObject::PropertyUserObject(const InputParameters & parameters) :
+    GeneralUserObject(parameters),
     _boltzmann(1.38e-23),
     _mass_water_molecule(2.99e-26),
     _R_da(286.9),
