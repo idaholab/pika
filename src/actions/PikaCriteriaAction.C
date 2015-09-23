@@ -154,8 +154,8 @@ PikaCriteriaAction::addPostprocessorAction(const std::string & name, const std::
     suffix = "avg";
 
   // Build the parameters
-  std::ostringstream long_name;
-  long_name << "Postprocessors/_pika_" << name << "_" << suffix;
+  std::ostringstream action_name;
+  action_name << "_pika_" << name << "_" << suffix;
   InputParameters action_params = _action_factory.getValidParams("AddPostprocessorAction");
   action_params.set<ActionWarehouse *>("awh") = &_awh;
   action_params.set<std::string>("registered_identifier") = "(AutoBuilt)";
@@ -169,7 +169,7 @@ PikaCriteriaAction::addPostprocessorAction(const std::string & name, const std::
 
   // Create the action
   MooseSharedPointer<MooseObjectAction> action = MooseSharedNamespace::static_pointer_cast<MooseObjectAction>
-    (_action_factory.create("AddPostprocessorAction", long_name.str(), action_params));
+    (_action_factory.create("AddPostprocessorAction", action_name.str(), action_params));
   action->getObjectParams().set<VariableName>("variable") = var_name;
   action->getObjectParams().set<MultiMooseEnum>("execute_on") = "timestep_end";
 

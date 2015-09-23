@@ -54,8 +54,8 @@ void
 PikaMaterialAction::act()
 {
   // Add the UserObject containing constants and property calculations
-  create("AddUserObjectAction", "PropertyUserObject", "UserObjects/_pika_property_user_object");
-  create("AddMaterialAction", "PikaMaterial", "Materials/_pika_material");
+  create("AddUserObjectAction", "PropertyUserObject", "_pika_property_user_object");
+  create("AddMaterialAction", "PikaMaterial", "_pika_material");
 }
 
 void
