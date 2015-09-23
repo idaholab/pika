@@ -208,16 +208,11 @@
 []
 
 [Outputs]
-  output_initial = true
   exodus = true
   checkpoint = true
   csv = true
-  print_linear_residuals = true
-  print_perf_log = true
   [./xdr]
-    output_initial = true
     file_base = u_initial_out
-    interval = 1
     type = XDR
   [../]
 []

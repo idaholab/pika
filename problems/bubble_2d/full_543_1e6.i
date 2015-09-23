@@ -189,10 +189,7 @@
 []
 
 [Outputs]
-  output_initial = true
   csv = true
-  print_linear_residuals = true
-  print_perf_log = true
   [./out]
     type = Exodus
     interval = 10

@@ -184,12 +184,9 @@
 []
 
 [Outputs]
-  output_initial = true
   exodus = true
   csv = true
   file_base = full_200
-  print_linear_residuals = true
-  print_perf_log = true
   [./cp]
     interval = 10
     type = Checkpoint

@@ -120,7 +120,6 @@
 []
 
 [Outputs]
-  output_initial = true
   [./oversample]
     refinements = 0
     type = Exodus

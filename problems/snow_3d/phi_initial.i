@@ -84,10 +84,7 @@
 []
 
 [Outputs]
-  output_initial = true
   console = false
-  print_linear_residuals = true
-  print_perf_log = true
   [./exodus]
     output_final = true
     file_base = phi_initial
