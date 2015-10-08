@@ -59,12 +59,6 @@
     variable = phi
     block = 0
   [../]
-  [./phi_time]
-    type = PikaTimeDerivative
-    variable = phi
-    property = tau
-    block = 0
-  [../]
   [./phi_square_gradient]
     type = ACInterface
     variable = phi
@@ -124,6 +118,7 @@
 []
 
 [Outputs]
+  execute_on = 'timestep_end'
   exodus = true
   console = false
   file_base = mms_double_well_potential_out
