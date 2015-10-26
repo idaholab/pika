@@ -124,6 +124,7 @@
 []
 
 [Outputs]
+  execute_on = 'timestep_end'
   exodus = true
   console = false
   file_base = mms_scaled_phase_evolution_out
