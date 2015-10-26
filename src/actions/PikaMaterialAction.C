@@ -54,8 +54,8 @@ void
 PikaMaterialAction::act()
 {
   // Add the UserObject containing constants and property calculations
-  create("AddUserObjectAction", "PropertyUserObject", "UserObjects/_pika_property_user_object");
-  create("AddMaterialAction", "PikaMaterial", "Materials/_pika_material");
+  create("AddUserObjectAction", "PropertyUserObject", "_pika_property_user_object");
+  create("AddMaterialAction", "PikaMaterial", "_pika_material");
 }
 
 void
@@ -74,7 +74,9 @@ PikaMaterialAction::create(std::string action_name, std::string type, std::strin
   action->getObjectParams().applyParameters(parameters());
 
   // This should be done by applyParameters, but for some reason it is not (see MOOSE #3851)
-  action->getObjectParams().set<std::vector<OutputName> >("outputs") = getParam<std::vector<OutputName> >("outputs");
-  action->getObjectParams().set<std::vector<std::string> >("output_properties") = getParam<std::vector<std::string> >("output_properties");
+  InputParameters & object_params = action->getObjectParams();
+  object_params.set<std::vector<OutputName> >("outputs") = getParam<std::vector<OutputName> >("outputs");
+  object_params.set<std::vector<std::string> >("output_properties") = getParam<std::vector<std::string> >("output_properties");
+
   _awh.addActionBlock(action);
 }

@@ -86,11 +86,8 @@
 []
 
 [Outputs]
-  output_initial = true
   exodus = true
   file_base = phi_initial_out
-  print_linear_residuals = true
-  print_perf_log = true
 []
 
 [ICs]

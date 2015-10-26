@@ -90,13 +90,16 @@
     type = ElementL2Error
     variable = u
     function = u_func
+    execute_on = 'initial timestep_end'
   [../]
   [./ndofs]
     type = NumDOFs
+    execute_on = 'initial timestep_end'
   [../]
   [./hmax]
     type = AverageElementSize
     variable = u
+    execute_on = 'initial timestep_end'
   [../]
 []
 
@@ -106,7 +109,6 @@
 []
 
 [Outputs]
-  output_initial = true
   console = true
   csv = true
   exodus = true

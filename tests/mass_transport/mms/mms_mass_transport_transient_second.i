@@ -100,7 +100,6 @@
 []
 
 [Outputs]
-  output_initial = true
   exodus = true
   csv = true
 []
