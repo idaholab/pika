@@ -43,8 +43,6 @@ MassTransportSourceMMS::computeQpResidual()
   Real x = _q_point[_qp](0);
   Real y = _q_point[_qp](1);
   Real D = _D_v[_qp];
-  Real Pi = libMesh::pi;
-  Real phi = _phi[_qp];
 
   Real f,term1,term2,term3;
   term1 = sin(2.0*pi*x)*cos(2.0*pi*y);
