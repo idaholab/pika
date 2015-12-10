@@ -49,7 +49,6 @@ HeatEquationSourceMMS::computeQpResidual()
   Real c = _c[_qp];
   Real L_sg = _L_sg[_qp];
   Real pi = libMesh::pi;
-  Real phi = _phi[_qp];
   Real f,term1,term2,term3;
   term1 = c*sin(2.0*pi*x)*sin(2.0*pi*y);
   term2 = 8.0*pow(pi, 2)*k*t*sin(2.0*pi*x)*sin(2.0*pi*y);

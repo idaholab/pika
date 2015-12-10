@@ -14,6 +14,7 @@
 #include "Moose.h"
 #include "AppFactory.h"
 #include "ActionFactory.h"
+#include "MooseSyntax.h"
 
 // Modules
 #include "PhaseFieldApp.h"
