@@ -25,7 +25,7 @@ template<>
 InputParameters validParams<PhaseTransition>();
 
 class PhaseTransition :
-  public ACBulk,
+  public ACBulk<Real>,
   public CoefficientKernelInterface
 {
 public:
