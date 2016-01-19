@@ -14,7 +14,7 @@
 template<>
 InputParameters validParams<PhaseTransition>()
 {
-  InputParameters params = validParams<ACBulk>();
+  InputParameters params = ACBulk<Real>::validParams();
   params += validParams<CoefficientKernelInterface>();
   params.addRequiredCoupledVar("chemical_potential", "The chemical potential variable to couple");
   params.addParam<std::string>("lambda", "lambda", "The name of the material property containing the definition of lambda");
@@ -24,7 +24,7 @@ InputParameters validParams<PhaseTransition>()
 }
 
 PhaseTransition::PhaseTransition(const InputParameters & parameters) :
-    ACBulk(parameters),
+    ACBulk<Real>(parameters),
     CoefficientKernelInterface(parameters),
     _s(coupledValue("chemical_potential")),
     _lambda(getMaterialProperty<Real>(getParam<std::string>("lambda"))),
