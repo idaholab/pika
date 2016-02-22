@@ -41,10 +41,10 @@ protected:
 private:
 
   /// The coupled temperature variable
-  VariableValue & _temperature;
+  const VariableValue & _temperature;
 
   /// The coupled phase-field variable
-  VariableValue & _phase;
+  const VariableValue & _phase;
 };
 
 #endif // PIKACHEMICALPOTENTIALIC_H

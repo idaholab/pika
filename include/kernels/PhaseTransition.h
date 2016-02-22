@@ -36,11 +36,11 @@ protected:
   virtual Real computeDFDOP(PFFunctionType type);
 
 private:
-  VariableValue & _s;
+  const VariableValue & _s;
 
   const MaterialProperty<Real> & _lambda;
 
   const MaterialProperty<Real> & _s_eq;
-
 };
+
 #endif // PHASETRANSITION_H
