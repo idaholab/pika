@@ -48,7 +48,7 @@ private:
 
   const RealTensorValue _identity;
 
-  VariableValue & _phase;
+  const VariableValue & _phase;
 
   VariableGradient & _grad_phase;
 
@@ -59,10 +59,6 @@ private:
   MaterialProperty<Real> & _M_parallel;
   MaterialProperty<Real> & _M_perpendicular;
   MaterialProperty<RealTensorValue> & _M_tensor;
-
-
-
-
 };
 
 #endif //TENSORMOBILITYMATERIAL_H
