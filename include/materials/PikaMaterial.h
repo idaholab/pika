@@ -45,10 +45,10 @@ private:
   bool _debug;
 
   /// Coupled temperature variable
-  VariableValue & _temperature;
+  const VariableValue & _temperature;
 
   /// Coupled phase-field variable
-  VariableValue & _phase;
+  const VariableValue & _phase;
 
   /// Interface thickness, W
   const Real & _interface_thickness;

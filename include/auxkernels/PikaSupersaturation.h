@@ -55,10 +55,10 @@ protected:
 private:
 
   /// Chemical potential variable
-  VariableValue & _s;
+  const VariableValue & _s;
 
   /// Temperature variable
-  VariableValue & _temperature;
+  const VariableValue & _temperature;
 
   /// Density of ice
   const Real & _rho_i;
