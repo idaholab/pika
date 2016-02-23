@@ -50,7 +50,7 @@ private:
 
   const VariableValue & _phase;
 
-  VariableGradient & _grad_phase;
+  const VariableGradient & _grad_phase;
 
   //
   const Real & _M_1;
