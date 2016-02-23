@@ -56,11 +56,10 @@ private:
   const Real & _D_v;
 
   /// Gradient of the phase-field variable
-  VariableGradient & _grad_phase;
+  const VariableGradient & _grad_phase;
 
   /// Gradient of the chemical potential variable
-  VariableGradient & _grad_s;
-
+  const VariableGradient & _grad_s;
 };
 
 #endif //PIKAINTERFACEVELOCITY_H
