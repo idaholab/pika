@@ -37,7 +37,7 @@ Real
 PikaInterfaceVelocity::computeValue()
 {
   // Compute the normal vector
-  RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].size();
+  RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].norm();
 
   // Return the velocity (Eq. 23)
   return _D_v * n * _grad_s[_qp];
