@@ -59,7 +59,7 @@ RealTensorValue
 TensorMobilityMaterial::normalOutputProduct()
 {
 
-  RealVectorValue n = _grad_phase[_qp] / _grad_phase[_qp].size();
+  RealVectorValue n = _grad_phase[_qp] / _grad_phase[_qp].norm();
   RealTensorValue nxn;
 
   for (unsigned int i = 0; i < LIBMESH_DIM; ++i)
