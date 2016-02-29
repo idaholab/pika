@@ -32,7 +32,7 @@ AntiTrapping::AntiTrapping(const InputParameters & parameters) :
 Real
 AntiTrapping::computeQpResidual()
 {
-  RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].size();
+  RealGradient n = _grad_phase[_qp] / _grad_phase[_qp].norm();
   return -(1.0/(2.0 * std::pow(2.0,0.5))) * n * _w * _phase_dot[_qp] * _grad_test[_i][_qp];
 }
 
