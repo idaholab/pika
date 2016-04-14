@@ -13,19 +13,20 @@
 template<>
 InputParameters validParams<PikaHomogenizedKernel>()
 {
-  InputParameters params = validParams<HomogenizationHeatConduction>();
+  InputParameters params = validParams<HomogenizedHeatConduction>();
   params += validParams<CoefficientKernelInterface>();
   return params;
 }
 
 
 PikaHomogenizedKernel::PikaHomogenizedKernel(const InputParameters & parameters):
-  HomogenizationHeatConduction(parameters),
+  HomogenizedHeatConduction(parameters),
   CoefficientKernelInterface(parameters)
-{}
+{
+}
 
 Real
 PikaHomogenizedKernel::computeQpResidual()
 {
-  return coefficient(_qp) * HomogenizationHeatConduction::computeQpResidual();
+  return coefficient(_qp) * HomogenizedHeatConduction::computeQpResidual();
 }
