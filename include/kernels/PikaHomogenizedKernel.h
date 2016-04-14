@@ -11,14 +11,14 @@
 #ifndef PIKAHOMOGENIZEDKERNEL_H
 #define PIKAHOMOGENIZEDKERNEL_H
 
-#include "HomogenizationHeatConduction.h"
+#include "HomogenizedHeatConduction.h"
 
 //PIKA Include
 #include "PropertyUserObjectInterface.h"
 #include "CoefficientKernelInterface.h"
 
 class PikaHomogenizedKernel : public
-  HomogenizationHeatConduction,
+  HomogenizedHeatConduction,
   CoefficientKernelInterface
 {
 public:
