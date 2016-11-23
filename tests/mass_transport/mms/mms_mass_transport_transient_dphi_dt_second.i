@@ -82,12 +82,14 @@
     type = FunctionAux
     variable = phi
     function = phi_func
+    execute_on = 'initial linear nonlinear'
   [../]
   [./u_diff_aux]
     type = ErrorFunctionAux
     variable = u_diff
     function = u_func
     solution_variable = u
+    execute_on = 'initial linear nonlinear'
   [../]
 []
 
@@ -109,6 +111,7 @@
   [./hmax]
     type = AverageElementSize
     variable = u
+    execute_on = 'initial timestep_end'
   [../]
   [./L2_norm]
     type = ElementL2Norm
