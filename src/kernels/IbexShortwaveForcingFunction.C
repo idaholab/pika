@@ -50,7 +50,7 @@ IbexShortwaveForcingFunction::initialSetup()
   else if (_direction == 2)
     _surface = _mesh.getParam<Real>("zmax");
   else
-    mooseError("Invalid direction supplied (" << _direction << "), must be 1, 2, or 3");
+    mooseError2("Invalid direction supplied (", _direction, "), must be 1, 2, or 3");
 }
 
 
