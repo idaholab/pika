@@ -8,6 +8,7 @@
 *.a
 *-opt
 *-dbg
+*-devel
 *-oprof
 *.e
 *.nav
@@ -73,6 +74,7 @@ traceout*.txt
 *Revision.h
 .ipynb_checkpoints/
 doc/doxygen/html/
+.failed_tests
 *.#*
 
 # Allow .e files in gold directories (7 levels)
