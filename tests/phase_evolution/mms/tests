@@ -19,7 +19,7 @@
     # MMS test for time scaled Eq. (33) w/ transition term =f
     type = 'Exodiff'
     input = 'mms_scaled_phase_evolution.i'
-    exodiff = 'mms_phase_evolution_out.e'
+    exodiff = 'mms_scaled_phase_evolution_out.e'
     prereq = 'test_double_well_potential'
     skip = 'see #40'
   [../]
