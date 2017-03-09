@@ -127,20 +127,21 @@ Each Pika simulation started from the same $\mu$-CT snow image and was fed tempe
   \setlength{\unitlength}{1in}
   \begin{subfigure}{0.49\linewidth}
     \includegraphics[width=\linewidth]{figures/yeti_TG.png}
-    \begin{picture}(0,0)
-      \put(0.1,0.3){\color{white}(a)}
-      \put(2.15,0.3){\color{white}(b)}
-      \put(2.15,2.49){\color{white}(c)}
-      \put(2.15,2.71){\color{white}(d)}
-      \put(0.1,2.69){\color{white}(e)}
-      \put(1.175,1.5){\color{white}(f)}
-    \end{picture}
+    % This image is now a screenshot from the original paper, so we don't need the overlays.
+    % \begin{picture}(0,0)
+    %   \put(0.1,0.3){\color{white}(a)}
+    %   \put(2.15,0.3){\color{white}(b)}
+    %   \put(2.15,2.49){\color{white}(c)}
+    %   \put(2.15,2.71){\color{white}(d)}
+    %   \put(0.1,2.69){\color{white}(e)}
+    %   \put(1.175,1.5){\color{white}(f)}
+    % \end{picture}
     \caption{}
     \label{fig:yeti_TG}
   \end{subfigure}
   \hfill
   \begin{subfigure}{0.49\linewidth}
-    \includegraphics[width=\linewidth]{figures/yeti_keff.pdf}
+    \includegraphics[width=\linewidth]{figures/yeti_keff}
     \caption{}
     \label{fig:yeti_keff}
   \end{subfigure}
@@ -150,7 +151,7 @@ Each Pika simulation started from the same $\mu$-CT snow image and was fed tempe
 Referring to Fig. \ref{fig:yeti_keff}, the small initial drop in conductivity is a result of the micro-structure simulation initializing to the supplied temperature gradient, whereas the results in Section \ref{sec:pika} started with an initialized temperature field. The areas subjected to negative gradients (e and d) undergo changes resulting in constant or slightly increasing $k_{eff}$ and the location with a postive gradient, c, showed a nearly continous decrease in conductivity. The points subjected to zero gradient---a, b, and f---all behaved almost identically and demonstrated a slight decrease in the conductivity, which may be a function of the phase-field method itself which tends to form circular geometries if not influenced by additional driving forces.
 
 \begin{figure}[t]
-  \includegraphics[width=\linewidth]{figures/yeti_micro_diff.pdf}
+  \includegraphics[width=\linewidth]{figures/yeti_micro_diff}
   \caption{Small sample of the changes in ice crystal shape from the initial condition (white) for the six Pika simulations: the colors match Fig. \ref{fig:yeti_keff} where simulations (a), (b), and (f) are red; (c) is blue; (d) is yellow; and (e) is green.}
   \label{fig:yeti_micro}
 \end{figure}
