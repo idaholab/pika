@@ -15,7 +15,6 @@
     phase = -1
     output_properties = 'equilibrium_chemical_potential'
     outputs = all
-  [../]
 []
 
 [Postprocessors]
