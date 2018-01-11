@@ -16,7 +16,7 @@ InputParameters validParams<PropertyUserObject>()
 {
   InputParameters params = validParams<GeneralUserObject>();
   params += PropertyUserObject::objectParams();
-  params.suppressParameter<MultiMooseEnum>("execute_on");
+  params.suppressParameter<ExecFlagEnum>("execute_on");
   return params;
 }
 
