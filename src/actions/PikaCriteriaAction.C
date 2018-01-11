@@ -116,7 +116,7 @@ PikaCriteriaAction::createAction(const std::string & type, const std::string & n
   var_name << "_pika_" << name << "_aux";
   InputParameters & object_params = action->getObjectParams();
   object_params.set<AuxVariableName>("variable") = var_name.str();
-  object_params.set<MultiMooseEnum>("execute_on") = "timestep_end";
+  object_params.set<ExecFlagEnum>("execute_on") = EXEC_TIMESTEP_END;
 //  object_params.set<bool>("use_temporal_scaling") = getParam<bool>("use_temporal_scaling");
   object_params.set<Real>("coefficient") = 1.0;
   object_params.applyParameters(_pars);
@@ -171,7 +171,7 @@ PikaCriteriaAction::addPostprocessorAction(const std::string & name, const std::
   MooseSharedPointer<MooseObjectAction> action = MooseSharedNamespace::static_pointer_cast<MooseObjectAction>
     (_action_factory.create("AddPostprocessorAction", action_name.str(), action_params));
   action->getObjectParams().set<VariableName>("variable") = var_name;
-  action->getObjectParams().set<MultiMooseEnum>("execute_on") = "timestep_end";
+  action->getObjectParams().set<ExecFlagEnum>("execute_on") = EXEC_TIMESTEP_END;
 
   // Account for the differing types
   if (id == 0)
