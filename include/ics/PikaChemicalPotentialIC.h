@@ -19,10 +19,10 @@
 #include "PropertyUserObjectInterface.h"
 
 //Forward Declarations
-class ChemicalPotentialIC;
+class PikaChemicalPotentialIC;
 
 template<>
-InputParameters validParams<ChemicalPotentialIC>();
+InputParameters validParams<PikaChemicalPotentialIC>();
 
 class PikaChemicalPotentialIC :
   public InitialCondition,
