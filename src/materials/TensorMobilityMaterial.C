@@ -11,6 +11,8 @@
 
 #include "TensorMobilityMaterial.h"
 
+registerMooseObject("PikaApp", TensorMobilityMaterial);
+
 template<>
 InputParameters validParams<TensorMobilityMaterial>()
 {

@@ -11,6 +11,8 @@
 
 #include "PikaCriteria.h"
 
+registerMooseObject("PikaApp", PikaCriteria);
+
 template<>
 InputParameters validParams<PikaCriteria>()
 {

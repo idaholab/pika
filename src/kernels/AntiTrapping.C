@@ -11,6 +11,8 @@
 
 #include "AntiTrapping.h"
 
+registerMooseObject("PikaApp", AntiTrapping);
+
 template<>
 InputParameters validParams<AntiTrapping>()
 {

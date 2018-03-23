@@ -19,6 +19,8 @@
 #include "PikaMaterialAction.h"
 #include "PikaMaterial.h"
 
+registerMooseAction("PikaApp", PikaMaterialAction, "setup_pika_material");
+
 template<>
 InputParameters validParams<PikaMaterialAction>()
 {

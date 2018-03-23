@@ -11,6 +11,8 @@
 
 #include "PropertyUserObject.h"
 
+registerMooseObject("PikaApp", PropertyUserObject);
+
 template<>
 InputParameters validParams<PropertyUserObject>()
 {

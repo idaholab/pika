@@ -11,6 +11,8 @@
 
 #include "PikaSupersaturation.h"
 
+registerMooseObject("PikaApp", PikaSupersaturation);
+
 template<>
 InputParameters validParams<PikaSupersaturation>()
 {

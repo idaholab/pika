@@ -16,6 +16,8 @@
 #include "ActionFactory.h"
 #include "FEProblem.h"
 
+registerMooseAction("PikaApp", PikaCriteriaAction, "setup_pika_criteria");
+
 template<>
 InputParameters validParams<PikaCriteriaAction>()
 {

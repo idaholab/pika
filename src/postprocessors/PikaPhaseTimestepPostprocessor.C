@@ -14,6 +14,8 @@
 #include <algorithm>
 #include <limits>
 
+registerMooseObject("PikaApp", PikaPhaseTimestepPostprocessor);
+
 template<>
 InputParameters validParams<PikaPhaseTimestepPostprocessor>()
 {

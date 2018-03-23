@@ -11,6 +11,8 @@
 
 #include "DoubleWellPotentialMMS.h"
 
+registerMooseObject("PikaApp", DoubleWellPotentialMMS);
+
 template<>
 InputParameters validParams<DoubleWellPotentialMMS>()
 {
