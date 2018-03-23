@@ -11,6 +11,8 @@
 
 #include "IbexSnowMaterial.h"
 
+registerMooseObject("PikaApp", IbexSnowMaterial);
+
 template<>
 InputParameters validParams<IbexSnowMaterial>()
 {

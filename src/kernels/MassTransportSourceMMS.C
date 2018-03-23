@@ -11,6 +11,8 @@
 
 #include "MassTransportSourceMMS.h"
 
+registerMooseObject("PikaApp", MassTransportSourceMMS);
+
 template<>
 InputParameters validParams<MassTransportSourceMMS>()
 {

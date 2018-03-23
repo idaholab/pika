@@ -10,6 +10,12 @@
 /**********************************************************************************/
 
 #include "DoubleWellPotentialMMS.h"
+#include "DoubleWellPotential.h"
+
+registerMooseObject("PikaApp", DoubleWellPotentialMMS);
+// FIXME: DoubleWellPotential is in the phase_field module and should be
+// registered there instead.
+registerMooseObject("PikaApp", DoubleWellPotential);
 
 template<>
 InputParameters validParams<DoubleWellPotentialMMS>()

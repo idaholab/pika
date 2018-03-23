@@ -11,6 +11,8 @@
 
 #include "PikaWaterVaporConcentration.h"
 
+registerMooseObject("PikaApp", PikaWaterVaporConcentration);
+
 template<>
 InputParameters validParams<PikaWaterVaporConcentration>()
 {

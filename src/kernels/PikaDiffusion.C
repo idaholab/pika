@@ -13,6 +13,8 @@
 // MOOSE includes
 #include "PikaDiffusion.h"
 
+registerMooseObject("PikaApp", PikaDiffusion);
+
 template<>
 InputParameters validParams<PikaDiffusion>()
 {

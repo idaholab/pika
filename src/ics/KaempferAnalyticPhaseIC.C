@@ -11,6 +11,8 @@
 
 #include "KaempferAnalyticPhaseIC.h"
 
+registerMooseObject("PikaApp", KaempferAnalyticPhaseIC);
+
 template<>
 InputParameters validParams<KaempferAnalyticPhaseIC>()
 {

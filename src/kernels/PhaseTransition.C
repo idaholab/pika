@@ -11,6 +11,8 @@
 
 #include "PhaseTransition.h"
 
+registerMooseObject("PikaApp", PhaseTransition);
+
 template<>
 InputParameters validParams<PhaseTransition>()
 {

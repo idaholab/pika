@@ -11,6 +11,8 @@
 
 #include "MaterialUserForcingFunction.h"
 
+registerMooseObject("PikaApp", MaterialUserForcingFunction);
+
 template<>
 InputParameters validParams<MaterialUserForcingFunction>()
 {

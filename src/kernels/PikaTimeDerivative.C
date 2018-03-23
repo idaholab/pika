@@ -11,6 +11,8 @@
 
 #include "PikaTimeDerivative.h"
 
+registerMooseObject("PikaApp", PikaTimeDerivative);
+
 template<>
 InputParameters validParams<PikaTimeDerivative>()
 {

@@ -12,6 +12,8 @@
 // Pika includes
 #include "PikaMaterial.h"
 
+registerMooseObject("PikaApp", PikaMaterial);
+
 template<>
 InputParameters validParams<PikaMaterial>()
 {
