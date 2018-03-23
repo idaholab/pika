@@ -31,6 +31,10 @@ InputParameters validParams<PikaApp>()
   return params;
 }
 
+// When using the new Registry system, this line is required so that
+// dependent apps know about the BighornApp label.
+registerKnownLabel("PikaApp");
+
 PikaApp::PikaApp(InputParameters parameters) :
     MooseApp(parameters)
 {
