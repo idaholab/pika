@@ -11,6 +11,8 @@
 
 #include "PikaInterfaceVelocity.h"
 
+registerMooseObject("PikaApp", PikaInterfaceVelocity);
+
 template<>
 InputParameters validParams<PikaInterfaceVelocity>()
 {

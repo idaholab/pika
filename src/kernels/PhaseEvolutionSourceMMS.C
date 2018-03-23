@@ -11,6 +11,8 @@
 
 #include "PhaseEvolutionSourceMMS.h"
 #include "PropertyUserObject.h"
+registerMooseObject("PikaApp", PhaseEvolutionSourceMMS);
+
 template<>
 InputParameters validParams<PhaseEvolutionSourceMMS>()
 {

@@ -13,6 +13,8 @@
 #include "Function.h"
 #include "MooseMesh.h"
 
+registerMooseObject("PikaApp", IbexShortwaveForcingFunction);
+
 template<>
 InputParameters validParams<IbexShortwaveForcingFunction>()
 {

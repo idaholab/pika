@@ -13,6 +13,8 @@
 
 #include "Function.h"
 
+registerMooseObject("PikaApp", IbexSurfaceFluxBC);
+
 template<>
 InputParameters validParams<IbexSurfaceFluxBC>()
 {

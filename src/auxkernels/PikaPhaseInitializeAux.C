@@ -11,6 +11,8 @@
 
 #include "PikaPhaseInitializeAux.h"
 
+registerMooseObject("PikaApp", PikaPhaseInitializeAux);
+
 template<>
 InputParameters validParams<PikaPhaseInitializeAux>()
 {

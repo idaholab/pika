@@ -11,6 +11,8 @@
 
 #include "ErrorFunctionAux.h"
 
+registerMooseObject("PikaApp", ErrorFunctionAux);
+
 template<>
 InputParameters validParams<ErrorFunctionAux>()
 {

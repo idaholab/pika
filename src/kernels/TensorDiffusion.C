@@ -11,6 +11,8 @@
 
 #include "TensorDiffusion.h"
 
+registerMooseObject("PikaApp", TensorDiffusion);
+
 template<>
 InputParameters validParams<TensorDiffusion>()
 {

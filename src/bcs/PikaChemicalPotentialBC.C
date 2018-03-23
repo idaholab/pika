@@ -11,6 +11,8 @@
 
 #include "PikaChemicalPotentialBC.h"
 #include "PropertyUserObject.h"
+registerMooseObject("PikaApp", PikaChemicalPotentialBC);
+
 template<>
 InputParameters validParams<PikaChemicalPotentialBC>()
 {

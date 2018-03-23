@@ -10,6 +10,8 @@
 /**********************************************************************************/
 #include "PikaHomogenizedKernel.h"
 
+registerMooseObject("PikaApp", PikaHomogenizedKernel);
+
 template<>
 InputParameters validParams<PikaHomogenizedKernel>()
 {
