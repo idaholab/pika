@@ -19,6 +19,8 @@ InputParameters validParams<PropertyUserObject>()
   InputParameters params = validParams<GeneralUserObject>();
   params += PropertyUserObject::objectParams();
   params.suppressParameter<ExecFlagEnum>("execute_on");
+  params.addParam<std::vector<OutputName> >("outputs", std::vector<OutputName>(1, "none"), "Vector of output names were you would like to restrict the output of material data (empty outputs to all)");
+  params.addParam<std::vector<std::string> >("output_properties", std::vector<std::string>(), "List of material properties, from this material, to output (outputs must also be defined to an output type)");
   return params;
 }
 
