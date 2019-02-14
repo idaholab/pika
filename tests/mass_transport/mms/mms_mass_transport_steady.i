@@ -25,8 +25,6 @@
 []
 
 [AuxVariables]
-  [./phi]
-  [../]
   [./abs_error]
   [../]
 []
@@ -37,10 +35,6 @@
     vars = a
     vals = 4
     value = sin(a*pi*x)
-  [../]
-  [./phi_func]
-    type = ParsedFunction
-    value = t*x*y
   [../]
   [./forcing_func]
     type = ParsedFunction
@@ -57,17 +51,9 @@
     block = 0
   [../]
   [./mms]
-    type = UserForcingFunction
+    type = BodyForce
     variable = u
     function = forcing_func
-  [../]
-[]
-
-[AuxKernels]
-  [./phi_kernel]
-    type = FunctionAux
-    variable = phi
-    function = phi_func
   [../]
 []
 
@@ -118,11 +104,6 @@
   [./u_ic]
     function = u_func
     variable = u
-    type = FunctionIC
-  [../]
-  [./phi_ic]
-    function = phi_func
-    variable = phi
     type = FunctionIC
   [../]
 []
