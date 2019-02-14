@@ -76,6 +76,8 @@ traceout*.txt
 doc/doxygen/html/
 .failed_tests
 *.#*
+.previous_test_results.json
+build
 
 # Allow .e files in gold directories (7 levels)
 !/gold/*.e

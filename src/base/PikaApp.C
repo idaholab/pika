@@ -18,8 +18,7 @@
 
 // Modules
 #include "PhaseFieldApp.h"
-#include "HeatConductionApp.h"
-#include "SolidMechanicsApp.h"
+#include "ModulesApp.h"
 
 template<>
 InputParameters validParams<PikaApp>()
@@ -38,17 +37,7 @@ registerKnownLabel("PikaApp");
 PikaApp::PikaApp(InputParameters parameters) :
     MooseApp(parameters)
 {
-  Moose::registerObjects(_factory);
-  PhaseFieldApp::registerObjects(_factory);
-  HeatConductionApp::registerObjects(_factory);
-  SolidMechanicsApp::registerObjects(_factory);
-  PikaApp::registerObjects(_factory);
-
-  Moose::associateSyntax(_syntax, _action_factory);
-  PhaseFieldApp::associateSyntax(_syntax, _action_factory);
-  HeatConductionApp::associateSyntax(_syntax, _action_factory);
-  SolidMechanicsApp::associateSyntax(_syntax, _action_factory);
-  PikaApp::associateSyntax(_syntax, _action_factory);
+  PikaApp::registerAll(_factory, _action_factory, _syntax);
 }
 
 PikaApp::~PikaApp()
@@ -62,25 +51,19 @@ PikaApp::registerApps()
 }
 
 void
-PikaApp::registerObjects(Factory & factory)
+PikaApp::registerAll(Factory & f, ActionFactory & af, Syntax & syntax)
 {
-  Registry::registerObjectsTo(factory, {"PikaApp"});
-}
-
-void
-PikaApp::associateSyntax(Syntax & syntax, ActionFactory & action_factory)
-{
-  Registry::registerActionsTo(action_factory, {"PikaApp"});
+  ModulesApp::registerAll(f, af, syntax);
+  Registry::registerObjectsTo(f, {"PikaApp"});
+  Registry::registerActionsTo(af, {"PikaApp"});
 
   // Actions
   registerTask("setup_pika_material", false);
-
   registerTask("setup_pika_criteria", false);
 
   // Add the task dependency
   addTaskDependency("add_material", "setup_pika_material");
   addTaskDependency("add_user_object", "setup_pika_material");
-  addTaskDependency("setup_material_output", "setup_pika_criteria");
   addTaskDependency("setup_pika_criteria", "add_material");
 
   // Add the action syntax
