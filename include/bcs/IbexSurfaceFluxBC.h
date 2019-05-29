@@ -73,9 +73,9 @@ private:
 
   const Real _swir_albedo;
 
-  Function & _long_wave;
+  const Function & _long_wave;
 
-  Function & _short_wave;
+  const Function & _short_wave;
 
   const Real _emissivity;
 

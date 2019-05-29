@@ -43,7 +43,7 @@ protected:
 
 private:
 
-  Function & _short_wave;
+  const Function & _short_wave;
   const Real _vis_extinction;
   const Real _nir_extinction;
   const Real _vis_albedo;
