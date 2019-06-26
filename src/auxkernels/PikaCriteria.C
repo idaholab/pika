@@ -49,7 +49,7 @@ PikaCriteria::PikaCriteria(const InputParameters & parameters) :
     _rho_i(getMaterialProperty<Real>("density_ice")),
     _D_v(getMaterialProperty<Real>("water_vapor_diffusion_coefficient")),
     _beta(getMaterialProperty<Real>("interface_kinetic_coefficient")),
-    _d_0(_property_uo.getParam<Real>("capillary_length")),
+    _d_0(_property_uo.getParamTempl<Real>("capillary_length")),
     _criteria(getParam<MooseEnum>("criteria")),
     _pore_size(getParam<Real>("estimated_pore_size")),
     _xi(getParam<bool>("use_temporal_scaling") ? _property_uo.temporalScale() : 1.0)
