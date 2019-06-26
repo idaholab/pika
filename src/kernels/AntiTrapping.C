@@ -27,7 +27,7 @@ AntiTrapping::AntiTrapping(const InputParameters & parameters) :
     CoefficientKernelInterface(parameters),
     _phase_dot(coupledDot("phase")),
     _grad_phase(coupledGradient("phase")),
-    _w(_property_uo.getParam<Real>("interface_thickness"))
+    _w(_property_uo.getParamTempl<Real>("interface_thickness"))
 {
 }
 
