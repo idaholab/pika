@@ -29,7 +29,7 @@ PikaSupersaturation::PikaSupersaturation(const InputParameters & parameters) :
     PropertyUserObjectInterface(parameters),
     _s(coupledValue("chemical_potential")),
     _temperature(coupledValue("temperature")),
-    _rho_i(_property_uo.getParam<Real>("density_ice")),
+    _rho_i(_property_uo.getParamTempl<Real>("density_ice")),
     _xi(getParam<bool>("use_temporal_scaling") ? _property_uo.temporalScale() : 1.0),
     _normalize(getParam<bool>("normalize"))
 {
