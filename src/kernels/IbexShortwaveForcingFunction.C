@@ -25,7 +25,7 @@ InputParameters validParams<IbexShortwaveForcingFunction>()
   params.addParam<Real>("vis_extinction", 40, "Extinction coefficient in visible (VIS) wavelengths (300-800 nm) [1/m]");
   params.addParam<Real>("nir_extinction", 110, "Extinction coefficient in near-infrared (NIR) wavelenghts (800-1500 nm) [1/m]");
 
-  MooseEnum direction("x=0, y=1, z=2", "y");
+  MooseEnum direction("x=0 y=1 z=2", "y");
   params.addParam<MooseEnum>("direction", direction, "Direction to apply the extinction function");
   return params;
 }

@@ -21,19 +21,13 @@ InputParameters validParams<PikaCriteria>()
   params += validParams<PropertyUserObjectInterface>();
 
   // Controls which type of AuxKernel calculation if performed
-  MooseEnum criteria("ice=0, air=1, vapor=2, velocity=3, time=4");
+  MooseEnum criteria("ice=0 air=1 vapor=2 velocity=3x time=4");
   params.addParam<MooseEnum>("criteria", criteria, "Select the type of criteria to compute, see Eqs. (43), (45), and (47)");
   params.addParam<bool>("use_temporal_scaling", false, "Temporally scale this Kernel with a value specified in PikaMaterials");
 
   // Temporal scaling
   params.addParam<Real>("estimated_pore_size", 10e-4, "Estimated pore size for time criterial (m); ; only need with 'criteria = time'");
   params.addCoupledVar("interface_velocity", 3.2e-10, "The name of the variable containing the interface velocity; only need with 'criteria = time | velocity'. Default: 3.2e-10 m/s");
-
-  // These terms are not used, CoefficientKernelIntrface for temporal scaling of rho_i
-  params.suppressParameter<Real>("offset");
-  params.suppressParameter<Real>("scale");
-  params.suppressParameter<Real>("coefficient");
-  params.suppressParameter<std::string>("property");
   return params;
 }
 
