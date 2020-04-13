@@ -32,7 +32,7 @@ InputParameters validParams<PropertyUserObjectInterface>()
 PropertyUserObjectInterface::PropertyUserObjectInterface(const InputParameters & parameters) :
     _problem_ptr(parameters.getCheckedPointerParam<FEProblem *>("_fe_problem")),
     _property_uo(parameters.isParamValid("property_user_object") ?
-                 _problem_ptr->getUserObjectTempl<PropertyUserObject>(parameters.get<UserObjectName>("property_user_object")) :
-                 _problem_ptr->getUserObjectTempl<PropertyUserObject>("_pika_property_user_object"))
+                 _problem_ptr->getUserObject<PropertyUserObject>(parameters.get<UserObjectName>("property_user_object")) :
+                 _problem_ptr->getUserObject<PropertyUserObject>("_pika_property_user_object"))
 {
 }

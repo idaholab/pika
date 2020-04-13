@@ -46,11 +46,11 @@ void
 IbexShortwaveForcingFunction::initialSetup()
 {
   if (_direction == 0)
-    _surface = _mesh.getParamTempl<Real>("xmax");
+    _surface = _mesh.getParam<Real>("xmax");
   else if (_direction == 1)
-    _surface = _mesh.getParamTempl<Real>("ymax");
+    _surface = _mesh.getParam<Real>("ymax");
   else if (_direction == 2)
-    _surface = _mesh.getParamTempl<Real>("zmax");
+    _surface = _mesh.getParam<Real>("zmax");
   else
     mooseError("Invalid direction supplied (", _direction, "), must be 1, 2, or 3");
 }

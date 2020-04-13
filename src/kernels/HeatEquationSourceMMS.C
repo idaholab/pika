@@ -35,7 +35,7 @@ HeatEquationSourceMMS::HeatEquationSourceMMS(const InputParameters & parameters)
     _phi(coupledValue("phase_variable")),
     _use_dphi_dt(getParam<bool>("use_dphi_dt")),
     _use_scale(getParam<bool>("use_time_scaling")),
-    _xi(_property_uo.getParamTempl<Real>("temporal_scaling"))
+    _xi(_property_uo.getParam<Real>("temporal_scaling"))
 {
 }
 

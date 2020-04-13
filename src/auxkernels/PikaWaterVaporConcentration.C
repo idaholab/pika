@@ -26,8 +26,8 @@ PikaWaterVaporConcentration::PikaWaterVaporConcentration(const InputParameters &
     AuxKernel(parameters),
     PropertyUserObjectInterface(parameters),
     _s(coupledValue("chemical_potential")),
-    _rho_i(_property_uo.getParamTempl<Real>("density_ice")),
-    _T_0(_property_uo.getParamTempl<Real>("reference_temperature"))
+    _rho_i(_property_uo.getParam<Real>("density_ice")),
+    _T_0(_property_uo.getParam<Real>("reference_temperature"))
 {
 }
 
