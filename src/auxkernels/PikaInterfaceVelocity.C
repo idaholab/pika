@@ -25,7 +25,7 @@ InputParameters validParams<PikaInterfaceVelocity>()
 PikaInterfaceVelocity::PikaInterfaceVelocity(const InputParameters & parameters) :
     AuxKernel(parameters),
     PropertyUserObjectInterface(parameters),
-    _D_v(_property_uo.getParamTempl<Real>("water_vapor_diffusion_coefficient")),
+    _D_v(_property_uo.getParam<Real>("water_vapor_diffusion_coefficient")),
     _grad_phase(coupledGradient("phase")),
     _grad_s(coupledGradient("chemical_potential"))
 {
