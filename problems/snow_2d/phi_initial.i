@@ -8,9 +8,6 @@
   ymax = .005
 []
 
-[MeshModifiers]
-[]
-
 [Variables]
   [./phi]
   [../]
