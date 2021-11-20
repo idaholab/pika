@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "GeneralUserObject.h"
 
-// Forward declarations
-class PropertyUserObject;
-
-template<>
-InputParameters validParams<PropertyUserObject>();
-
 /**
  * Container for constant properties and property calculations.
  *
@@ -37,6 +31,7 @@ public:
    * @param parameters
    */
   PropertyUserObject(const InputParameters & parameters);
+  static InputParameters validParams();
 
   /**
    * Class destructor

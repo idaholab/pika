@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "Material.h"
 
-// Forward declerations
-class TensorMobilityMaterial;
-
-template<>
-InputParameters validParams<TensorMobilityMaterial>();
-
 /**
  *
  */
@@ -33,6 +27,7 @@ public:
    * @param prop_name
    */
   TensorMobilityMaterial(const InputParameters & parameters);
+  static InputParameters validParams();
 
   /**
    * Class destructor

@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "AuxKernel.h"
 
-// Forward declarations
-class PikaPhaseInitializeAux;
-
-template<>
-InputParameters validParams<PikaPhaseInitializeAux>();
-
 /**
  * An AuxKernel for computing a limited phase variable
  */
@@ -34,6 +28,7 @@ public:
    * @param parameters InputParameters for the object
    */
   PikaPhaseInitializeAux(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

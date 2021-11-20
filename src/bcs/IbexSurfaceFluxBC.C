@@ -15,10 +15,9 @@
 
 registerMooseObject("PikaApp", IbexSurfaceFluxBC);
 
-template<>
-InputParameters validParams<IbexSurfaceFluxBC>()
+InputParameters IbexSurfaceFluxBC::validParams()
 {
-  InputParameters params = validParams<IntegratedBC>();
+  InputParameters params = IntegratedBC::validParams();
 
   // Define the general parameters
   params.addParam<Real>("air_temperature", 268.15, "Air temperature above the snow surface [K]");

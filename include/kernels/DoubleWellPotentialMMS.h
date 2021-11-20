@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "Kernel.h"
 
-// Forward declarations
-class DoubleWellPotentialMMS;
-
-template<>
-InputParameters validParams<DoubleWellPotentialMMS>();
-
 /**
  */
 class DoubleWellPotentialMMS : public Kernel
@@ -33,6 +27,7 @@ public:
    * @param parameters
    */
   DoubleWellPotentialMMS(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   virtual Real computeQpResidual();

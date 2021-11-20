@@ -17,12 +17,6 @@
 //Pika includes
 #include "PropertyUserObjectInterface.h"
 #include "CoefficientKernelInterface.h"
-// Forward declerations
-class TensorDiffusion;
-
-template<>
-InputParameters validParams<TensorDiffusion>();
-
 /**
  *
  */
@@ -39,6 +33,7 @@ public:
    * @param parameters
    */
   TensorDiffusion(const InputParameters & parameters);
+  static InputParameters validParams();
 
   /**
    * Class destructor

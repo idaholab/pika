@@ -15,13 +15,7 @@
 // Pika includes
 #include "PikaTimeDerivative.h"
 
-// Forward Declarations
-class PikaCoupledTimeDerivative;
-
-template<>
-InputParameters validParams<PikaCoupledTimeDerivative>();
-
- /**
+/**
  * A coefficient time derivative Kernel acting on a coupled variable
  *
  * This Kernel behaves exactly as PikaTimeDerivative, but instead the
@@ -39,6 +33,7 @@ public:
    * Class constructor
    */
   PikaCoupledTimeDerivative(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

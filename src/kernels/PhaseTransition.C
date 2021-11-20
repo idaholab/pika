@@ -13,11 +13,10 @@
 
 registerMooseObject("PikaApp", PhaseTransition);
 
-template<>
-InputParameters validParams<PhaseTransition>()
+InputParameters PhaseTransition::validParams()
 {
   InputParameters params = ACBulk<Real>::validParams();
-  params += validParams<CoefficientKernelInterface>();
+  params += CoefficientKernelInterface::validParams();
   params.addRequiredCoupledVar("chemical_potential", "The chemical potential variable to couple");
   params.addParam<std::string>("lambda", "lambda", "The name of the material property containing the definition of lambda");
   params.addParam<std::string>("equilibrium_chemical_potential", "equilibrium_chemical_potential", "The name of the material property containing the equilibrium concentration");

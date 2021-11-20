@@ -20,10 +20,6 @@
 #include "CoefficientKernelInterface.h"
 
 //Forward Declarations
-class PikaTimeDerivative;
-
-template<>
-InputParameters validParams<PikaTimeDerivative>();
 
 /**
  * A coefficient time derivative Kernel
@@ -50,6 +46,7 @@ public:
    * Class constructor.
    */
   PikaTimeDerivative(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

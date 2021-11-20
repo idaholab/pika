@@ -15,10 +15,6 @@
 #include "UserForcingFunction.h"
 
 //Forward Declarations
-class MaterialUserForcingFunction;
-
-template<>
-InputParameters validParams<MaterialUserForcingFunction>();
 
 /**
  * Multiplies a UserForcingFunction by a Material Property
@@ -31,6 +27,7 @@ public:
    * constructor.
    */
   MaterialUserForcingFunction(const InputParameters & parameters);
+  static InputParameters validParams();
 
   virtual ~MaterialUserForcingFunction() {}
 

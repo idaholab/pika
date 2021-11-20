@@ -14,11 +14,10 @@
 
 registerMooseObject("PikaApp", PikaChemicalPotentialIC);
 
-template<>
-InputParameters validParams<PikaChemicalPotentialIC>()
+InputParameters PikaChemicalPotentialIC::validParams()
 {
-  InputParameters params = validParams<InitialCondition>();
-  params += validParams<PropertyUserObjectInterface>();
+  InputParameters params = InitialCondition::validParams();
+  params += PropertyUserObjectInterface::validParams();
   params.addRequiredCoupledVar("temperature", "The temperature variable");
   params.addRequiredCoupledVar("phase_variable", "The variable containing the phase of the continuum (phi)");
   return params;

@@ -16,11 +16,7 @@
 #include "Action.h"
 
 // Forward declerations
-class PikaMaterialAction;
 class MooseObjectAction;
-
-template<>
-InputParameters validParams<PikaMaterialAction>();
 
 /**
  * Setups the necessary infrastructure for the various material properties.
@@ -47,6 +43,7 @@ public:
    * @param params Input parameters associated with this actions
    */
   PikaMaterialAction(InputParameters params);
+  static InputParameters validParams();
 
   /**
    * Class destructor

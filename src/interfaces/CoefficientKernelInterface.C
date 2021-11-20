@@ -21,10 +21,9 @@
 #include "CoefficientKernelInterface.h"
 #include "PropertyUserObject.h"
 
-template<>
-InputParameters validParams<CoefficientKernelInterface>()
+InputParameters CoefficientKernelInterface::validParams()
 {
-  InputParameters params = validParams<PropertyUserObjectInterface>();
+  InputParameters params = PropertyUserObjectInterface::validParams();
   params.addParam<std::string>("property", "The name of the material property to be a coefficient for this Kernel. Cannot be specified simultaneously with a coefficient");
   params.addParam<Real>("offset", 0.0, "Offset added to the coefficient (material and scalar");
   params.addParam<Real>("scale", 1.0, "Multiplier applied to the coefficient (material and scalar");

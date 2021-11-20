@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "Kernel.h"
 
-// Forward declarations
-class PhaseEvolutionSourceMMS;
-
-template<>
-InputParameters validParams<PhaseEvolutionSourceMMS>();
-
 /**
  * A kernel for adding forcing function for the MMS tests of the heat
  * transport equation, Eq. (34)
@@ -37,6 +31,7 @@ public:
    * @param parameters
    */
   PhaseEvolutionSourceMMS(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   virtual Real computeQpResidual();

@@ -13,11 +13,10 @@
 
 registerMooseObject("PikaApp", TensorDiffusion);
 
-template<>
-InputParameters validParams<TensorDiffusion>()
+InputParameters TensorDiffusion::validParams()
 {
-  InputParameters params = validParams<Diffusion>();
-  params += validParams<CoefficientKernelInterface>();
+  InputParameters params = Diffusion::validParams();
+  params += CoefficientKernelInterface::validParams();
   params.addParam<std::string>("mobility_tensor", "The tensor form of mobility (Nicoli, 2011)");
   return params;
 }

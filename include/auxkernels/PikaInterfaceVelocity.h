@@ -16,12 +16,6 @@
 #include "AuxKernel.h"
 #include "PropertyUserObjectInterface.h"
 
-// Forward declarations
-class PikaInterfaceVelocity;
-
-template<>
-InputParameters validParams<PikaInterfaceVelocity>();
-
 /**
  * Computes the interface velocity via Eq. 23
  */
@@ -37,6 +31,7 @@ public:
    * @param parameters Object InputParameters
    */
   PikaInterfaceVelocity(const InputParameters & parameters);
+  static InputParameters validParams();
 
   /**
    * Class destructor

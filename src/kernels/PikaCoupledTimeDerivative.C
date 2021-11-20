@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", PikaCoupledTimeDerivative);
 
-template<>
-InputParameters validParams<PikaCoupledTimeDerivative>()
+InputParameters PikaCoupledTimeDerivative::validParams()
 {
-  InputParameters params = validParams<PikaTimeDerivative>();
+  InputParameters params = PikaTimeDerivative::validParams();
   params.addRequiredCoupledVar("coupled_variable", "Variable to being differentiated with respect to time");
   return params;
 }

@@ -18,10 +18,9 @@
 
 registerMooseAction("PikaApp", PikaCriteriaAction, "setup_pika_criteria");
 
-template<>
-InputParameters validParams<PikaCriteriaAction>()
+InputParameters PikaCriteriaAction::validParams()
 {
-  InputParameters params = validParams<Action>();
+  InputParameters params = Action::validParams();
   params.addParam<bool>("ice_criteria", true, "Compute the criteria for ice, Eq. (43)a");
   params.addParam<bool>("air_criteria", true, "Compute the criteria for air, Eq. (43)b");
   params.addParam<bool>("vapor_criteria", true, "Compute the criteria for vapor, Eq. (43)c");
