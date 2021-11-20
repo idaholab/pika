@@ -17,12 +17,6 @@
 //Pika Includes
 #include "PropertyUserObjectInterface.h"
 
-// Forward declarations
-class HeatEquationSourceMMS;
-
-template<>
-InputParameters validParams<HeatEquationSourceMMS>();
-
 /**
  * A kernel for adding forcing function for the MMS tests of the heat
  * transport equation, Eq. (34)
@@ -39,6 +33,7 @@ public:
    * @param parameters
    */
   HeatEquationSourceMMS(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   virtual Real computeQpResidual();

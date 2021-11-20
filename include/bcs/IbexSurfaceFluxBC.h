@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "IntegratedBC.h"
 
-// Forward declarations
-class IbexSurfaceFluxBC;
-
-template<>
-InputParameters validParams<IbexSurfaceFluxBC>();
-
 /**
  *
  */
@@ -34,6 +28,7 @@ public:
    * @param parameters
    */
   IbexSurfaceFluxBC(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

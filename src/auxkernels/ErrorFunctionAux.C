@@ -13,13 +13,12 @@
 
 registerMooseObject("PikaApp", ErrorFunctionAux);
 
-template<>
-InputParameters validParams<ErrorFunctionAux>()
+InputParameters ErrorFunctionAux::validParams()
 {
 
   MooseEnum error_type("absolute=0 relative=1 percent=2", "absolute");
 
-  InputParameters params = validParams<FunctionAux>();
+  InputParameters params = FunctionAux::validParams();
   params.addRequiredCoupledVar("solution_variable", "The variable to compare the function against");
   params.addParam<MooseEnum>("error_type", error_type, "The type of error to compute");
   return params;

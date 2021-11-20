@@ -14,11 +14,10 @@
 
 registerMooseObject("PikaApp", PikaMaterial);
 
-template<>
-InputParameters validParams<PikaMaterial>()
+InputParameters PikaMaterial::validParams()
 {
-  InputParameters params = validParams<Material>();
-  params += validParams<PropertyUserObjectInterface>();
+  InputParameters params = Material::validParams();
+  params += PropertyUserObjectInterface::validParams();
   params.addRequiredCoupledVar("temperature", "The temperature variable to couple");
   params.addRequiredCoupledVar("phase", "The phase-field variable");
   params.addParam<bool>("debug", false, "Enable the creating of material properties for debugging");

@@ -13,12 +13,11 @@
 
 registerMooseObject("PikaApp", PikaCriteria);
 
-template<>
-InputParameters validParams<PikaCriteria>()
+InputParameters PikaCriteria::validParams()
 {
   // Grab all the parameters from the base classes
-  InputParameters params = validParams<AuxKernel>();
-  params += validParams<PropertyUserObjectInterface>();
+  InputParameters params = AuxKernel::validParams();
+  params += PropertyUserObjectInterface::validParams();
 
   // Controls which type of AuxKernel calculation if performed
   MooseEnum criteria("ice=0 air=1 vapor=2 velocity=3x time=4");

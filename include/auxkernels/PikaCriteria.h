@@ -13,10 +13,6 @@
 
 //Pika includes
 #include "PropertyUserObjectInterface.h"
-class PikaCriteria;
-
-template<>
-InputParameters validParams<PikaCriteria>();
 
 /**
  * A class for computing phase-field related criteria
@@ -34,6 +30,7 @@ class PikaCriteria : public AuxKernel,
 {
 public:
   PikaCriteria(const InputParameters & parameters);
+  static InputParameters validParams();
   virtual ~PikaCriteria(){}
 
 protected:

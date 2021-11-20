@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", KaempferAnalyticPhaseIC);
 
-template<>
-InputParameters validParams<KaempferAnalyticPhaseIC>()
+InputParameters KaempferAnalyticPhaseIC::validParams()
 {
-  InputParameters params = validParams<InitialCondition>();
+  InputParameters params = InitialCondition::validParams();
   params.addRequiredParam<Real>("x1", "Input x_min for box 1");
   params.addRequiredParam<Real>("x2", "Input x_max for box 1");
   params.addRequiredParam<Real>("x3", "Input x_min for box 2");

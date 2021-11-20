@@ -18,10 +18,6 @@
 // MOOSE includes
 #include "Material.h"
 
-class PikaMaterial;
-
-template<>
-InputParameters validParams<PikaMaterial>();
 
 /**
  * A material for defining properties associated with the energy balance, mass balance, and phase-field equations. This class only contains properties that are directly used in these relationships. All constants and additional parameters for the simulation are stored in PropertyUserObject.
@@ -32,6 +28,7 @@ class PikaMaterial :
 {
 public:
   PikaMaterial(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   /**

@@ -15,11 +15,7 @@
 #include "Kernel.h"
 
 //Forward Declarations
-class IbexShortwaveForcingFunction;
 class Function;
-
-template<>
-InputParameters validParams<IbexShortwaveForcingFunction>();
 
 /**
  * Define the Kernel for a user defined forcing function that looks like:
@@ -31,6 +27,7 @@ class IbexShortwaveForcingFunction : public Kernel
 public:
 
   IbexShortwaveForcingFunction(const InputParameters & parameters);
+  static InputParameters validParams();
 
   void initialSetup();
 

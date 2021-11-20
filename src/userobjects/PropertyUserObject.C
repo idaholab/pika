@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", PropertyUserObject);
 
-template<>
-InputParameters validParams<PropertyUserObject>()
+InputParameters PropertyUserObject::validParams()
 {
-  InputParameters params = validParams<GeneralUserObject>();
+  InputParameters params = GeneralUserObject::validParams();
   params += PropertyUserObject::objectParams();
   params.suppressParameter<ExecFlagEnum>("execute_on");
   params.addParam<std::vector<OutputName> >("outputs", std::vector<OutputName>(1, "none"), "Vector of output names were you would like to restrict the output of material data (empty outputs to all)");

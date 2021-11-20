@@ -18,12 +18,6 @@
 // Pika includes
 #include "PropertyUserObjectInterface.h"
 
-// Forward declarations
-class PikaWaterVaporConcentration;
-
-template<>
-InputParameters validParams<PikaWaterVaporConcentration>();
-
 /**
  *
  */
@@ -39,6 +33,7 @@ public:
    * @param parameters InputParameters for the object
    */
   PikaWaterVaporConcentration(const InputParameters & parameters);
+  static InputParameters validParams();
 
   /**
    * Class destructor

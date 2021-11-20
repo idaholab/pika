@@ -16,8 +16,7 @@
 // PIKA includes
 #include "PropertyUserObjectInterface.h"
 
-template<>
-InputParameters validParams<PropertyUserObjectInterface>()
+InputParameters PropertyUserObjectInterface::validParams()
 {
   InputParameters params = emptyInputParameters();
   params.addParam<UserObjectName>("property_user_object", "User object containing material property methods calculations. Defaults to the PropertyUserObject created by the PikaMaterial action");

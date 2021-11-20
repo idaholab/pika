@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", MaterialUserForcingFunction);
 
-template<>
-InputParameters validParams<MaterialUserForcingFunction>()
+InputParameters MaterialUserForcingFunction::validParams()
 {
-  InputParameters params = validParams<UserForcingFunction>();
+  InputParameters params = UserForcingFunction::validParams();
   params.addRequiredParam<std::string>("material_coefficient", "Provide a material property to multiply the provided function by");
   params.addParam<Real>("scale", 1.0, "Value to scale the material property (e.g. coefficients)");
   return params;

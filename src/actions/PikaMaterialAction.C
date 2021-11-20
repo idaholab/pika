@@ -21,10 +21,9 @@
 
 registerMooseAction("PikaApp", PikaMaterialAction, "setup_pika_material");
 
-template<>
-InputParameters validParams<PikaMaterialAction>()
+InputParameters PikaMaterialAction::validParams()
 {
-  InputParameters params = validParams<Action>();
+  InputParameters params = Action::validParams();
 
   // Add the constant properties that are defined by the various objects
   params += PropertyUserObject::objectParams();

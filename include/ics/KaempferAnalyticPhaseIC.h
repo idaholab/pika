@@ -14,15 +14,12 @@
 
 #include "InitialCondition.h"
 
-class KaempferAnalyticPhaseIC;
-
-template<>
-InputParameters validParams<KaempferAnalyticPhaseIC>();
 
 class KaempferAnalyticPhaseIC : public InitialCondition
 {
 public:
   KaempferAnalyticPhaseIC(const InputParameters & parameters);
+  static InputParameters validParams();
 
   virtual Real value(const Point & p);
 

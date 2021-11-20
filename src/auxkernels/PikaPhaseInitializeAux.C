@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", PikaPhaseInitializeAux);
 
-template<>
-InputParameters validParams<PikaPhaseInitializeAux>()
+InputParameters PikaPhaseInitializeAux::validParams()
 {
-  InputParameters params = validParams<AuxKernel>();
+  InputParameters params = AuxKernel::validParams();
   params.addRequiredCoupledVar("phase", "Phase-field variable to limit");
   params.addParam<Real>("upper_limit", 1, "Upper limit of phase-field variable");
   params.addParam<Real>("lower_limit", -1, "Lower limit of phase-field variable");

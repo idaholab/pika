@@ -12,11 +12,10 @@
 
 registerMooseObject("PikaApp", PikaHomogenizedKernel);
 
-template<>
-InputParameters validParams<PikaHomogenizedKernel>()
+InputParameters PikaHomogenizedKernel::validParams()
 {
-  InputParameters params = validParams<HomogenizedHeatConduction>();
-  params += validParams<CoefficientKernelInterface>();
+  InputParameters params = HomogenizedHeatConduction::validParams();
+  params += CoefficientKernelInterface::validParams();
   return params;
 }
 

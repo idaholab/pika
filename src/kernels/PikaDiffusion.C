@@ -15,11 +15,10 @@
 
 registerMooseObject("PikaApp", PikaDiffusion);
 
-template<>
-InputParameters validParams<PikaDiffusion>()
+InputParameters PikaDiffusion::validParams()
 {
-  InputParameters params = validParams<Diffusion>();
-  params += validParams<CoefficientKernelInterface>();
+  InputParameters params = Diffusion::validParams();
+  params += CoefficientKernelInterface::validParams();
   return params;
 }
 

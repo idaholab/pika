@@ -24,13 +24,11 @@ class PikaHomogenizedKernel : public
 public:
 
   PikaHomogenizedKernel(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   virtual Real computeQpResidual();
 
 };
-
-template<>
-InputParameters validParams<PikaHomogenizedKernel>();
 
 #endif //PIKAHOMOGENIZEDKERNEL_H

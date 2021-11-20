@@ -19,12 +19,8 @@
 #include "PropertyUserObjectInterface.h"
 
 // Forward declarations
-class CoefficientKernelInterface;
 class InputParameters;
 template <class T> class MaterialProperty;
-
-template<>
-InputParameters validParams<CoefficientKernelInterface>();
 
 /**
  * A class providing common functionality for coefficient Kernels.
@@ -33,6 +29,7 @@ class CoefficientKernelInterface : public PropertyUserObjectInterface
 {
 public:
   CoefficientKernelInterface(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

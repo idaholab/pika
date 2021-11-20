@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "FunctionAux.h"
 
-// Forward declarations
-class ErrorFunctionAux;
-
-template<>
-InputParameters validParams<ErrorFunctionAux>();
-
 /**
  * A class for computing the absolute error of a variable
  */
@@ -34,6 +28,7 @@ public:
    * @param parameters Object input parameters
    */
   ErrorFunctionAux(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

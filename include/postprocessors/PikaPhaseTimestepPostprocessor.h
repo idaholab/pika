@@ -15,12 +15,8 @@
 #include "NodalVariablePostprocessor.h"
 
 //Forward Declarations
-class PikaPhaseTimestepPostprocessor;
 
 // Input parameters
-template<>
-InputParameters validParams<PikaPhaseTimestepPostprocessor>();
-
 /// A postprocessor for collecting the nodal min or max value
 class PikaPhaseTimestepPostprocessor : public NodalVariablePostprocessor
 {
@@ -32,6 +28,7 @@ public:
    * @param parameters The input parameters
    */
   PikaPhaseTimestepPostprocessor(const InputParameters & parameters);
+  static InputParameters validParams();
   virtual void initialize();
   virtual void execute();
   virtual Real getValue();

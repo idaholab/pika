@@ -16,11 +16,7 @@
 #include "PropertyUserObject.h"
 
 // Forward declarations
-class PropertyUserObjectInterface;
 class FEProblem;
-
-template<>
-InputParameters validParams<PropertyUserObjectInterface>();
 
 /**
  * A class providing access to the PropertyUserObject.
@@ -33,6 +29,7 @@ class PropertyUserObjectInterface
 {
 public:
   PropertyUserObjectInterface(const InputParameters & parameters);
+  static InputParameters validParams();
 
 private:
   FEProblem * _problem_ptr;
