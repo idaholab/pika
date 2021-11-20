@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", MassTransportSourceMMS);
 
-template<>
-InputParameters validParams<MassTransportSourceMMS>()
+InputParameters MassTransportSourceMMS::validParams()
 {
-  InputParameters params = validParams<Kernel>();
+  InputParameters params = Kernel::validParams();
   params.addParam<std::string>("diffusion_coefficient_name", "diffusion_coefficient",  "The name of the phase dependent material property that contains the water vapor diffusion coefficient (D_v)");
   params.addRequiredCoupledVar("phi", "Phase-field variable, phi");
   params.addParam<bool>("use_dphi_dt", true, "Include the dphi_dt portion of the forcing function");

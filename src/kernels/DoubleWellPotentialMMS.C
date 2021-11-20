@@ -17,10 +17,9 @@ registerMooseObject("PikaApp", DoubleWellPotentialMMS);
 // registered there instead.
 registerMooseObject("PikaApp", DoubleWellPotential);
 
-template<>
-InputParameters validParams<DoubleWellPotentialMMS>()
+InputParameters DoubleWellPotentialMMS::validParams()
 {
-  InputParameters params = validParams<Kernel>();
+  InputParameters params = Kernel::validParams();
   return params;
 }
 

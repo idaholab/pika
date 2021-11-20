@@ -20,13 +20,7 @@
 #include "CoefficientKernelInterface.h"
 //Pika
 
-// Forward Declarations
-class AntiTrapping;
-
-template<>
-InputParameters validParams<AntiTrapping>();
-
- /**
+/**
  * A coefficient time derivative Kernel acting on a coupled variable
  *
  * This Kernel behaves exactly as AntiTrapping, but instead the
@@ -45,6 +39,7 @@ public:
    * Class constructor
    */
   AntiTrapping(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

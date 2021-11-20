@@ -19,10 +19,6 @@
 #include "PropertyUserObjectInterface.h"
 
 //Forward Declarations
-class PikaChemicalPotentialIC;
-
-template<>
-InputParameters validParams<PikaChemicalPotentialIC>();
 
 class PikaChemicalPotentialIC :
   public InitialCondition,
@@ -30,6 +26,7 @@ class PikaChemicalPotentialIC :
 {
 public:
   PikaChemicalPotentialIC(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

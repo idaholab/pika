@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", HeatEquationSourceMMS);
 
-template<>
-InputParameters validParams<HeatEquationSourceMMS>()
+InputParameters HeatEquationSourceMMS::validParams()
 {
-  InputParameters params = validParams<Kernel>();
+  InputParameters params = Kernel::validParams();
   params.addParam<std::string>("conductivity_name", "conductivity",  "The name of the phase dependent material property that contains the conductivity coefficient ( K(phi) )");
   params.addParam<std::string>("heat_capacity_name", "heat_capacity",  "The name of the phase dependent  material property that contains the heat capacity coefficient ( C(phi) )");
   params.addParam<std::string>("latent_heat_name", "latent_heat",  "The name of the material property that contains the latent heat coefficient for sublimation (L_sg)");

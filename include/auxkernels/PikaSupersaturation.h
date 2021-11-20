@@ -18,12 +18,6 @@
 // Pika includes
 #include "PropertyUserObjectInterface.h"
 
-// Forward declarations
-class PikaSupersaturation;
-
-template<>
-InputParameters validParams<PikaSupersaturation>();
-
 /**
  * AuxKernel for computing the supersaturation
  */
@@ -39,6 +33,7 @@ public:
    * @param parameters
    */
   PikaSupersaturation(const InputParameters & parameters);
+  static InputParameters validParams();
 
   /**
    * Class destructor

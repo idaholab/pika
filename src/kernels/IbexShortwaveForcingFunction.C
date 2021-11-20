@@ -15,10 +15,9 @@
 
 registerMooseObject("PikaApp", IbexShortwaveForcingFunction);
 
-template<>
-InputParameters validParams<IbexShortwaveForcingFunction>()
+InputParameters IbexShortwaveForcingFunction::validParams()
 {
-  InputParameters params = validParams<Kernel>();
+  InputParameters params = Kernel::validParams();
   params.addRequiredParam<FunctionName>("short_wave", "The function computing the incoming short-wave radiation [W/m^2]");
   params.addParam<Real>("vis_albedo", 0.94, "Short-wave radiation albedo in visible (VIS) wavelengths (300-800 nm)");
   params.addParam<Real>("nir_albedo", 0.80, "Short-wave radiation albedo in near-infrared (NIR) wavelengths (800-1500 nm)");

@@ -13,11 +13,10 @@
 #include "PropertyUserObject.h"
 registerMooseObject("PikaApp", PikaChemicalPotentialBC);
 
-template<>
-InputParameters validParams<PikaChemicalPotentialBC>()
+InputParameters PikaChemicalPotentialBC::validParams()
 {
-  InputParameters params = validParams<NodalBC>();
-  params += validParams<PropertyUserObjectInterface>();
+  InputParameters params = NodalBC::validParams();
+  params += PropertyUserObjectInterface::validParams();
   params.addRequiredCoupledVar("temperature", "The temperature variable");
   params.addRequiredCoupledVar("phase_variable", "The variable containing the phase of the continuum (phi)");
   return params;

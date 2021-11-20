@@ -13,11 +13,10 @@
 
 registerMooseObject("PikaApp", PikaTimeDerivative);
 
-template<>
-InputParameters validParams<PikaTimeDerivative>()
+InputParameters PikaTimeDerivative::validParams()
 {
-  InputParameters params = validParams<TimeDerivative>();
-  params += validParams<CoefficientKernelInterface>();
+  InputParameters params = TimeDerivative::validParams();
+  params += CoefficientKernelInterface::validParams();
   return params;
 }
 

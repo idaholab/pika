@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", PikaWaterVaporConcentration);
 
-template<>
-InputParameters validParams<PikaWaterVaporConcentration>()
+InputParameters PikaWaterVaporConcentration::validParams()
 {
-  InputParameters params = validParams<AuxKernel>();
+  InputParameters params = AuxKernel::validParams();
   params.addRequiredCoupledVar("phase", "Phase-field variable");
   params.addRequiredCoupledVar("chemical_potential", "Chemical potential variable");
   return params;

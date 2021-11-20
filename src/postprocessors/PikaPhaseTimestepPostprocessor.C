@@ -16,11 +16,10 @@
 
 registerMooseObject("PikaApp", PikaPhaseTimestepPostprocessor);
 
-template<>
-InputParameters validParams<PikaPhaseTimestepPostprocessor>()
+InputParameters PikaPhaseTimestepPostprocessor::validParams()
 {
   // Define the parameters
-  InputParameters params = validParams<NodalVariablePostprocessor>();
+  InputParameters params = NodalVariablePostprocessor::validParams();
   std::vector<Real> vec(2);
   vec[0] = -1;
   vec[1] = 1;

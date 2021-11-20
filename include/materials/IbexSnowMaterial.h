@@ -15,12 +15,6 @@
 // MOOSE includes
 #include "Material.h"
 
-// Forward declerations
-class IbexSnowMaterial;
-
-template<>
-InputParameters validParams<IbexSnowMaterial>();
-
 /**
  *
  */
@@ -33,6 +27,7 @@ public:
    * @param prop_name
    */
   IbexSnowMaterial(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   void computeQpProperties();

@@ -13,11 +13,10 @@
 
 registerMooseObject("PikaApp", AntiTrapping);
 
-template<>
-InputParameters validParams<AntiTrapping>()
+InputParameters AntiTrapping::validParams()
 {
-  InputParameters params = validParams<Kernel>();
-  params+=validParams<CoefficientKernelInterface>();
+  InputParameters params = Kernel::validParams();
+  params+=CoefficientKernelInterface::validParams();
   params.addRequiredCoupledVar("phase", "Phase-field variable");
   return params;
 }

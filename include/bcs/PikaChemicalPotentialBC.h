@@ -19,10 +19,6 @@
 #include "PropertyUserObjectInterface.h"
 
 //Forward Declarations
-class PikaChemicalPotentialBC;
-
-template<>
-InputParameters validParams<PikaChemicalPotentialBC>();
 
 /**
  * Chemical potential equilibrium boundary condition
@@ -34,6 +30,7 @@ class PikaChemicalPotentialBC :
 {
 public:
   PikaChemicalPotentialBC(const InputParameters & parameters);
+  static InputParameters validParams();
   virtual ~PikaChemicalPotentialBC(){};
 
 protected:

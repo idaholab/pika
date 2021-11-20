@@ -14,10 +14,6 @@
 
 #include "MooseApp.h"
 
-class PikaApp;
-
-template<>
-InputParameters validParams<PikaApp>();
 
 /**
  * The main application for the Pika phase-field model
@@ -26,6 +22,7 @@ class PikaApp : public MooseApp
 {
 public:
   PikaApp(InputParameters parameters);
+  static InputParameters validParams();
   virtual ~PikaApp();
   static void registerApps();
   static void registerAll(Factory &, ActionFactory &, Syntax &);

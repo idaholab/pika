@@ -17,12 +17,6 @@
 //Pika Includes
 #include "PropertyUserObjectInterface.h"
 
-// Forward declarations
-class MassTransportSourceMMS;
-
-template<>
-InputParameters validParams<MassTransportSourceMMS>();
-
 /**
  * A kernel for adding forcing function for the MMS tests of the mass
  * transport equation, Eq. (35)
@@ -40,6 +34,7 @@ public:
    * @param parameters
    */
   MassTransportSourceMMS(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   virtual Real computeQpResidual();

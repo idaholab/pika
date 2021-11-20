@@ -19,10 +19,6 @@
 #include "PropertyUserObjectInterface.h"
 #include "CoefficientKernelInterface.h"
 //Forward Declarations
-class PhaseTransition;
-
-template<>
-InputParameters validParams<PhaseTransition>();
 
 class PhaseTransition :
   public ACBulk<Real>,
@@ -31,6 +27,7 @@ class PhaseTransition :
 public:
 
   PhaseTransition(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
   virtual Real computeDFDOP(PFFunctionType type);

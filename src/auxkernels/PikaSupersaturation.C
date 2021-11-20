@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", PikaSupersaturation);
 
-template<>
-InputParameters validParams<PikaSupersaturation>()
+InputParameters PikaSupersaturation::validParams()
 {
-  InputParameters params = validParams<AuxKernel>();
+  InputParameters params = AuxKernel::validParams();
   params.addRequiredCoupledVar("phase", "Phase-field variable");
   params.addRequiredCoupledVar("temperature", "The temperature variable");
   params.addParam<bool>("use_temporal_scaling", true, "Apply the temporal scaling parameter");

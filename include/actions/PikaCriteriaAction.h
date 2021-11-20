@@ -13,12 +13,6 @@
 #include "Action.h"
 #include "MooseObjectAction.h"
 
-// Forward declarations
-class PikaCriteriaAction;
-
-template<>
-InputParameters validParams<PikaCriteriaAction>();
-
 /**
  * Creates necessary objects for outputing the various Phase-field related criterial checking objects.
  */
@@ -26,6 +20,7 @@ class PikaCriteriaAction : public Action
 {
 public:
   PikaCriteriaAction(InputParameters parameters);
+  static InputParameters validParams();
   virtual ~PikaCriteriaAction(){}
 
   /**

@@ -20,10 +20,6 @@
 #include "CoefficientKernelInterface.h"
 
 //Forward Declarations
-class PikaDiffusion;
-
-template<>
-InputParameters validParams<PikaDiffusion>();
 
 /**
  * A coefficient diffusion Kernel
@@ -50,6 +46,7 @@ public:
    * Class constructor
    */
   PikaDiffusion(const InputParameters & parameters);
+  static InputParameters validParams();
 
 protected:
 

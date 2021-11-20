@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", IbexSnowMaterial);
 
-template<>
-InputParameters validParams<IbexSnowMaterial>()
+InputParameters IbexSnowMaterial::validParams()
 {
-  InputParameters params = validParams<Material>();
+  InputParameters params = Material::validParams();
   params.addRequiredCoupledVar("temperature", "The snow temperature variable to couple");
   params.addParam<Real>("snow_density", 200, "Density of snow [kg/m^3]");
   params.addParam<Real>("thermal_conductivity", "Thermal conductivity of snow; if omitted it is estimated based on density");

@@ -13,10 +13,9 @@
 
 registerMooseObject("PikaApp", TensorMobilityMaterial);
 
-template<>
-InputParameters validParams<TensorMobilityMaterial>()
+InputParameters TensorMobilityMaterial::validParams()
 {
-  InputParameters params = validParams<Material>();
+  InputParameters params = Material::validParams();
   params.addRequiredCoupledVar("phi", "The phase-field variable to couple");
   params.addRequiredParam<Real>("M_1_value", "Name of material property for first mobility coefficient");
   params.addRequiredParam<Real>("M_2_value", "Name of material property for second econd mobility coefficient");

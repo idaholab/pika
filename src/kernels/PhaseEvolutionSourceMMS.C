@@ -13,11 +13,10 @@
 #include "PropertyUserObject.h"
 registerMooseObject("PikaApp", PhaseEvolutionSourceMMS);
 
-template<>
-InputParameters validParams<PhaseEvolutionSourceMMS>()
+InputParameters PhaseEvolutionSourceMMS::validParams()
 {
-  InputParameters params = validParams<Kernel>();
-  params += validParams<PropertyUserObjectInterface>();
+  InputParameters params = Kernel::validParams();
+  params += PropertyUserObjectInterface::validParams();
   params.addParam<bool>("use_potential_transition",false, "Include term proportional to lambda in Eq.(33)");
   params.addRequiredCoupledVar("temperature","temperature specifying vapor density, T) ");
   params.addRequiredCoupledVar("chemical_potential","vapor concentration, u) ");
