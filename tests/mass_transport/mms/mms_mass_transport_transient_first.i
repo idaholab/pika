@@ -83,7 +83,6 @@
   [../]
   [./hmax]
     type = AverageElementSize
-    variable = u
     execute_on = 'initial timestep_end'
   [../]
   [./L2_norm]
