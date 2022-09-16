@@ -50,10 +50,8 @@ InputParameters PikaCriteriaAction::validParams()
   return params;
 }
 
-PikaCriteriaAction::PikaCriteriaAction(InputParameters parameters) :
-    Action(parameters)
-{
-}
+PikaCriteriaAction::PikaCriteriaAction(const InputParameters &parameters)
+    : Action(parameters) {}
 
 void
 PikaCriteriaAction::act()

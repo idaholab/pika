@@ -42,10 +42,8 @@ InputParameters PikaMaterialAction::validParams()
   return params;
 }
 
-PikaMaterialAction::PikaMaterialAction(InputParameters params) :
-  Action(params)
-{
-}
+PikaMaterialAction::PikaMaterialAction(const InputParameters &params)
+    : Action(params) {}
 
 PikaMaterialAction::~PikaMaterialAction()
 {
