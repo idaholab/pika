@@ -19,7 +19,7 @@
 class PikaCriteriaAction : public Action
 {
 public:
-  PikaCriteriaAction(InputParameters parameters);
+  PikaCriteriaAction(const InputParameters &parameters);
   static InputParameters validParams();
   virtual ~PikaCriteriaAction(){}
 
