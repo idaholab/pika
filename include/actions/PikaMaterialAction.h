@@ -42,7 +42,7 @@ public:
    * @param name Name of the action
    * @param params Input parameters associated with this actions
    */
-  PikaMaterialAction(InputParameters params);
+  PikaMaterialAction(const InputParameters &params);
   static InputParameters validParams();
 
   /**
